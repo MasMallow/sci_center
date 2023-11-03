@@ -1,0 +1,277 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@500&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "Noto Sans Thai", sans-serif;
+  text-decoration: none;
+}
+
+body {
+  background-color: #b1cfcf;
+}
+
+.mainpage {
+  width: 100%;
+  height: auto;
+  position: relative;
+  overflow: auto;
+  display: flex;
+}
+
+.sidebar {
+  width: 15vw;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffff;
+  padding: 24px;
+  border-top-right-radius: 30px;
+}
+
+.sidebar .head {
+  display: flex;
+  gap: 20px;
+}
+
+.menu ul li {
+  list-style: none;
+  margin-bottom: 5px;
+}
+
+.menu ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #757575;
+  text-decoration: none;
+  padding: 12px 8px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.menu ul li a:hover,
+.menu ul li a-active {
+  color: #000;
+  background-color: #f6f6f6;
+}
+
+.menu ul li .icon {
+  font-size: 16px;
+}
+
+.menu ul li .text {
+  flex: 1;
+}
+
+.menu ul li .arrow {
+  font-size: 14px;
+}
+
+.arrow-rotate {
+  transform: rotate(180deg);
+}
+
+.menu .sb-sub-ul a {
+  /* visibility: visible; */
+  margin-left: 20px;
+  padding-left: 20px;
+  padding-top: 5px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-left: 1px solid #ceb9b9;
+}
+
+/* .menu .sub-menu li a {
+  padding: 10px 8px;
+  font-size: 14px;
+} */
+
+/* Dashborad */
+.dashborad {
+  position: relative;
+  background-color: #d7dbdd;
+  width: 90%;
+  height: 100%;
+  border-top-left-radius: 15px;
+  margin-left: 10px;
+}
+/* .dashborad::-webkit-scrollbar {
+  display: none;
+} */
+/* NAVBAR */
+nav {
+  width: 100%;
+  height: 3.5vw;
+  background: linear-gradient(125deg, #800080, #ccccff);
+  border-radius: 15px 15px 0px 0px;
+}
+.nav-container {
+  max-width: 80vw;
+  height: 100%;
+  /* background-color: yellow; */
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* User-Info */
+.profile {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border: 2px solid gray;
+  background-color: #d7dbdd;
+  border-radius: 15px;
+  padding: 2px;
+}
+.modal {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-page {
+  width: 25vw;
+  max-height: 20vw;
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  display: block;
+}
+.user-dropdown {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.modal-page h2 {
+  text-decoration: underline;
+}
+.user-dropdown .username {
+  color: #757575;
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+.sign-out {
+  border-radius: 10px;
+  background-color: rgb(255, 83, 83);
+  width: 15vw;
+  height: 2vw;
+  color: white;
+  transition: 0.5s;
+  text-align: center;
+  padding-top: 7px;
+  border: none;
+  margin-top: 20px;
+}
+.sign-out:hover {
+  transform: scale(1.05);
+  background-color: rgb(170, 0, 0);
+}
+.user-dropdown a {
+  border-radius: 10px;
+  background-color: rgb(255, 83, 83);
+  width: 15vw;
+  height: 2vw;
+  color: white;
+  transition: 0.5s;
+  text-align: center;
+  padding-top: 7px;
+}
+.user-dropdown a:hover {
+  transform: scale(1.05);
+  background-color: rgb(170, 0, 0);
+}
+.head-name {
+  font-size: 26px;
+  color: white;
+}
+
+/* ส่วนของวัน เวลา */
+.info-date {
+  background-color: #f6f6f6;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.info1-date {
+  display: flex;
+  justify-content: center;
+  font-size: 25px;
+}
+
+/* ส่วนแสดงข้อมูล */
+.all-info {
+  font-size: 20px;
+  margin-left: 25px;
+}
+
+.product {
+  background-color: #f6f6f6;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 15px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  grid-gap: 20px;
+}
+
+.product-item {
+  /* position: relative; */
+  width: 320px;
+  height: 420px;
+  border-radius: 20px;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.product-item:hover {
+  transform: scale(1.02);
+}
+
+.product-img {
+  width: 100%;
+  height: 15vw;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product-name {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ปุ่ม */
+.cart {
+  width: 80%;
+  background-color: #3498db;
+  color: white;
+  text-align: center;
+  padding: 0.5vw;
+  cursor: pointer;
+  margin-top: 1.5vw;
+  border-radius: 15px;
+  border: none;
+  transition: 0.5s;
+}
+
+.cart:hover {
+  background-color: #21618c;
+  letter-spacing: 2px;
+}
