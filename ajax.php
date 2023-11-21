@@ -1,9 +1,6 @@
 <?php
 session_start();
 require_once 'db.php';
-if (isset($_SESSION['admin_login'])) {
-    header('location:admin.php');
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +21,12 @@ if (isset($_SESSION['admin_login'])) {
     <?php
     if (isset($_SESSION['user_login'])) {
         $user_id = $_SESSION['user_login'];
+        $stmt = $conn->query("SELECT * FROM users WHERE id =$user_id");
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    if (isset($_SESSION['admin_login'])) {
+        $user_id = $_SESSION['admin_login'];
         $stmt = $conn->query("SELECT * FROM users WHERE id =$user_id");
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -85,6 +88,19 @@ if (isset($_SESSION['admin_login'])) {
                             <span class="text">รายงาน</span>
                         </a>
                     </li>
+                    <?php
+                    // ตรวจสอบว่ามี session ของผู้ใช้ที่ล็อกอินหรือไม่
+                    if (isset($_SESSION['admin_login'])) {
+                        // ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ
+                        echo '<li>
+                        <a href="#" onclick="clearChangeContent(); AdminMode();">
+                            <i class="icon fa-solid fa-flag"></i>
+                            <span class="text">สำหรับผู้ดูแล</span>
+                        </a>
+                    </li>';
+                    }
+                    ?>
+                    
                 </ul>
             </div>
         </div>
@@ -111,7 +127,15 @@ if (isset($_SESSION['admin_login'])) {
                     </div>
                 </div>
             </nav>';
-                    } else {
+                    }
+                    elseif (isset($_SESSION['admin_login'])) {
+                        echo '<div onclick="openInfo()" class="info" style="cursor: pointer;">
+                        <img class="profile" src="./test/profile.png" alt="">
+                    </div>
+                </div>
+            </nav>';
+                    } 
+                    else {
                         // ถ้าไม่มี session ของผู้ใช้ (ไม่ได้ล็อกอิน) ให้แสดงปุ่ม Default
                         echo '<button type="button" class="col-start-11 col-span-2 w-26 m-1 text-white bg-blue-700 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 "><a href="login.php">เข้าสู่ระบบ</a></button></nav>';
                     }
@@ -133,8 +157,10 @@ if (isset($_SESSION['admin_login'])) {
                     </div>
                     <div class="info-date">
                         <div class="info1-date">
-                            <div class="info-time">เวลา</div>
+                            <div class="info-time">วันที่&nbsp;</div>
                             <div class="date" id="date"></div>
+                            &nbsp;
+                            <div>เวลา&nbsp;</div>
                             <div class="time" id="time"></div>
                         </div>
                     </div>

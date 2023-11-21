@@ -2,13 +2,13 @@
 session_start();
 require_once 'db.php';
 if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
-    ?>
-        <div class="alert alert-danger" role="alert">
-            <?php
-            $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-            ?>
-        </div>
-    
+?>
+    <div class="alert alert-danger" role="alert">
+        <?php
+        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+        ?>
+    </div>
+
     <!DOCTYPE html>
     <html lang="en">
 
@@ -69,13 +69,10 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
     </body>
 
     </html>
-
 <?php
-}
-elseif (isset($_SESSION['user_login'])) {
+} elseif (isset($_SESSION['user_login'])) {
     header('location:ajax.php');
-}
-elseif (isset($_SESSION['admin_login'])) {
-    header('location:admin.php');
+} elseif (isset($_SESSION['admin_login'])) {
+    header('location:ajax.php');
 }
 ?>

@@ -21,10 +21,16 @@ include_once 'db.php';
                         <h6 class="my-2">Select image file to upload</h6>
                         <input type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png">
                         <p class="small md-0 mt-2"><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
-                        <label for="quantity">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" min="1" required>
-                        <label for="product_name">Product Name:</label>
+                        <label for="product_name">ชื่ออุปกรณ์:</label>
                         <input type="text" id="product_name" name="product_name" required>
+                        <label for="quantity">จำนวนอุปกรณ์:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" required>
+                        <label for="product_type"> ประเภทอุปกรณ์:</label>
+                        <select name="productType" id="productType">
+                            <option value="วัตถุ">วัตถุ</option>
+                            <option value="อุปกรณ์">อุปกรณ์</option>
+                            <option value="เครื่องมือ">เครื่องมือ</option>
+                        </select>
                     </div>
                     <div class="d-sm-flex justify-content-end mt-2">
                         <input type="submit" name="submit" value="Upload" class="btn btn-sm btn-primary mb-3">

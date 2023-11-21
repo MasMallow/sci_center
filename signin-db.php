@@ -24,7 +24,7 @@ if (isset($_POST['sign-in'])) {
                     if (password_verify($Password, $row['password'])) {
                         if ($row['urole'] == 'admin') {
                             $_SESSION['admin_login'] = $row['id']; 
-                            header("location: admin.php");
+                            header("location: ajax.php");
                         } else {
                             $_SESSION['user_login'] = $row['id']; 
                             header("location: ajax.php");
