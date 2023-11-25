@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ตะกร้า</title>
+    <title>เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือ</title>
     <link rel="stylesheet" href="cart.css">
 </head>
 
@@ -76,15 +76,14 @@
     <div class="container">
         <div class="cart">
             <div class="head">
-                <h3>การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</h3>
+                <div class="head-name">การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</div>
             </div>
-            <div class="firstname"><?php echo 'ผู้ใช้ : ' . $row["firstname"]; ?></div>
             <?php
             if (empty($_SESSION['cart'])) {
-                echo "<p>ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</p>";
+                echo '<div class="non-select">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</div>';
             } else {
                 echo '<form method="post" action="process_return.php">';
-                echo '<table>';
+                echo '<table class="cart-data">';
                 echo '<tr><th>รูปภาพ</th><th>ชื่ออุปกรณ์</th><th>จำนวน</th></tr>';
                 foreach ($_SESSION['cart'] as $item) {
                     // Retrieve product details from the database based on the item
@@ -109,13 +108,16 @@
             ?>
                 <label for="return_date">วันที่คืน :</label>
                 <input type="date" name="return_date" required>
-                <button type="submit" name="update">ยืนยัน</button>
+                <div class="firstname"><?php echo 'ผู้ใช้ : ' . $row["firstname"]; ?></div>
+                <!-- <button type="submit" name="update">ยืนยัน</button> -->
             <?php
-                echo '</form>';
+                echo '<button type="submit" name="update">ยืนยัน</button>';
                 echo '<button class="back" onclick="window.location.href=\'cart.php?action=clear\'">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
+                echo '</form>';
             }
             ?>
-            <button class="back" onclick="location.href='ajax.php'">กลับหน้าหลัก</button>
+            <button class="back" onclick="location.href='ajax.php'">เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
+
         </div>
     </div>
 </body>

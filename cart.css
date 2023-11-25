@@ -22,6 +22,16 @@ div.header {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+div.head-name{
+  font-size: 24px;
+  font-weight: 500;
+}
+table.cart-data{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px black;
+}
 .cart {
   background-color: #d5dbdb;
   padding: 20px;
@@ -37,7 +47,7 @@ div.header {
 /* Button */
 button,a{
   padding: 0.4rem 1.1rem;
-  margin-top: 36px;
+  margin-top: 14px;
 }
 button.back {
   color: white;
