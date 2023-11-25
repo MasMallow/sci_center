@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ตะกร้า</title>
-    <!-- <link href="../dist/output.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script> -->
+    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
@@ -71,47 +70,54 @@
     ?>
 
     <!-- Display the items in the cart -->
-    <h1>อุปกรณ์การยืม</h1>
-    <?php echo $row['firstname'] ?>
-    <?php
-    if (empty($_SESSION['cart'])) {
-        echo "<p>ไม่มีอุปกรณ์ในตะกร้า</p>";
-    } else {
-        echo '<form method="post" action="process_return.php">';
-        echo '<table>';
-        echo '<tr><th>รูปภาพ</th><th>ชื่ออุปกรณ์</th><th>จำนวน</th></tr>';
-        foreach ($_SESSION['cart'] as $item) {
-            // Retrieve product details from the database based on the item
-            $query = $conn->prepare("SELECT * FROM image WHERE file_name = :item");
-            $query->bindParam(':item', $item, PDO::PARAM_STR);
-            $query->execute();
-            $product = $query->fetch(PDO::FETCH_ASSOC);
-            $productName = $product['product_name'];
-            $imageURL = 'test/' . $product['file_name'];
+    <div class="header">
+        <h1>การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</h1>
+    </div>
+    <div class="container">
+        <div class="cart">
+            <div class="head">
+                <h3>การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</h3>
+            </div>
+            <div class="firstname"><?php echo 'ผู้ใช้ : ' . $row["firstname"]; ?></div>
+            <?php
+            if (empty($_SESSION['cart'])) {
+                echo "<p>ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</p>";
+            } else {
+                echo '<form method="post" action="process_return.php">';
+                echo '<table>';
+                echo '<tr><th>รูปภาพ</th><th>ชื่ออุปกรณ์</th><th>จำนวน</th></tr>';
+                foreach ($_SESSION['cart'] as $item) {
+                    // Retrieve product details from the database based on the item
+                    $query = $conn->prepare("SELECT * FROM image WHERE file_name = :item");
+                    $query->bindParam(':item', $item, PDO::PARAM_STR);
+                    $query->execute();
+                    $product = $query->fetch(PDO::FETCH_ASSOC);
+                    $productName = $product['product_name'];
+                    $imageURL = 'test/' . $product['file_name'];
 
-            if (file_exists($imageURL)) {
-                echo '<tr>';
-                echo '<td><img src="' . $imageURL . '" alt="' . $productName . '" width="100" ></td>';
-                echo '<td>' . $productName . '</td>';
-                echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1"></td>';
-                echo '<td><a href="cart.php?action=remove&item=' . $item . '">Remove</a></td>';
+                    if (file_exists($imageURL)) {
+                        echo '<tr>';
+                        echo '<td><img src="' . $imageURL . '" alt="' . $productName . '" width="100" ></td>';
+                        echo '<td>' . $productName . '</td>';
+                        echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1"></td>';
+                        echo '<td><a href="cart.php?action=remove&item=' . $item . '">Remove</a></td>';
+                    }
+                }
+
+                echo '</tr>';
+                echo '</table>';
+            ?>
+                <label for="return_date">วันที่คืน :</label>
+                <input type="date" name="return_date" required>
+                <button type="submit" name="update">ยืนยัน</button>
+            <?php
+                echo '</form>';
+                echo '<button class="back" onclick="window.location.href=\'cart.php?action=clear\'">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
             }
-        }
-
-        echo '</tr>';
-        echo '</table>';
-    ?>
-        <label for="return_date">วันที่คืน: </label>
-        <input type="date" name="return_date" required>
-        <button type="submit" name="update">ยืนยัน</button>
-    <?php
-        echo '</form>';
-
-        echo '<a href="cart.php?action=clear">ล้างตะกร้า</a>';
-    }
-    ?>
-
-    <a href="ajax.php">กลับหน้าหลัก</a>
+            ?>
+            <button class="back" onclick="location.href='ajax.php'">กลับหน้าหลัก</button>
+        </div>
+    </div>
 </body>
 
 </html>
