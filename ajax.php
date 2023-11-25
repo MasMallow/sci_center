@@ -111,7 +111,7 @@ require_once 'db.php';
             <nav>
                 <div class="nav-container">
                     <a href="ajax.php">
-                        <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ2222222</span>
+                        <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span>
                     </a>
                     <div class="nav-profile">
                         <div class="nav-profile-user">
