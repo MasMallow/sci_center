@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@500&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "Noto Sans Thai", sans-serif;
+  text-decoration: none;
+}
+div.header {
+  background-color: aquamarine;
+  font-size: 28px;
+  text-align: center;
+}
+.container {
+  /* display: flex;
+  justify-content: center;
+  align-content: center; */
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.cart {
+  background-color: #d5dbdb;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.firstname {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Button */
+button,a{
+  padding: 0.4rem 1.1rem;
+  margin-top: 36px;
+}
+button.back {
+  color: white;
+  border-radius: 5px;
+  background-color: rgb(247, 95, 95);
+  cursor: pointer;
+  transition: 0.4s;
+  border: none;
+}
+button.back:hover {
+  color: red;
+  background-color: white;
+  font-weight: bold;
+  border: solid 1px red;
+}
+a {
+  color: white;
+  border-radius: 5px;
+  background-color: rgb(247, 95, 95);
+  cursor: pointer;
+  transition: 0.4s;
+  border: none;
+}
+a:hover {
+  color: red;
+  background-color: white;
+  font-weight: bold;
+  border: solid 1px red;
+}
+
