@@ -10,7 +10,6 @@ function loadReport() {
     },
   });
 }
-
 function clearChangeContent() {
   $(".product").empty();
 }

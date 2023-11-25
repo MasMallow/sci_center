@@ -71,7 +71,7 @@ require_once 'db.php';
                         </ul>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" onclick="log()">
                             <i class="icon fa-solid fa-square-check"></i>
                             <span class="text">รายการตรวจสอบ</span>
                         </a>
@@ -100,7 +100,7 @@ require_once 'db.php';
                     </li>';
                     }
                     ?>
-                    
+
                 </ul>
             </div>
         </div>
@@ -127,15 +127,13 @@ require_once 'db.php';
                     </div>
                 </div>
             </nav>';
-                    }
-                    elseif (isset($_SESSION['admin_login'])) {
+                    } elseif (isset($_SESSION['admin_login'])) {
                         echo '<div onclick="openInfo()" class="info" style="cursor: pointer;">
                         <img class="profile" src="./test/profile.png" alt="">
                     </div>
                 </div>
             </nav>';
-                    } 
-                    else {
+                    } else {
                         // ถ้าไม่มี session ของผู้ใช้ (ไม่ได้ล็อกอิน) ให้แสดงปุ่ม Default
                         echo '<button type="button" class="col-start-11 col-span-2 w-26 m-1 text-white bg-blue-700 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 "><a href="login.php">เข้าสู่ระบบ</a></button></nav>';
                     }
@@ -293,6 +291,20 @@ require_once 'db.php';
         function equipment() {
             $.ajax({
                 url: "equipment.php",
+                dataType: "html",
+                success: function(data) {
+                    $(".product").empty().append(data);
+                },
+                error: function() {
+                    alert("การโหลดรายงานผิดพลาด");
+                },
+            });
+        }
+    </script>
+    <script>
+        function log() {
+            $.ajax({
+                url: "viewlog.php",
                 dataType: "html",
                 success: function(data) {
                     $(".product").empty().append(data);
