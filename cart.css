@@ -12,7 +12,7 @@ div.header {
   font-size: 28px;
   text-align: center;
 }
-.container {
+.main-cart {
   /* display: flex;
   justify-content: center;
   align-content: center; */
@@ -22,30 +22,29 @@ div.header {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-div.head-name{
-  font-size: 24px;
-  font-weight: 500;
-}
-table.cart-data{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px black;
-}
 .cart {
   background-color: #d5dbdb;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
-
-.firstname {
+div.head-name {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 500;
+}
+
+.cart-data {
+  width: 100%;
+  border-collapse: collapse;
+}
+.cart-data th {
+  background-color: gray;
+  color: white;
 }
 
 /* Button */
-button,a{
+button,
+a {
   padding: 0.4rem 1.1rem;
   margin-top: 14px;
 }
@@ -77,4 +76,3 @@ a:hover {
   font-weight: bold;
   border: solid 1px red;
 }
-

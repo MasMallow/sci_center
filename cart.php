@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือ</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="cart.css">
 </head>
 
@@ -73,7 +75,7 @@
     <div class="header">
         <h1>การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</h1>
     </div>
-    <div class="container">
+    <div class="main-cart">
         <div class="cart">
             <div class="head">
                 <div class="head-name">การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</div>
@@ -84,7 +86,14 @@
             } else {
                 echo '<form method="post" action="process_return.php">';
                 echo '<table class="cart-data">';
-                echo '<tr><th>รูปภาพ</th><th>ชื่ออุปกรณ์</th><th>จำนวน</th></tr>';
+                echo '
+                        <tr>
+                            <th>รูปภาพ</th>
+                            <th>ชื่ออุปกรณ์</th>
+                            <th>จำนวน</th>
+                            <th>การดำเนินการ</th>
+                        </tr>
+                    ';
                 foreach ($_SESSION['cart'] as $item) {
                     // Retrieve product details from the database based on the item
                     $query = $conn->prepare("SELECT * FROM image WHERE file_name = :item");
@@ -99,7 +108,7 @@
                         echo '<td><img src="' . $imageURL . '" alt="' . $productName . '" width="100" ></td>';
                         echo '<td>' . $productName . '</td>';
                         echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1"></td>';
-                        echo '<td><a href="cart.php?action=remove&item=' . $item . '">Remove</a></td>';
+                        echo '<td><a href="cart.php?action=remove&item=' . $item . '"><i class="fa fa-trash"></i></a></td>';
                     }
                 }
 
