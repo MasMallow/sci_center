@@ -6,3 +6,5 @@ function resetText(element) {
     const tooltip = element.querySelector('.tooltip');
     tooltip.innerHTML = '';
 }
+
+    

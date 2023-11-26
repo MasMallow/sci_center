@@ -102,7 +102,7 @@ require_once 'db.php';
                     <div class="button">
                         <button type="submit" class="submit" name="signup">ยืนยัน</button>
                         <button type="reset" class="reset" onclick="resetForm()">เคลียร์</button>
-                        <button type="cancel" class="cancel" onclick="location.href='login.php'">ยกเลิก</button>
+                        <a href="login.php" class="cancel">ยกเลิก</a>
                     </div>
                 </div>
             </div>
