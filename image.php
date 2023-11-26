@@ -34,6 +34,7 @@ include_once 'db.php';
                     </div>
                     <div class="d-sm-flex justify-content-end mt-2">
                         <input type="submit" name="submit" value="Upload" class="btn btn-sm btn-primary mb-3">
+                        <a href="ajax.php">กลับหน้าหลัก</a>
                     </div>
                 </form>
             </div>

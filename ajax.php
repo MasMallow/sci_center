@@ -184,17 +184,18 @@ require_once 'db.php';
                                             <img src="<?php echo $imageURL ?>" alt="" class="rounded-md h-40 w-32 m-1">
                                         </a>
                                         <div class="mas p-1">
-                                            <a href="#">
-                                                <br>
-                                                <p>ชื่ออุปกรณ์: <?php echo $row['product_name']; ?></p> <!-- เพิ่มบรรทัดนี้เพื่อแสดงชื่อสินค้า -->
-                                                <p>จำนวนคงเหลือ: <?php echo $row['amount']; ?></p> <!-- เพิ่มบรรทัดนี้เพื่อแสดงจำนวนคงเหลือ -->
-                                            </a>
-                                            <a href="cart.php?action=add&item=<?= $row['file_name'] ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover-bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark-bg-blue-600 dark-hover-bg-blue-700 dark-focus-ring-blue-800">
-                                                Add to Cart
-                                                <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                                </svg>
-                                            </a>
+                                            <?php
+                                            if ($row['amount'] > 0) { // แก้เงื่อนไขนี้เพื่อไม่แสดงปุ่มเมื่อจำนวนคงเหลือน้อยกว่าหรือเท่ากับ 1
+                                            ?>
+                                                <a href="cart.php?action=add&item=<?= $row['file_name'] ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    Add to Cart
+                                                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                                    </svg>
+                                                </a>
+                                            <?php
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                             <?php
@@ -249,7 +250,6 @@ require_once 'db.php';
             document.getElementById("mySelect").value = "0"; // Set the value to the default option value
         }
     </script>
-
     <script>
         function searchProducts() {
             var searchQuery = document.getElementById('searchInput').value;
