@@ -8,28 +8,35 @@
   text-decoration: none;
 }
 div.header {
-  background-color: aquamarine;
+  background-color: #D0D3D4;
   font-size: 28px;
   text-align: center;
 }
+.table {
+  margin: 24px;
+  background-color: gray;
+  border-radius: 20px;
+  overflow: hidden;
+}
 .main-cart {
-  /* display: flex;
-  justify-content: center;
-  align-content: center; */
+  /* margin: 0px 320px;
   width: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
+  display: flex;
+  justify-content: center;
 }
 .cart {
+  width: 1400px;
   background-color: #d5dbdb;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 15px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 div.head-name {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 500;
 }
 
@@ -38,11 +45,69 @@ div.head-name {
   border-collapse: collapse;
 }
 .cart-data th {
-  background-color: gray;
+  /* background-color: #424949; */
   color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid #eaeded;
 }
+.cart-data tr th {
+  padding: 16px 0px;
+  letter-spacing: 0.1rem;
+  vertical-align: top;
+  /* border: 0.5px solid white; */
+  /* border-top-right-radius: 5px;
+  border-top-left-radius: 5px; */
+}
+tr.row td {
+  font-weight: normal;
+  text-align: center;
+  border-bottom: 1px solid #eaeded;
+  border-bottom: 1px solid red;
+  border: 3px solid red;
+}
+tr.row:last-child {
+  border: none;
+}
+td img {
+  width: 140px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 20px;
+}
+input[type="number"]{
+  width: 72px;
+  height: 36px;
+  text-align: center;
+  outline: none;
+  font-weight: bold;
+}
+.product-name{
+  font-size: 24px;
+}
+/* tr:nth-child(even) {
+  background-color: #ccc;
+  transition: all 0.3s ease-in;
+}
+tr:hover td {
+  background-color: black;
+  transition: all 0.3s ease-in;
+} */
 
 /* Button */
+td a {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  background-color: rgb(247, 95, 95);
+  color: white;
+  transition: .3s;
+}
+td a:hover {
+  background-color: white;
+  color: red;
+}
 button,
 a {
   padding: 0.4rem 1.1rem;
@@ -62,7 +127,7 @@ button.back:hover {
   font-weight: bold;
   border: solid 1px red;
 }
-a {
+/* a {
   color: white;
   border-radius: 5px;
   background-color: rgb(247, 95, 95);
@@ -75,4 +140,4 @@ a:hover {
   background-color: white;
   font-weight: bold;
   border: solid 1px red;
-}
+} */

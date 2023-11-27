@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือ</title>
-
+    <!-- ส่วนของ Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="cart.css">
 </head>
@@ -73,7 +73,7 @@
 
     <!-- Display the items in the cart -->
     <div class="header">
-        <h1>การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</h1>
+        <h3>การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</h3>
     </div>
     <div class="main-cart">
         <div class="cart">
@@ -85,15 +85,15 @@
                 echo '<div class="non-select">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</div>';
             } else {
                 echo '<form method="post" action="process_return.php">';
+                echo '<div class="table">';
                 echo '<table class="cart-data">';
-                echo '
-                        <tr>
-                            <th>รูปภาพ</th>
-                            <th>ชื่ออุปกรณ์</th>
-                            <th>จำนวน</th>
-                            <th>การดำเนินการ</th>
-                        </tr>
-                    ';
+                echo '<tr>
+                        <th>ลำดับ</th>
+                        <th>รูปภาพ</th>
+                        <th>ชื่ออุปกรณ์</th>
+                        <th>จำนวน</th>
+                        <th>การดำเนินการ</th>
+                    </tr>';
                 foreach ($_SESSION['cart'] as $item) {
                     // Retrieve product details from the database based on the item
                     $query = $conn->prepare("SELECT * FROM image WHERE file_name = :item");
@@ -104,16 +104,18 @@
                     $imageURL = 'test/' . $product['file_name'];
 
                     if (file_exists($imageURL)) {
-                        echo '<tr>';
-                        echo '<td><img src="' . $imageURL . '" alt="' . $productName . '" width="100" ></td>';
-                        echo '<td>' . $productName . '</td>';
-                        echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1"></td>';
-                        echo '<td><a href="cart.php?action=remove&item=' . $item . '"><i class="fa fa-trash"></i></a></td>';
+                        echo '<tr class="row">';
+                        echo '<td><p>1</p></td>';
+                        echo '<td><img src="' . $imageURL . '" alt="' . $productName . '" ></td>';
+                        echo '<td class="product-name">' . $productName . '</td>';
+                        echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1" ></td>';
+                        echo '<td><a class="delete" href="cart.php?action=remove&item=' . $item . '"><i class="fa fa-trash"></i></a></td>';
                     }
                 }
 
                 echo '</tr>';
                 echo '</table>';
+                echo '</div>';
             ?>
                 <label for="return_date">วันที่คืน :</label>
                 <input type="date" name="return_date" required>
@@ -126,7 +128,6 @@
             }
             ?>
             <button class="back" onclick="location.href='ajax.php'">เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
-
         </div>
     </div>
 </body>
