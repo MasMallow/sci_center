@@ -106,10 +106,10 @@
                     if (file_exists($imageURL)) {
                         echo '<tr class="row">';
                         echo '<td><p>1</p></td>';
-                        echo '<td><img src="' . $imageURL . '" alt="' . $productName . '" ></td>';
+                        echo '<td><img src="' . $imageURL . '" alt="' . $productName . '"></td>';
                         echo '<td class="product-name">' . $productName . '</td>';
                         echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1" ></td>';
-                        echo '<td><a class="delete" href="cart.php?action=remove&item=' . $item . '"><i class="fa fa-trash"></i></a></td>';
+                        echo '<td><a class="delete" href="cart.php?action=remove&item=' . $item . '"><i class="fa fa-trash"><p>ลบรายการที่เลือก</p></i></a></td>';
                     }
                 }
 
@@ -117,10 +117,13 @@
                 echo '</table>';
                 echo '</div>';
             ?>
-                <label for="return_date">วันที่คืน :</label>
-                <input type="date" name="return_date" required>
-                <div class="firstname"><?php echo 'ผู้ใช้ : ' . $row["firstname"]; ?></div>
-                <!-- <button type="submit" name="update">ยืนยัน</button> -->
+                <div class="date">
+                    <label class="date" for="return_date">กรุณาเลือกวันที่คืนอุปกรณ์ และเครื่องมือ</label>
+                    <input type="date" name="return_date" required>
+                </div>
+                <div class="firstname">
+                    <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["firstname"]; ?>
+                </div>
             <?php
                 echo '<button type="submit" name="update">ยืนยัน</button>';
                 echo '<button class="back" onclick="window.location.href=\'cart.php?action=clear\'">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';

@@ -12,32 +12,30 @@ div.header {
   font-size: 28px;
   text-align: center;
 }
+.main-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+}
 .table {
   margin: 24px;
-  background-color: gray;
+  background-color: white;
   border-radius: 20px;
   overflow: hidden;
 }
-.main-cart {
-  /* margin: 0px 320px;
-  width: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
-  display: flex;
-  justify-content: center;
-}
 .cart {
-  width: 1400px;
-  background-color: #d5dbdb;
+  width: 1300px;
+  background-color: white;
   padding: 10px;
   border-radius: 15px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 div.head-name {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 500;
+  padding-left: 28px;
+  padding-top: 6px;
 }
 
 .cart-data {
@@ -45,34 +43,29 @@ div.head-name {
   border-collapse: collapse;
 }
 .cart-data th {
-  /* background-color: #424949; */
-  color: white;
+  background-color: #AEB6BF;
+  color: black;
   font-size: 18px;
   font-weight: bold;
-  border-bottom: 1px solid #eaeded;
+  border-bottom: 2px solid #eaeded;
 }
 .cart-data tr th {
-  padding: 16px 0px;
+  padding: 10px 0px;
   letter-spacing: 0.1rem;
   vertical-align: top;
-  /* border: 0.5px solid white; */
-  /* border-top-right-radius: 5px;
-  border-top-left-radius: 5px; */
+}
+tr.row td{
+  border: 2px solid white;
 }
 tr.row td {
   font-weight: normal;
   text-align: center;
-  border-bottom: 1px solid #eaeded;
-  border-bottom: 1px solid red;
-  border: 3px solid red;
+  border-bottom: 2px solid #eaeded;
 }
-tr.row:last-child {
-  border: none;
-}
-td img {
+img {
   width: 140px;
   height: 100px;
-  object-fit: contain;
+  object-fit: fill;
   border-radius: 20px;
 }
 input[type="number"]{
@@ -85,15 +78,43 @@ input[type="number"]{
 .product-name{
   font-size: 24px;
 }
-/* tr:nth-child(even) {
-  background-color: #ccc;
+tr:nth-child(even) {
+  background-color: #f2f2f2;
   transition: all 0.3s ease-in;
 }
 tr:hover td {
-  background-color: black;
+  background-color: #D0D3D4;
   transition: all 0.3s ease-in;
-} */
+}
 
+/* Input Date */
+.date{
+  display: flex;
+  justify-content: center;
+}
+label.date{
+  font-size: 18px;
+  align-items: center;
+}
+input[type="date"]{
+  margin-left: 26px;
+  padding: 8px;
+  background-color: #e2e7e9;
+  color: black;
+  font-family: "Noto Sans Thai", sans-serif;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+}
+
+/* Name */
+.firstname{
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  margin-top: 25px;
+}
 /* Button */
 td a {
   border: none;
