@@ -78,8 +78,14 @@
     <div class="main-cart">
         <div class="cart">
             <div class="head">
-                <div class="head-name">การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</div>
+                <div class="head-name">
+                    การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ
+                </div>
+                <div class="select">
+                    <button class="btn-select" onclick="location.href='ajax.php'">เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
+                </div>
             </div>
+
             <?php
             if (empty($_SESSION['cart'])) {
                 echo '<div class="non-select">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</div>';
@@ -109,7 +115,7 @@
                         echo '<td><img src="' . $imageURL . '" alt="' . $productName . '"></td>';
                         echo '<td class="product-name">' . $productName . '</td>';
                         echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1" ></td>';
-                        echo '<td><a class="delete" href="cart.php?action=remove&item=' . $item . '"><i class="fa fa-trash"><p>ลบรายการที่เลือก</p></i></a></td>';
+                        echo '<td><a class="btn-delete" href="cart.php?action=remove&item=' . $item . '" onclick="return confirm(\'ลบรายการที่เลือกใช่หรือไม่?\')"><i class="fa fa-trash"></i>ลบรายการที่เลือก</a></td>';
                     }
                 }
 
@@ -125,14 +131,25 @@
                     <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["firstname"]; ?>
                 </div>
             <?php
-                echo '<button type="submit" name="update">ยืนยัน</button>';
-                echo '<button class="back" onclick="window.location.href=\'cart.php?action=clear\'">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
+                echo '<div class="btn-section">';
+                echo '<button class="submit" type="submit" name="update">ยืนยัน</button>';
+                echo '<button class="delete-all" onclick="confirmAndRedirect(\'ลบรายการที่เลือกทั้งหมดใช่หรือไม่?\', \'cart.php?action=clear\')">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
+                echo '</div>';
                 echo '</form>';
             }
             ?>
-            <button class="back" onclick="location.href='ajax.php'">เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
         </div>
     </div>
+
+    <!-- JavaScript -->
+    <script>
+        function confirmAndRedirect(message, url) {
+            if (confirm(message)) {
+                window.location.href = url;
+            }
+        }
+    </script>
+
 </body>
 
 </html>

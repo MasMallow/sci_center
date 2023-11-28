@@ -8,7 +8,7 @@
   text-decoration: none;
 }
 div.header {
-  background-color: #D0D3D4;
+  background-color: #d0d3d4;
   font-size: 28px;
   text-align: center;
 }
@@ -31,19 +31,38 @@ div.header {
   border-radius: 15px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
-div.head-name {
+/* ส่วนหัวของตาราง */
+.head {
+  display: flex;
+  justify-content: space-between;
+}
+.head-name {
   font-size: 24px;
   font-weight: 500;
   padding-left: 28px;
   padding-top: 6px;
 }
-
+.btn-select {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  background-color: rgb(0, 102, 255);
+  padding: 8px 12px;
+  margin-top: 6px;
+  margin-right: 28px;
+  color: white;
+  transition: all 0.3s;
+}
+.btn-select:hover {
+  background-color: rgb(0, 69, 173);
+}
 .cart-data {
   width: 100%;
   border-collapse: collapse;
 }
 .cart-data th {
-  background-color: #AEB6BF;
+  background-color: #aeb6bf;
   color: black;
   font-size: 18px;
   font-weight: bold;
@@ -54,7 +73,7 @@ div.head-name {
   letter-spacing: 0.1rem;
   vertical-align: top;
 }
-tr.row td{
+tr.row td {
   border: 2px solid white;
 }
 tr.row td {
@@ -68,14 +87,14 @@ img {
   object-fit: fill;
   border-radius: 20px;
 }
-input[type="number"]{
+input[type="number"] {
   width: 72px;
   height: 36px;
   text-align: center;
   outline: none;
   font-weight: bold;
 }
-.product-name{
+.product-name {
   font-size: 24px;
 }
 tr:nth-child(even) {
@@ -83,22 +102,22 @@ tr:nth-child(even) {
   transition: all 0.3s ease-in;
 }
 tr:hover td {
-  background-color: #D0D3D4;
+  background-color: #d0d3d4;
   transition: all 0.3s ease-in;
 }
 
 /* Input Date */
-.date{
+.date {
   display: flex;
   justify-content: center;
 }
-label.date{
+label.date {
   font-size: 18px;
   align-items: center;
 }
-input[type="date"]{
+input[type="date"] {
   margin-left: 26px;
-  padding: 8px;
+  padding: 4px 12px;
   background-color: #e2e7e9;
   color: black;
   font-family: "Noto Sans Thai", sans-serif;
@@ -109,56 +128,67 @@ input[type="date"]{
 }
 
 /* Name */
-.firstname{
+.firstname {
   display: flex;
   justify-content: center;
   font-size: 18px;
   margin-top: 25px;
 }
 /* Button */
-td a {
+.fa {
+  margin: 0px 12px;
+}
+
+td .btn-delete {
+  width: 80%;
   border: none;
   border-radius: 5px;
   outline: none;
   cursor: pointer;
-  background-color: rgb(247, 95, 95);
+  background-color: rgb(238, 64, 64);
+  padding: 8px 12px;
   color: white;
-  transition: .3s;
+  transition: 0.3s;
 }
-td a:hover {
-  background-color: white;
-  color: red;
+td .btn-delete:hover {
+  background-color: rgb(197, 0, 0);
 }
-button,
-a {
-  padding: 0.4rem 1.1rem;
-  margin-top: 14px;
+
+/* Button Section */
+.btn-section {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0px;
 }
-button.back {
-  color: white;
-  border-radius: 5px;
-  background-color: rgb(247, 95, 95);
-  cursor: pointer;
-  transition: 0.4s;
+.submit {
   border: none;
-}
-button.back:hover {
-  color: red;
-  background-color: white;
-  font-weight: bold;
-  border: solid 1px red;
-}
-/* a {
-  color: white;
   border-radius: 5px;
-  background-color: rgb(247, 95, 95);
+  outline: none;
   cursor: pointer;
-  transition: 0.4s;
-  border: none;
+  background-color: rgb(23, 139, 23);
+  padding: 6px 12px;
+  font-size: 18px;
+  width: 14rem;
+  color: white;
+  transition: all 0.3s;
+  margin-right: 16px;
 }
-a:hover {
-  color: red;
-  background-color: white;
-  font-weight: bold;
-  border: solid 1px red;
-} */
+.submit:hover {
+  background-color: rgb(0, 102, 0);
+}
+.delete-all {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  background-color: rgb(201, 53, 53);
+  padding: 6px 12px;
+  font-size: 18px;
+  width: 14rem;
+  color: white;
+  transition: all 0.3s;
+  margin-left: 16px;
+}
+.delete-all:hover {
+  background-color: rgb(167, 6, 6);
+}
