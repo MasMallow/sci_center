@@ -87,6 +87,7 @@
             </div>
 
             <?php
+            
             if (empty($_SESSION['cart'])) {
                 echo '<div class="non-select">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</div>';
             } else {
@@ -100,6 +101,7 @@
                         <th>จำนวน</th>
                         <th>การดำเนินการ</th>
                     </tr>';
+                    $num = 1;
                 foreach ($_SESSION['cart'] as $item) {
                     // Retrieve product details from the database based on the item
                     $query = $conn->prepare("SELECT * FROM crud WHERE file_name = :item");
@@ -111,11 +113,12 @@
 
                     if (file_exists($imageURL)) {
                         echo '<tr class="row">';
-                        echo '<td><p>1</p></td>';
+                        echo "<td><p>$num</p></td>";
                         echo '<td><img src="' . $imageURL . '" alt="' . $productName . '"></td>';
                         echo '<td class="product-name">' . $productName . '</td>';
                         echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1" ></td>';
                         echo '<td><a class="btn-delete" href="cart.php?action=remove&item=' . $item . '" onclick="return confirm(\'ลบรายการที่เลือกใช่หรือไม่?\')"><i class="fa fa-trash"></i>ลบรายการที่เลือก</a></td>';
+                        $num++;
                     }
                 }
 

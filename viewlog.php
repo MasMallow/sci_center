@@ -29,10 +29,10 @@ if (empty($borrowHistory)) {
                                     <th>จำนวน</th>
                                     <th>วันที่ยืม</th>
                                     <th>วันที่คืน</th>
-                                    <th><a href="">คืนอุปกรณ์</a></th>
+                                    <th><a href="#" onclick="Return()">คืนอุปกรณ์</a></th>
                                 </tr>
                             </thead>
-                            <tbody>';
+                        <tbody>';
     foreach ($borrowHistory as $item) {
         $reportHTML .= '<tr>
                             <td>' . $item['product_name'] . '</td>
