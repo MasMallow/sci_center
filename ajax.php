@@ -34,7 +34,7 @@ require_once 'db.php';
     ?>
     <div class="mainpage">
         <div class="sidebar">
-            <div class="head">
+            <div class="head"> 
                 <div class="user-details">
                     <p class="title"></p>
                 </div>
@@ -111,7 +111,7 @@ require_once 'db.php';
             <nav>
                 <div class="nav-container">
                     <a href="ajax.php">
-                        <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ HELLO WORLD</span>
+                        <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span>
                     </a>
                     <div class="nav-profile">
                         <div class="nav-profile-user">
@@ -140,7 +140,7 @@ require_once 'db.php';
                     ?>
 
                     <div id="modalInfo" class="modal" style="display: none;">
-                        <div onclick="closeModal()" class="madol-bg"></div>
+                        <div class="madol-bg"></div>
                         <div class="modal-page">
                             <h2>รายละเอียด</h2>
                             <br>
@@ -276,6 +276,20 @@ require_once 'db.php';
         function tool() {
             $.ajax({
                 url: "tool.php",
+                dataType: "html",
+                success: function(data) {
+                    $(".product").empty().append(data);
+                },
+                error: function() {
+                    alert("การโหลดรายงานผิดพลาด");
+                },
+            });
+        }
+    </script>
+    <script>
+        function Return() {
+            $.ajax({
+                url: "Return.php",
                 dataType: "html",
                 success: function(data) {
                     $(".product").empty().append(data);
