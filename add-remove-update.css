@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@500&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "Noto Sans Thai", sans-serif;
+  text-decoration: none;
+}
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* HEADER */
+header {
+  background-color: aliceblue;
+  text-align: center;
+  font-size: 36px;
+}
+
+.display-crud {
+  margin: 2rem 0;
+  overflow-y: scroll;
+}
+.display-crud .crud-display-table {
+  width: 100%;
+  text-align: center;
+}
+.display-crud .crud-display-table thead {
+  background-color: aqua;
+}
+.display-crud .crud-display-table td {
+  padding: 1rem;
+  font-size: 2rem;
+  border-bottom: black;
+}

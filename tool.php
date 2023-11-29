@@ -1,17 +1,3 @@
-<!-- <style>
-    div.borrow {
-        height: 100px;
-        /* ลบความสูงคงที่เพื่อให้เนื้อหาสามารถขยายตัวได้ */
-    }
-
-    /* เพิ่มสไตล์ที่เป็น responsive สำหรับรูปภาพ */
-    .borrow img {
-        max-width: 100%;
-        /* กำหนดความกว้างสูงสุดของรูปภาพให้เป็น 100% ของคอนเทนเนอร์ */
-        height: auto;
-        /* อนุญาตให้ความสูงของรูปภาพปรับตามอัตราส่วนได้ */
-    }
-</style> -->
 <style>
     .mas{
         height: 100px;
@@ -25,7 +11,7 @@
 
 <?php
 include_once 'db.php';
-$query = $db->query("SELECT * FROM image WHERE Type = 'เครื่องมือ' ORDER BY uploaded_on DESC");
+$query = $db->query("SELECT * FROM crud WHERE Type = 'เครื่องมือ' ORDER BY uploaded_on DESC");
 if ($query->num_rows > 0) {
     // สร้างตัวแปรเพื่อเก็บรายชื่อรูปภาพที่แสดงแล้ว
     $displayedImages = array();
@@ -40,10 +26,10 @@ if ($query->num_rows > 0) {
     // Check if a search query is provided
     if (isset($_GET['search'])) {
         $search_query = $_GET['search'];
-        $query = $db->query("SELECT * FROM image WHERE product_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
+        $query = $db->query("SELECT * FROM crud WHERE product_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
     } else {
         // No search query, display all images
-        $query = $db->query("SELECT * FROM image WHERE Type = 'เครื่องมือ' ORDER BY uploaded_on DESC");
+        $query = $db->query("SELECT * FROM crud WHERE Type = 'เครื่องมือ' ORDER BY uploaded_on DESC");
     }
 
     if ($query->num_rows > 0) {

@@ -102,7 +102,7 @@
                     </tr>';
                 foreach ($_SESSION['cart'] as $item) {
                     // Retrieve product details from the database based on the item
-                    $query = $conn->prepare("SELECT * FROM image WHERE file_name = :item");
+                    $query = $conn->prepare("SELECT * FROM crud WHERE file_name = :item");
                     $query->bindParam(':item', $item, PDO::PARAM_STR);
                     $query->execute();
                     $product = $query->fetch(PDO::FETCH_ASSOC);

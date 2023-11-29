@@ -7,7 +7,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Retrieve product information based on the ID
-    $query = $db->query("SELECT * FROM image WHERE id = $id");
+    $query = $db->query("SELECT * FROM crud WHERE id = $id");
 
     if ($query->num_rows == 1) {
         $row = $query->fetch_assoc();

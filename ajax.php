@@ -168,7 +168,7 @@ require_once 'db.php';
                     <div class="product">
                         <div class="borrow grid grid-cols-4">
                             <?php
-                            $query = $db->query("SELECT * FROM image ORDER BY uploaded_on DESC");
+                            $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
                             $displayedImages = array();
                             $imageCount = 0; // ใช้ตัวแปรนับรูปภาพที่แสดง
                             while ($row = $query->fetch_assoc()) {
