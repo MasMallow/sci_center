@@ -18,7 +18,68 @@ header {
   text-align: center;
   font-size: 36px;
 }
-
+/* Section Head */
+.container {
+  width: 1300px;
+  padding: 10px;
+  margin-top: 30px;
+  border-bottom: 1px solid gray;
+}
+.head-section {
+  display: flex;
+  justify-content: space-between;
+}
+.head-name {
+  font-size: 24px;
+}
+/* Modal */
+.modal-popup {
+  position: absolute;
+  background-color: rgb(0, 0, 0, 0.4);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+  transform: scale(1.2);
+  transition: opacity 0.2s 0s ease-in-out, transform 0.2s 0s ease-in-out;
+}
+.modal-popup.active {
+  opacity: 10;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.modal-head .close {
+  font-size: 18px;
+  color: #b4b4b4;
+  cursor: pointer;
+  transition: all 0.2 ease-in;
+}
+.modal-head .close:hover {
+  color: #333;
+}
+.modal-box {
+  background-color: white;
+  border-radius: 12px;
+  padding: 36px;
+  max-width: 768px;
+  width: 100%;
+}
+.modal-box .input-form {
+  display: flex;
+  justify-content: center;
+  max-width: 768px;
+  width: 100%;
+}
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 3px solid gray;
+}
 .display-crud {
   margin: 2rem 0;
   overflow-y: scroll;

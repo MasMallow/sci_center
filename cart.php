@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือ</title>
     <!-- ส่วนของ Link -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="cart.css">
 </head>
@@ -87,7 +88,7 @@
             </div>
 
             <?php
-            
+
             if (empty($_SESSION['cart'])) {
                 echo '<div class="non-select">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</div>';
             } else {
@@ -101,7 +102,7 @@
                         <th>จำนวน</th>
                         <th>การดำเนินการ</th>
                     </tr>';
-                    $num = 1;
+                $num = 1;
                 foreach ($_SESSION['cart'] as $item) {
                     // Retrieve product details from the database based on the item
                     $query = $conn->prepare("SELECT * FROM crud WHERE file_name = :item");
@@ -152,7 +153,7 @@
             }
         }
     </script>
-
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
 </body>
 
 </html>
