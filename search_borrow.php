@@ -1,6 +1,6 @@
 <?php
 include_once 'db.php';
-$query = $db->query("SELECT * FROM image ORDER BY uploaded_on DESC");
+$query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
 if ($query->num_rows > 0) {
     // สร้างตัวแปรเพื่อเก็บรายชื่อรูปภาพที่แสดงแล้ว
     $displayedImages = array();
@@ -9,10 +9,10 @@ if ($query->num_rows > 0) {
     // Check if a search query is provided
     if (isset($_GET['search'])) {
         $search_query = $_GET['search'];
-        $query = $db->query("SELECT * FROM image WHERE product_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
+        $query = $db->query("SELECT * FROM crud WHERE product_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
     } else {
         // No search query, display all images
-        $query = $db->query("SELECT * FROM image ORDER BY uploaded_on DESC");
+        $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
     }
 
     if ($query->num_rows > 0) {

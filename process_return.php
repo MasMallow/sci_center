@@ -37,7 +37,7 @@
 
             foreach ($_SESSION['cart'] as $item) {
                 // Retrieve product details from the database based on the item
-                $query = $conn->prepare("SELECT * FROM image WHERE file_name = :item");
+                $query = $conn->prepare("SELECT * FROM crud WHERE file_name = :item");
                 $query->bindParam(':item', $item, PDO::PARAM_STR);
                 $query->execute();
                 $product = $query->fetch(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@
                 $productName = '';
 
                 // Retrieve product details from the database based on the item
-                $query = $conn->prepare("SELECT product_name FROM image WHERE file_name = :item");
+                $query = $conn->prepare("SELECT product_name FROM crud WHERE file_name = :item");
                 $query->bindParam(':item', $item, PDO::PARAM_STR);
                 $query->execute();
                 $product = $query->fetch(PDO::FETCH_ASSOC);
@@ -82,7 +82,7 @@
                 $stmt->execute();
 
                 // Update the product quantity in the database
-                $stmtUpdate = $conn->prepare("UPDATE image SET amount = amount - :quantity WHERE file_name = :item");
+                $stmtUpdate = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE file_name = :item");
                 $stmtUpdate->bindParam(':quantity', $quantity, PDO::PARAM_INT);
                 $stmtUpdate->bindParam(':item', $item, PDO::PARAM_STR);
                 $stmtUpdate->execute();
