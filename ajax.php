@@ -139,7 +139,7 @@ require_once 'db.php';
                     }
                     ?>
 
-                    <div id="modalInfo" class="modal" >
+                    <div id="modalInfo" class="modal" style="display: none;" >
                         <div class="madol-bg"></div>
                         <div class="modal-page">
                             <h2>รายละเอียด</h2>

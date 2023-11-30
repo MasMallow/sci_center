@@ -25,12 +25,16 @@ include_once 'db.php';
             </div>
             <div class="input-form">
                 <form action="upload.php" method="POST" enctype="multipart/form-data">
-                    <div class="Imginput">
-                        <label class="img">เลือกรูปภาพที่จะอัพโหลด</label>
-                        <input type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput">
-                        <img id="previewImg" alt="">
-                        <p class=""><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
+                    <div class="Img">
+                        <div class="imgInput">
+                            <input id="file" type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput" hidden>
+                            <i class="upload fa-solid fa-upload"></i>
+                            <label class="img">เลือกรูปภาพที่จะอัพโหลด</label>
+                            <!-- <img src="./test/20231113_105935.jpg" alt=""> -->
+                        </div>
                     </div>
+                    <p class="upload-tip"><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
+                    <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
                     <div class="input-box">
                         <label for="product_name">เลขประจำตัว :</label>
                         <input type="text" id="" name="">
@@ -86,6 +90,9 @@ include_once 'db.php';
             ?>
         </div>
     </div>
+
+
+    <!-- JavaScprti -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script>
         const showPopup = document.querySelector(".showPopup");
@@ -94,6 +101,27 @@ include_once 'db.php';
         showPopup.onclick = () => {
             modalpopup.classList.add("active");
         };
+
+        // IMG PREVIREW
+        const selectImage = document.querySelector('.select-image');
+        const inputFile = document.querySelector('#file');
+        const imgInput = document.querySelector('.imgInput');
+
+        selectImage.addEventListener('click', function() {
+            inputFile.click();
+        })
+        inputFile.addEventListener('change', function() {
+            const image = this.files[0]
+            console.log(image);
+            const reader = new FileReader();
+            reader.onload = () => {
+                const imgUrl = reader.result;
+                const img = document.createElement('img');
+                img.src = imgUrl
+                imgInput.appendChild(img);
+            }
+            reader.readAsDataURL(image);
+        })
     </script>
 </body>
 
