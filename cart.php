@@ -128,9 +128,10 @@
                 echo '</div>';
             ?>
                 <div class="date">
-                    <label class="date" for="return_date">กรุณาเลือกวันที่คืนอุปกรณ์ และเครื่องมือ</label>
-                    <input type="date" name="return_date" required>
+                    <label class="date" for="return_date">กรุณาเลือกวันที่และเวลาที่คืนอุปกรณ์ และเครื่องมือ</label>
+                    <input type="datetime-local" name="return_date" required>
                 </div>
+
                 <div class="firstname">
                     <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["firstname"]; ?>
                 </div>
