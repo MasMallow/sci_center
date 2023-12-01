@@ -22,46 +22,61 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
 
     <body>
         <form action="signin-db.php" method="post">
-            <div class="page">
-                <div class="madal">
-                    <div class="login-page">
-                        <div class="header">
-                            <h2>กรุณาเข้าสู่ระบบเพื่อเข้าใช้งาน</h2>
+            <div class="login">
+                <div class="login-page">
+                    <div class="header">
+                        <h2>กรุณาเข้าสู่ระบบเพื่อเข้าใช้งาน</h2>
+                    </div>
+                   
+                    <?php if (isset($_SESSION['error1'])) { ?>
+                        <div class="alert" role="alert">
+                            <?php
+                            echo $_SESSION['error1'];
+                            unset($_SESSION['error1']);
+                            ?>
                         </div>
-                        <?php if (isset($_SESSION['error'])) { ?>
-                            <div class="alert" role="alert">
-                                <?php
-                                echo $_SESSION['error'];
-                                unset($_SESSION['error']);
-                                ?>
-                            </div>
-                        <?php } ?>
-                        <?php if (isset($_SESSION['success'])) { ?>
-                            <div class="alert alert-success text-center" role="alert">
-                                <?php
-                                echo $_SESSION['success'];
-                                unset($_SESSION['success']);
-                                ?>
-                            </div>
-                        <?php } ?>
-                        <br>
-
-                        <!-- ส่วนการใส่ข้อมูล -->
-                        <div class="info">
-                            <div>
-                                <input type="text" name="Username" class="input" placeholder="USERNAME">
-                            </div>
-                            <div>
-                                <input type="password" name="Password" class="input" placeholder="PASSWORD">
-                            </div>
-
-                            <!-- ส่วนของ buttom -->
-                            <button class="sign-in" name="sign-in">
-                                เข้าสู่ระบบ
-                            </button>
-                            <label class="not-remember"><a href="#">ลืมรหัสผ่าน?</a></label>
-                            <p class="sign-up">ไม่มีบัญชี ? <a href="Register/Register.php" class="text-blue-600">สมัครบัญชีใหม่</a></p>
+                    <?php } ?>
+                    <?php if (isset($_SESSION['error2'])) { ?>
+                        <div class="alert" role="alert">
+                            <?php
+                            echo $_SESSION['error2'];
+                            unset($_SESSION['error2']);
+                            ?>
                         </div>
+                    <?php } ?>
+                    <?php if (isset($_SESSION['error3'])) { ?>
+                        <div class="alert" role="alert">
+                            <?php
+                            echo $_SESSION['error3'];
+                            unset($_SESSION['error3']);
+                            ?>
+                        </div>
+                    <?php } ?>
+                    <?php if (isset($_SESSION['success'])) { ?>
+                        <div class="alert" role="alert">
+                            <?php
+                            echo $_SESSION['success'];
+                            unset($_SESSION['success']);
+                            ?>
+                        </div>
+                    <?php } ?>
+                    <br>
+
+                    <!-- ส่วนการใส่ข้อมูล -->
+                    <div class="info">
+                        <div>
+                            <input type="text" name="Username" class="input" placeholder="USERNAME">
+                        </div>
+                        <div>
+                            <input type="password" name="Password" class="input" placeholder="PASSWORD">
+                        </div>
+
+                        <!-- ส่วนของ buttom -->
+                        <button class="sign-in" name="sign-in">
+                            เข้าสู่ระบบ
+                        </button>
+                        <label class="not-remember"><a href="#">ลืมรหัสผ่าน?</a></label>
+                        <p class="sign-up">ไม่มีบัญชี ? <a href="Register.php">สมัครบัญชีใหม่</a></p>
                     </div>
                 </div>
             </div>

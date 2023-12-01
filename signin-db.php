@@ -6,11 +6,14 @@ if (isset($_POST['sign-in'])) {
     $Username = $_POST['Username'];
     $Password = $_POST['Password'];
 
-    if (empty($Username)) {
-        $_SESSION['error'] = 'กรุณากรอกUsername';
+    if (empty($Username) && empty($Password)) {
+        $_SESSION['error1'] = 'กรุณาเข้าสู่ระบบ';
+        header("location:login.php");
+    } elseif (empty($Username)) {
+        $_SESSION['error2'] = 'กรุณากรอก Username';
         header("location:login.php");
     } elseif (empty($Password)) {
-        $_SESSION['error'] = 'กรุณากรอกรหัสผ่าน';
+        $_SESSION['error3'] = 'กรุณากรอก Password';
         header("location:login.php");
     } else {
         try {
@@ -23,10 +26,10 @@ if (isset($_POST['sign-in'])) {
                 if ($Username == $row['username']) {
                     if (password_verify($Password, $row['password'])) {
                         if ($row['urole'] == 'admin') {
-                            $_SESSION['admin_login'] = $row['id']; 
+                            $_SESSION['admin_login'] = $row['id'];
                             header("location: ajax.php");
                         } else {
-                            $_SESSION['user_login'] = $row['id']; 
+                            $_SESSION['user_login'] = $row['id'];
                             header("location: ajax.php");
                         }
                     } else {
@@ -37,14 +40,12 @@ if (isset($_POST['sign-in'])) {
                     $_SESSION['error'] = 'Username ไม่ถูกต้อง';
                     header("location: login.php");
                 }
-                
             } else {
                 $_SESSION['error'] = "ไม่มีข้อมูลในระบบ";
-                header("location: login.php"); 
+                header("location: login.php");
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
 }
-?>

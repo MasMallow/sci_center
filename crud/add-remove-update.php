@@ -80,52 +80,53 @@ include_once 'db.php';
         </div>
 
     </div>
-    <div class="main">
-        <div class="display-crud">
-            <table class="crud-display-table">
-                <thead>
-                    <tr>
-                        <td>ลำดับ</td>
-                        <td>รูปภาพ</td>
-                        <td>เลขประจำตัว</td>
-                        <td>ชื่อ</td>
-                        <td>ประเภท</td>
-                        <td colspan="2">การดำเนินการ</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $num = 1;
-                    $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
-                    if ($query) {
-                        while ($row = $query->fetch_assoc()) {
-                            $imageURL = 'test/' . $row['file_name'];
-                    ?>
-                            <tr>
-                                <td>
-                                    <p><?php echo $num ?></p>
-                                </td>
-                                <td><img src="<?php echo $imageURL ?>" alt="" height="100px"></td>
-                                <td>lmdsakmop123214</td>
-                                <td><?php echo $row['product_name']; ?></td>
-                                <td>ประเภท <?php echo $row['Type']; ?></td>
-                                <td> <a href="Edit/edit_product.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
-                                <td><a href="delete_product.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
-                            </tr>
-                    <?php
-                            $num++;
-                        }
-                    } else {
-                    ?>
-                        <!-- <tr><td colspan="7">No image found...</td></tr> -->
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
+    <div class="">
+        <?php
+        $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
+        if ($query) {
+            while ($row = $query->fetch_assoc()) {
+                $imageURL = 'test/' . $row['file_name'];
+        ?>
+                <div class="main">
+                    <div class="display-crud">
+                        <table class="crud-display-table">
+                            <thead>
+                                <tr>
+                                    <td>ลำดับ</td>
+                                    <td>รูปภาพ</td>
+                                    <td>เลขประจำตัว</td>
+                                    <td>ชื่อ</td>
+                                    <td>ประเภท</td>
+                                    <td colspan="2">การดำเนินการ</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>1</p>
+                                    </td>
+                                    <td><img src="<?php echo $imageURL ?>" alt="" height="100px"></td>
+                                    <td>lmdsakmop123214</td>
+                                    <td><?php echo $row['product_name']; ?></td>
+                                    <td>ประเภทอะไรสักอย่าง</td>
+                                    <td> <a href="edit_product.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                                    </td>
+                                    <td> <a href="delete_product.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php
+            }
+        } else {
+            ?>
+            <!-- <p>No image found...</p> -->
+        <?php
+        }
+        ?>
     </div>
-</div>
     <!-- JavaScprti -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script>

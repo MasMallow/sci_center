@@ -33,8 +33,7 @@ if (isset($_GET['id'])) {
     <title>แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ</title>
 
     <!-- LINK -->
-    <link rel="stylesheet" href="edit_product.css">
-    <link rel="stylesheet" href="edit_product.js">
+    <link rel="stylesheet" href="edit.css">
 
 </head>
 
@@ -42,12 +41,12 @@ if (isset($_GET['id'])) {
     <div class="main">
         <div class="display">
             <h1>แก้ไขข้อมูล</h1>
-            <form action="../update_product.php" method="POST">
+            <form action="update.php" method="POST">
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <div class="Img">
                     <div class="imgInput">
                         <img src="<?php echo $imageURL; ?>" alt="Product Image">
-                        <input id="file" type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput" hidden>
+                        <!-- <input id="file" type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput" hidden> -->
                     </div>
                 </div>
                 <p class="upload-tip"><b>Note : </b> Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
@@ -77,9 +76,7 @@ if (isset($_GET['id'])) {
                 </div>
                 <!-- Button -->
                 <div class="btn">
-
-                    <input type="submit" onsubmit="confirmSave()" value="บันทึกข้อมูล">
-
+                    <input type="submit" value="บันทึกข้อมูล">
                     <button class="cancel" onclick="cancelEdit()">ยกเลิกการแก้ไขวัสดุ อุปกรณ์ และเครื่องมือ</button>
                 </div>
             </form>
@@ -94,7 +91,7 @@ if (isset($_GET['id'])) {
 
         if (confirmation) {
             // ทำการเปลี่ยนที่อยู่ URL หรือดำเนินการตามที่คุณต้องการ
-            window.location.href = '../add-remove-update.php';
+            window.location.href = 'add-remove-update.php';
         } else {
             // ไม่ต้องทำอะไรเมื่อผู้ใช้ยกเลิก
         }

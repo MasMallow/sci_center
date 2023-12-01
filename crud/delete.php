@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include_once 'db.php';
+include_once '../db.php';
 
 // Check if product ID is provided
 if (isset($_GET['id'])) {
