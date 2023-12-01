@@ -13,6 +13,7 @@ if (isset($_GET['id'])) {
         $row = $query->fetch_assoc();
         $product_name = $row['product_name'];
         $quantity = $row['amount'];
+        // $product_type = $row['product_type'];
         $imageURL = '../test/' . $row['file_name'];
     } else {
         echo "ไม่พบรายการวัสดุ อุปกรณ์ เครื่องมือที่ต้องการ.";
@@ -65,13 +66,28 @@ if (isset($_GET['id'])) {
                         <input type="number" name="quantity" value="<?php echo $quantity; ?>">
                     </div>
                     <div class="input-box">
-
-                        <label for="product_type">ประเภท :</label>
-                        <select name="productType" id="productType">
-                            <option value="วัตถุ">วัตถุ</option>
-                            <option value="อุปกรณ์">อุปกรณ์</option>
-                            <option value="เครื่องมือ">เครื่องมือ</option>
-                        </select>
+                        <label for="">ประเภท :</label>
+                        <?php
+                        if ($row["Type"] === 'วัสดุ') {
+                            echo "<select name='product_type' id=''>
+                                    <option value='วัตถุ' selected>วัตถุ</option>
+                                    <option value='อุปกรณ์'>อุปกรณ์</option>
+                                    <option value='เครื่องมือ'>เครื่องมือ</option>
+                                </select>";
+                        } elseif ($row["Type"] === 'อุปกรณ์') {
+                            echo "<select name='product_type' id=''>
+                                    <option value='วัตถุ'>วัตถุ</option>
+                                    <option value='อุปกรณ์' selected>อุปกรณ์</option>
+                                    <option value='เครื่องมือ'>เครื่องมือ</option>
+                                </select>";
+                        } elseif ($row["Type"] === 'เครื่องมือ') {
+                            echo "<select name='product_type' id=''>
+                                    <option value='วัตถุ'>วัตถุ</option>
+                                    <option value='อุปกรณ์'>อุปกรณ์</option>
+                                    <option value='เครื่องมือ' selected>เครื่องมือ</option>
+                                </select>";
+                        }
+                        ?>
                     </div>
                 </div>
                 <!-- Button -->

@@ -48,10 +48,10 @@ include_once '../db.php';
                             <input type="number" id="quantity" name="quantity" min="1" required>
                         </div>
                         <div class="input-box">
-                            <label for="product_type">ประเภท :</label>
-                            <select name="productType" id="productType">
+                            <label for="">ประเภท :</label>
+                            <select name="product_type" id="product_type">
                                 <option value="" disabled selected>กรุณาเลือก</option>
-                                <option value="วัตถุ">วัตถุ</option>
+                                <option value="วัสดุ">วัสดุ</option>
                                 <option value="อุปกรณ์">อุปกรณ์</option>
                                 <option value="เครื่องมือ">เครื่องมือ</option>
                             </select>
@@ -112,8 +112,8 @@ include_once '../db.php';
                                     <td><img src="<?php echo $imageURL ?>" alt="" height="100px"></td>
                                     <td>lmdsakmop123214</td>
                                     <td><?php echo $row['product_name']; ?></td>
-                                    <td>ประเภทอะไรสักอย่าง</td>
-                                    <td>คงเหลือ</td>
+                                    <td><?php echo $row['Type']; ?></td>
+                                    <td><?php echo $row['amount']; ?></td>
                                     <td> <a href="edit.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
                                     </td>
                                     <td> <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
