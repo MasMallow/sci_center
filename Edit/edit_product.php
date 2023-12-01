@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include_once 'db.php';
+include_once '../db.php';
 
 // Check if product ID is provided
 if (isset($_GET['id'])) {
@@ -13,13 +13,13 @@ if (isset($_GET['id'])) {
         $row = $query->fetch_assoc();
         $product_name = $row['product_name'];
         $quantity = $row['amount'];
-        $imageURL = 'test/' . $row['file_name'];
+        $imageURL = '../test/' . $row['file_name'];
     } else {
-        echo "Product not found.";
+        echo "ไม่พบรายการวัสดุ อุปกรณ์ เครื่องมือที่ต้องการ.";
         exit();
     }
 } else {
-    echo "Product ID not provided.";
+    echo "ไม่ได้รับอนุญาต.";
     exit();
 }
 ?>
@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
     <div class="main">
         <div class="display">
             <h1>แก้ไขข้อมูล</h1>
-            <form action="update_product.php" method="POST">
+            <form action="../update_product.php" method="POST">
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <div class="Img">
                     <div class="imgInput">
@@ -50,33 +50,56 @@ if (isset($_GET['id'])) {
                         <input id="file" type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput" hidden>
                     </div>
                 </div>
-                <p class="upload-tip"><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
+                <p class="upload-tip"><b>Note : </b> Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
                 <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
                 <div class="input-box">
                     <label>เลขประจำตัว: </label>
-                    <input type="text" name="product_name" disabled value="<?php echo $product_name; ?>">
+                    <input type="text" class="product_key" name="product_key" value="<?php echo $product_name; ?>">
                 </div>
                 <div class="input-box">
                     <label>ชื่อ: </label>
                     <input type="text" name="product_name" value="<?php echo $product_name; ?>">
                 </div>
-                <div class="input-box">
-                    <label>จำนวน: </label>
-                    <input type="number" name="quantity" value="<?php echo $quantity; ?>">
+                <div class="col">
+                    <div class="input-box">
+                        <label>จำนวน: </label>
+                        <input type="number" name="quantity" value="<?php echo $quantity; ?>">
+                    </div>
+                    <div class="input-box">
+
+                        <label for="product_type">ประเภท :</label>
+                        <select name="productType" id="productType">
+                            <option value="วัตถุ">วัตถุ</option>
+                            <option value="อุปกรณ์">อุปกรณ์</option>
+                            <option value="เครื่องมือ">เครื่องมือ</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="input-box">
-                    <label>ประเภท: </label>
-                    <input type="number" name="type" value="<?php echo $quantity; ?>">
-                </div>
+                <!-- Button -->
                 <div class="btn">
-                    <input type="submit" value="บันทึกข้อมูล">
-                    <a href="/add-remove-update.php">กลับหน้าเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ</a>
+
+                    <input type="submit" onsubmit="confirmSave()" value="บันทึกข้อมูล">
+
+                    <button class="cancel" onclick="cancelEdit()">ยกเลิกการแก้ไขวัสดุ อุปกรณ์ และเครื่องมือ</button>
                 </div>
             </form>
         </div>
     </div>
 </body>
 <script>
+    // 
+    // 
+    function cancelEdit() {
+        var confirmation = confirm("คุณต้องการยกเลิกการแก้ไขหรือไม่?");
+
+        if (confirmation) {
+            // ทำการเปลี่ยนที่อยู่ URL หรือดำเนินการตามที่คุณต้องการ
+            window.location.href = '../add-remove-update.php';
+        } else {
+            // ไม่ต้องทำอะไรเมื่อผู้ใช้ยกเลิก
+        }
+    }
+
     const selectImage = document.querySelector(".select-image");
     const inputFile = document.querySelector("#file");
     const imgInput = document.querySelector(".imgInput");

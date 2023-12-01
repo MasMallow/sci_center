@@ -60,7 +60,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
                                 เข้าสู่ระบบ
                             </button>
                             <label class="not-remember"><a href="#">ลืมรหัสผ่าน?</a></label>
-                            <p class="sign-up">ไม่มีบัญชี ? <a href="Register.php" class="text-blue-600">สมัครบัญชีใหม่</a></p>
+                            <p class="sign-up">ไม่มีบัญชี ? <a href="Register/Register.php" class="text-blue-600">สมัครบัญชีใหม่</a></p>
                         </div>
                     </div>
                 </div>
