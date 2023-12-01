@@ -35,13 +35,15 @@ $borrowHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <thead>
                 <tr>
                     <th>สินค้า</th>
-                    <th> วันที่ยืมล่าสุด</th>
-                    <th> วันที่ต้องคืน</th>
-                    <th> คืนอุปกรณ์</th>
+                    <th>วันที่ยืมล่าสุด</th>
+                    <th>วันที่ต้องคืน</th>
+                    <th>คืนอุปกรณ์</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($borrowHistory as $product) : ?>
+                <?php
+                foreach ($borrowHistory as $product) :
+                    ?>
                     <tr>
                         <td><?php echo $product['product_name']; ?></td>
                         <td><?php echo $product['latest_borrow_date']; ?></td>
@@ -57,10 +59,23 @@ $borrowHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             ?>
                         </td>
                     </tr>
-                <?php endforeach; ?>
+                    <?php
+                endforeach;
+
+                // Check if there are items to return before showing the submit button
+                $itemsToReturn = array_filter($borrowHistory, function ($item) {
+                    $borrow_date = strtotime($item['latest_borrow_date']);
+                    $return_date = strtotime($item['latest_return_date']);
+
+                    return ($return_date <= $borrow_date || $return_date === false);
+                });
+
+                if (!empty($itemsToReturn)) {
+                    echo '<input type="submit" value="ยืนยันการคืน">';
+                }
+                ?>
             </tbody>
         </table>
-        <input type="submit" value="ยืนยันการคืน">
     </form>
     <!-- Add your JavaScript or other necessary sections here -->
 </body>
