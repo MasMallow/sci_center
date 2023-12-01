@@ -54,10 +54,6 @@
             $firstReturnDate = ($returnDates);
             $lastReturnDate = ($returnDates);
 
-            $sMessage .= "วันที่ขอยืม : " . date('Y-m-d') . "\n"; // Date of borrowing
-            $sMessage .= "วันที่นำมาคืน : " . $firstReturnDate . "\n"; // Return dates range
-            $sMessage .= "-------------------------------";
-
             // Insert borrow history into the database
             foreach ($_SESSION['cart'] as $item) {
                 $productName = '';
@@ -87,6 +83,11 @@
                 $stmtUpdate->bindParam(':item', $item, PDO::PARAM_STR);
                 $stmtUpdate->execute();
             }
+            $firstReturnDate = date('Y-m-d', strtotime($returnDates));
+            $lastReturnDate = date('Y-m-d', strtotime($returnDates));
+            $sMessage .= "วันที่ขอยืม : " . date('Y-m-d') . "\n"; // Date of borrowing
+            $sMessage .= "วันที่นำมาคืน : " . $firstReturnDate . "\n"; // Return dates range
+            $sMessage .= "-------------------------------";
 
             $_SESSION['cart'] = [];
 
@@ -109,8 +110,8 @@
                 echo 'error:' . curl_error($chOne);
             } else {
                 $result_ = json_decode($result, true);
-                echo "status : " . $result_['status'];
-                echo "message : " . $result_['message'];
+                // echo "status : " . $result_['status'];
+                // echo "message : " . $result_['message'];
                 echo "<script>
         Swal.fire({
             position: 'center',

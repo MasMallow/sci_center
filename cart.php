@@ -15,13 +15,12 @@
     <?php
     session_start();
     include_once 'db.php';
-
+    $action = isset($_GET['action']) ? $_GET['action'] : null;
     // Check if cart session exists, create one if not
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
-
-    // Handle actions like add, clear, or remove items from the cart
+    
     if (isset($_GET['action'])) {
         $action = $_GET['action'];
 
@@ -34,23 +33,23 @@
             header('Location: cart.php');
             exit;
         }
-        } elseif ($action === 'clear') {
-            $_SESSION['cart'] = [];
+    } elseif ($action === 'clear') {
+        $_SESSION['cart'] = [];
 
-            header('Location: cart.php');
-            exit;
-        } elseif ($action === 'remove' && isset($_GET['item'])) {
-            $itemToRemove = $_GET['item'];
-            $key = array_search($itemToRemove, $_SESSION['cart']);
+        header('Location: cart.php');
+        exit;
+    } elseif ($action === 'remove' && isset($_GET['item'])) {
+        $itemToRemove = $_GET['item'];
+        $key = array_search($itemToRemove, $_SESSION['cart']);
 
-            if ($key !== false) {
-                unset($_SESSION['cart'][$key]);
-            }
-
-            header('Location: cart.php');
-            exit;
+        if ($key !== false) {
+            unset($_SESSION['cart'][$key]);
         }
-    
+
+        header('Location: cart.php');
+        exit;
+    }
+
 
     // Check if the user is logged in
     if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {

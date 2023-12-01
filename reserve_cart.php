@@ -88,9 +88,9 @@
         }
         echo '</table>';
     ?>
-        <!-- เพิ่มส่วนเลือกวันที่และเวลาที่คืนสินค้า -->
-        <label for="return_date">เลือกวันที่และเวลาที่คืนสินค้า:</label>
-        <input type="datetime-local" name="return_date" required>
+        <!-- เพิ่มส่วนเลือกวันที่และเวลาที่จอง -->
+        <label for="return_date">เลือกวันที่และเวลาที่จองอุปกรณ์:</label>
+        <input type="datetime-local" name="reservation_date" required>
         <input type="submit" name="submit" value="ยืนยันการจอง">
         <input type="button" value="ยกเลิกการจองทั้งหมด" onclick="location.href='reserve_cart.php?action=clear'">
         </form>

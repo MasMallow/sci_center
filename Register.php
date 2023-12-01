@@ -71,7 +71,7 @@ require_once 'db.php';
                         <div class="input-box">
                             <label for="">ตำแหน่ง</label>
                             <div class="select">
-                                <select>
+                                <select name="role">
                                     <option value="" disabled selected>เลือกตำแหน่ง</option>
                                     <option value="อาจารย์">อาจารย์</option>
                                     <option value="บุคคลากร">บุคลากร</option>
