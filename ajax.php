@@ -93,7 +93,7 @@ require_once 'db.php';
                     if (isset($_SESSION['admin_login'])) {
                         // ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ
                         echo '<li>
-                        <a href="#" onclick="clearChangeContent(); AdminMode();">
+                        <a href="#" onclick="AdminMode();">
                             <i class="icon fa-solid fa-flag"></i>
                             <span class="text">สำหรับผู้ดูแล</span>
                         </a>
