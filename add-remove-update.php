@@ -12,7 +12,7 @@ include_once 'db.php';
     <!-- ส่วนของ Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="add-remove-update.css">
-    <link rel="stylesheet" href="/add-remove-update.js">
+    <link rel="stylesheet" href="add-remove-update.js">
 </head>
 
 <body>
@@ -21,7 +21,7 @@ include_once 'db.php';
         <div class="modal-box">
             <div class="modal-head">
                 <p>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</p>
-                <i class="close fa-solid fa-x "></i>
+                <i id="close" class="close fa-solid fa-x "></i>
             </div>
             <div class="input-form">
                 <form action="upload.php" method="POST" enctype="multipart/form-data">
@@ -30,7 +30,6 @@ include_once 'db.php';
                             <input id="file" type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput" hidden>
                             <i class="upload fa-solid fa-upload"></i>
                             <label class="img">เลือกรูปภาพที่จะอัพโหลด</label>
-                            <!-- <img src="./test/20231113_105935.jpg" alt=""> -->
                         </div>
                     </div>
                     <p class="upload-tip"><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
@@ -56,7 +55,7 @@ include_once 'db.php';
                         </select>
                     </div>
                     <div class="">
-                        <input type="submit" name="submit" value="Upload" class="btn btn-sm btn-primary mb-3">
+                        <input type="submit" name="submit" value="Upload" class="">
                         <a href="ajax.php">กลับหน้าหลัก</a>
                     </div>
                 </form>
@@ -77,30 +76,73 @@ include_once 'db.php';
                     <button class="showPopup">เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
                 </div>
             </div>
+            <hr>
         </div>
-        <div class="row">
-            <?php
-            if (!empty($statusMsg)) { ?>
-                <div class="alert alert-secondary" role="alert">
-                    <?php
-                    echo $statusMsg;
-                    ?>
-                </div>
-            <?php }
-            ?>
-        </div>
+
     </div>
-
-
+    <div class="">
+        <?php
+        $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
+        if ($query) {
+            while ($row = $query->fetch_assoc()) {
+                $imageURL = 'test/' . $row['file_name'];
+        ?>
+                <div class="main">
+                    <div class="display-crud">
+                        <table class="crud-display-table">
+                            <thead>
+                                <tr>
+                                    <td>ลำดับ</td>
+                                    <td>รูปภาพ</td>
+                                    <td>เลขประจำตัว</td>
+                                    <td>ชื่อ</td>
+                                    <td>ประเภท</td>
+                                    <td colspan="2">การดำเนินการ</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>1</p>
+                                    </td>
+                                    <td><img src="<?php echo $imageURL ?>" alt="" height="100px"></td>
+                                    <td>lmdsakmop123214</td>
+                                    <td><?php echo $row['product_name']; ?></td>
+                                    <td>ประเภทอะไรสักอย่าง</td>
+                                    <td> <a href="edit_product.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                                    </td>
+                                    <td> <a href="delete_product.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php
+            }
+        } else {
+            ?>
+            <!-- <p>No image found...</p> -->
+        <?php
+        }
+        ?>
+    </div>
     <!-- JavaScprti -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script>
+        // Modal Popup
         const showPopup = document.querySelector(".showPopup");
         const modalpopup = document.querySelector(".modal-popup");
+        const closePopup = document.querySelector("#close");
 
         showPopup.onclick = () => {
             modalpopup.classList.add("active");
         };
+
+        closePopup.onclick = () => {
+            modalpopup.classList.remove("active");
+        }
+
 
         // IMG PREVIREW
         const selectImage = document.querySelector('.select-image');

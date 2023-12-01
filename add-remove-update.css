@@ -6,7 +6,7 @@
   box-sizing: border-box;
   font-family: "Noto Sans Thai", sans-serif;
   text-decoration: none;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .main {
   display: flex;
@@ -24,7 +24,6 @@ header {
   width: 1300px;
   padding: 10px;
   margin-top: 30px;
-  border-bottom: 1px solid gray;
 }
 .head-section {
   display: flex;
@@ -48,6 +47,7 @@ header {
   transition: opacity 0.2s 0s ease-in-out, transform 0.2s 0s ease-in-out;
 }
 .modal-popup.active {
+  position: fixed;
   opacity: 10;
   pointer-events: auto;
   transform: scale(1);
@@ -132,7 +132,7 @@ form .select-image{
   cursor: pointer;
   transition: all 0.3s ease-in;
 }
-form .select-image:hover{
+form .select-image::placeholder{
   background-color: rgb(0, 110, 255);
 }
 
@@ -151,21 +151,20 @@ form .select-image:hover{
   padding: 0 15px;
   color: #707070;
 }
+.input-form .input-box input::selection {
+  border: 1px solid blue;
+}
 
 
-/*  */
+/* Display */
 .display-crud {
-  margin: 2rem 0;
+  max-width: 1300px;
+  width: 100%;
 }
 .display-crud .crud-display-table {
   width: 100%;
   text-align: center;
 }
-.display-crud .crud-display-table thead {
-  background-color: aqua;
-}
-.display-crud .crud-display-table td {
-  padding: 1rem;
-  font-size: 2rem;
-  border-bottom: black;
+.crud-display-table thead tr{
+  background-color: #b4b4b4;
 }
