@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@500&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "Noto Sans Thai", sans-serif;
+  text-decoration: none;
+  overflow: auto;
+}
+.register {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.register-page {
+  min-width: 500px;
+  max-width: 700px;
+  width: 100%;
+  padding: 20px;
+}
+.register-page .head {
+  font-size: 1.5rem;
+  color: #333;
+  border-bottom: 2px solid gray;
+}
+.form .input-box {
+  width: 100%;
+  margin-top: 5px;
+}
+.input-box input,
+.input-box select {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 15px;
+  color: #707070;
+}
+.form .col {
+  display: flex;
+  column-gap: 15px;
+}
+input:focus,
+select:focus {
+  border: 2px solid rgb(0, 119, 255);
+}
+
+/* description */
+.description{
+  font-size: 14px;
+  font-weight: 550;
+  color: red;
+}
+
+/* Button */
+div.button {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  border-top: 2px solid gray;
+}
+div.button-1{
+  width: 40%;
+}
+button.submit {
+  outline: none;
+  border: none;
+  margin-top: 8px;
+  margin-left: 12px;
+  padding: 10px 5px;
+  border-radius: 5px;
+  width: 200px;
+  color: white;
+  background-color: rgb(62, 143, 248);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+button.submit:hover {
+  background-color: rgb(0, 110, 255);
+}
+
+button.reset {
+  outline: none;
+  border: none;
+  margin-top: 8px;
+  margin-left: 12px;
+  padding: 10px 5px;
+  width: 120px;
+  border-radius: 5px;
+  color: black;
+  background-color: #f1d979;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+button.reset:hover {
+  background-color: #ffd119;
+}
+button.cancel {
+  outline: none;
+  border: none;
+  margin-top: 8px;
+  margin-left: 12px;
+  padding: 10px 5px;
+  width: 120px;
+  border-radius: 5px;
+  color: white;
+  background-color: rgb(247, 95, 95);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+button.cancel:hover {
+  background-color: #c50014;
+}

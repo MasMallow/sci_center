@@ -1,5 +1,5 @@
 <?php
-include_once 'db.php';
+include_once '../db.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,7 @@ include_once 'db.php';
                 <i id="close" class="close fa-solid fa-x "></i>
             </div>
             <div class="input-form">
-                <form action="upload.php" method="POST" enctype="multipart/form-data">
+                <form action="upload.php" method="POST" enctype="multipart/form-data" id="myForm">
                     <div class="Img">
                         <div class="imgInput">
                             <input id="file" type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput" hidden>
@@ -34,29 +34,32 @@ include_once 'db.php';
                     </div>
                     <p class="upload-tip"><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
                     <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
-                    <div class="input-box">
+                    <!-- <div class="input-box">
                         <label for="product_name">เลขประจำตัว :</label>
                         <input type="text" id="" name="">
-                    </div>
+                    </div> -->
                     <div class="input-box">
                         <label for="product_name">ชื่ออุปกรณ์ :</label>
                         <input type="text" id="product_name" name="product_name" required>
                     </div>
-                    <div class="input-box">
-                        <label for="quantity">จำนวนอุปกรณ์ :</label>
-                        <input type="number" id="quantity" name="quantity" min="1" required>
+                    <div class="col">
+                        <div class="input-box">
+                            <label>จำนวน :</label>
+                            <input type="number" id="quantity" name="quantity" min="1" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="product_type">ประเภท :</label>
+                            <select name="productType" id="productType">
+                                <option value="" disabled selected>กรุณาเลือก</option>
+                                <option value="วัตถุ">วัตถุ</option>
+                                <option value="อุปกรณ์">อุปกรณ์</option>
+                                <option value="เครื่องมือ">เครื่องมือ</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="input-box">
-                        <label for="product_type">ประเภทอุปกรณ์ :</label>
-                        <select name="productType" id="productType">
-                            <option value="วัตถุ">วัตถุ</option>
-                            <option value="อุปกรณ์">อุปกรณ์</option>
-                            <option value="เครื่องมือ">เครื่องมือ</option>
-                        </select>
-                    </div>
-                    <div class="">
-                        <input type="submit" name="submit" value="Upload" class="">
-                        <a href="ajax.php">กลับหน้าหลัก</a>
+                    <div class="btn">
+                        <button type="submit" value="Upload">ยืนยัน</button>
+                        <button id="close" class="cancel" type="button" onclick="cancelForm()">ล้างข้อมูลในฟอร์ม</button>
                     </div>
                 </form>
             </div>
@@ -70,22 +73,22 @@ include_once 'db.php';
         <div class="container">
             <div class="head-section">
                 <div class="head-name">
-                    ระบบเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ
+                    <p>ระบบเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ</p>
                 </div>
-                <div class="btn-add">
-                    <button class="showPopup">เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
+                <div class="">
+                    <button class="showPopup add"><i class="icon fa-solid fa-plus"></i>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
                 </div>
             </div>
-            <hr>
         </div>
-
     </div>
+
+    <!-- Table -->
     <div class="">
         <?php
         $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
         if ($query) {
             while ($row = $query->fetch_assoc()) {
-                $imageURL = 'test/' . $row['file_name'];
+                $imageURL = '../test/' . $row['file_name'];
         ?>
                 <div class="main">
                     <div class="display-crud">
@@ -97,6 +100,7 @@ include_once 'db.php';
                                     <td>เลขประจำตัว</td>
                                     <td>ชื่อ</td>
                                     <td>ประเภท</td>
+                                    <td>จำนวนคงเหลือ</td>
                                     <td colspan="2">การดำเนินการ</td>
                                 </tr>
                             </thead>
@@ -109,9 +113,10 @@ include_once 'db.php';
                                     <td>lmdsakmop123214</td>
                                     <td><?php echo $row['product_name']; ?></td>
                                     <td>ประเภทอะไรสักอย่าง</td>
-                                    <td> <a href="Edit/edit_product.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                                    <td>คงเหลือ</td>
+                                    <td> <a href="edit.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
                                     </td>
-                                    <td> <a href="delete_product.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                                    <td> <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -127,9 +132,14 @@ include_once 'db.php';
         }
         ?>
     </div>
+
     <!-- JavaScprti -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script>
+        function cancelForm() {
+            // ล้างข้อมูลในฟอร์ม (ถ้าต้องการ)
+            document.getElementById('myForm').reset();
+        }
         // Modal Popup
         const showPopup = document.querySelector(".showPopup");
         const modalpopup = document.querySelector(".modal-popup");

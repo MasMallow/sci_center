@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../db.php';
+require_once 'db.php';
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ require_once '../db.php';
 <script src="Register.js"></script>
 
 <body>
-    <form action="../signin-db.php" method="post">
+    <form action="signup-db.php" method="post" id="myForm">
         <div class="register">
             <!-- PHP -->
             <div class="register-page">
@@ -51,11 +51,18 @@ require_once '../db.php';
                     <div class="input-box">
                         <label>ชื่อผู้ใช้</label>
                         <input type="text" class="" placeholder="กรุณาใส่ชื่อผู้ใช้ (Username)" name="Username" require_once>
+                        <label for="" class="description"><b>Note : </b>Username ต้องมีความยาวระหว่าง 6 ถึง 12 ตัวอักษร</label>
                     </div>
+                    <div class="line"></div>
                     <div class="input-box">
                         <label>รหัสผ่าน</label>
                         <input type="password" class="" placeholder="กรุณาใส่รหัสผ่าน (Password)" name="Password" require_once>
+                        <label for="" class="description">
+                            <b>Note : </b>รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 12 ตัวอักษร<br>
+                            <b>Note : </b>รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว
+                        </label>
                     </div>
+                    <div class="line"></div>
                     <div class="input-box">
                         <label>ยืนยันรหัสผ่านอีกครั้ง</label>
                         <input type="password" class="" placeholder="กรุณายืนยันรหัสผ่าน" name="ConfirmPassword" require_once>
@@ -91,17 +98,24 @@ require_once '../db.php';
                             <input type="text" class="" placeholder="เช่นเบอร์โทรศัพท์" name="Lineid">
                         </div>
                     </div>
-
                     <div class="button">
-                        <button type="submit" class="submit" name="signup">ยืนยัน</button>
-                        <button type="reset" class="reset" onclick="resetForm()">เคลียร์</button>
-                        <a href="../login.php" class="cancel">ยกเลิก</a>
+                        <div class="button-1">
+                            <button type="submit" class="submit" name="signup">ยืนยัน</button>
+                        </div>
+                        <div class="button-2">
+                            <button type="reset" class="reset">เคลียร์</button>
+                            <a href="login.php" class="cancel">
+                                <button class="cancel" type="button">ยกเลิก</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </form>
 
+
+    <!-- Javascript -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </body>
 

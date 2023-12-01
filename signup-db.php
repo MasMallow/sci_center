@@ -60,7 +60,7 @@ if (isset($_POST['signup'])) {
                 $_SESSION['warning'] = "ไอดี Line นี้มีอยู่ในระบบแล้ว";
                 header("location:Register.php");
             } elseif (isset($row['username']) && $row['username'] == $Username) {
-                $_SESSION['warning'] = "Username นี้มีอยู่ในระบบแล้ว <a href='login.html'>คลิกที่นี่</a>เพื่อเข้าสู่ระบบ";
+                $_SESSION['warning'] = "Username นี้มีอยู่ในระบบแล้ว <a href='../login.php'>คลิกที่นี่</a>เพื่อเข้าสู่ระบบ";
                 header("location:Register.php");
             } elseif (!isset($_SESSION['error'])) {
                 $passwordHash = password_hash($Password, PASSWORD_DEFAULT);
@@ -75,7 +75,7 @@ if (isset($_POST['signup'])) {
                 $stmt->bindParam(":Role", $role);
                 $stmt->bindParam(":Phone", $Numberphone);
                 $stmt->execute();
-                $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว <a href='login.php' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";
+                $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว <a href='login.html' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";
                 header("location:Register.php");
             } else {
                 $_SESSION['error'] = "มีบางอย่างผิดผลาด";

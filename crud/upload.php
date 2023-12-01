@@ -1,12 +1,12 @@
 <?php
-include_once 'db.php';
+include_once '../db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && isset($_POST['quantity']) && isset($_POST['product_name'])) {
     $productType = $_POST['productType'];
     $quantity = $_POST['quantity'];
     $productName = $_POST['product_name'];
 
-    $targetDir = "test/"; // เปลี่ยนเป็นชื่อโฟลเดอร์ที่ต้องการ
+    $targetDir = "../test/"; // เปลี่ยนเป็นชื่อโฟลเดอร์ที่ต้องการ
 
     $fileName = basename($_FILES["file"]["name"]);
     $targetFilePath = $targetDir . $fileName;
@@ -36,4 +36,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && iss
 } else {
     echo "Please select a file to upload, provide the quantity, and enter the product name.";
 }
-?>

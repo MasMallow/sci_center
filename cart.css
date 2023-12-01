@@ -114,7 +114,7 @@ label.date {
   font-size: 18px;
   align-items: center;
 }
-input[type="date"] {
+input[type="datetime-local"] {
   margin-left: 26px;
   padding: 4px 12px;
   background-color: #e2e7e9;
