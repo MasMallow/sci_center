@@ -8,12 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $quantity = $_POST['quantity'];
 
         // Update product information in the database
-        $stmt = $db->prepare("UPDATE crud SET file_name = ?, product_name = ?, amount = ? WHERE id = ?");
+        $stmt = $db->prepare("UPDATE crud SET product_name = ?, amount = ? WHERE id = ?");
         $stmt->bind_param('sii', $product_name, $quantity, $id);
 
         if ($stmt->execute()) {
             // Redirect back to the image page
-            header("Location: image.php");
+            header("Location: add-remove-update.php");
             exit();
         } else {
             echo "Failed to update product. Please try again.";

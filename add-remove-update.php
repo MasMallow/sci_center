@@ -47,7 +47,7 @@ include_once 'db.php';
                         <input type="number" id="quantity" name="quantity" min="1" required>
                     </div>
                     <div class="input-box">
-                        <label for="product_type"> ประเภทอุปกรณ์ :</label>
+                        <label for="product_type">ประเภทอุปกรณ์ :</label>
                         <select name="productType" id="productType">
                             <option value="วัตถุ">วัตถุ</option>
                             <option value="อุปกรณ์">อุปกรณ์</option>
@@ -109,7 +109,7 @@ include_once 'db.php';
                                     <td>lmdsakmop123214</td>
                                     <td><?php echo $row['product_name']; ?></td>
                                     <td>ประเภทอะไรสักอย่าง</td>
-                                    <td> <a href="edit_product.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                                    <td> <a href="Edit/edit_product.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
                                     </td>
                                     <td> <a href="delete_product.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
                                     </td>
