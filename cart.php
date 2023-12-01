@@ -27,10 +27,13 @@
 
         if ($action === 'add' && isset($_GET['item'])) {
             $itemToAdd = $_GET['item'];
-            $_SESSION['cart'][] = $itemToAdd;
-
+            // Check if the item already exists in the cart
+            if (!in_array($itemToAdd, $_SESSION['cart'])) {
+                $_SESSION['cart'][] = $itemToAdd;
+            }
             header('Location: cart.php');
             exit;
+        }
         } elseif ($action === 'clear') {
             $_SESSION['cart'] = [];
 
@@ -47,7 +50,7 @@
             header('Location: cart.php');
             exit;
         }
-    }
+    
 
     // Check if the user is logged in
     if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
