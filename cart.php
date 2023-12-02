@@ -128,7 +128,7 @@
             <?php
                 echo '<div class="btn-section">';
                 echo '<button class="submit" type="submit" name="update">ยืนยัน</button>';
-                echo '<button class="delete-all" onclick="\'cart.php?action=clear\')">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
+                echo '<button class="delete-all" onclick="location.href=\'cart.php?action=clear\'">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
                 echo '</div>';
                 echo '</form>';
             }
