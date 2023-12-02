@@ -6,7 +6,7 @@
     </a>
     <br>
     <br>
-    <a href="add-remove-update.php">
+    <a href="crud/add-remove-update.php">
         <button>
             เพิ่ม/ลบ/แก้ไข อุปกรณ์
         </button>

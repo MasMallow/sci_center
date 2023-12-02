@@ -64,21 +64,21 @@ if (isset($_GET['id'])) {
                     <div class="input-box">
                         <label for="">ประเภท :</label>
                         <?php
-                        if ($row[""] === 'วัสดุ') {
+                        if ($row['Type'] == 'วัสดุ') {
                             echo "<select name='product_type' id=''>
-                                    <option value='วัตถุ' selected>วัตถุ</option>
+                                    <option value='วัสดุ' selected>วัสดุ</option>
                                     <option value='อุปกรณ์'>อุปกรณ์</option>
                                     <option value='เครื่องมือ'>เครื่องมือ</option>
                                 </select>";
-                        } elseif ($row[""] === 'อุปกรณ์') {
+                        } elseif ($row['Type'] == 'อุปกรณ์') {
                             echo "<select name='product_type' id=''>
-                                    <option value='วัตถุ'>วัตถุ</option>
+                                    <option value='วัสดุ'>วัสดุ</option>
                                     <option value='อุปกรณ์' selected>อุปกรณ์</option>
                                     <option value='เครื่องมือ'>เครื่องมือ</option>
                                 </select>";
-                        } elseif ($row[""] === 'เครื่องมือ') {
+                        } elseif ($row['Type'] == 'เครื่องมือ') {
                             echo "<select name='product_type' id=''>
-                                    <option value='วัตถุ'>วัตถุ</option>
+                                    <option value='วัสดุ'>วัสดุ</option>
                                     <option value='อุปกรณ์'>อุปกรณ์</option>
                                     <option value='เครื่องมือ' selected>เครื่องมือ</option>
                                 </select>";
