@@ -16,7 +16,7 @@
 
 <?php
 include_once 'db.php';
-$query = $db->query("SELECT * FROM crud WHERE Type = 'วัตถุ' ORDER BY uploaded_on DESC");
+$query = $db->query("SELECT * FROM crud WHERE Type = 'วัสดุ' ORDER BY uploaded_on DESC");
 if ($query->num_rows > 0) {
     // สร้างตัวแปรเพื่อเก็บรายชื่อรูปภาพที่แสดงแล้ว
     $displayedImages = array();
@@ -34,7 +34,7 @@ if ($query->num_rows > 0) {
         $query = $db->query("SELECT * FROM crud WHERE product_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
     } else {
         // No search query, display all images
-        $query = $db->query("SELECT * FROM crud WHERE Type = 'วัตถุ' ORDER BY uploaded_on DESC");
+        $query = $db->query("SELECT * FROM crud WHERE Type = 'วัสดุ' ORDER BY uploaded_on DESC");
     }
 
     if ($query->num_rows > 0) {

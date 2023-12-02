@@ -238,10 +238,9 @@ require_once 'db.php';
                     alert("การโหลดข้อมูลผิดพลาด");
                 },
             });
-
         }
     </script>
-
+    
     <script>
         function resetSelect() {
             document.getElementById("mySelect").value = "0"; // Set the value to the default option value
