@@ -50,8 +50,8 @@ if (isset($_GET['id'])) {
                         <!-- <input id="file" type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput" hidden> -->
                     </div>
                 </div>
-                <p class="upload-tip"><b>Note : </b> Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
-                <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
+                <!-- <p class="upload-tip"><b>Note : </b> Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
+                <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button> -->
                 <div class="input-box">
                     <label>ชื่อ: </label>
                     <input type="text" name="product_name" value="<?php echo $product_name; ?>">
@@ -90,10 +90,10 @@ if (isset($_GET['id'])) {
                 <div class="btn-section">
                     <div class="btn">
                         <input class="submit" type="submit" value="บันทึกข้อมูล">
-                        <a href="add-remove-update.php" class="cancel">
-                            <button class="cancel">ยกเลิกการแก้ไขวัสดุ อุปกรณ์ และเครื่องมือ</button>
-                        </a>
                     </div>
+                    <a href="add-remove-update.php" class="cancel">
+                        <p class="cancel">ยกเลิกการแก้ไขวัสดุ อุปกรณ์ และเครื่องมือ</p> <!--เป็นเพราะbutton -->
+                    </a>
                 </div>
             </form>
         </div>

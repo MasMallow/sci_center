@@ -38,7 +38,7 @@ if ($query->num_rows > 0) {
     ?>
 
     <!-- ส่วนแสดงตาราง -->
-    <div class="display-system">
+    <div class="display-system borrow">
         <table class="display-system-table">
             <thead>
                 <tr>
