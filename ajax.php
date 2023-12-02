@@ -18,6 +18,7 @@ require_once 'db.php';
 </head>
 
 <body>
+
     <?php
     if (isset($_SESSION['user_login'])) {
         $user_id = $_SESSION['user_login'];
@@ -32,9 +33,10 @@ require_once 'db.php';
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     ?>
+
     <div class="mainpage">
         <div class="sidebar">
-            <div class="head"> 
+            <div class="head">
                 <div class="user-details">
                     <p class="title"></p>
                 </div>
@@ -104,10 +106,22 @@ require_once 'db.php';
                 </ul>
             </div>
         </div>
-
-
         <div class="dashborad">
             <!-- แถบบนของ Dashboard -->
+            <div id="modalInfo" class="modal" style="display: none;">
+                <div class="madol-bg"></div>
+                <div class="modal-page">
+                    <h2>รายละเอียด</h2>
+                    <br>
+                    <div class="user-info">
+                        <div class="user-dropdown">
+                            <p class="username"><?php echo $row['firstname'] ?></p>
+                            <a href="logout.php" class="sign-out">ออกจากระบบ</a>
+                            <a href="" onclick="closeModal()" class="sign-out">ปิดหน้าต่าง</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <nav>
                 <div class="nav-container">
                     <a href="ajax.php">
@@ -135,24 +149,11 @@ require_once 'db.php';
             </nav>';
                     } else {
                         // ถ้าไม่มี session ของผู้ใช้ (ไม่ได้ล็อกอิน) ให้แสดงปุ่ม Default
-                        echo '<button type="button" class="col-start-11 col-span-2 w-26 m-1 text-white bg-blue-700 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 "><a href="login.php">เข้าสู่ระบบ</a></button></nav>';
+                        echo '<button type="button" class=""><a href="login.php">เข้าสู่ระบบ</a></button></nav>';
                     }
                     ?>
 
-                    <div id="modalInfo" class="modal" style="display: none;" >
-                        <div class="madol-bg"></div>
-                        <div class="modal-page">
-                            <h2>รายละเอียด</h2>
-                            <br>
-                            <div class="user-info">
-                                <div class="user-dropdown">
-                                    <p class="username"><?php echo $row['firstname'] ?></p>
-                                    <a href="logout.php" class="sign-out">ออกจากระบบ</a>
-                                    <a href="" onclick="closeModal()" class="sign-out">ปิดหน้าต่าง</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- ส่วนแสดงเวลา -->
                     <div class="info-date">
                         <div class="info1-date">
                             <div class="info-time">วันที่&nbsp;</div>
@@ -165,8 +166,9 @@ require_once 'db.php';
                     <div class="all-info">
                         วัสดุ อุปกรณ์ เครื่องมือ
                     </div>
+                    <!-- ส่วนแสดงตาราง -->
                     <div class="product">
-                        <div class="borrow grid grid-cols-4">
+                        <table class="main">
                             <?php
                             $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
                             $displayedImages = array();
@@ -179,7 +181,7 @@ require_once 'db.php';
                                     $displayedImages[] = $imageURL;
                                     $imageCount++; // เพิ่มจำนวนรูปภาพที่แสดงแล้ว
                             ?>
-                                    <div class="bg-white border-black rounded-md relative text-center mt-10">
+                                    <thead class="bg-white border-black rounded-md relative text-center mt-10">
                                         <a href="#" class="flex justify-center">
                                             <img src="<?php echo $imageURL ?>" alt="" width="100px">
                                         </a>
@@ -188,13 +190,13 @@ require_once 'db.php';
                                             if ($row['amount'] > 0) { // แก้เงื่อนไขนี้เพื่อไม่แสดงปุ่มเมื่อจำนวนคงเหลือน้อยกว่าหรือเท่ากับ 1
                                             ?>
                                                 <a href="cart.php?action=add&item=<?= $row['file_name'] ?>">
-                                                    ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ                      
+                                                    ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ
                                                 </a>
                                             <?php
                                             }
                                             ?>
                                         </div>
-                                    </div>
+                                    </thead>
                             <?php
                                 }
                                 // ตรวจสอบว่าเราได้แสดง 10 รูปภาพแล้ว ถ้าเป็นเช่นนั้นให้ออกจากลูป
@@ -203,7 +205,7 @@ require_once 'db.php';
                                 }
                             }
                             ?>
-                        </div>
+                        </table>
                     </div>
                 </div>
 

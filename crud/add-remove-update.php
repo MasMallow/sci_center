@@ -63,9 +63,6 @@ include_once '../db.php';
         </div>
     </section>
     <!-- Header -->
-    <header>
-        เพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ
-    </header>
     <div class="main">
         <div class="container">
             <div class="head-section">
@@ -76,55 +73,57 @@ include_once '../db.php';
             </div>
             <hr>
         </div>
-
     </div>
-    <div class="">
-        <div class="main">
-            <div class="display-crud">
-                <table class="crud-display-table">
-                    <thead>
-                        <tr>
-                            <td>ลำดับ</td>
-                            <td>รูปภาพ</td>
-                            <td>เลขประจำตัว</td>
-                            <td>ชื่อ</td>
-                            <td>ประเภท</td>
-                            <td colspan="2">การดำเนินการ</td>
-                        </tr>
-                    </thead>
-                    <tbody>
+    <div class="main">
+        <div class="display-crud">
+            <table class="crud-display-table">
+                <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>รูปภาพ</th>
+                        <th>ชื่อ</th>
+                        <th>ประเภท</th>
+                        <th>การดำเนินการ</th>
+                    </tr>
+                </thead>
+                <div class="line"></div>
+                <tbody>
+                    <?php
+                    $num = 1;
+                    $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
+                    if ($query) {
+                        while ($row = $query->fetch_assoc()) {
+                            $imageURL = '../test/' . $row['file_name'];
+                    ?>
+                            <tr>
+                                <td>
+                                    <p><?php echo $num ?></p>
+                                </td>
+                                <td>
+                                    <div class="img"><img src="<?php echo $imageURL ?>" alt=""></div>
+                                </td>
+                                <td><?php echo $row['product_name']; ?></td>
+                                <td><?php echo $row['Type']; ?></td>
+                                <td class="process">
+                                    <div class="btn-process">
+                                        <button onclick="window.location.href='edit.php?id=<?php echo $row['id']; ?>'" class="Edit"><i class="icon fa-solid fa-pen-to-square"></i>Edit</button>
+                                        <button onclick="window.location.href='delete.php?id=<?php echo $row['id']; ?>'" class="Delete"><i class="icon fa-solid fa-trash"></i>Delete</button>
+                                    </div>
+                                </td>
+                                <td>
+                            </tr>
                         <?php
-                        $num = 1;
-                        $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
-                        if ($query) {
-                            while ($row = $query->fetch_assoc()) {
-                                $imageURL = '../test/' . $row['file_name'];
-                        ?>
-                                <tr>
-                                    <td>
-                                        <p><?php echo $num ?></p>
-                                    </td>
-                                    <td><img src="<?php echo $imageURL ?>" alt="" height="100px"></td>
-                                    <td>lmdsakmop123214</td>
-                                    <td><?php echo $row['product_name']; ?></td>
-                                    <td>ประเภท <?php echo $row['Type']; ?></td>
-                                    <td><a href="edit.php?id=<?php echo $row['id']; ?>" class="">Edit</a></td>
-                                    <td><a href="delete.php?id=<?php echo $row['id']; ?>" class="">Delete</a></td>
-                                </tr>
-                            <?php
-                                $num++;
-                            }
-                        } else {
-                            ?>
-                            <!-- <tr><td colspan="7">No image found...</td></tr> -->
-                        <?php
+                            $num++;
                         }
+                    } else {
                         ?>
-                    </tbody>
-                </table>
-            </div>
+                        <!-- <tr><td colspan="7">ไม่พบข้อมูล</td></tr> -->
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
         </div>
-    </div>
     </div>
     <!-- JavaScprti -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
