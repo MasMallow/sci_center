@@ -49,10 +49,9 @@ if (isset($_GET['id'])) {
                         <img src="<?php echo $imageURL; ?>" alt="Product Image">
                         <!-- <input id="file" type="file" name="file" class="form-control streched-link" accept="image/gif, image/jpeg, image/png" required id="Imginput" hidden> -->
                     </div>
-
                 </div>
-                <!-- <p class="upload-tip"><b>Note : </b> Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
-                <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button> -->
+                <p class="upload-tip"><b>Note : </b> Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
+                <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
                 <div class="input-box">
                     <label>ชื่อ: </label>
                     <input type="text" name="product_name" value="<?php echo $product_name; ?>">
