@@ -14,40 +14,40 @@ if (isset($_POST['signup'])) {
     $urole = 'user';
 
     if (empty($Username)) {
-        $_SESSION['error'] = 'กรุณากรอกUsername';
+        $_SESSION['error1'] = 'กรุณากรอก Username';
         header("location:Register.php");
-    } elseif (strlen($Username) < 6 || strlen($Username) > 12) {
-        $_SESSION['error'] = 'Username ต้องมีความยาวระหว่าง 6 ถึง 12 ตัวอักษร';
+    } elseif (strlen($Username) < 6) {
+        $_SESSION['error1'] = 'Username ต้องมีความยาวระหว่าง 6';
         header("location:Register.php");
     } elseif (empty($Password)) {
-        $_SESSION['error'] = 'กรุณากรอกรหัสผ่าน';
+        $_SESSION['error1'] = 'กรุณากรอกรหัสผ่าน';
         header("location:Register.php");
     } elseif (strlen($Password) > 12 || strlen($Password) < 8) {
-        $_SESSION['error'] = 'รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 12 ตัวอักษร';
+        $_SESSION['error1'] = 'รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 12 ตัวอักษร';
         header("location:Register.php");
     } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/', $Password) || !preg_match('/[a-zA-Z\d]/', $Password)) {
-        $_SESSION['error'] = 'รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว';
+        $_SESSION['error1'] = 'รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว';
         header("location:Register.php");
     } elseif (empty($ConfirmPassword)) {
-        $_SESSION['error'] = 'กรุณายืนยันรหัสผ่าน';
+        $_SESSION['error1'] = 'กรุณายืนยันรหัสผ่าน';
         header("location:Register.php");
     } elseif ($Password != $ConfirmPassword) {
-        $_SESSION['error'] = 'รหัสผ่านไม่ตรงกัน';
+        $_SESSION['error1'] = 'รหัสผ่านไม่ตรงกัน';
         header("location:Register.php");
     } elseif (empty($role)) {
-        $_SESSION['error'] = 'กรุณาเลือกตำแหน่งของคุณ';
+        $_SESSION['error1'] = 'กรุณาเลือกตำแหน่งของคุณ';
         header("location:Register.php");
     } elseif (empty($firstname)) {
-        $_SESSION['error'] = 'กรุณากรอกชื่อ';
+        $_SESSION['error1'] = 'กรุณากรอกชื่อ';
         header("location:Register.php");
     } elseif (empty($lastname)) {
-        $_SESSION['error'] = 'กรุณากรอกนามสกุล';
+        $_SESSION['error1'] = 'กรุณากรอกนามสกุล';
         header("location:Register.php");
     } elseif (empty($Numberphone)) {
-        $_SESSION['error'] = 'กรุณาใส่เบอร์โทรของคุณ';
+        $_SESSION['error1'] = 'กรุณาใส่เบอร์โทรของคุณ';
         header("location:Register.php");
     } elseif (empty($Lineid)) {
-        $_SESSION['error'] = 'กรุณาใส่ไอดี Line ของคุณ';
+        $_SESSION['error1'] = 'กรุณาใส่ไอดี Line ของคุณ';
         header("location:Register.php");
     } else {
         try {

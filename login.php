@@ -72,6 +72,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
                         </div>
 
                         <!-- ส่วนของ buttom -->
+                        <div class="line"></div>
                         <button class="sign-in" name="sign-in">
                             เข้าสู่ระบบ
                         </button>
@@ -84,6 +85,8 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
     </body>
 
     </html>
+
+
 <?php
 } elseif (isset($_SESSION['user_login'])) {
     header('location:ajax.php');

@@ -11,23 +11,22 @@ require_once 'db.php';
 <title>สมัครบัญชีผู้ใช้</title>
 
 <!-- ส่วน Link -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <link rel="stylesheet" href="Register.css">
 <script src="Register.js"></script>
 
 <body>
-    <form action="signup-db.php" method="post" id="myForm">
+    <form action="signup-db.php" method="post">
         <div class="register">
             <!-- PHP -->
             <div class="register-page">
                 <div class="head">
                     <h2>สมัครบัญชีผู้ใช้</h2>
                 </div>
-                <?php if (isset($_SESSION['error'])) { ?>
+                <?php if (isset($_SESSION['error1'])) { ?>
                     <div class="error" role="alert">
                         <?php
-                        echo $_SESSION['error'];
-                        unset($_SESSION['error']);
+                        echo $_SESSION['error1'];
+                        unset($_SESSION['error1']);
                         ?>
                     </div>
                 <?php } ?>
@@ -104,9 +103,7 @@ require_once 'db.php';
                         </div>
                         <div class="button-2">
                             <button type="reset" class="reset">เคลียร์</button>
-                            <a href="login.php" class="cancel">
-                                <button class="cancel" type="button">ยกเลิก</button>
-                            </a>
+                            <button class="cancel" type=" reset"">ยกเลิก</button>
                         </div>
                     </div>
                 </div>
@@ -116,7 +113,7 @@ require_once 'db.php';
 
 
     <!-- Javascript -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src=" https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </body>
 
 </html>

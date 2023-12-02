@@ -53,10 +53,6 @@ if (isset($_GET['id'])) {
                 <p class="upload-tip"><b>Note : </b> Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
                 <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
                 <div class="input-box">
-                    <label>เลขประจำตัว: </label>
-                    <input type="text" class="product_key" name="product_key" value="<?php echo $product_name; ?>">
-                </div>
-                <div class="input-box">
                     <label>ชื่อ: </label>
                     <input type="text" name="product_name" value="<?php echo $product_name; ?>">
                 </div>
@@ -68,19 +64,19 @@ if (isset($_GET['id'])) {
                     <div class="input-box">
                         <label for="">ประเภท :</label>
                         <?php
-                        if ($row["Type"] === 'วัสดุ') {
+                        if ($row[""] === 'วัสดุ') {
                             echo "<select name='product_type' id=''>
                                     <option value='วัตถุ' selected>วัตถุ</option>
                                     <option value='อุปกรณ์'>อุปกรณ์</option>
                                     <option value='เครื่องมือ'>เครื่องมือ</option>
                                 </select>";
-                        } elseif ($row["Type"] === 'อุปกรณ์') {
+                        } elseif ($row[""] === 'อุปกรณ์') {
                             echo "<select name='product_type' id=''>
                                     <option value='วัตถุ'>วัตถุ</option>
                                     <option value='อุปกรณ์' selected>อุปกรณ์</option>
                                     <option value='เครื่องมือ'>เครื่องมือ</option>
                                 </select>";
-                        } elseif ($row["Type"] === 'เครื่องมือ') {
+                        } elseif ($row[""] === 'เครื่องมือ') {
                             echo "<select name='product_type' id=''>
                                     <option value='วัตถุ'>วัตถุ</option>
                                     <option value='อุปกรณ์'>อุปกรณ์</option>
@@ -93,7 +89,9 @@ if (isset($_GET['id'])) {
                 <!-- Button -->
                 <div class="btn">
                     <input type="submit" value="บันทึกข้อมูล">
-                    <button class="cancel" onclick="cancelEdit()">ยกเลิกการแก้ไขวัสดุ อุปกรณ์ และเครื่องมือ</button>
+                    <a href="add-remove-update.php" class="cancel">
+                        <button class="cancel">ยกเลิกการแก้ไขวัสดุ อุปกรณ์ และเครื่องมือ</button>
+                    </a>
                 </div>
             </form>
         </div>
@@ -101,17 +99,6 @@ if (isset($_GET['id'])) {
 </body>
 <script>
     // 
-    // 
-    function cancelEdit() {
-        var confirmation = confirm("คุณต้องการยกเลิกการแก้ไขหรือไม่?");
-
-        if (confirmation) {
-            // ทำการเปลี่ยนที่อยู่ URL หรือดำเนินการตามที่คุณต้องการ
-            window.location.href = 'add-remove-update.php';
-        } else {
-            // ไม่ต้องทำอะไรเมื่อผู้ใช้ยกเลิก
-        }
-    }
 
     const selectImage = document.querySelector(".select-image");
     const inputFile = document.querySelector("#file");

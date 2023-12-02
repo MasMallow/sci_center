@@ -36,10 +36,6 @@ include_once '../db.php';
                     <p class="upload-tip"><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
                     <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
                     <div class="input-box">
-                        <label for="product_name">เลขประจำตัว :</label>
-                        <input type="text" id="" name="">
-                    </div>
-                    <div class="input-box">
                         <label for="product_name">ชื่ออุปกรณ์ :</label>
                         <input type="text" id="product_name" name="product_name" required>
                     </div>
@@ -50,7 +46,7 @@ include_once '../db.php';
                         </div>
                         <div class="input-box">
                             <label for="">ประเภท :</label>
-                            <select name="product_type" id="product_type">
+                            <select name="productType" id="productType">
                                 <option value="" disabled selected>กรุณาเลือก</option>
                                 <option value="วัสดุ">วัสดุ</option>
                                 <option value="อุปกรณ์">อุปกรณ์</option>
@@ -58,17 +54,9 @@ include_once '../db.php';
                             </select>
                         </div>
                     </div>
-                    <div class="input-box">
-                        <label for="product_type">ประเภทอุปกรณ์ :</label>
-                        <select name="productType" id="productType">
-                            <option value="วัตถุ">วัตถุ</option>
-                            <option value="อุปกรณ์">อุปกรณ์</option>
-                            <option value="เครื่องมือ">เครื่องมือ</option>
-                        </select>
-                    </div>
-                    <div class="">
-                        <input type="submit" name="submit" value="Upload" class="">
-                        <a href="ajax.php">กลับหน้าหลัก</a>
+                    <div class="btn">
+                        <button type="submit" name="submit" value="Upload" class="">ยืนยัน</button>
+                        <button type="reset" class="cancel">ล้างข้อมูล</button>
                     </div>
                 </form>
             </div>
@@ -84,61 +72,59 @@ include_once '../db.php';
                 <div class="head-name">
                     ระบบเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ
                 </div>
-                <div class="btn-add">
-                    <button class="showPopup">เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
-                </div>
+                <button class="showPopup add"><i class="icon fa-solid fa-plus"></i>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
             </div>
             <hr>
         </div>
 
     </div>
     <div class="">
-    <div class="main">
-        <div class="display-crud">
-            <table class="crud-display-table">
-                <thead>
-                    <tr>
-                        <td>ลำดับ</td>
-                        <td>รูปภาพ</td>
-                        <td>เลขประจำตัว</td>
-                        <td>ชื่อ</td>
-                        <td>ประเภท</td>
-                        <td colspan="2">การดำเนินการ</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $num = 1;
-                    $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
-                    if ($query) {
-                        while ($row = $query->fetch_assoc()) {
-                            $imageURL = '../test/' . $row['file_name'];
-                    ?>
-                            <tr>
-                                <td>
-                                    <p><?php echo $num ?></p>
-                                </td>
-                                <td><img src="<?php echo $imageURL ?>" alt="" height="100px"></td>
-                                <td>lmdsakmop123214</td>
-                                <td><?php echo $row['product_name']; ?></td>
-                                <td>ประเภท <?php echo $row['Type']; ?></td>
-                                <td><a href="edit_product.php?id=<?php echo $row['id']; ?>" class="">Edit</a></td>
-                                <td><a href="delete_product.php?id=<?php echo $row['id']; ?>" class="">Delete</a></td>
-                            </tr>
-                    <?php
-                            $num++;
+        <div class="main">
+            <div class="display-crud">
+                <table class="crud-display-table">
+                    <thead>
+                        <tr>
+                            <td>ลำดับ</td>
+                            <td>รูปภาพ</td>
+                            <td>เลขประจำตัว</td>
+                            <td>ชื่อ</td>
+                            <td>ประเภท</td>
+                            <td colspan="2">การดำเนินการ</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $num = 1;
+                        $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
+                        if ($query) {
+                            while ($row = $query->fetch_assoc()) {
+                                $imageURL = '../test/' . $row['file_name'];
+                        ?>
+                                <tr>
+                                    <td>
+                                        <p><?php echo $num ?></p>
+                                    </td>
+                                    <td><img src="<?php echo $imageURL ?>" alt="" height="100px"></td>
+                                    <td>lmdsakmop123214</td>
+                                    <td><?php echo $row['product_name']; ?></td>
+                                    <td>ประเภท <?php echo $row['Type']; ?></td>
+                                    <td><a href="edit.php?id=<?php echo $row['id']; ?>" class="">Edit</a></td>
+                                    <td><a href="delete.php?id=<?php echo $row['id']; ?>" class="">Delete</a></td>
+                                </tr>
+                            <?php
+                                $num++;
+                            }
+                        } else {
+                            ?>
+                            <!-- <tr><td colspan="7">No image found...</td></tr> -->
+                        <?php
                         }
-                    } else {
-                    ?>
-                        <!-- <tr><td colspan="7">No image found...</td></tr> -->
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
     </div>
     <!-- JavaScprti -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
