@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือ</title>
     <!-- ส่วนของ Link -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="cart.css">
 </head>
@@ -120,7 +119,7 @@
                         echo '<td><img src="' . $imageURL . '" alt="' . $productName . '"></td>';
                         echo '<td class="product-name">' . $productName . '</td>';
                         echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1" ></td>';
-                        echo '<td><a class="btn-delete" href="cart.php?action=remove&item=' . $item . '" onclick="return confirm(\'ลบรายการที่เลือกใช่หรือไม่?\')"><i class="fa fa-trash"></i>ลบรายการที่เลือก</a></td>';
+                        echo '<td><a class="btn-delete" href="cart.php?action=remove&item=' . $item . '"><i class="fa fa-trash"></i>ลบรายการที่เลือก</a></td>';
                         $num++;
                     }
                 }
@@ -140,7 +139,7 @@
             <?php
                 echo '<div class="btn-section">';
                 echo '<button class="submit" type="submit" name="update">ยืนยัน</button>';
-                echo '<button class="delete-all" onclick="confirmAndRedirect(\'ลบรายการที่เลือกทั้งหมดใช่หรือไม่?\', \'cart.php?action=clear\')">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
+                echo '<button class="delete-all" onclick="\'cart.php?action=clear\')">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
                 echo '</div>';
                 echo '</form>';
             }
@@ -148,14 +147,6 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
-    <script>
-        function confirmAndRedirect(message, url) {
-            if (confirm(message)) {
-                window.location.href = url;
-            }
-        }
-    </script>
 </body>
 
 </html>

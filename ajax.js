@@ -24,13 +24,13 @@ function closeModal() {
 
 function AdminMode() {
   $.ajax({
-      url: "AdminMode.php",
-      dataType: "html",
-      success: function (data) {
-          $(".product").empty().append(data);
-      },
-      error: function () {
-          alert("การโหลดรายงานผิดพลาด");
-      },
+    url: "AdminMode.php",
+    dataType: "html",
+    success: function (data) {
+      $(".product").empty().append(data);
+    },
+    error: function () {
+      alert("การโหลดรายงานผิดพลาด");
+    },
   });
 }

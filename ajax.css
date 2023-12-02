@@ -7,14 +7,12 @@
   font-family: "Noto Sans Thai", sans-serif;
   text-decoration: none;
 }
-
 body {
-  background-color: #b1cfcf;
+  background-color: gray;
 }
-
 .mainpage {
   width: 100%;
-  height: auto;
+  height: 100vh;
   position: relative;
   overflow: auto;
   display: flex;
@@ -22,7 +20,7 @@ body {
 
 .sidebar {
   width: 15vw;
-  height: auto;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #ffff;
@@ -227,51 +225,8 @@ nav {
   grid-template-rows: auto;
   grid-gap: 20px;
 }
-
-.product-item {
-  /* position: relative; */
-  width: 320px;
-  height: 420px;
-  border-radius: 20px;
-  background-color: white;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.product-item:hover {
-  transform: scale(1.02);
-}
-
-.product-img {
-  width: 100%;
-  height: 15vw;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.product-name {
-  padding: 8px;
+.main {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-/* ปุ่ม */
-.cart {
-  width: 80%;
-  background-color: #3498db;
-  color: white;
-  text-align: center;
-  padding: 0.5vw;
-  cursor: pointer;
-  margin-top: 1.5vw;
-  border-radius: 15px;
-  border: none;
-  transition: 0.5s;
-}
-
-.cart:hover {
-  background-color: #21618c;
-  letter-spacing: 2px;
 }
