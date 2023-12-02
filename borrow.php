@@ -1,18 +1,5 @@
-<style>
-    div.borrow {
-        height: 1100px;
-        /* ลบความสูงคงที่เพื่อให้เนื้อหาสามารถขยายตัวได้ */
-    }
-
-    /* เพิ่มสไตล์ที่เป็น responsive สำหรับรูปภาพ */
-    .borrow img {
-        max-width: 100%;
-        /* กำหนดความกว้างสูงสุดของรูปภาพให้เป็น 100% ของคอนเทนเนอร์ */
-        height: auto;
-        /* อนุญาตให้ความสูงของรูปภาพปรับตามอัตราส่วนได้ */
-    }
-</style>
-
+<link rel="stylesheet" href="search.css">
+<link rel="stylesheet" href="ajax.css">
 
 <?php
 include_once 'db.php';
@@ -21,11 +8,17 @@ if ($query->num_rows > 0) {
     // สร้างตัวแปรเพื่อเก็บรายชื่อรูปภาพที่แสดงแล้ว
     $displayedImages = array();
 ?>
-    <p>อุปกรณ์</p>
-    <div>
-        <input type="text" name="search" id="searchInput" placeholder="ค้นหาสินค้า">
-        <button type="button" onclick="searchProducts()">ค้นหา</button>
-    </div>
+    <header class="head-search">
+        <div class="name">
+            <h2>หมวดวัสดุ</h2>
+        </div>
+        <div class="search">
+            <input type="text" name="search" id="searchInput" placeholder="ป้อนชื่อวัสดุเพื่อค้นหา" class="search">
+            <button type="button" onclick="searchProducts()" class="search"><i class="icon fa-solid fa-magnifying-glass">
+                    <p>ค้นหา</p>
+                </i></button>
+        </div>
+    </header>
 
     <?php
     // Check if a search query is provided
@@ -44,39 +37,66 @@ if ($query->num_rows > 0) {
     }
     ?>
 
-    <div class="borrow grid grid-cols-4">
+    <!-- ส่วนแสดงตาราง -->
+    <div class="display-system">
+        <table class="display-system-table">
+            <thead>
+                <tr>
+                    <th>รูปภาพ</th>
+                    <th>ชื่อ</th>
+                    <th>ประเภท</th>
+                    <th>จำนวนคงเหลือ</th>
+                    <th>สถานะ</th>
+                    <th>การดำเนินการ</th>
+                </tr>
+            </thead>
+            <?php
+            while ($row = $query->fetch_assoc()) {
+                $imageURL = 'test/' . $row['file_name'];
+                if (!in_array($imageURL, $displayedImages)) {
+                    $displayedImages[] = $imageURL;
+            ?>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="img">
+                                    <img src="<?php echo $imageURL ?>" alt="">
+                                </div>
+                            </td>
+                            <td>
+                                <p><?php echo $row['product_name']; ?></p>
+                            </td>
+                            <td>ตรงนี้เรียกข้อมูลประเภท</td>
+                            <td>
+                                <p>คงเหลือ : <?php echo $row['amount']; ?></p>
+                            </td>
+                            <td>
+                                <p>เดี๋ยวทำเป็นสถานะ</p>
+                            </td>
+                            <td><?php if ($row['amount'] >= 1) {
+                                ?>
+                                    <div class="button">
+                                        <button onclick="location.href='cart.php?action=add&item=<?= $row['file_name'] ?>'" class="use-it"><i class="icon fa-solid fa-arrow-up"></i>
+                                            <p>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</p>
+                                        </button>
+                                    </div>
+                                <?php } elseif ($row['amount'] <= 0) { ?>
+                                    <div class="button">
+                                        <button class="out-of">
+                                            <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
+                                            <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p>
+                                        </button>
+                                    </div>
+                                <?php
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
         <?php
-        while ($row = $query->fetch_assoc()) {
-            $imageURL = 'test/' . $row['file_name'];
-            if (!in_array($imageURL, $displayedImages)) {
-                $displayedImages[] = $imageURL;
-        ?>
-                <div class="bg-white border-black rounded-md relative text-center mt-10">
-                    <a href="#" class="flex justify-center">
-                        <img src="<?php echo $imageURL ?>" alt="" class="rounded-md h-40 w-32 m-1">
-                    </a>
-                    <div class="mas p-1">
-                        <a href="#">
-                            <br>
-                            <p>ชื่ออุปกรณ์: <?php echo $row['product_name']; ?></p>
-                            <p>จำนวนคงเหลือ: <?php echo $row['amount']; ?></p>
-                        </a>
-                        <?php
-                        if ($row['amount'] > 0) { // แก้เงื่อนไขนี้เพื่อไม่แสดงปุ่มเมื่อจำนวนคงเหลือน้อยกว่าหรือเท่ากับ 1
-                        ?>
-                            <a href="cart.php?action=add&item=<?= $row['file_name'] ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to Cart
-                                <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                </svg>
-                            </a>
-                        <?php
-                        }
-                        ?>
-                    </div>
-                </div>
-    <?php
+                }
             }
         }
-    }
-    ?>
+        ?>
+        </table>
+    </div>

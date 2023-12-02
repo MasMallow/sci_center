@@ -104,9 +104,6 @@ h1 {
 .col select:focus {
   border: 1px solid rgb(0, 119, 255);
 }
-.input-box input::after {
-  background-color: blue;
-}
 .col input,
 .col select {
   width: 100%;
@@ -126,39 +123,41 @@ h1 {
 }
 
 /* Button */
-.btn {
+.btn-section {
   border-top: 2px solid gray;
   margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
 }
-.btn input[type="submit"] {
+.btn {
+  width: 100%;
+  display: grid;
+}
+input.submit {
   outline: none;
   border: none;
   margin-top: 8px;
   padding: 10px 0px;
   border-radius: 5px;
-  width: 48%;
   background-color: rgb(30, 124, 248);
   transition: all 0.3s;
   color: #fff;
   cursor: pointer;
+  width: 100%;
 }
-.btn input[type="submit"]:hover {
+input[type="submit"]:hover {
   background-color: rgb(0, 110, 255);
 }
-.btn button.cancel {
+button.cancel {
   outline: none;
   border: none;
   margin-top: 8px;
   padding: 10px 0px;
   border-radius: 5px;
-  width: 48%;
   color: #fff;
   cursor: pointer;
   background-color: #e63446;
   transition: all 0.3s;
+  width: 100%;
 }
-.btn button.cancel:hover {
+button.cancel:hover {
   background-color: #c50014;
 }

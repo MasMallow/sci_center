@@ -33,15 +33,15 @@ if (isset($_POST['sign-in'])) {
                             header("location: ajax.php");
                         }
                     } else {
-                        $_SESSION['error'] = 'รหัสผ่านผิด';
+                        $_SESSION['error1'] = 'รหัสผ่านไม่ถูกต้อง';
                         header("location: login.php");
                     }
                 } else {
-                    $_SESSION['error'] = 'Username ไม่ถูกต้อง';
+                    $_SESSION['error1'] = 'Username ไม่ถูกต้อง';
                     header("location: login.php");
                 }
             } else {
-                $_SESSION['error'] = "ไม่มีข้อมูลในระบบ";
+                $_SESSION['error1'] = "ไม่มีข้อมูลในระบบ";
                 header("location: login.php");
             }
         } catch (PDOException $e) {

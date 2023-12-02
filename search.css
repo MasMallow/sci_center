@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@500&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "Noto Sans Thai", sans-serif;
+  text-decoration: none;
+}
+.head-search {
+  display: grid;
+  margin: 0px 0px;
+  padding: 0px 0px;
+}
+div.name {
+  border-bottom: 2px solid gray;
+  margin-bottom: 5px;
+}
+div.search {
+  margin-top: 15px;
+}
+input.search {
+  height: 45px;
+  width: 30%;
+  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 15px;
+  color: #707070;
+  font-size: 15px;
+}
+input.search:focus {
+  border: 1px solid rgb(0, 119, 255);
+}
+.icon{
+  position: relative;
+  font-size: 14px;
+}
+.icon p{
+  margin-left: 10px;
+}
+button.search {
+  outline: none;
+  border: none;
+  padding: 10px 0px;
+  border-radius: 5px;
+  background-color: rgb(30, 124, 248);
+  transition: all 0.3s;
+  color: #fff;
+  cursor: pointer;
+  width: 8%;
+  height: 45px;
+}
+button.search:hover {
+  background-color: rgb(0, 110, 255);
+}

@@ -36,13 +36,13 @@ include_once '../db.php';
                     <p class="upload-tip"><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
                     <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
                     <div class="input-box">
-                        <label for="product_name">ชื่ออุปกรณ์ :</label>
-                        <input type="text" id="product_name" name="product_name" required>
+                        <label for="product_name">ชื่อ :</label>
+                        <input type="text" id="product_name" name="product_name" required placeholder="กรุณาระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">
                     </div>
                     <div class="col">
                         <div class="input-box">
                             <label>จำนวน :</label>
-                            <input type="number" id="quantity" name="quantity" min="1" required>
+                            <input type="number" id="quantity" name="quantity" min="1" required placeholder="กรุณาระบุจำนวน">
                         </div>
                         <div class="input-box">
                             <label for="">ประเภท :</label>

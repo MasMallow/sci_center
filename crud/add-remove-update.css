@@ -160,7 +160,11 @@ header {
   width: 100%;
   margin-top: 10px;
 }
-.input-form .input-box input {
+.input-form .input-box input,
+.col input,
+.col select {
+  width: 100%;
+  font-size: 13px;
   position: relative;
   height: 40px;
   width: 100%;
@@ -172,19 +176,6 @@ header {
 }
 .input-form .input-box input:focus {
   border: 1px solid rgb(0, 119, 255);
-}
-.col input,
-.col select {
-  width: 100%;
-  font-size: 15px;
-  position: relative;
-  height: 40px;
-  width: 100%;
-  outline: none;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 0 15px;
-  color: #707070;
 }
 .col select:focus {
   border: 1px solid rgb(0, 119, 255);
@@ -244,8 +235,6 @@ header {
   font-size: 18px;
   font-weight: bold;
   border-bottom: 1px solid gray;
-}
-.crud-display-table th {
   padding: 10px 0px;
   letter-spacing: 0.1rem;
   vertical-align: top;

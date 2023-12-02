@@ -46,6 +46,9 @@ div .alert {
   border-radius: 5px;
   border: none;
 }
+.input:focus{
+  border:1px solid rgb(1, 69, 170);;
+}
 
 .sign-in {
   width: 100%;
