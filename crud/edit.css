@@ -132,6 +132,7 @@ h1 {
   display: grid;
 }
 input.submit {
+  font-size: 14px;
   outline: none;
   border: none;
   margin-top: 8px;
@@ -146,7 +147,8 @@ input.submit {
 input[type="submit"]:hover {
   background-color: rgb(0, 110, 255);
 }
-button.cancel {
+a.cancel {
+  font-size: 14px;
   outline: none;
   border: none;
   margin-top: 8px;
@@ -158,6 +160,9 @@ button.cancel {
   transition: all 0.3s;
   width: 100%;
 }
-button.cancel:hover {
+a.cancel:hover {
   background-color: #c50014;
+}
+p.cancel{
+  text-align: center;
 }

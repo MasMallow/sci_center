@@ -8,9 +8,11 @@
   text-decoration: none;
   list-style: none;
 }
+
 body {
   background-color: gray;
 }
+
 .mainpage {
   position: relative;
   display: flex;
@@ -44,7 +46,6 @@ body {
   font-size: 16px;
   font-weight: 500;
   color: #757575;
-  text-decoration: none;
   padding: 12px 8px;
   border-radius: 8px;
   transition: all 0.3s;
@@ -97,9 +98,7 @@ body {
   border-bottom-left-radius: 15px;
   margin-left: 10px;
 }
-/* .dashborad::-webkit-scrollbar {
-  display: none;
-} */
+
 /* NAVBAR */
 nav {
   width: 100%;
@@ -107,6 +106,7 @@ nav {
   background: linear-gradient(125deg, #800080, #ccccff);
   border-radius: 15px 15px 0px 0px;
 }
+
 .nav-container {
   max-width: 80vw;
   height: 100%;
@@ -115,6 +115,34 @@ nav {
   justify-content: space-between;
   align-items: center;
 }
+
+/* Not LogIn */
+.not-login {
+  outline: none;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: black;
+  background-color: white;
+  transition: all 0.1s;
+}
+
+.not-login:hover {
+  border: 1px solid black;
+}
+
+.not-login a {
+  display: flex;
+  align-items: center;
+  color: black;
+}
+
+.not-login .ilogion {
+  font-size: 20px;
+  margin: 0px 5px;
+}
+
 /* User-Info */
 .profile {
   width: 38px;
@@ -125,33 +153,51 @@ nav {
   border-radius: 15px;
   padding: 2px;
 }
+
 .modal {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   position: fixed;
   top: 0;
   left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.2);
+  transition: opacity 0.2s 0s ease-in-out, transform 0.2s 0s ease-in-out;
 }
-.modal-page {
-  width: 25vw;
-  max-height: 20vw;
+.modal.active {
+  position: fixed;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.madal-box {
   background-color: white;
-  border-radius: 15px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 36px;
+  max-width: 400px;
+  width: 100%;
+  max-height: 678px;
   display: block;
 }
-.user-dropdown {
+.modal-head {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 3px solid gray;
 }
-.modal-page h2 {
-  text-decoration: underline;
+.modal-head .close {
+  font-size: 18px;
+  color: #b4b4b4;
+  cursor: pointer;
+  transition: all 0.2 ease-in;
+}
+.modal-head .close:hover {
+  color: #333;
 }
 .user-dropdown .username {
   color: #757575;
@@ -159,43 +205,28 @@ nav {
   margin-top: 30px;
   margin-bottom: 50px;
 }
-.sign-out {
-  border-radius: 10px;
-  background-color: rgb(255, 83, 83);
-  width: 15vw;
-  height: 2vw;
-  color: white;
-  transition: 0.5s;
-  text-align: center;
-  padding-top: 7px;
-  border: none;
-  margin-top: 20px;
-}
-.sign-out:hover {
-  transform: scale(1.05);
-  background-color: rgb(170, 0, 0);
-}
-.user-dropdown a {
-  border-radius: 10px;
-  background-color: rgb(255, 83, 83);
-  width: 15vw;
-  height: 2vw;
-  color: white;
-  transition: 0.5s;
-  text-align: center;
-  padding-top: 7px;
-}
-.user-dropdown a:hover {
-  transform: scale(1.05);
-  background-color: rgb(170, 0, 0);
-}
+
+/* Nav */
+
 .head-name {
   font-size: 26px;
   color: white;
 }
 
+.section-2 {
+  display: flex;
+}
+
 /* ส่วนของวัน เวลา */
-.info-date {
+.section-2_1 {
+  width: 22%;
+  background-color: #f6f6f6;
+  margin: 15px;
+  border-radius: 15px;
+}
+
+.section-2_2 {
+  width: 75%;
   background-color: #f6f6f6;
   margin: 15px;
   padding: 15px;
@@ -205,7 +236,16 @@ nav {
 .info1-date {
   display: flex;
   justify-content: center;
-  font-size: 25px;
+  font-size: 22px;
+  margin: 25px 0px;
+}
+.info-time,
+.date {
+  margin-bottom: 20px;
+}
+.date,
+.time {
+  padding-left: 20px;
 }
 
 /* ส่วนแสดงข้อมูล */
@@ -214,46 +254,51 @@ nav {
   margin-left: 25px;
 }
 
-.product {
+.display-system {
   background-color: #f6f6f6;
   margin: 15px;
   padding: 15px;
   border-radius: 15px;
 }
+
 .display-system-table {
   text-align: center;
   border-collapse: collapse;
-  width: 100%;
-  height: 100%;
+  table-layout: fixed;
 }
+
 .display-system-table th {
   font-size: 18px;
-  font-weight: bold;
   border-bottom: 1px solid gray;
   padding: 10px 0px;
   letter-spacing: 0.1rem;
   vertical-align: top;
 }
+
 tbody td {
   margin: 0px;
   font-weight: normal;
   text-align: center;
   border-bottom: 2px solid #eaeded;
 }
+
 tr:nth-child(even) {
   background-color: #f2f2f2;
   transition: all 0.3s ease-in-out;
 }
+
 tr:hover td {
   background-color: #d0d3d4;
   transition: all 0.3s ease-in-out;
 }
+
 /* IMG */
 .img {
   display: flex;
   justify-content: center;
   margin: 5px 0px;
 }
+
 img {
   width: 130px;
   height: 120px;
@@ -261,12 +306,14 @@ img {
   object-position: center;
   border-radius: 20px;
 }
+
 .icon {
   font-size: 16px;
   display: flex;
   justify-content: center;
   margin: 3px 0px;
 }
+
 button.out-of {
   font-size: 14px;
   outline: none;
@@ -279,6 +326,7 @@ button.out-of {
   width: 200px;
   cursor: pointer;
 }
+
 button.use-it {
   font-size: 14px;
   outline: none;
@@ -291,24 +339,27 @@ button.use-it {
   width: 200px;
   cursor: pointer;
 }
+
 button.use-it:hover {
   background-color: rgb(0, 86, 199);
 }
-button.reserve-it{
+
+button.reserve-it {
   font-size: 14px;
   outline: none;
   border: none;
   padding: 8px 10px;
   border-radius: 5px;
-  background-color: #50C878;
+  background-color: #50c878;
   transition: all 0.3s;
   color: #fff;
   width: 200px;
   cursor: pointer;
   margin-top: 5px;
 }
-button.reserve-it:hover{
-  background-color: #008000		;
+
+button.reserve-it:hover {
+  background-color: #008000;
 }
 
 /* Footer */
@@ -318,18 +369,21 @@ footer {
   padding: 20px 100px;
   background-color: #fff;
 }
+
 footer .container_1 {
   width: 100%;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   grid-gap: 20px;
 }
+
 footer .container_1 .footer h2 {
   position: relative;
   color: #333;
   font-weight: 300;
   margin-bottom: 10px;
 }
+
 footer .container_1 .footer p {
   color: #555;
 }
@@ -337,28 +391,66 @@ footer .container_1 .footer p {
 footer .container_1 li.footer-about2 {
   margin-top: 10px;
 }
+
 footer .container_1 li.footer-about2 i {
   margin-right: 15px;
   color: blue;
   font-size: 36px;
 }
+
 .footer-link {
   margin-left: 50px;
 }
+
 .footer-link ul li a {
   display: inline-block;
   margin-top: 15px;
   color: #555;
   transition: 0.5s;
 }
+
 .footer-link ul li a:hover {
   transform: scale(1.2);
   color: black;
 }
+
 .copyright {
   width: 100%;
   border-top: 1px solid gray;
   background-color: #f5f2f2;
   padding: 10px 0px;
   text-align: center;
+}
+
+/* Status */
+.status {
+  display: flex;
+  justify-content: center;
+}
+
+.status .ready-to-use {
+  border-radius: 5px;
+  padding: 3px 8px;
+  background-color: #50c878;
+}
+
+.status .moderately {
+  border-radius: 5px;
+  padding: 3px 8px;
+  background-color: #fcf55f;
+}
+
+.status .not-available {
+  border-radius: 5px;
+  padding: 3px 8px;
+  background-color: #d22b2b;
+  color: white;
+}
+
+/* ความกว่้าง */
+td.product-name {
+  color: #008000;
+  width: 30%;
+  padding: 0px 30px;
+  word-wrap: break-word;
 }

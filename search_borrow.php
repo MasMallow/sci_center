@@ -50,15 +50,38 @@ if ($query->num_rows > 0) {
                                     <img src="<?php echo $imageURL ?>" alt="">
                                 </div>
                             </td>
-                            <td>
+                            <td class="product-name">
                                 <p><?php echo $row['product_name']; ?></p>
                             </td>
-                            <td>ตรงนี้เรียกข้อมูลประเภท</td>
+                            <td><?php echo $row['Type']; ?></td>
                             <td>
                                 <p>คงเหลือ : <?php echo $row['amount']; ?></p>
                             </td>
                             <td>
-                                <p>เดี๋ยวทำเป็นสถานะ</p>
+                                <?php
+                                if ($row['amount'] >= 50) {
+                                ?>
+                                    <div class="status">
+                                        <div class="ready-to-use">
+                                            <p>พร้อมใช้งาน</p>
+                                        </div>
+                                    </div>
+                                <?php } elseif ($row['amount'] <= 30 && $row['amount'] >= 1) { ?>
+                                    <div class="status">
+                                        <div class="moderately">
+                                            <p>ความพร้อมปานกลาง</p></i>
+                                        </div>
+                                    </div>
+                                <?php
+                                } elseif ($row['amount'] == 0) { ?>
+                                    <div class="status">
+                                        <div class="not-available">
+                                            <p>ไม่พร้อมใช้งาน</p></i>
+                                        </div>
+                                    </div>
+                                <?php
+                                }
+                                ?>
                             </td>
                             <td><?php if ($row['amount'] >= 1) {
                                 ?>

@@ -14,13 +14,6 @@ function clearChangeContent() {
   $(".product").empty();
 }
 
-function openInfo() {
-  $("#modalInfo").css("display", "flex");
-}
-
-function closeModal() {
-  $(".modal").css("display", "none");
-}
 
 function AdminMode() {
   $.ajax({

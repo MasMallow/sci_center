@@ -90,10 +90,11 @@ if (isset($_GET['id'])) {
                 <div class="btn-section">
                     <div class="btn">
                         <input class="submit" type="submit" value="บันทึกข้อมูล">
+                        <a href="add-remove-update.php" class="cancel">
+                            <p class="cancel">ยกเลิกการแก้ไขวัสดุ อุปกรณ์ และเครื่องมือ</p> <!--เป็นเพราะbutton -->
+                        </a>
                     </div>
-                    <a href="add-remove-update.php" class="cancel">
-                        <p class="cancel">ยกเลิกการแก้ไขวัสดุ อุปกรณ์ และเครื่องมือ</p> <!--เป็นเพราะbutton -->
-                    </a>
+
                 </div>
             </form>
         </div>

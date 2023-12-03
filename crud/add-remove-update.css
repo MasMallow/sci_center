@@ -8,31 +8,43 @@
   text-decoration: none;
   overflow-x: hidden;
 }
+
 .main {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-/* HEADER */
-header {
-  background-color: aliceblue;
-  text-align: center;
-  font-size: 36px;
+
+.main-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 /* Section Head */
 .container {
   width: 1300px;
   padding: 10px;
   margin-top: 30px;
 }
+
 .head-section {
   display: flex;
   justify-content: space-between;
   border-bottom: 2px solid gray;
 }
+
+.head-btn {
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
 .head-name {
   font-size: 24px;
 }
+
 /* Button */
 .add {
   border: none;
@@ -43,20 +55,43 @@ header {
   padding: 8px 12px;
   color: white;
   transition: all 0.3s;
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
 .add:hover {
   background-color: rgb(0, 119, 255);
 }
-.icon {
-  font-size: 12px;
-  margin-right: 5px;
+
+.cancel {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  background-color: rgb(201, 53, 53);
+  padding: 8px 12px;
+  color: white;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+.cancel:hover {
+  background-color: rgb(167, 6, 6);
+}
+
+.icon {
+  font-size: 16px;
+  margin: 3px 0px;
+}
+
 /* Modal */
 .modal-popup {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100dvh;
   background-color: rgb(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
@@ -66,21 +101,31 @@ header {
   transform: scale(1.2);
   transition: opacity 0.2s 0s ease-in-out, transform 0.2s 0s ease-in-out;
 }
+
 .modal-popup.active {
   position: fixed;
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
 }
+
 .modal-head .close {
   font-size: 18px;
   color: #b4b4b4;
   cursor: pointer;
   transition: all 0.2 ease-in;
 }
+
 .modal-head .close:hover {
   color: #333;
 }
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 3px solid gray;
+}
+
 .modal-box {
   background-color: white;
   border-radius: 12px;
@@ -90,21 +135,19 @@ header {
   max-height: 768px;
   overflow-y: auto;
 }
+
 .modal-box .input-form {
   width: 100%;
 }
-.modal-head {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 8px;
-  border-bottom: 3px solid gray;
-}
+
+
 /* input IMG */
 .Img {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .imgInput {
   position: relative;
   width: 60%;
@@ -118,10 +161,12 @@ header {
   align-items: center;
   flex-direction: column;
 }
+
 .imgInput .upload {
   font-size: 54px;
   margin-bottom: 24px;
 }
+
 .imgInput img {
   position: absolute;
   top: 0;
@@ -132,6 +177,7 @@ header {
   object-fit: cover;
   object-position: center;
 }
+
 .upload-tip {
   display: flex;
   justify-content: center;
@@ -139,6 +185,7 @@ header {
   color: red;
   margin-top: 8px;
 }
+
 .select-image {
   margin-top: 8px;
   display: block;
@@ -152,14 +199,17 @@ header {
   cursor: pointer;
   transition: all 0.2s ease-in;
 }
+
 .select-image:hover {
   background-color: rgb(0, 86, 199);
 }
+
 /* inPut Form */
 .input-form .input-box {
   width: 100%;
   margin-top: 10px;
 }
+
 .input-form .input-box input,
 .col input,
 .col select {
@@ -174,23 +224,28 @@ header {
   padding: 0 15px;
   color: #707070;
 }
+
 .input-form .input-box input:focus {
   border: 1px solid rgb(0, 119, 255);
 }
+
 .col select:focus {
   border: 1px solid rgb(0, 119, 255);
 }
+
 .col {
   display: flex;
   column-gap: 15px;
 }
+
 /* Button */
 .btn {
   border-top: 1px solid gray;
   margin-top: 20px;
-  display: flex;
   justify-content: space-between;
+  display: flex;
 }
+
 .btn button[type="submit"] {
   outline: none;
   border: none;
@@ -203,10 +258,12 @@ header {
   color: #fff;
   cursor: pointer;
 }
+
 .btn button[type="submit"]:hover {
   background-color: rgb(0, 110, 255);
 }
-.btn button.cancel {
+
+.btn button.reset {
   outline: none;
   border: none;
   margin-top: 8px;
@@ -218,19 +275,23 @@ header {
   background-color: #e63446;
   transition: all 0.3s;
 }
-.btn button.cancel:hover {
+
+.btn button.reset:hover {
   background-color: #c50014;
 }
+
 /* Display */
 .display-crud {
   width: 1300px;
   padding: 10px;
 }
+
 .crud-display-table {
   text-align: center;
   border-collapse: collapse;
   width: 100%;
 }
+
 .crud-display-table th {
   font-size: 18px;
   font-weight: bold;
@@ -239,15 +300,18 @@ header {
   letter-spacing: 0.1rem;
   vertical-align: top;
 }
+
 tbody td {
   font-weight: normal;
   text-align: center;
   border-bottom: 1px solid #eaeded;
 }
+
 tr:nth-child(even) {
   background-color: #f2f2f2;
   transition: all 0.3s ease-in-out;
 }
+
 tr:hover td {
   background-color: #d0d3d4;
   transition: all 0.3s ease-in-out;
@@ -259,6 +323,7 @@ tr:hover td {
   justify-content: center;
   margin: 5px 0px;
 }
+
 img {
   width: 140px;
   height: 120px;
@@ -266,43 +331,61 @@ img {
   object-position: center;
   border-radius: 20px;
 }
+
 td.process {
   width: 170px;
 }
+
 /* Button */
 .btn-process {
   display: grid;
   justify-content: center;
 }
-.icon {
-  font-size: 16px;
-}
-.Edit {
+
+button.Edit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   outline: none;
   border: none;
+  gap: 5px;
   padding: 10px 0px;
   border-radius: 5px;
   width: 170px;
   background-color: #ffcc00;
-  transition: all 0.3s;
   color: black;
   cursor: pointer;
   margin-bottom: 20px;
+  transition: all 0.3s;
 }
-.Edit:hover {
+
+button.Edit:hover {
   background-color: rgb(252, 158, 28);
 }
 
 .Delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   outline: none;
   border: none;
+  gap: 5px;
   padding: 10px 0px;
   border-radius: 5px;
+  width: 170px;
   background-color: rgb(201, 53, 53);
-  transition: all 0.3s;
   color: #fff;
   cursor: pointer;
+  transition: all 0.3s;
 }
+
 .Delete:hover {
   background-color: rgb(167, 6, 6);
+}
+
+td.product-name {
+  color: #008000;
+  width: 30%;
+  padding: 0px 30px;
+  word-wrap: break-word;
 }

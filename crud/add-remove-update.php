@@ -12,8 +12,8 @@ include_once '../db.php';
 
     <!-- ส่วนของ Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="add-remove-update.css">
     <link rel="stylesheet" href="add-remove-update.js">
+    <link rel="stylesheet" href="add-remove-update.css">
 </head>
 
 <body>
@@ -56,7 +56,7 @@ include_once '../db.php';
                     </div>
                     <div class="btn">
                         <button type="submit" name="submit" value="Upload" class="">ยืนยัน</button>
-                        <button type="reset" class="cancel">ล้างข้อมูล</button>
+                        <button type="reset" class="reset">ล้างข้อมูล</button>
                     </div>
                 </form>
             </div>
@@ -69,12 +69,15 @@ include_once '../db.php';
                 <div class="head-name">
                     ระบบเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ
                 </div>
-                <button class="showPopup add"><i class="icon fa-solid fa-plus"></i>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
+                <div class="head-btn">
+                    <button class="cancel" onclick="window.location.href='../ajax.php';"><i class="icon fa-solid fa-xmark"></i>ยกเลิกการเพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
+                    <button class="showPopup add"><i class="icon fa-solid fa-plus"></i>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
+                </div>
             </div>
             <hr>
         </div>
     </div>
-    <div class="main">
+    <div class="main-1">
         <div class="display-crud">
             <table class="crud-display-table">
                 <thead>
@@ -83,6 +86,7 @@ include_once '../db.php';
                         <th>รูปภาพ</th>
                         <th>ชื่อ</th>
                         <th>ประเภท</th>
+                        <th>จำนวนคงเหลือ</th>
                         <th>การดำเนินการ</th>
                     </tr>
                 </thead>
@@ -102,12 +106,15 @@ include_once '../db.php';
                                 <td>
                                     <div class="img"><img src="<?php echo $imageURL ?>" alt=""></div>
                                 </td>
-                                <td><?php echo $row['product_name']; ?></td>
+                                <td class="product-name"><?php echo $row['product_name']; ?></td>
                                 <td><?php echo $row['Type']; ?></td>
+                                <td>
+                                    <p>คงเหลือ : <?php echo $row['amount']; ?></p>
+                                </td>
                                 <td class="process">
                                     <div class="btn-process">
-                                        <button onclick="window.location.href='edit.php?id=<?php echo $row['id']; ?>'" class="Edit"><i class="icon fa-solid fa-pen-to-square"></i>Edit</button>
-                                        <button onclick="window.location.href='delete.php?id=<?php echo $row['id']; ?>'" class="Delete"><i class="icon fa-solid fa-trash"></i>Delete</button>
+                                        <button onclick="window.location.href='edit.php?id=<?php echo $row['id']; ?>'" class="Edit"><i class="icon fa-solid fa-pen-to-square"></i><span>Edit</span></button>
+                                        <button onclick="window.location.href='delete.php?id=<?php echo $row['id']; ?>'" class="Delete"><i class="icon fa-solid fa-trash"></i><span>Delete</span></button>
                                     </div>
                                 </td>
                                 <td>

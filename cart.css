@@ -7,40 +7,38 @@
   font-family: "Noto Sans Thai", sans-serif;
   text-decoration: none;
 }
-div.header {
-  background-color: #d0d3d4;
-  font-size: 28px;
-  text-align: center;
-}
+
 .main-cart {
   display: flex;
   justify-content: center;
-  margin-top: 5%;
+  margin-top: 2.5%;
 }
+
 .table {
   margin: 24px;
   background-color: white;
   border-radius: 20px;
   overflow: hidden;
 }
+
 .cart {
-  width: 1300px;
-  background-color: white;
+  width: 1100px;
   padding: 10px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
+
 /* ส่วนหัวของตาราง */
 .head {
   display: flex;
   justify-content: space-between;
+  border-bottom: 2px solid gray;
 }
+
 .head-name {
   font-size: 24px;
   font-weight: 500;
-  padding-left: 28px;
-  padding-top: 6px;
+  margin-bottom: 5px;
 }
+
 .btn-select {
   border: none;
   border-radius: 5px;
@@ -48,45 +46,57 @@ div.header {
   cursor: pointer;
   background-color: rgb(0, 102, 255);
   padding: 8px 12px;
-  margin-top: 6px;
-  margin-right: 28px;
   color: white;
   transition: all 0.3s;
 }
+
 .btn-select:hover {
   background-color: rgb(0, 69, 173);
 }
-.cart-data {
-  width: 100%;
-  border-collapse: collapse;
+.btn-cancel {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  background-color: rgb(201, 53, 53);
+  padding: 8px 12px;
+  color: white;
+  transition: all 0.3s;
 }
+
+.btn-cancel:hover {
+  background-color: rgb(167, 6, 6);
+}
+
+.cart-data {
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0px;
+}
+
 .cart-data th {
-  background-color: #aeb6bf;
-  color: black;
   font-size: 18px;
   font-weight: bold;
-  border-bottom: 2px solid #eaeded;
-}
-.cart-data tr th {
+  border-bottom: 1px solid gray;
   padding: 10px 0px;
   letter-spacing: 0.1rem;
   vertical-align: top;
 }
 tr.row td {
-  border: 2px solid white;
-}
-tr.row td {
   font-weight: normal;
   text-align: center;
-  border-bottom: 2px solid #eaeded;
+  border-bottom: 1px solid #eaeded;
+  font-size: 16px;
 }
 tr:nth-child(even) {
   background-color: #f2f2f2;
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in-out;
 }
+
 tr:hover td {
   background-color: #d0d3d4;
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in-out;
 }
 img {
   width: 140px;
@@ -94,6 +104,7 @@ img {
   object-fit: fill;
   border-radius: 20px;
 }
+
 input[type="number"] {
   width: 72px;
   height: 36px;
@@ -101,19 +112,18 @@ input[type="number"] {
   outline: none;
   font-weight: bold;
 }
-.product-name {
-  font-size: 24px;
-}
 
 /* Input Date */
 .date {
   display: flex;
   justify-content: center;
 }
+
 label.date {
   font-size: 18px;
   align-items: center;
 }
+
 input[type="datetime-local"] {
   margin-left: 26px;
   padding: 4px 12px;
@@ -133,22 +143,24 @@ input[type="datetime-local"] {
   font-size: 18px;
   margin-top: 25px;
 }
+
 /* Button */
 .fa {
-  margin: 0px 12px;
+  margin: 0px 4px;
 }
 
 td .btn-delete {
-  width: 80%;
-  border: none;
+  align-items: center;
   border-radius: 5px;
+  border: none;
   outline: none;
   cursor: pointer;
   background-color: rgb(238, 64, 64);
-  padding: 8px 12px;
+  padding: 8px 8px;
   color: white;
   transition: 0.3s;
 }
+
 td .btn-delete:hover {
   background-color: rgb(197, 0, 0);
 }
@@ -159,6 +171,7 @@ td .btn-delete:hover {
   justify-content: center;
   margin: 24px 0px;
 }
+
 .submit {
   border: none;
   border-radius: 5px;
@@ -172,9 +185,11 @@ td .btn-delete:hover {
   transition: all 0.3s;
   margin-right: 16px;
 }
+
 .submit:hover {
   background-color: rgb(0, 102, 0);
 }
+
 .delete-all {
   border: none;
   border-radius: 5px;
@@ -188,6 +203,25 @@ td .btn-delete:hover {
   transition: all 0.3s;
   margin-left: 16px;
 }
+
 .delete-all:hover {
   background-color: rgb(167, 6, 6);
+}
+
+
+/* non-select */
+.non-select{
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+}
+.non-select-1{
+  font-size: 48px;
+}
+.non-select-2{
+  margin-top: 10px;
+  font-size: 24px;
+  text-align: center;
+  color: rgb(201, 53, 53);
 }

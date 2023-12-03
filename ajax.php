@@ -14,7 +14,7 @@ require_once 'db.php';
     <link rel="stylesheet" href="ajax.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="ajax.js"></script>
-    <title>Document</title>
+    <title>เว็บไซต์การจัดการวัสดุ อุปกรณ์ และเครื่องมือ</title>
 </head>
 
 <body>
@@ -49,41 +49,56 @@ require_once 'db.php';
                         </a>
                     </li>
                     <li>
-                        <a class="link" href="#">
+                        <a class="link">
                             <i class="icon fa-solid fa-bars"></i>
-                            <span class="text">หมวดหมู่</span>
+                            <span class="text">ประเภท</span>
                             <i class="arrow fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="sb-sub-ul">
                             <li>
-                                <a href="#" onclick="category(this);">
-                                    <span class="text">หมวดวัสดุ</span>
+                                <a onclick="category(this);">
+                                    <span class="text">ประเภทวัสดุ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" onclick="equipment(this);">
-                                    <span class="text">หมวดอุปกรณ์</span>
+                                <a onclick="equipment(this);">
+                                    <span class="text">ประเภทอุปกรณ์</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" onclick="tool(this);">
-                                    <span class="text">หมวดเครื่องมือ</span>
+                                <a onclick="tool(this);">
+                                    <span class="text">ประเภทเครื่องมือ</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a onclick="log()">
-                            <i class="icon fa-solid fa-square-check"></i>
+                        <a class="link">
+                            <i class="fa-solid fa-check-to-slot"></i>
                             <span class="text">รายการตรวจสอบ</span>
+                            <i class="arrow fa-solid fa-chevron-down"></i>
                         </a>
+                        <ul class="sb-sub-ul">
+                            <li>
+                                <a onclick="log()">
+                                    <i class="icon fa-solid fa-square-check"></i>
+                                    <span class="text">ตรวจสอบการขอใช้</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="log()">
+                                    <i class="icon fa-solid fa-square-check"></i>
+                                    <span class="text">ตรวจสอบการจอง</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a>
                             <i class="icon fa-solid fa-screwdriver-wrench"></i>
                             <span class="text">การบำรุงรักษา</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a onclick="loadReport(); clearChangeContent(); changeButtonBackground(this);">
                             <i class="icon fa-solid fa-flag"></i>
@@ -95,33 +110,67 @@ require_once 'db.php';
                     if (isset($_SESSION['admin_login'])) {
                         // ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ
                         echo '<li>
-                        <a href="#" onclick="AdminMode();">
-                            <i class="icon fa-solid fa-flag"></i>
+                        <a class="link">
+                            <i class="fa-solid fa-user-tie"></i></i>
                             <span class="text">สำหรับผู้ดูแล</span>
+                            <i class="arrow fa-solid fa-chevron-down"></i>
                         </a>
+                        <ul class="sb-sub-ul">
+                            <li>
+                                <a href="manage_users.php">
+                                    <i class="fa-solid fa-user-gear"></i>
+                                    <span class="text">แก้ไขชื่อผู้ใช้</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="crud/add-remove-update.php">
+                                    <i class="fa-solid fa-plus-minus"></i>
+                                    <span class="text">เพิ่ม / ลบ /แก้ไข</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="view_report.php">
+                                    <i class="icon fa-solid fa-square-check"></i>
+                                    <span class="text">ดูประวัติการใช้งาน</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>';
                     }
                     ?>
-
                 </ul>
             </div>
         </div>
         <div class="dashborad">
             <!-- แถบบนของ Dashboard -->
-            <div id="modalInfo" class="modal" style="display: none;">
-                <div class="madol-bg"></div>
-                <div class="modal-page">
-                    <h2>รายละเอียด</h2>
-                    <br>
+            <section id="modalInfo" class="modal">
+                <div class="madal-box">
+                    <div class="modal-head">
+                        <p>รายละเอียด</p>
+                        <i id="close" class="close fa-solid fa-x "></i>
+                    </div>
                     <div class="user-info">
                         <div class="user-dropdown">
                             <p class="username"><?php echo $row['firstname'] ?></p>
                             <a href="logout.php" class="sign-out">ออกจากระบบ</a>
-                            <a href="" onclick="closeModal()" class="sign-out">ปิดหน้าต่าง</a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+            <section id="modalInfo" class="modal">
+                <div class="madal-box">
+                    <div class="modal-head">
+                        <p>รายละเอียด</p>
+                        <i id="close" class="close fa-solid fa-x "></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-dropdown">
+                            <p class="username"><?php echo $row['firstname'] ?></p>
+                            <a href="logout.php" class="sign-out">ออกจากระบบ</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <nav>
                 <div class="nav-container">
                     <a href="ajax.php">
@@ -129,116 +178,152 @@ require_once 'db.php';
                     </a>
                     <div class="nav-profile">
                         <div class="nav-profile-user">
-
                         </div>
                     </div>
                     <?php
                     // ตรวจสอบว่ามี session ของผู้ใช้ที่ล็อกอินหรือไม่
                     if (isset($_SESSION['user_login'])) {
                         // ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ
-                        echo '<div onclick="openInfo()" class="info" style="cursor: pointer;">
+                        echo '<div  class="showPopup" style="cursor: pointer;">
                         <img class="profile" src="./test/profile.png" alt="">
                     </div>
                 </div>
             </nav>';
                     } elseif (isset($_SESSION['admin_login'])) {
-                        echo '<div onclick="openInfo()" class="info" style="cursor: pointer;">
+                        echo '<div  class="showPopup" style="cursor: pointer;">
                         <img class="profile" src="./test/profile.png" alt="">
                     </div>
                 </div>
             </nav>';
                     } else {
                         // ถ้าไม่มี session ของผู้ใช้ (ไม่ได้ล็อกอิน) ให้แสดงปุ่ม Default
-                        echo '<button type="button" class=""><a href="login.php">เข้าสู่ระบบ</a></button></nav>';
+                        echo '<button type="button" class="not-login">
+                                <a href="login.php">
+                                    <i class="ilogion fa-solid fa-right-to-bracket"></i>
+                                    <span class="text">เข้าสู่ระบบ</span>
+                                </a>
+                            </button>
+                        </nav>';
                     }
                     ?>
 
                     <!-- ส่วนแสดงเวลา -->
-                    <div class="info-date">
-                        <div class="info1-date">
-                            <div class="info-time">วันที่&nbsp;</div>
-                            <div class="date" id="date"></div>
-                            &nbsp;
-                            <div>เวลา&nbsp;</div>
-                            <div class="time" id="time"></div>
+                    <div class="section-2">
+                        <div class="section-2_1">
+                            <div class="dummy-1">
+                                <div class="info1-date">
+                                    <div class="dt-text">
+                                        <div class="info-time">วันที่&nbsp;</div>
+                                        <div>เวลา&nbsp;</div>
+                                    </div>
+                                    <div class="date-n-time">
+                                        <div class="date" id="date"></div>
+                                        <div class="time" id="time"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-2_2">
+                            <p>HELLO</p>
                         </div>
                     </div>
                     <div class="all-info">
                         วัสดุ อุปกรณ์ เครื่องมือ
                     </div>
                     <!-- ส่วนแสดงตาราง -->
-                    <div class="product">
-                        <div class="display-system">
-                            <table class="display-system-table">
-                                <thead>
-                                    <tr>
-                                        <th>รูปภาพ</th>
-                                        <th>ชื่อ</th>
-                                        <th>ประเภท</th>
-                                        <th>จำนวนคงเหลือ</th>
-                                        <th>สถานะ</th>
-                                        <th>การดำเนินการ</th>
-                                    </tr>
-                                </thead>
-                                <?php
-                                $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
-                                $displayedImages = array();
-                                $imageCount = 0; // ใช้ตัวแปรนับรูปภาพที่แสดง
-                                while ($row = $query->fetch_assoc()) {
-                                    $imageURL = 'test/' . $row['file_name'];
-                                    // ตรวจสอบว่ารูปภาพนี้เคยถูกแสดงแล้วหรือไม่
-                                    if (!in_array($imageURL, $displayedImages)) {
-                                        // เพิ่มรูปภาพลงในตัวแปรที่เก็บรายชื่อรูปภาพที่แสดงแล้ว
-                                        $displayedImages[] = $imageURL;
-                                        $imageCount++; // เพิ่มจำนวนรูปภาพที่แสดงแล้ว
-                                ?>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="img">
-                                                        <img src="<?php echo $imageURL ?>" alt="">
+                    <div class="display-system">
+                        <table class="display-system-table">
+                            <thead>
+                                <tr>
+                                    <th>รูปภาพ</th>
+                                    <th>ชื่อ</th>
+                                    <th>ประเภท</th>
+                                    <th>จำนวนคงเหลือ</th>
+                                    <th>สถานะ</th>
+                                    <th>การดำเนินการ</th>
+                                </tr>
+                            </thead>
+                            <?php
+                            $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
+                            $displayedImages = array();
+                            $imageCount = 0; // ใช้ตัวแปรนับรูปภาพที่แสดง
+                            while ($row = $query->fetch_assoc()) {
+                                $imageURL = 'test/' . $row['file_name'];
+                                // ตรวจสอบว่ารูปภาพนี้เคยถูกแสดงแล้วหรือไม่
+                                if (!in_array($imageURL, $displayedImages)) {
+                                    // เพิ่มรูปภาพลงในตัวแปรที่เก็บรายชื่อรูปภาพที่แสดงแล้ว
+                                    $displayedImages[] = $imageURL;
+                                    $imageCount++; // เพิ่มจำนวนรูปภาพที่แสดงแล้ว
+                            ?>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <img src="<?php echo $imageURL ?>" alt="">
+                                                </div>
+                                            </td>
+                                            <td class="product-name">
+                                                <p><?php echo $row['product_name']; ?></p>
+                                            </td>
+                                            <td><?php echo $row['Type']; ?></td>
+                                            <td>
+                                                <p>คงเหลือ : <?php echo $row['amount']; ?></p>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                if ($row['amount'] >= 50) {
+                                                ?>
+                                                    <div class="status">
+                                                        <div class="ready-to-use">
+                                                            <p>พร้อมใช้งาน</p>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <p><?php echo $row['product_name']; ?></p>
-                                                </td>
-                                                <td>ตรงนี้เรียกข้อมูลประเภท</td>
-                                                <td>
-                                                    <p>คงเหลือ : <?php echo $row['amount']; ?></p>
-                                                </td>
-                                                <td>
-                                                    <p>เดี๋ยวทำเป็นสถานะ ใช้คล้ายกับหน้า LOGIN จำนวนเท่าไหน แสดงเท่าไหน</p>
-                                                </td>
-                                                <td><?php if ($row['amount'] >= 1) {
-                                                    ?>
-                                                        <div class="button">
-                                                            <button onclick="location.href='cart.php?action=add&item=<?= $row['file_name'] ?>'" class="use-it"><i class="icon fa-solid fa-arrow-up"></i>
-                                                                <p>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</p>
-                                                            </button>
+                                                <?php } elseif ($row['amount'] <= 30 && $row['amount'] >= 1) { ?>
+                                                    <div class="status">
+                                                        <div class="moderately">
+                                                            <p>ความพร้อมปานกลาง</p></i>
                                                         </div>
-                                                    <?php } elseif ($row['amount'] <= 0) { ?>
-                                                        <div class="button">
-                                                            <button class="out-of">
-                                                                <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
-                                                                <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p>
-                                                            </button>
+                                                    </div>
+                                                <?php
+                                                } elseif ($row['amount'] == 0) { ?>
+                                                    <div class="status">
+                                                        <div class="not-available">
+                                                            <p>ไม่พร้อมใช้งาน</p></i>
                                                         </div>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                <?php
-                                    }
-                                    // ตรวจสอบว่าเราได้แสดง 10 รูปภาพแล้ว ถ้าเป็นเช่นนั้นให้ออกจากลูป
-                                    if ($imageCount >= 10) {
-                                        break;
-                                    }
+                                                    </div>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
+                                            <td><?php if ($row['amount'] >= 1) {
+                                                ?>
+                                                    <div class="button">
+                                                        <button onclick="location.href='cart.php?action=add&item=<?= $row['file_name'] ?>'" class="use-it"><i class="icon fa-solid fa-arrow-up"></i>
+                                                            <p>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</p>
+                                                        </button>
+                                                    </div>
+                                                <?php } elseif ($row['amount'] <= 0) { ?>
+                                                    <div class="button">
+                                                        <button class="out-of">
+                                                            <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
+                                                            <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p>
+                                                        </button>
+                                                    </div>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                            <?php
                                 }
-                                ?>
-                            </table>
-                        </div>
+                                // ตรวจสอบว่าเราได้แสดง 10 รูปภาพแล้ว ถ้าเป็นเช่นนั้นให้ออกจากลูป
+                                if ($imageCount >= 10) {
+                                    break;
+                                }
+                            }
+                            ?>
+                        </table>
                     </div>
                 </div>
         </div>
@@ -246,9 +331,12 @@ require_once 'db.php';
             <div class="container_1">
                 <div class="footer about">
                     <h2>ศูนย์วิทยาศาสตร์</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla nesciunt nemo, ut quae magni adipisci a error inventore odit aspernatur facilis hic voluptatem tenetur reprehenderit distinctio consequuntur dolorum cupiditate dolor.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla nesciunt nemo, ut quae magni
+                        adipisci a error inventore odit aspernatur facilis hic voluptatem tenetur reprehenderit
+                        distinctio consequuntur dolorum cupiditate dolor.</p>
                     <ul class="footer-about1">
-                        <li class="footer-about2"><a href=""><i class="fa-brands fa-facebook"></i>เพจมหาวิทยาลัย</a></li>
+                        <li class="footer-about2"><a href=""><i class="fa-brands fa-facebook"></i>เพจมหาวิทยาลัย</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="footer-link">
@@ -257,7 +345,8 @@ require_once 'db.php';
                         <li><a onclick="location.reload();">หน้าหลัก</a></li>
                         <li><a onclick="log()">รายการตรวจสอบ</a></li>
                         <li><a>การบำรุงรักษา</a></li>
-                        <li><a onclick="loadReport(); clearChangeContent(); changeButtonBackground(this);">รายงาน</a></li>
+                        <li><a onclick="loadReport(); clearChangeContent(); changeButtonBackground(this);">รายงาน</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="footer-link">
@@ -280,6 +369,20 @@ require_once 'db.php';
 
         <!-- JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.2/dist/js/splide.min.js"></script>
+        <script>
+            // Modal Popup
+            const showPopup = document.querySelector(".showPopup");
+            const modalpopup = document.querySelector(".modal");
+            const closePopup = document.querySelector("#close");
+
+            showPopup.onclick = () => {
+                modalpopup.classList.add("active");
+            };
+
+            closePopup.onclick = () => {
+                modalpopup.classList.remove("active");
+            }
+        </script>
         <script>
             function updateDateTime() {
                 const now = new Date();

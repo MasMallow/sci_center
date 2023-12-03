@@ -66,9 +66,6 @@
     ?>
 
     <!-- Display the items in the cart -->
-    <div class="header">
-        <h3>การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ</h3>
-    </div>
     <div class="main-cart">
         <div class="cart">
             <div class="head">
@@ -76,25 +73,34 @@
                     การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ
                 </div>
                 <div class="select">
-                    <button class="btn-select" onclick="location.href='ajax.php'">เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
+                    <button class="btn-cancel" onclick="location.href='ajax.php'">ยกเลิก</button>
+                    <button class="btn-select" onclick="location.href='ajax.php'">เลือกรายการวัสดุ อุปกรณ์
+                        และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
                 </div>
             </div>
 
             <?php
 
             if (empty($_SESSION['cart'])) {
-                echo '<div class="non-select">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</div>';
+                echo '<div class="non-select">
+                        <div class="non-select-1">
+                        ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่
+                        </div>
+                        <div class="non-select-2">
+                        " กรุณากดปุ่มขวาบนเพื่อเลือกวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่ " 
+                        </div>
+                </div>';
             } else {
                 echo '<form method="post" action="process_return.php">';
-                echo '<div class="table">';
                 echo '<table class="cart-data">';
                 echo '<tr>
-<th>ลำดับ</th>
-<th>รูปภาพ</th>
-<th>ชื่ออุปกรณ์</th>
-<th>จำนวน</th>
-<th>การดำเนินการ</th>
-</tr>';
+                        <th>ลำดับ</th>
+                        <th>รูปภาพ</th>
+                        <th>ชื่ออุปกรณ์</th>
+                        <th>ประเภท</th>
+                        <th>จำนวน</th>
+                        <th>การดำเนินการ</th>
+                    </tr>';
                 $num = 1;
                 foreach ($_SESSION['cart'] as $item) {
                     // Retrieve product details from the database based on the item
@@ -109,26 +115,32 @@
                         echo "<td><p>$num</p></td>";
                         echo '<td><img src="' . $imageURL . '" alt="' . $productName . '"></td>';
                         echo '<td class="product-name">' . $productName . '</td>';
+                        echo '<td class="product-name"><p>ประเภท</p></td>';
+                        // echo '<td class="">' . $Type . '</td>';
                         echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1" ></td>';
-                        echo '<td><a class="btn-delete" href="cart.php?action=remove&item=' . $item . '"><i class="fa fa-trash"></i>ลบรายการที่เลือก</a></td>';
+                        echo '<td>
+                                <a class="btn-delete" href="cart.php?action=remove&item=' . $item . '">
+                                <i class="fa fa-trash"></i>
+                                </a>
+                            </td>';
                         $num++;
                     }
                 }
                 echo '</tr>';
                 echo '</table>';
-                echo '</div>';
             ?>
-                <div class="date">
-                    <label class="date" for="return_date">กรุณาเลือกวันที่และเวลาที่คืนอุปกรณ์ และเครื่องมือ</label>
-                    <input type="datetime-local" name="return_date" required>
-                </div>
-                <div class="firstname">
-                    <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["firstname"]; ?>
-                </div>
+            <div class="date">
+                <label class="date" for="return_date">กรุณาเลือกวันที่และเวลาที่คืนอุปกรณ์ และเครื่องมือ</label>
+                <input type="datetime-local" name="return_date" required>
+            </div>
+            <div class="firstname">
+                <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["firstname"]; ?>
+            </div>
             <?php
                 echo '<div class="btn-section">';
                 echo '<button class="submit" type="submit" name="update">ยืนยัน</button>';
-                echo '<button class="delete-all" onclick="location.href=\'cart.php?action=clear\'">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';                echo '</div>';
+                echo '<button class="delete-all" onclick="location.href=\'cart.php?action=clear\'">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
+                echo '</div>';
                 echo '</form>';
             }
             ?>
