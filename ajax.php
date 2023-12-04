@@ -86,7 +86,7 @@ require_once 'db.php';
                                 </a>
                             </li>
                             <li>
-                                <a onclick="log()">
+                                <a onclick="booking()">
                                     <i class="icon fa-solid fa-square-check"></i>
                                     <span class="text">ตรวจสอบการจอง</span>
                                 </a>
@@ -149,20 +149,7 @@ require_once 'db.php';
                         <p>รายละเอียด</p>
                         <i id="close" class="close fa-solid fa-x "></i>
                     </div>
-                    <div class="user-info">
-                        <div class="user-dropdown">
-                            <p class="username"><?php echo $row['firstname'] ?></p>
-                            <a href="logout.php" class="sign-out">ออกจากระบบ</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section id="modalInfo" class="modal">
-                <div class="madal-box">
-                    <div class="modal-head">
-                        <p>รายละเอียด</p>
-                        <i id="close" class="close fa-solid fa-x "></i>
-                    </div>
+                    <a href="edit_profile.php">แก้ไขข้อมูล</a>
                     <div class="user-info">
                         <div class="user-dropdown">
                             <p class="username"><?php echo $row['firstname'] ?></p>
@@ -176,6 +163,7 @@ require_once 'db.php';
                     <a href="ajax.php">
                         <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span>
                     </a>
+                    <a href="cart.php">ตะกร้า</a>
                     <div class="nav-profile">
                         <div class="nav-profile-user">
                         </div>
@@ -224,14 +212,14 @@ require_once 'db.php';
                             </div>
                         </div>
                         <div class="section-2_2">
-                            <p>HELLO</p>
+                            <a href="booking_log.php">ดูประวัติการจองก่อนยืมใช้</a>
                         </div>
                     </div>
                     <div class="all-info">
                         วัสดุ อุปกรณ์ เครื่องมือ
                     </div>
                     <!-- ส่วนแสดงตาราง -->
-                    <div class="display-system">
+                    <div class="display-system product">
                         <table class="display-system-table">
                             <thead>
                                 <tr>
@@ -258,11 +246,11 @@ require_once 'db.php';
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <div class="img">
+                                                <div class="img ">
                                                     <img src="<?php echo $imageURL ?>" alt="">
                                                 </div>
                                             </td>
-                                            <td class="product-name">
+                                            <td class="product-name ">
                                                 <p><?php echo $row['product_name']; ?></p>
                                             </td>
                                             <td><?php echo $row['Type']; ?></td>
@@ -486,6 +474,20 @@ require_once 'db.php';
             function log() {
                 $.ajax({
                     url: "viewlog.php",
+                    dataType: "html",
+                    success: function(data) {
+                        $(".product").empty().append(data);
+                    },
+                    error: function() {
+                        alert("การโหลดรายงานผิดพลาด");
+                    },
+                });
+            }
+        </script>
+        <script>
+            function booking() {
+                $.ajax({
+                    url: "bookings_list.php",
                     dataType: "html",
                     success: function(data) {
                         $(".product").empty().append(data);
