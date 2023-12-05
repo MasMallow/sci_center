@@ -127,7 +127,6 @@ if ($query->num_rows > 0) {
                             </td>
                         </tr>
                     </tbody>
-
             <?php
                 }
             }

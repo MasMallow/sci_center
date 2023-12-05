@@ -163,11 +163,13 @@ require_once 'db.php';
                     <a href="ajax.php">
                         <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span>
                     </a>
-                    <a href="cart.php">ตะกร้า</a>
-                    <div class="nav-profile">
-                        <div class="nav-profile-user">
-                        </div>
+                    <div class="user-cart">
+                        <a href="cart.php">
+                            <i class="icon-cart fa-solid fa-cart-shopping"></i>
+                            <span>รายการที่เลือกทั้งหมด</span>
+                        </a>
                     </div>
+
                     <?php
                     // ตรวจสอบว่ามี session ของผู้ใช้ที่ล็อกอินหรือไม่
                     if (isset($_SESSION['user_login'])) {
