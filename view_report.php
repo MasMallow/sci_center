@@ -8,8 +8,9 @@
 </head>
 
 <body>
+<a href="ajax.php">กลับหน้าหลัก</a>
     <div class="">
-        <h1 class="">รายงานการยืมสินค้า</h1>
+        <h1 class="">รายงานการยืมอุปกรณ์</h1>
 
         <!-- Form to enter user ID -->
         <form action="report.php" method="GET">

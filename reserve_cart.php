@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <a href="ajax.php">กลับหน้าหลัก</a>
     <?php
     session_start();
     include_once 'db.php';
@@ -51,6 +52,7 @@
 
     <!-- Display items in the reserve cart -->
     <h2>ตะกร้าจองสินค้า</h2>
+    <a href="booking_log.php" style="color: red;">*ตรวจสอบการจองก่อนยืมอุปกรณ์*</a>
 
     <?php
     if (empty($_SESSION['reserve_cart'])) {

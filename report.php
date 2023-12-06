@@ -1,6 +1,10 @@
 <?php
 session_start();
 include_once 'db.php';
+?>
+<a href="ajax.php">กลับหน้าหลัก</a>
+<a href="view_report.php">กลับหน้าดูประวัติการยืม</a>
+<?php
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user_id'])) {
     $user_id = $_GET['user_id'];

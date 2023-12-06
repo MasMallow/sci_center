@@ -38,16 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':role', $role, PDO::PARAM_STR);
         $stmt->execute();
 
-        echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'บัญชีผู้ใช้ได้รับการอัปเดตเรียบร้อยแล้ว',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(function () {
-                    window.location.href = 'manage_users.php';
-                });
-            </script>";
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['success'] = 'บัญชีผู้ใช้ได้รับการอัปเดตเรียบร้อยแล้ว';
+            header('Location: manage_users.php');
+            exit;
+        } else {
+            $_SESSION['error'] = 'ไม่สามารถอัปเดตบัญชีผู้ใช้ได้';
+            // Handle the scenario where the update fails
+        }
     }
 }
 ?>
@@ -74,13 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="phone">phone:</label>
         <input type="text" id="phone" name="phone" value="<?php echo $user['phone']; ?>"><br>
 
-        <label for="role">role:</label>
-        <select name="role" id="role" >
-            <option value="" disabled selected>เลือกคำนำหน้า</option>
-            <option value="อาจารย์">อาจารย์</option>
-            <option value="บุคคลากร">บุคคลากร</option>
-            <option value="ผู้บริหาร">ผู้บริหาร</option>
+        <label for="role">Role:</label>
+        <select name="role" id="role">
+            <option value="" disabled>เลือกคำนำหน้า</option>
+            <option value="อาจารย์" <?php if ($user['role'] === 'อาจารย์') echo 'selected'; ?>>อาจารย์</option>
+            <option value="บุคคลากร" <?php if ($user['role'] === 'บุคคลากร') echo 'selected'; ?>>บุคคลากร</option>
+            <option value="ผู้บริหาร" <?php if ($user['role'] === 'ผู้บริหาร') echo 'selected'; ?>>ผู้บริหาร</option>
         </select>
+
 
         <!-- <label for="password">New Password:</label>
         <input type="password" id="password" name="password" required><br> -->

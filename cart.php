@@ -136,6 +136,7 @@
             <div class="firstname">
                 <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["firstname"]; ?>
             </div>
+            <a href="ajax.php" style="color: red;">*ตรวจสอบการจองก่อนยืมอุปกรณ์*</a>
             <?php
                 echo '<div class="btn-section">';
                 echo '<button class="submit" type="submit" name="update">ยืนยัน</button>';

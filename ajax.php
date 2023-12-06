@@ -169,6 +169,10 @@ require_once 'db.php';
                             <span>รายการที่เลือกทั้งหมด</span>
                         </a>
                     </div>
+                    <a href="reserve_cart.php">
+                        <i class="icon-cart fa-solid fa-cart-shopping"></i>
+                        <span>รายการที่จอง</span>
+                    </a>
 
                     <?php
                     // ตรวจสอบว่ามี session ของผู้ใช้ที่ล็อกอินหรือไม่
