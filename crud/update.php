@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Check if a new image is uploaded
         if (isset($_FILES['file']["name"])) {
-            $targetDir = "../test/"; // เปลี่ยนเป็นชื่อโฟลเดอร์ที่ต้องการ
+            $targetDir = "../uploads/"; // เปลี่ยนเป็นชื่อโฟลเดอร์ที่ต้องการ
             $fileName = basename($_FILES["file"]["name"]);
             $targetFilePath = $targetDir . $fileName;
             $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);

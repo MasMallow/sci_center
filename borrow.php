@@ -52,7 +52,7 @@ if ($query->num_rows > 0) {
             </thead>
             <?php
             while ($row = $query->fetch_assoc()) {
-                $imageURL = 'test/' . $row['file_name'];
+                $imageURL = 'uploads/' . $row['file_name'];
                 if (!in_array($imageURL, $displayedImages)) {
                     $displayedImages[] = $imageURL;
             ?>

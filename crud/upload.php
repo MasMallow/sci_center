@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && iss
     $quantity = $_POST['quantity'];
     $productName = $_POST['product_name'];
 
-    $targetDir = "../test/"; // เปลี่ยนเป็นชื่อโฟลเดอร์ที่ต้องการ
+    $targetDir = "../uploads/"; // เปลี่ยนเป็นชื่อโฟลเดอร์ที่ต้องการ
 
     $fileName = basename($_FILES["file"]["name"]);
     $targetFilePath = $targetDir . $fileName;

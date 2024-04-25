@@ -179,13 +179,13 @@ require_once 'db.php';
                     if (isset($_SESSION['user_login'])) {
                         // ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ
                         echo '<div  class="showPopup" style="cursor: pointer;">
-                        <img class="profile" src="./test/profile.png" alt="">
+                        <img class="profile" src="./uploads/profile.png" alt="">
                     </div>
                 </div>
             </nav>';
                     } elseif (isset($_SESSION['admin_login'])) {
                         echo '<div  class="showPopup" style="cursor: pointer;">
-                        <img class="profile" src="./test/profile.png" alt="">
+                        <img class="profile" src="./uploads/profile.png" alt="">
                     </div>
                 </div>
             </nav>';
@@ -242,7 +242,7 @@ require_once 'db.php';
                             $displayedImages = array();
                             $imageCount = 0; // ใช้ตัวแปรนับรูปภาพที่แสดง
                             while ($row = $query->fetch_assoc()) {
-                                $imageURL = 'test/' . $row['file_name'];
+                                $imageURL = 'uploads/' . $row['file_name'];
                                 // ตรวจสอบว่ารูปภาพนี้เคยถูกแสดงแล้วหรือไม่
                                 if (!in_array($imageURL, $displayedImages)) {
                                     // เพิ่มรูปภาพลงในตัวแปรที่เก็บรายชื่อรูปภาพที่แสดงแล้ว
@@ -380,9 +380,9 @@ require_once 'db.php';
         <script>
             function updateDateTime() {
                 const now = new Date();
-                const dateString = now.toLocaleDateString();
+                const dauploadsring = now.toLocaleDauploadsring();
                 const timeString = now.toLocaleTimeString();
-                document.getElementById("date").textContent = dateString;
+                document.getElementById("date").textContent = dauploadsring;
                 document.getElementById("time").textContent = timeString;
             }
             setInterval(updateDateTime, 1000);

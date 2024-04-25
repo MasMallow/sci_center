@@ -109,7 +109,7 @@
                     $query->execute();
                     $product = $query->fetch(PDO::FETCH_ASSOC);
                     $productName = $product['product_name'];
-                    $imageURL = 'test/' . $product['file_name'];
+                    $imageURL = 'uploads/' . $product['file_name'];
                     if (file_exists($imageURL)) {
                         echo '<tr class="row">';
                         echo "<td><p>$num</p></td>";

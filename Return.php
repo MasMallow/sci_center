@@ -9,7 +9,7 @@ if (isset($_SESSION['user_login'])) {
 }
 
 $stmt = $conn->prepare("
-    SELECT DISTINCT bh.product_name, MAX(bh.borrow_date) AS latest_borrow_date, MAX(rh.In_return_date) AS latest_return_date
+    SELECT DISTINCT bh.product_name, MAX(bh.borrow_date) AS lauploads_borrow_date, MAX(rh.In_return_date) AS lauploads_return_date
     FROM borrow_history bh
     LEFT JOIN return_history rh ON bh.product_name = rh.product_name AND bh.user_id = rh.user_id
     WHERE bh.user_id = :user_id
@@ -46,12 +46,12 @@ $borrowHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     ?>
                     <tr>
                         <td><?php echo $product['product_name']; ?></td>
-                        <td><?php echo $product['latest_borrow_date']; ?></td>
-                        <td><?php echo $product['latest_return_date']; ?></td>
+                        <td><?php echo $product['lauploads_borrow_date']; ?></td>
+                        <td><?php echo $product['lauploads_return_date']; ?></td>
                         <td>
                             <?php
-                            $borrow_date = strtotime($product['latest_borrow_date']);
-                            $return_date = strtotime($product['latest_return_date']);
+                            $borrow_date = strtotime($product['lauploads_borrow_date']);
+                            $return_date = strtotime($product['lauploads_return_date']);
 
                             if ($return_date <= $borrow_date || $return_date === false) {
                                 echo '<input type="checkbox" name="return_item[]" value="' . $product['product_name'] . '">';
@@ -64,8 +64,8 @@ $borrowHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Check if there are items to return before showing the submit button
                 $itemsToReturn = array_filter($borrowHistory, function ($item) {
-                    $borrow_date = strtotime($item['latest_borrow_date']);
-                    $return_date = strtotime($item['latest_return_date']);
+                    $borrow_date = strtotime($item['lauploads_borrow_date']);
+                    $return_date = strtotime($item['lauploads_return_date']);
 
                     return ($return_date <= $borrow_date || $return_date === false);
                 });

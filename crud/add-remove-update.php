@@ -97,7 +97,7 @@ include_once '../db.php';
                     $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
                     if ($query) {
                         while ($row = $query->fetch_assoc()) {
-                            $imageURL = '../test/' . $row['file_name'];
+                            $imageURL = '../uploads/' . $row['file_name'];
                     ?>
                             <tr>
                                 <td>

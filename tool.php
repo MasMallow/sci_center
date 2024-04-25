@@ -52,7 +52,7 @@ if ($query->num_rows > 0) {
             </thead>
             <?php
             while ($row = $query->fetch_assoc()) {
-                $imageURL = 'test/' . $row['file_name'];
+                $imageURL = 'uploads/' . $row['file_name'];
                 // ตรวจสอบว่ารูปภาพนี้เคยถูกแสดงแล้วหรือไม่
                 if (!in_array($imageURL, $displayedImages)) {
                     // เพิ่มรูปภาพลงในตัวแปรที่เก็บรายชื่อรูปภาพที่แสดงแล้ว

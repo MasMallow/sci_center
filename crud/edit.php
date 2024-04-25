@@ -14,7 +14,7 @@ if (isset($_GET['id'])) {
         $product_name = $row['product_name'];
         $quantity = $row['amount'];
         // $product_type = $row['product_type'];
-        $imageURL = '../test/' . $row['file_name'];
+        $imageURL = '../uploads/' . $row['file_name'];
     } else {
         echo "ไม่พบรายการวัสดุ อุปกรณ์ เครื่องมือที่ต้องการ.";
         exit();
