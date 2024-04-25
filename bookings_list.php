@@ -17,7 +17,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
     $user = $user_query->fetch(PDO::FETCH_ASSOC);
     $firstname = $user['firstname']; // User's first name
 
-    $stmt = $conn->prepare("SELECT * FROM bookings WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM bookings WHERE user_id = :user_id AND reservation_date >= CURDATE()");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);

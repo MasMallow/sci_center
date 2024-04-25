@@ -380,9 +380,12 @@ require_once 'db.php';
         <script>
             function updateDateTime() {
                 const now = new Date();
-                const dauploadsring = now.toLocaleDauploadsring();
+                const day = now.getDate().toString().padStart(2, '0');
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const year = now.getFullYear().toString();
+                const dateString = `${day}/${month}/${year}`;
                 const timeString = now.toLocaleTimeString();
-                document.getElementById("date").textContent = dauploadsring;
+                document.getElementById("date").textContent = dateString;
                 document.getElementById("time").textContent = timeString;
             }
             setInterval(updateDateTime, 1000);

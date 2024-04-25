@@ -4,7 +4,7 @@ $username = "root";
 $password = "";
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=register_system", $username, $password);
+    $conn = new PDO("mysql:host=$servername;dbname=science_center_management", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
@@ -16,7 +16,7 @@ try {
 $dbHost = "localhost";
 $username = "root";
 $password = "";
-$dbname = "register_system";
+$dbname = "science_center_management";
 
 $db = new mysqli($dbHost,$username,$password,$dbname);
 if ($db->connect_error) {
