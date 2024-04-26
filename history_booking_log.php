@@ -1,7 +1,5 @@
-<h1>ประวัติการจอง</h1>
-<h1>*ห้ามยืมอุปกรณ์ที่ถูกจองในวันที่จอง*</h1>
+<h1>ประวัติการจองทั้งหมด</h1>
 <a href="ajax.php">กลับหน้าหลัก</a>
-<a href="history_booking_log.php">ประวัติการจองทั้งหมด</a>
 <br>
 <br>
 <?php
@@ -9,7 +7,7 @@ session_start();
 require_once 'assets/database/connect.php';
 
 try {
-    $sql = "SELECT * FROM bookings WHERE reservation_date >= CURDATE() ORDER BY reservation_date DESC LIMIT 10";
+    $sql = "SELECT * FROM bookings ORDER BY reservation_date DESC LIMIT 10";
     $stmt = $conn->query($sql);
     
     if ($stmt->rowCount() > 0) {

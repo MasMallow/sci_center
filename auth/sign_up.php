@@ -11,11 +11,10 @@ require_once '../assets/database/connect.php';
 <title>สมัครบัญชีผู้ใช้</title>
 
 <!-- ส่วน Link -->
-<link rel="stylesheet" href="Register.css">
-<script src="Register.js"></script>
+<link rel="stylesheet" href="../assets/css/Register.css">
 
 <body>
-    <form action="sign_up_connect.php.php" method="post">
+    <form action="sign_updb.php" method="post">
         <div class="register">
             <!-- PHP -->
             <div class="register-page">
@@ -71,10 +70,11 @@ require_once '../assets/database/connect.php';
                             <label for="">ตำแหน่ง</label>
                             <div class="select">
                                 <select name="role">
-                                    <option value="" disabled selected>เลือกตำแหน่ง</option>
+                                    <option value="" disabled selected>**เลือกตำแหน่ง**</option>
                                     <option value="อาจารย์">อาจารย์</option>
-                                    <option value="บุคคลากร">บุคลากร</option>
+                                    <option value="บุคลากร">บุคลากร</option>
                                     <option value="ผู้บริหาร">ผู้บริหาร</option>
+                                    <option value="เจ้าหน้าที่">เจ้าหน้าที่</option>
                                 </select>
                             </div>
                         </div>
@@ -88,6 +88,20 @@ require_once '../assets/database/connect.php';
                         </div>
                     </div>
                     <div class="col">
+                        <div class="input-box">
+                            <label for="">หน่วยงาน</label>
+                            <select name="Agency">
+                                <option value="" disabled selected>**เลือกหน่วยงาน**</option>
+                                <option value="วิทยาศาสตร์และเทคโนโลยี">คณะวิทยาศาสตร์และเทคโนโลยี</option>
+                                <option value="ครุศาสตร์">คณะครุศาสตร์</option>
+                                <option value="วิทยาการจัดการ">คณะวิทยาการจัดการ</option>
+                                <option value="มนุษยศาสตร์และสังคมศาสตร์">คณะมนุษยศาสตร์และสังคมศาสตร์</option>
+                                <option value="วิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม">คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</option>
+                                <option value="วิทยาลัยการดนตรี">วิทยาลัยการดนตรี</option>
+                                <option value="บัณฑิตวิทยาลัย">บัณฑิตวิทยาลัย</option>
+                                <option value="โรงเรียนสาธิต มบส.">โรงเรียนสาธิต มบส.</option>
+                            </select>
+                        </div>
                         <div class="input-box">
                             <label for="">เบอร์โทรศัพท์</label>
                             <input type="text" class="" placeholder="เช่น 0999999999" name="Numberphone">
@@ -103,7 +117,7 @@ require_once '../assets/database/connect.php';
                         </div>
                         <div class="button-2">
                             <button type="reset" class="reset">เคลียร์</button>
-                            <button class="cancel" type=" reset"">ยกเลิก</button>
+                            <a href="../ajax.php">ยกเลิก</a>
                         </div>
                     </div>
                 </div>

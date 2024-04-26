@@ -9,13 +9,13 @@
 <body>
     <?php
     session_start();
-    require_once 'connect.php';
+    require_once 'assets/database/connect.php';
 
     if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
         $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['admin_login'];
 
         // ดึงข้อมูลเดิมจากฐานข้อมูล
-        $stmt = $db->query("SELECT * FROM users WHERE id =$user_id");
+        $stmt = $conn->query("SELECT * FROM users WHERE id =$user_id");
         $row = $stmt->fetch_assoc();
     ?>
         <form action="update_profile.php" method="post">

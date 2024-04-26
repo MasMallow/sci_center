@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once '../connect.php';
+include_once '../assets/database/connect.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,9 +94,9 @@ include_once '../connect.php';
                 <tbody>
                     <?php
                     $num = 1;
-                    $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
+                    $query = $conn->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
                     if ($query) {
-                        while ($row = $query->fetch_assoc()) {
+                        while ($row = $query->fetch()) {
                             $imageURL = '../uploads/' . $row['file_name'];
                     ?>
                             <tr>

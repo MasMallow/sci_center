@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'connect.php';
+include_once 'assets/database/connect.php';
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
     $stmt = $conn->query("SELECT * FROM users WHERE id =$user_id");

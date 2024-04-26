@@ -1,5 +1,5 @@
 <?php
-include 'conconnect.php'
+include 'conassets/database/connect.php'
     ?>
 <!doctype html>
 <html lang="en">
@@ -17,7 +17,7 @@ include 'conconnect.php'
         <div class="row">
             <?php
             $sql = "SELECT * FROM image ORDER BY id";
-            $result = mysqli_query($db, $sql);
+            $result = mysqli_query($conn, $sql);
             while ($row = mysqli_fetch_array($result)) {
                 $imageURL = '/test' . $row['file_name'];
                     ?>
@@ -28,7 +28,7 @@ include 'conconnect.php'
                     </div>
                     <?php
                 }
-            mysqli_close($db);
+            mysqli_close($conn);
             ?>
         </div>
     </div>

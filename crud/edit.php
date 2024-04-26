@@ -1,16 +1,16 @@
 <?php
 // Include the database connection file
-include_once '../connect.php';
+include_once '../assets/database/connect.php';
 
 // Check if product ID is provided
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Retrieve product information based on the ID
-    $query = $db->query("SELECT * FROM crud WHERE id = $id");
+    $query = $conn->query("SELECT * FROM crud WHERE id = $id");
 
     if ($query->num_rows == 1) {
-        $row = $query->fetch_assoc();
+        $row = $query->fetch();
         $product_name = $row['product_name'];
         $quantity = $row['amount'];
         // $product_type = $row['product_type'];

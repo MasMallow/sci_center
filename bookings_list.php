@@ -1,7 +1,7 @@
 <!-- bookings_list.php -->
 <?php
 session_start();
-include_once 'connect.php';
+include_once 'assets/database/connect.php';
 
 // Fetch user ID and bookings from the database
 if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
