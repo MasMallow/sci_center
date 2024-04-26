@@ -1,30 +1,63 @@
 .header {
-  background-color: rgb(10, 52, 204);
+  background-color: #01bdb6;
   color: white;
   width: 100%;
+  height: 65px;
   top: 0;
   left: 0;
-  padding: 0 16%;
   transition: all 0.5s ease-in-out;
-  height: 65px;
+}
+.header_nav {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
-.header_banner {
-  background-color: #008000;
+.header_nav_banner {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  gap: 1rem;
 }
-.header_banner_img {
+.header_navbanner_img {
   height: 50px;
   width: 50px;
 }
-.header_banner_img img {
+.header_navbanner_img img {
   height: 100%;
   width: 100%;
+}
+.header_navbanner_name .header_navbanner_name-1 {
+  font-size: 1.25rem;
+}
+.header_navbanner_name .header_navbanner_name-2 {
+  font-size: 0.85rem;
+}
+.header_nav_userinfo .header_userinfo_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .8rem;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0.7rem 1rem;
+}
+.header_nav_userinfo .header_userinfo_btn span {
+  font-size: .85rem;
+}
+.header_nav_userinfo .header_userinfo_btn i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background-color: #000;
+  color: #FFF;
 }
 
 /* USER INFO */
@@ -98,8 +131,8 @@
   font-size: 1.1rem;
   margin-bottom: 0.3rem;
 }
-.user-info-content-edit{
-    display: flex;
+.user-info-content-edit {
+  display: flex;
 }
 .user-info-content-edit a {
   font-size: 1rem;
@@ -133,4 +166,31 @@
   text-decoration: none;
   background-color: #005df1;
   color: #fff;
+}
+
+/* Not LogIn */
+.not-login {
+  outline: none;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: black;
+  background-color: white;
+  transition: all 0.1s;
+}
+
+.not-login:hover {
+  border: 1px solid black;
+}
+
+.not-login a {
+  display: flex;
+  align-items: center;
+  color: black;
+}
+
+.not-login .ilogion {
+  font-size: 20px;
+  margin: 0px 5px;
 }

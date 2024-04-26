@@ -37,67 +37,68 @@ require_once 'assets/database/connect.php';
     ?>
 
     <header class="header">
-        <div class="header_banner">
-            <div class="header_banner_img">
-                <img src="assets/logo/scicenter_logo.png">
+        <div class="header_nav">
+            <div class="header_nav_banner">
+                <div class="header_navbanner_img">
+                    <img src="assets/logo/scicenter_logo.png">
+                </div>
+                <div class="header_navbanner_name">
+                    <span id="B" class="header_navbanner_name-1">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span><br>
+                    <span class="header_navbanner_name-2">ศูนย์วิทยาศาสตร์ มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา</span>
+                </div>
             </div>
-            <div class="header_banner_name">
-                <span>ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span><br>
-                <span>ศูนย์วิทยาศาสตร์ มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา</span>
-            </div>
-        </div>
-        <div class="header_navigator"></div>
-        <div class="header_userinfo">
-            <?php if (isset($_SESSION['user_login'])) : ?>
-                <button class="header_userinfo_btn">
-                    <i class="fa-solid fa-user"></i>
-                    <span>
-                        <?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
-                    </span>
-                </button>
-            <?php elseif (isset($_SESSION['admin_login'])) : ?>
-                <button class="header_userinfo_btn">
-                    <i class="fa-solid fa-user"></i>
-                    <span>
-                        <?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
-                    </span>
-                </button>
-            <?php else : ?>
-                <button type="button" class="not-login">
-                    <a href="auth/sign_in.php">
-                        <i class="ilogion fa-solid fa-right-to-bracket"></i>
-                        <span class="text">เข้าสู่ระบบ</span>
-                    </a>
-                </button>
-            <?php endif; ?>
-            <!-- POP-UP ของ USER -->
-            <div class="header_userinfo_modal">
-                <div class="user-info">
-                    <div class="user-info-header">
-                        <span id="B">รายละเอียด</span>
-                        <div class="modalClose" id="close"><i class="fa-solid fa-xmark"></i></div>
-                    </div>
-                    <div class="user-info-content">
-                        <span id="B">รายละเอียดผู้ใช้งาน</span>
-                        <div class="user-info-content-edit">
-                            <span><?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?> </span>
-                            <a href="edit_profile.php">
-                                <i class="fa-solid fa-user-pen"></i>
-                                <span>แก้ไขข้อมูล</span>
-                            </a>
+            <div class="header_navigator"></div>
+            <div class="header_nav_userinfo">
+                <?php if (isset($_SESSION['user_login'])) : ?>
+                    <button class="header_userinfo_btn">
+                        <i class="fa-solid fa-user"></i>
+                        <span>
+                            <?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
+                        </span>
+                    </button>
+                <?php elseif (isset($_SESSION['admin_login'])) : ?>
+                    <button class="header_userinfo_btn">
+                        <i class="fa-solid fa-user"></i>
+                        <span>
+                            <?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
+                        </span>
+                    </button>
+                <?php else : ?>
+                    <button type="button" class="not-login">
+                        <a href="auth/sign_in.php">
+                            <i class="ilogion fa-solid fa-right-to-bracket"></i>
+                            <span class="text">เข้าสู่ระบบ</span>
+                        </a>
+                    </button>
+                <?php endif; ?>
+                <!-- POP-UP ของ USER -->
+                <div class="header_userinfo_modal">
+                    <div class="user-info">
+                        <div class="user-info-header">
+                            <span id="B">รายละเอียด</span>
+                            <div class="modalClose" id="close"><i class="fa-solid fa-xmark"></i></div>
                         </div>
-                    </div>
-                    <div class="user-info-footer">
-                        <span>ออกจากระบบ</span>
-                        <a class="confirm" href="auth/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i><span>ออกจากระบบ</span></a>
+                        <div class="user-info-content">
+                            <span id="B">รายละเอียดผู้ใช้งาน</span>
+                            <div class="user-info-content-edit">
+                                <span><?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?> </span>
+                                <a href="edit_profile.php">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                    <span>แก้ไขข้อมูล</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="user-info-footer">
+                            <span>ออกจากระบบ</span>
+                            <a class="confirm" href="auth/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i><span>ออกจากระบบ</span></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </header>
-    <div class="mainpage">
-        <div class="sidebar">
+    <main class="content">
+        <div class="content_sidebar">
             <div class="head">
                 <div class="user-details">
                     <p class="title"></p>
@@ -114,7 +115,7 @@ require_once 'assets/database/connect.php';
                         <a class="link">
                             <i class="icon fa-solid fa-bars"></i>
                             <span class="text">ประเภท</span>
-                            <i class="arrow fa-solid fa-chevron-down"></i>
+                            <i class="ardata fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="sb-sub-ul">
                             <li>
@@ -138,7 +139,7 @@ require_once 'assets/database/connect.php';
                         <a class="link">
                             <i class="fa-solid fa-check-to-slot"></i>
                             <span class="text">รายการตรวจสอบ</span>
-                            <i class="arrow fa-solid fa-chevron-down"></i>
+                            <i class="ardata fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="sb-sub-ul">
                             <li>
@@ -175,7 +176,7 @@ require_once 'assets/database/connect.php';
                         <a class="link">
                             <i class="fa-solid fa-user-tie"></i></i>
                             <span class="text">สำหรับผู้ดูแล</span>
-                            <i class="arrow fa-solid fa-chevron-down"></i>
+                            <i class="ardata fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="sb-sub-ul">
                             <li>
@@ -203,150 +204,122 @@ require_once 'assets/database/connect.php';
                 </ul>
             </div>
         </div>
-        <div class="dashborad">
-            <nav>
-                <a href="ajax.php">
-                    <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span>
-                </a>
-                <div class="user-cart">
-                    <a href="cart.php">
-                        <i class="icon-cart fa-solid fa-cart-shopping"></i>
-                        <span>รายการที่เลือกทั้งหมด</span>
-                    </a>
+        <div class="content_area">
+            <nav class="content_area_nav">
+                <div class="section_1">
+                    <div class="section_1_btn_1">
+                        <a href="cart.php">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>รายการที่เลือกทั้งหมด</span>
+                        </a>
+                    </div>
+                    <div class="section_1_btn_2">
+                        <a href="reserve_cart.php">
+                            <i class="fa-solid fa-thumbtack"></i>
+                            <span>รายการที่จอง</span>
+                        </a>
+                    </div>
+                    <div class="section_1_btn_3">
+                        <a href="booking_log.php">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <span>ดูประวัติการจองก่อนยืมใช้</span>
+                        </a>
+                    </div>
                 </div>
-                <a href="reserve_cart.php">
-                    <i class="icon-cart fa-solid fa-cart-shopping"></i>
-                    <span>รายการที่จอง</span>
-                </a>
-                <!-- ส่วนแสดงเวลา -->
-                <div class="section-2">
-                    <div class="section-2_1">
-                        <div class="dummy-1">
-                            <div class="info1-date">
-                                <div class="dt-text">
-                                    <div class="info-time">วันที่&nbsp;</div>
-                                    <div>เวลา&nbsp;</div>
+                <div class="section_2">
+                    <div class="date" id="date"></div>
+                    <div class="time" id="time"></div>
+                </div>
+            </nav>
+            <div class="content_area_grid">
+                <?php
+                try {
+                    $query = $conn->query("SELECT * FROM crud ORDER BY uploaded_on DESC LIMIT 30");
+                    $displayedImages = array(); // สร้างอาร์เรย์เพื่อเก็บ URL รูปภาพที่แสดงแล้ว
+                    while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
+                        $imageURL = 'uploads/' . $data['file_name'];
+                        if (!in_array($imageURL, $displayedImages)) { // ตรวจสอบว่า URL รูปภาพนี้ถูกแสดงแล้วหรือไม่
+                            $displayedImages[] = $imageURL; // เพิ่ม URL รูปภาพนี้เข้าไปในอาร์เรย์
+
+                            // แสดงรายการสินค้า
+                ?>
+                            <div class="grid_content">
+                                <div class="grid_content_header">
+                                    <div class="content_img">
+                                        <img src="<?php echo $imageURL ?>" alt="">
+                                    </div>
                                 </div>
-                                <div class="date-n-time">
-                                    <div class="date" id="date"></div>
-                                    <div class="time" id="time"></div>
+                                <div class="content_status">
+                                    <?php
+                                    if ($data['amount'] >= 50) {
+                                    ?>
+                                        <div class="ready-to-use">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            <span id="B">พร้อมใช้งาน</span>
+                                        </div>
+                                    <?php } elseif ($data['amount'] <= 30 && $data['amount'] >= 1) { ?>
+                                        <div class="moderately">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <span id="B">ความพร้อมปานกลาง</span>
+                                        </div>
+                                    <?php } elseif ($data['amount'] == 0) { ?>
+                                        <div class="not-available">
+                                            <i class="fa-solid fa-ban"></i>
+                                            <span id="B">ไม่พร้อมใช้งาน</span>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                                    <div class="grid_content_body">
+                                        <div class="content_name">
+                                            <span id="B">ชื่อ </span><?php echo $data['product_name']; ?>
+                                        </div>
+                                        <div class="content_categories">
+                                            <span id="B">ประเภท </span><?php echo $data['Type']; ?>
+                                        </div>
+                                        <div class="content_amount">
+                                            <span>คงเหลือ : <?php echo $data['amount']; ?></span>
+                                        </div>
+                                    </div>
+                                <div class="grid_content_footer">
+                                    <div class="content_btn">
+                                        <?php
+                                        // แสดงปุ่มขอใช้วัสดุ อุปกรณ์ และเครื่องมือ หรือแสดงข้อความเมื่อสินค้าหมด
+                                        if ($data['amount'] >= 1) {
+                                        ?>
+                                            <div class="button">
+                                                <button onclick="location.href='cart.php?action=add&item=<?= $data['file_name'] ?>'" class="use-it">
+                                                    <i class="icon fa-solid fa-ardata-up"></i>
+                                                    <span>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</ห>
+                                                </button>
+                                            </div>
+                                        <?php } else { ?>
+                                            <div class="button">
+                                                <button class="out-of">
+                                                    <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
+                                                    <span>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</span>
+                                                </button>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="section-2_2">
-                        <a href="booking_log.php">ดูประวัติการจองก่อนยืมใช้</a>
-                    </div>
-                </div>
-                <div class="nav-container">
-                    <div class="all-info">
-                        วัสดุ อุปกรณ์ เครื่องมือ
-                    </div>
-                    <!-- ส่วนแสดงตาราง -->
-                    <div class="display-system product">
-                        <table class="display-system-table">
-                            <thead>
-                                <tr>
-                                    <th>รูปภาพ</th>
-                                    <th>ชื่อ</th>
-                                    <th>ประเภท</th>
-                                    <th>จำนวนคงเหลือ</th>
-                                    <th>สถานะ</th>
-                                    <th>การดำเนินการ</th>
-                                </tr>
-                            </thead>
-                            <?php
-                            $query = $conn->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
-                            $displayedImages = array();
-                            $imageCount = 0; // ใช้ตัวแปรนับรูปภาพที่แสดง
-                            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                                $imageURL = 'uploads/' . $row['file_name'];
-                                // ตรวจสอบว่ารูปภาพนี้เคยถูกแสดงแล้วหรือไม่
-                                if (!in_array($imageURL, $displayedImages)) {
-                                    // เพิ่มรูปภาพลงในตัวแปรที่เก็บรายชื่อรูปภาพที่แสดงแล้ว
-                                    $displayedImages[] = $imageURL;
-                                    $imageCount++; // เพิ่มจำนวนรูปภาพที่แสดงแล้ว
-                            ?>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="img ">
-                                                    <img src="<?php echo $imageURL ?>" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="product-name ">
-                                                <p><?php echo $row['product_name']; ?></p>
-                                            </td>
-                                            <td><?php echo $row['Type']; ?></td>
-                                            <td>
-                                                <p>คงเหลือ : <?php echo $row['amount']; ?></p>
-                                            </td>
-                                            <td>
-                                                <?php
-                                                if ($row['amount'] >= 50) {
-                                                ?>
-                                                    <div class="status">
-                                                        <div class="ready-to-use">
-                                                            <p>พร้อมใช้งาน</p>
-                                                        </div>
-                                                    </div>
-                                                <?php } elseif ($row['amount'] <= 30 && $row['amount'] >= 1) { ?>
-                                                    <div class="status">
-                                                        <div class="moderately">
-                                                            <p>ความพร้อมปานกลาง</p></i>
-                                                        </div>
-                                                    </div>
-                                                <?php
-                                                } elseif ($row['amount'] == 0) { ?>
-                                                    <div class="status">
-                                                        <div class="not-available">
-                                                            <p>ไม่พร้อมใช้งาน</p></i>
-                                                        </div>
-                                                    </div>
-                                                <?php
-                                                }
-                                                ?>
-                                            </td>
-                                            <td><?php if ($row['amount'] >= 1) {
-                                                ?>
-                                                    <div class="button">
-                                                        <button onclick="location.href='cart.php?action=add&item=<?= $row['file_name'] ?>'" class="use-it"><i class="icon fa-solid fa-arrow-up"></i>
-                                                            <p>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</p>
-                                                        </button>
-                                                    </div>
-                                                <?php } elseif ($row['amount'] <= 0) { ?>
-                                                    <div class="button">
-                                                        <button class="out-of">
-                                                            <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
-                                                            <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p>
-                                                        </button>
-                                                    </div>
-                                                <?php
-                                                }
-                                                ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                            <?php
-                                }
-                                // ตรวจสอบว่าเราได้แสดง 10 รูปภาพแล้ว ถ้าเป็นเช่นนั้นให้ออกจากลูป
-                                if ($imageCount >= 10) {
-                                    break;
-                                }
-                            }
-                            ?>
-                        </table>
-                    </div>
-                </div>
+                <?php
+                        }
+                    }
+                } catch (PDOException $e) {
+                    echo 'เกิดข้อผิดพลาด: ' . $e->getMessage();
+                }
+                ?>
+            </div>
+
         </div>
-    </div>
+    </main>
     <footer>
         <div class="container_1">
             <div class="footer about">
                 <h2>ศูนย์วิทยาศาสตร์</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla nesciunt nemo, ut quae magni
-                    adipisci a error inventore odit aspernatur facilis hic voluptatem tenetur reprehenderit
-                    distinctio consequuntur dolorum cupiditate dolor.</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, odit magni odio eaque natus porro rerum neque quaerat corrupti delectus consectetur placeat eveniet illum? Nobis architecto maiores obcaecati tempore iusto.</p>
+
                 <ul class="footer-about1">
                     <li class="footer-about2"><a href=""><i class="fa-brands fa-facebook"></i>เพจมหาวิทยาลัย</a>
                     </li>
@@ -379,155 +352,128 @@ require_once 'assets/database/connect.php';
     <div class="copyright">
         <p>Copyright ©2023 Puwadech and Phisitphong. All Rights Reserved</p>
     </div>
+</body>
 
 
-    <!-- JavaScript -->
-    <script src="assets/js/ajax.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.2/dist/js/splide.min.js"></script>
-    <script>
-        // Modal Popup
-        const showPopup = document.querySelector(".showPopup");
-        const modalpopup = document.querySelector(".modal");
-        const closePopup = document.querySelector("#close");
+<!-- JavaScript -->
+<script src="assets/js/ajax.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.2/dist/js/splide.min.js"></script>
+<script>
+    function category(selectElement) { // เพิ่มพารามิเตอร์ selectElement
+        var selectedValue = selectElement.value;
+        clearChangeContent();
+        $.ajax({
+            url: "bordata.php", // ระบุพาธไปยังสคริปต์ PHP ที่จะประมวลผลข้อมูล
+            dataType: "html", // รูปแบบข้อมูลที่จะโหลด (HTML)
+            success: function(data) {
+                $(".product").empty().append(data); // แทนที่เนื้อหา .change ด้วยข้อมูลที่โหลด
+            },
+            error: function() {
+                alert("การโหลดข้อมูลผิดพลาด");
+            },
+        });
+    }
+</script>
 
-        showPopup.onclick = () => {
-            modalpopup.classList.add("active");
-        };
+<script>
+    function resetSelect() {
+        document.getElementById("mySelect").value = "0"; // Set the value to the default option value
+    }
+</script>
+<script>
+    function searchProducts() {
+        var searchQuery = document.getElementById('searchInput').value;
+        // Perform the search using AJAX
+        $.ajax({
+            url: "search_bordata.php", // Replace with the actual PHP script handling the search
+            type: "GET",
+            data: {
+                search: searchQuery
+            },
+            success: function(data) {
+                // Update the content with the search results
+                $(".bordata").empty().append(data);
+            },
+            error: function() {
+                alert("การค้นหาผิดพลาด");
+            }
+        });
+    }
+</script>
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+<script>
+    function tool() {
+        $.ajax({
+            url: "tool.php",
+            dataType: "html",
+            success: function(data) {
+                $(".product").empty().append(data);
+            },
+            error: function() {
+                alert("การโหลดรายงานผิดพลาด");
+            },
+        });
+    }
+</script>
+<script>
+    function Return() {
+        $.ajax({
+            url: "Return.php",
+            dataType: "html",
+            success: function(data) {
+                $(".product").empty().append(data);
+            },
+            error: function() {
+                alert("การโหลดรายงานผิดพลาด");
+            },
+        });
+    }
+</script>
 
-        closePopup.onclick = () => {
-            modalpopup.classList.remove("active");
-        }
-    </script>
-    <script>
-        function updateDateTime() {
-            const now = new Date();
-            const day = now.getDate().toString().padStart(2, '0');
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const year = now.getFullYear().toString();
-            const dateString = `${day}/${month}/${year}`;
-            const timeString = now.toLocaleTimeString();
-            document.getElementById("date").textContent = dateString;
-            document.getElementById("time").textContent = timeString;
-        }
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
-    </script>
-
-    <script>
-        function category(selectElement) { // เพิ่มพารามิเตอร์ selectElement
-            var selectedValue = selectElement.value;
-            clearChangeContent();
-            $.ajax({
-                url: "borrow.php", // ระบุพาธไปยังสคริปต์ PHP ที่จะประมวลผลข้อมูล
-                dataType: "html", // รูปแบบข้อมูลที่จะโหลด (HTML)
-                success: function(data) {
-                    $(".product").empty().append(data); // แทนที่เนื้อหา .change ด้วยข้อมูลที่โหลด
-                },
-                error: function() {
-                    alert("การโหลดข้อมูลผิดพลาด");
-                },
-            });
-        }
-    </script>
-
-    <script>
-        function resetSelect() {
-            document.getElementById("mySelect").value = "0"; // Set the value to the default option value
-        }
-    </script>
-    <script>
-        function searchProducts() {
-            var searchQuery = document.getElementById('searchInput').value;
-            // Perform the search using AJAX
-            $.ajax({
-                url: "search_borrow.php", // Replace with the actual PHP script handling the search
-                type: "GET",
-                data: {
-                    search: searchQuery
-                },
-                success: function(data) {
-                    // Update the content with the search results
-                    $(".borrow").empty().append(data);
-                },
-                error: function() {
-                    alert("การค้นหาผิดพลาด");
-                }
-            });
-        }
-    </script>
-    <!-- partial -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
-    <script>
-        function tool() {
-            $.ajax({
-                url: "tool.php",
-                dataType: "html",
-                success: function(data) {
-                    $(".product").empty().append(data);
-                },
-                error: function() {
-                    alert("การโหลดรายงานผิดพลาด");
-                },
-            });
-        }
-    </script>
-    <script>
-        function Return() {
-            $.ajax({
-                url: "Return.php",
-                dataType: "html",
-                success: function(data) {
-                    $(".product").empty().append(data);
-                },
-                error: function() {
-                    alert("การโหลดรายงานผิดพลาด");
-                },
-            });
-        }
-    </script>
-
-    <script>
-        function equipment() {
-            $.ajax({
-                url: "equipment.php",
-                dataType: "html",
-                success: function(data) {
-                    $(".product").empty().append(data);
-                },
-                error: function() {
-                    alert("การโหลดรายงานผิดพลาด");
-                },
-            });
-        }
-    </script>
-    <script>
-        function log() {
-            $.ajax({
-                url: "viewlog.php",
-                dataType: "html",
-                success: function(data) {
-                    $(".product").empty().append(data);
-                },
-                error: function() {
-                    alert("การโหลดรายงานผิดพลาด");
-                },
-            });
-        }
-    </script>
-    <script>
-        function booking() {
-            $.ajax({
-                url: "bookings_list.php",
-                dataType: "html",
-                success: function(data) {
-                    $(".product").empty().append(data);
-                },
-                error: function() {
-                    alert("การโหลดรายงานผิดพลาด");
-                },
-            });
-        }
-    </script>
+<script>
+    function equipment() {
+        $.ajax({
+            url: "equipment.php",
+            dataType: "html",
+            success: function(data) {
+                $(".product").empty().append(data);
+            },
+            error: function() {
+                alert("การโหลดรายงานผิดพลาด");
+            },
+        });
+    }
+</script>
+<script>
+    function log() {
+        $.ajax({
+            url: "viewlog.php",
+            dataType: "html",
+            success: function(data) {
+                $(".product").empty().append(data);
+            },
+            error: function() {
+                alert("การโหลดรายงานผิดพลาด");
+            },
+        });
+    }
+</script>
+<script>
+    function booking() {
+        $.ajax({
+            url: "bookings_list.php",
+            dataType: "html",
+            success: function(data) {
+                $(".product").empty().append(data);
+            },
+            error: function() {
+                alert("การโหลดรายงานผิดพลาด");
+            },
+        });
+    }
+</script>
 </body>
 
 </html>

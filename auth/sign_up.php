@@ -11,11 +11,11 @@ require_once '../assets/database/connect.php';
 <title>สมัครบัญชีผู้ใช้</title>
 
 <!-- ส่วน Link -->
-<link rel="stylesheet" href="Register.css">
+<link rel="stylesheet" href="../assets/css/Register.css">
 <script src="Register.js"></script>
 
 <body>
-    <form action="sign_up_connect.php.php" method="post">
+    <form action="../authProcess/sign_up.php" method="post">
         <div class="register">
             <!-- PHP -->
             <div class="register-page">
