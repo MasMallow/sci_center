@@ -203,41 +203,41 @@ require_once 'assets/database/connect.php';
                 </ul>
             </div>
         </div>
-        <a href="ajax.php">
-            <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span>
-        </a>
-        <div class="user-cart">
-            <a href="cart.php">
-                <i class="icon-cart fa-solid fa-cart-shopping"></i>
-                <span>รายการที่เลือกทั้งหมด</span>
-            </a>
-        </div>
-        <a href="reserve_cart.php">
-            <i class="icon-cart fa-solid fa-cart-shopping"></i>
-            <span>รายการที่จอง</span>
-        </a>
-        <!-- ส่วนแสดงเวลา -->
-        <div class="section-2">
-            <div class="section-2_1">
-                <div class="dummy-1">
-                    <div class="info1-date">
-                        <div class="dt-text">
-                            <div class="info-time">วันที่&nbsp;</div>
-                            <div>เวลา&nbsp;</div>
-                        </div>
-                        <div class="date-n-time">
-                            <div class="date" id="date"></div>
-                            <div class="time" id="time"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="section-2_2">
-                <a href="booking_log.php">ดูประวัติการจองก่อนยืมใช้</a>
-            </div>
-        </div>
         <div class="dashborad">
             <nav>
+                <a href="ajax.php">
+                    <span class="head-name">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span>
+                </a>
+                <div class="user-cart">
+                    <a href="cart.php">
+                        <i class="icon-cart fa-solid fa-cart-shopping"></i>
+                        <span>รายการที่เลือกทั้งหมด</span>
+                    </a>
+                </div>
+                <a href="reserve_cart.php">
+                    <i class="icon-cart fa-solid fa-cart-shopping"></i>
+                    <span>รายการที่จอง</span>
+                </a>
+                <!-- ส่วนแสดงเวลา -->
+                <div class="section-2">
+                    <div class="section-2_1">
+                        <div class="dummy-1">
+                            <div class="info1-date">
+                                <div class="dt-text">
+                                    <div class="info-time">วันที่&nbsp;</div>
+                                    <div>เวลา&nbsp;</div>
+                                </div>
+                                <div class="date-n-time">
+                                    <div class="date" id="date"></div>
+                                    <div class="time" id="time"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-2_2">
+                        <a href="booking_log.php">ดูประวัติการจองก่อนยืมใช้</a>
+                    </div>
+                </div>
                 <div class="nav-container">
                     <div class="all-info">
                         วัสดุ อุปกรณ์ เครื่องมือ
