@@ -1,5 +1,5 @@
 <?php
-include_once 'db.php';
+include_once 'connect.php';
 
 // SQL query to get the top 10 borrowed products
 $query = $db->query("

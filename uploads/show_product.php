@@ -1,5 +1,5 @@
 <?php
-include 'condb.php'
+include 'conconnect.php'
     ?>
 <!doctype html>
 <html lang="en">

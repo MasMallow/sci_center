@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'db.php';
+include_once 'connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_ids'])) {
     $booking_ids = $_POST['booking_ids'];

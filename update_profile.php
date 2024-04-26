@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db.php';
+require_once 'connect.php';
 if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['admin_login'];
 

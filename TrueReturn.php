@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'db.php';
+include_once 'connect.php';
 
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];

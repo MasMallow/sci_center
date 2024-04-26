@@ -1,5 +1,5 @@
 <?php
-include_once '../db.php';
+include_once '../connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['id'], $_POST['product_name'], $_POST['quantity'], $_POST['product_type'])) {

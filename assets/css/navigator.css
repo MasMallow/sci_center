@@ -1,0 +1,136 @@
+.header {
+  background-color: rgb(10, 52, 204);
+  color: white;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 0 16%;
+  transition: all 0.5s ease-in-out;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.header_banner {
+  background-color: #008000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.header_banner_img {
+  height: 50px;
+  width: 50px;
+}
+.header_banner_img img {
+  height: 100%;
+  width: 100%;
+}
+
+/* USER INFO */
+@keyframes movingY {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+.header_userinfo_modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* เพิ่ม z-index ให้มีค่าสูงกว่าลิเรียนท์อื่น */
+}
+.user-info {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
+  animation: movingY 0.3s;
+  z-index: 10000; /* เพิ่ม z-index*/
+}
+.user-info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1.2px solid gray;
+  font-size: 1.5rem;
+  color: #000;
+  font-family: Sarabun-bold;
+}
+.user-info-header #close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #e6e6e6;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.user-info-header #close i {
+  font-size: 12px;
+  color: #525151;
+}
+.user-info-header #close:hover {
+  background-color: #d1d1d1;
+}
+.user-info-content {
+  padding: 0rem 1.1rem;
+  color: #000;
+}
+.user-info-content span {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.user-info-content-edit{
+    display: flex;
+}
+.user-info-content-edit a {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border-radius: 6px;
+  padding: 0.4rem 1.5rem;
+  text-decoration: none;
+  background-color: #005df1;
+  color: #fff;
+}
+.user-info-footer {
+  margin: 1rem 0;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.user-info-footer .confirm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  padding: 0.4rem 1.5rem;
+  text-decoration: none;
+  background-color: #005df1;
+  color: #fff;
+}

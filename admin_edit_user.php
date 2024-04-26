@@ -2,12 +2,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php
 session_start();
-require_once 'db.php';
+require_once 'connect.php';
 
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['admin_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: login.php');
+    header('Location: sign_in.php');
     exit;
 }
 

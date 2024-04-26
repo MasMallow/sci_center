@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db.php';
+require_once '../assets/database/connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ require_once 'db.php';
 <script src="Register.js"></script>
 
 <body>
-    <form action="signup-db.php" method="post">
+    <form action="sign_up_connect.php.php" method="post">
         <div class="register">
             <!-- PHP -->
             <div class="register-page">

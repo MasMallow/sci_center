@@ -14,7 +14,7 @@
 <body>
 <?php
 session_start();
-include_once 'db.php';
+include_once 'connect.php';
 // Check if cart session exists, create one if not
 if (!isset($_SESSION['cart'])) {
 $_SESSION['cart'] = [];
@@ -46,7 +46,7 @@ exit;
 // Check if the user is logged in
 if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
 $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-header('Location: login.php');
+header('Location: sign_in.php');
 exit;
 }
 

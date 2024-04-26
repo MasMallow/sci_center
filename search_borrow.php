@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="ajax.css">
 
 <?php
-include_once 'db.php';
+include_once 'connect.php';
 $query = $db->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
 if ($query->num_rows > 0) {
     // สร้างตัวแปรเพื่อเก็บรายชื่อรูปภาพที่แสดงแล้ว

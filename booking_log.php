@@ -5,7 +5,7 @@
 <br>
 <?php
 session_start();
-require_once 'db.php';
+require_once 'connect.php';
                             $sql = "SELECT * FROM bookings ORDER BY reservation_date DESC LIMIT 10";
                             $result = $db->query($sql);
                             

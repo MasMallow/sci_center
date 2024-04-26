@@ -12,7 +12,7 @@
     <a href="ajax.php">กลับหน้าหลัก</a>
     <?php
     session_start();
-    include_once 'db.php';
+    include_once 'connect.php';
 
     // Check if cart session exists, create one if not
     if (!isset($_SESSION['reserve_cart'])) {

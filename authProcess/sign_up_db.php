@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db.php';
+require_once '../assets/database/connect.php';
 
 if (isset($_POST['signup'])) {
     $Username = $_POST['Username'];
@@ -15,40 +15,40 @@ if (isset($_POST['signup'])) {
 
     if (empty($Username)) {
         $_SESSION['error1'] = 'กรุณากรอก Username';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (strlen($Username) < 6) {
         $_SESSION['error1'] = 'Username ต้องมีความยาวระหว่าง 6';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (empty($Password)) {
         $_SESSION['error1'] = 'กรุณากรอกรหัสผ่าน';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (strlen($Password) > 12 || strlen($Password) < 8) {
         $_SESSION['error1'] = 'รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 12 ตัวอักษร';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/', $Password) || !preg_match('/[a-zA-Z\d]/', $Password)) {
         $_SESSION['error1'] = 'รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (empty($ConfirmPassword)) {
         $_SESSION['error1'] = 'กรุณายืนยันรหัสผ่าน';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif ($Password != $ConfirmPassword) {
         $_SESSION['error1'] = 'รหัสผ่านไม่ตรงกัน';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (empty($role)) {
         $_SESSION['error1'] = 'กรุณาเลือกตำแหน่งของคุณ';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (empty($firstname)) {
         $_SESSION['error1'] = 'กรุณากรอกชื่อ';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (empty($lastname)) {
         $_SESSION['error1'] = 'กรุณากรอกนามสกุล';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (empty($Numberphone)) {
         $_SESSION['error1'] = 'กรุณาใส่เบอร์โทรของคุณ';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } elseif (empty($Lineid)) {
         $_SESSION['error1'] = 'กรุณาใส่ไอดี Line ของคุณ';
-        header("location:Register.php");
+        header("location:sign_up.php");
     } else {
         try {
             $check_lineid = $conn->prepare("SELECT lineid FROM users WHERE lineid  = :lineid");
@@ -58,10 +58,10 @@ if (isset($_POST['signup'])) {
 
             if (isset($row['lineid']) && $row['lineid'] == $Lineid) {
                 $_SESSION['warning'] = "ไอดี Line นี้มีอยู่ในระบบแล้ว";
-                header("location:Register.php");
+                header("location:sign_up.php");
             } elseif (isset($row['username']) && $row['username'] == $Username) {
-                $_SESSION['warning'] = "Username นี้มีอยู่ในระบบแล้ว <a href='../login.php'>คลิกที่นี่</a>เพื่อเข้าสู่ระบบ";
-                header("location:Register.php");
+                $_SESSION['warning'] = "Username นี้มีอยู่ในระบบแล้ว <a href='../sign_in.php'>คลิกที่นี่</a>เพื่อเข้าสู่ระบบ";
+                header("location:sign_up.php");
             } elseif (!isset($_SESSION['error'])) {
                 $passwordHash = password_hash($Password, PASSWORD_DEFAULT);
                 $stmt = $conn->prepare("INSERT INTO users (username, firstname, lastname, lineid, password, urole, role, phone)
@@ -76,10 +76,10 @@ if (isset($_POST['signup'])) {
                 $stmt->bindParam(":Phone", $Numberphone);
                 $stmt->execute();
                 $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว <a href='login.html' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";
-                header("location:Register.php");
+                header("location:sign_up.php");
             } else {
                 $_SESSION['error'] = "มีบางอย่างผิดผลาด";
-                header("location:Register.php");
+                header("location:sign_up.php");
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
