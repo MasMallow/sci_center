@@ -2,9 +2,9 @@
 <link rel="stylesheet" href="ajax.css">
 
 <?php
-include_once 'connect.php';
-$query = $db->query("SELECT * FROM crud WHERE Type = 'อุปกรณ์' ORDER BY uploaded_on DESC");
-if ($query->num_rows > 0) {
+include_once 'assets/database/connect.php';
+$query = $conn->query("SELECT * FROM crud WHERE Type = 'อุปกรณ์' ORDER BY uploaded_on DESC");
+if ($query->rowCount() > 0) {
     // สร้างตัวแปรเพื่อเก็บรายชื่อรูปภาพที่แสดงแล้ว
     $displayedImages = array();
 ?>
@@ -24,13 +24,13 @@ if ($query->num_rows > 0) {
     // Check if a search query is provided
     if (isset($_GET['search'])) {
         $search_query = $_GET['search'];
-        $query = $db->query("SELECT * FROM crud WHERE product_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
+        $query = $conn->query("SELECT * FROM crud WHERE product_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
     } else {
         // No search query, display all images
-        $query = $db->query("SELECT * FROM crud WHERE Type = 'อุปกรณ์' ORDER BY uploaded_on DESC");
+        $query = $conn->query("SELECT * FROM crud WHERE Type = 'อุปกรณ์' ORDER BY uploaded_on DESC");
     }
 
-    if ($query->num_rows > 0) {
+    if ($query->rowCount() > 0) {
         // ... Rest of the code to display images ...
     } else {
         echo "<p>No image found...</p>";
@@ -51,7 +51,7 @@ if ($query->num_rows > 0) {
                 </tr>
             </thead>
             <?php
-            while ($row = $query->fetch_assoc()) {
+            while ($row = $query->fetch()) {
                 $imageURL = 'uploads/' . $row['file_name'];
                 if (!in_array($imageURL, $displayedImages)) {
                     $displayedImages[] = $imageURL;

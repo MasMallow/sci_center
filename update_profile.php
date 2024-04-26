@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'connect.php';
+require_once 'assets/database/connect.php';
 if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['admin_login'];
 
@@ -22,13 +22,13 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
     // อัปเดตข้อมูลในฐานข้อมูล
     $sql = "UPDATE users SET firstname='$firstname', lastname='$lastname', urole='$urole', username='$newUsername' $passwordUpdateQuery WHERE id=$user_id";
 
-    if ($db->query($sql) === TRUE) {
+    if ($conn->query($sql) === TRUE) {
         echo "Record updated successfully";
     } else {
-        echo "Error updating record: " . $db->error;
+        echo "Error updating record: " . $conn->error;
     }
 
-    $db->close();
+    $conn->close();
 } else {
     echo "You are not logged in!";
 }

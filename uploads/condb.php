@@ -2,10 +2,10 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "testshop";
+$connname = "testshop";
 
 // Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+$conn = mysqli_connect($servername, $username, $password, $connname);
 
 // Check connection
 if (!$conn) {
@@ -14,14 +14,14 @@ if (!$conn) {
 // echo "Connected successfully";
 ?>
 <?php
-$dbHost = "localhost";
+$connHost = "localhost";
 $username = "root";
 $password = "";
-$dbname = "upload_image";
+$connname = "upload_image";
 
-$db = new mysqli($dbHost,$username,$password,$dbname);
-if ($db->connect_error) {
-    die("Connection error: " . $db->connect_error);
+$conn = new mysqli($connHost,$username,$password,$connname);
+if ($conn->connect_error) {
+    die("Connection error: " . $conn->connect_error);
 }
 // echo "Connected successfully";
 ?>

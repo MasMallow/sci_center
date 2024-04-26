@@ -2,7 +2,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php
 session_start();
-require_once 'connect.php';
+require_once 'assets/database/connect.php';
 
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['admin_login'])) {
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <select name="role" id="role">
             <option value="" disabled>เลือกคำนำหน้า</option>
             <option value="อาจารย์" <?php if ($user['role'] === 'อาจารย์') echo 'selected'; ?>>อาจารย์</option>
-            <option value="บุคคลากร" <?php if ($user['role'] === 'บุคคลากร') echo 'selected'; ?>>บุคคลากร</option>
+            <option value="บุคลากร" <?php if ($user['role'] === 'บุคลากร') echo 'selected'; ?>>บุคลากร</option>
             <option value="ผู้บริหาร" <?php if ($user['role'] === 'ผู้บริหาร') echo 'selected'; ?>>ผู้บริหาร</option>
         </select>
 

@@ -12,7 +12,7 @@
 <body>
 <?php
 session_start();
-include_once 'connect.php';
+include_once 'assets/database/connect.php';
 // Check if cart session exists, create one if not
 if (!isset($_SESSION['cart'])) {
 $_SESSION['cart'] = [];

@@ -1,5 +1,5 @@
 <?php
-include_once '../connect.php';
+include_once '../assets/database/connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && isset($_POST['quantity']) && isset($_POST['product_name'])) {
     $productType = $_POST['productType'];
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && iss
     // ทำการอัปโหลดไฟล์
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
         // เพิ่มข้อมูลลงในฐานข้อมูล
-        $insert = $db->query("INSERT INTO crud (product_name, file_name, uploaded_on, status, amount, Type) VALUES ('$productName', '$fileName', NOW(), 1, '$quantity', '$productType')");
+        $insert = $conn->query("INSERT INTO crud (product_name, file_name, uploaded_on, status, amount, Type) VALUES ('$productName', '$fileName', NOW(), 1, '$quantity', '$productType')");
 
         if ($insert) {
             header("Location: add-remove-update.php");

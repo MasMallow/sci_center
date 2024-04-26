@@ -8,7 +8,7 @@
 <body>
 <?php
 session_start();
-include_once 'connect.php';
+include_once 'assets/database/connect.php';
 
 if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';

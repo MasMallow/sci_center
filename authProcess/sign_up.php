@@ -11,6 +11,7 @@ if (isset($_POST['signup'])) {
     $role = $_POST['role'];
     $Lineid = $_POST['Lineid'];
     $Numberphone = $_POST['Numberphone'];
+    $Agency = $_POST['Agency'];
     $urole = 'user';
 
     if (empty($Username)) {
@@ -46,8 +47,14 @@ if (isset($_POST['signup'])) {
     } elseif (empty($Numberphone)) {
         $_SESSION['error1'] = 'กรุณาใส่เบอร์โทรของคุณ';
         header("location:sign_up.php");
+    } elseif (!is_numeric($Numberphone)) {
+        $_SESSION['error1'] = 'กรุณาใส่เบอร์โทรให้เป็นตัวเลขเท่านั้น';
+        header("location:sign_up.php");
     } elseif (empty($Lineid)) {
         $_SESSION['error1'] = 'กรุณาใส่ไอดี Line ของคุณ';
+        header("location:sign_up.php");
+    } elseif (empty($Agency)) {
+        $_SESSION['error1'] = 'กรุณาใส่หน่วยงาน';
         header("location:sign_up.php");
     } else {
         try {
@@ -64,8 +71,8 @@ if (isset($_POST['signup'])) {
                 header("location:sign_up.php");
             } elseif (!isset($_SESSION['error'])) {
                 $passwordHash = password_hash($Password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("INSERT INTO users (username, firstname, lastname, lineid, password, urole, role, phone)
-                VALUES (:Username, :Firstname, :Lastname, :Lineid, :Password, :Urole, :Role, :Phone)");
+                $stmt = $conn->prepare("INSERT INTO users (username, firstname, lastname, lineid, password, urole, role, phone, agency)
+                VALUES (:Username, :Firstname, :Lastname, :Lineid, :Password, :Urole, :Role, :Phone, :Agency)");
                 $stmt->bindParam(":Username", $Username);
                 $stmt->bindParam(":Firstname", $firstname);
                 $stmt->bindParam(":Lastname", $lastname);
@@ -74,8 +81,9 @@ if (isset($_POST['signup'])) {
                 $stmt->bindParam(":Urole", $urole);
                 $stmt->bindParam(":Role", $role);
                 $stmt->bindParam(":Phone", $Numberphone);
+                $stmt->bindParam(":Agency", $Agency);
                 $stmt->execute();
-                $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว <a href='login.html' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";
+                $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว <a href='sign_in.php' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";
                 header("location:sign_up.php");
             } else {
                 $_SESSION['error'] = "มีบางอย่างผิดผลาด";
