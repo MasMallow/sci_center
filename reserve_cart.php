@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <a href="ajax.php">กลับหน้าหลัก</a>
+    <a href="index.php">กลับหน้าหลัก</a>
     <?php
     session_start();
     include_once 'assets/database/connect.php';

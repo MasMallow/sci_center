@@ -73,8 +73,8 @@
                     การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ
                 </div>
                 <div class="select">
-                    <button class="btn-cancel" onclick="location.href='ajax.php'">ยกเลิก</button>
-                    <button class="btn-select" onclick="location.href='ajax.php'">เลือกรายการวัสดุ อุปกรณ์
+                    <button class="btn-cancel" onclick="location.href='index.php'">ยกเลิก</button>
+                    <button class="btn-select" onclick="location.href='index.php'">เลือกรายการวัสดุ อุปกรณ์
                         และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
                 </div>
             </div>
@@ -136,7 +136,7 @@
             <div class="firstname">
                 <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["firstname"]; ?>
             </div>
-            <a href="ajax.php" style="color: red;">*ตรวจสอบการจองก่อนยืมอุปกรณ์*</a>
+            <a href="index.php" style="color: red;">*ตรวจสอบการจองก่อนยืมอุปกรณ์*</a>
             <?php
                 echo '<div class="btn-section">';
                 echo '<button class="submit" type="submit" name="update">ยืนยัน</button>';

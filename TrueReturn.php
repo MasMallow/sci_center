@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_insert->execute();
         }
 
-        header("Location: ajax.php");
+        header("Location: index.php");
         exit();
     }
 }

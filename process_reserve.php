@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {
-            window.location.href = 'ajax.php';
+            window.location.href = 'index.php';
         });
     </script>";
         }

@@ -27,10 +27,10 @@ if (isset($_POST['sign-in'])) {
                     if (password_verify($Password, $row['password'])) {
                         if ($row['urole'] == 'admin') {
                             $_SESSION['admin_login'] = $row['id'];
-                            header("location: ../ajax.php");
+                            header("location: ../index.php");
                         } else {
                             $_SESSION['user_login'] = $row['id'];
-                            header("location: ../ajax.php");
+                            header("location: ../index.php");
                         }
                     } else {
                         $_SESSION['error1'] = 'รหัสผ่านไม่ถูกต้อง';

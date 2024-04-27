@@ -12,10 +12,9 @@ require_once '../assets/database/connect.php';
 
 <!-- ส่วน Link -->
 <link rel="stylesheet" href="../assets/css/Register.css">
-<script src="Register.js"></script>
 
 <body>
-    <form action="../authProcess/sign_up.php" method="post">
+    <form action="../authProcess/sign_upDB.php" method="post">
         <div class="register">
             <!-- PHP -->
             <div class="register-page">
@@ -68,13 +67,13 @@ require_once '../assets/database/connect.php';
                     </div>
                     <div class="col">
                         <div class="input-box">
-                            <label for="">ตำแหน่ง</label>
+                            <label for="">คำนำหน้า</label>
                             <div class="select">
-                                <select name="role">
-                                    <option value="" disabled selected>เลือกตำแหน่ง</option>
-                                    <option value="อาจารย์">อาจารย์</option>
-                                    <option value="บุคคลากร">บุคลากร</option>
-                                    <option value="ผู้บริหาร">ผู้บริหาร</option>
+                                <select name="pre">
+                                    <option value="" disabled selected>เลือกคำนำหน้า</option>
+                                    <option value="นาย">นาย</option>
+                                    <option value="นาง">นาง</option>
+                                    <option value="นางสาว">นางสาว</option>
                                 </select>
                             </div>
                         </div>
@@ -85,6 +84,29 @@ require_once '../assets/database/connect.php';
                         <div class="input-box">
                             <label for="">นามสกุล</label>
                             <input type="text" class="" placeholder="นามสกุลภาษาไทย" name="Lastname">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-box">
+                            <label for="">ตำแหน่ง</label>
+                            <div class="select">
+                                <select name="role">
+                                    <option value="" disabled selected>เลือกตำแหน่ง</option>
+                                    <option value="อาจารย์">อาจารย์</option>
+                                    <option value="บุคลากร">บุคลากร</option>
+                                    <option value="ผู้บริหาร">ผู้บริหาร</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-box">
+                            <label for="">หน่วยงาน</label>
+                            <div class="select">
+                                <select name="agency">
+                                    <option value="" disabled selected>เลือกหน่วยงาน</option>
+                                    <option value="คณะวิทยาสตร์">คณะวิทยาสตร์</option>
+                                    <option value="คณะตลก">คณะตลก</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
@@ -103,7 +125,7 @@ require_once '../assets/database/connect.php';
                         </div>
                         <div class="button-2">
                             <button type="reset" class="reset">เคลียร์</button>
-                            <button class="cancel" type=" reset"">ยกเลิก</button>
+                            <a href="sign_in.php">ยกเลิก</a>
                         </div>
                     </div>
                 </div>

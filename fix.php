@@ -97,7 +97,7 @@ echo '</form>';
 echo '<a href="cart.php?action=clear">ล้างตะกร้า</a>';
 }
 ?>
-<a href="ajax.php">กลับหน้าหลัก</a>
+<a href="index.php">กลับหน้าหลัก</a>
 </body>
 
 </html>

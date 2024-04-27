@@ -21,7 +21,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
     </head>
 
     <body>
-        <form action="../authProcess/sign_in_db.php" method="post">
+        <form action="../authProcess/sign_inDB.php" method="post">
             <div class="login">
                 <div class="login-page">
                     <div class="header">
@@ -51,25 +51,15 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
                             ?>
                         </div>
                     <?php } ?>
-                    <?php if (isset($_SESSION['success'])) { ?>
-                        <div class="alert" role="alert">
-                            <?php
-                            echo $_SESSION['success'];
-                            unset($_SESSION['success']);
-                            ?>
-                        </div>
-                    <?php } ?>
                     <br>
-
                     <!-- ส่วนการใส่ข้อมูล -->
                     <div class="info">
                         <div>
-                            <input type="text" name="Username" class="input" placeholder="USERNAME">
+                            <input type="text" name="Username" class="input" placeholder="USERNAME" autofocus>
                         </div>
                         <div>
                             <input type="password" name="Password" class="input" placeholder="PASSWORD">
                         </div>
-
                         <!-- ส่วนของ buttom -->
                         <div class="line"></div>
                         <button class="sign-in" name="sign-in">
@@ -88,8 +78,8 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
 
 <?php
 } elseif (isset($_SESSION['user_login'])) {
-    header('location:ajax.php');
+    header('location:index.php');
 } elseif (isset($_SESSION['admin_login'])) {
-    header('location:ajax.php');
+    header('location:index.php');
 }
 ?>
