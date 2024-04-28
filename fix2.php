@@ -46,7 +46,7 @@ exit;
 // Check if the user is logged in
 if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
 $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-header('Location: sign_in.php');
+header('Location: auth/sign_in.php');
 exit;
 }
 
