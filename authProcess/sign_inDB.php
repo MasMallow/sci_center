@@ -7,13 +7,13 @@ if (isset($_POST['sign-in'])) {
     $Password = $_POST['Password'];
 
     if (empty($Username) && empty($Password)) {
-        $_SESSION['error1'] = 'กรุณาเข้าสู่ระบบ';
+        $_SESSION['errorLogin'] = 'กรุณาเข้าสู่ระบบ';
         header("location:../auth/sign_in.php");
     } elseif (empty($Username)) {
-        $_SESSION['error2'] = 'กรุณากรอก Username';
+        $_SESSION['errorLogin'] = 'กรุณากรอก Username';
         header("location:../auth/sign_in.php");
     } elseif (empty($Password)) {
-        $_SESSION['error3'] = 'กรุณากรอก Password';
+        $_SESSION['errorLogin'] = 'กรุณากรอก Password';
         header("location:../auth/sign_in.php");
     } else {
         try {
@@ -33,15 +33,15 @@ if (isset($_POST['sign-in'])) {
                             header("location: ../index.php");
                         }
                     } else {
-                        $_SESSION['error1'] = 'รหัสผ่านไม่ถูกต้อง';
+                        $_SESSION['errorLogin'] = 'รหัสผ่านไม่ถูกต้อง';
                         header("location: ../auth/sign_in.php");
                     }
                 } else {
-                    $_SESSION['error1'] = 'Username ไม่ถูกต้อง';
+                    $_SESSION['errorLogin'] = 'Username ไม่ถูกต้อง';
                     header("location: ../auth/sign_in.php");
                 }
             } else {
-                $_SESSION['error1'] = "ไม่มีข้อมูลในระบบ";
+                $_SESSION['errorLogin'] = "ไม่มีข้อมูลในระบบ";
                 header("location: ../auth/sign_in.php");
             }
         } catch (PDOException $e) {

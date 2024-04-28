@@ -1,25 +1,167 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@500&display=swap");
-
+@font-face {
+  src: url("../fonts/Sarabun-Regular.ttf");
+  font-family: Sarabun;
+}
+@font-face {
+  src: url("../fonts/Sarabun-Bold.ttf");
+  font-family: Sarabun-bold;
+}
+@keyframes movingY {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+p#B,
+label#B,
+span#B {
+  font-family: Sarabun-bold;
+}
 * {
   margin: 0px;
   padding: 0px;
+  font-family: Sarabun;
   box-sizing: border-box;
-  font-family: "Noto Sans Thai", sans-serif;
-  text-decoration: none;
+}
+.sign_in_box {
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.login {
+.box_content {
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 7px;
+  min-width: 480px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  animation: movingY 0.5s ease;
+}
+
+/* header */
+.box_content_header {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid gray;
+  font-size: 1.6rem;
+}
+.box_content_logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0rem;
+  gap: 10px;
+}
+.box_content_logo img {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+}
+.box_content_content {
+  display: grid;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  gap: 10px;
+}
+.input {
+  width: 100%;
+  outline: none;
+  border: none;
+  height: 50px;
+  padding: 20px 0px;
+  padding-left: 20px;
+  border-radius: 7px;
+  font-size: 1rem;
+  background-color: #e6e6e6;
+}
+.input:focus {
+  border: 1px solid #2176ff;
+}
+
+/* Show Password */
+.show-password {
+  position: relative;
+}
+
+.icon-password {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
+  right: 20px;
+  /* ปรับตำแหน่งไอคอนตามต้องการ */
+  cursor: pointer;
 }
-
-/* ตกแต่ง INPUT */
-.login-page {
-  min-width: 450px;
+.footer {
+  display: grid;
+  gap: 10px;
+}
+.btn-section {
+  padding: 0.6rem 1rem;
+}
+button.sign-in {
   width: 100%;
-  padding: 20px;
+  padding: 13px;
+  outline: none;
+  border: none;
+  border-radius: 7px;
+  margin-top: 0.5rem;
+  background-color: #2176ff;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button.sign-in:hover {
+  background-color: #125cd3;
+}
+.box_content_other {
+  display: grid;
+  gap: 1rem;
+}
+.box_content_other .not_remember {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  text-decoration: none;
+  margin: 0.7rem 0.7rem;
+  color: #686767;
+}
+.box_content_other .not_remember a {
+  text-decoration: none;
+  color: #686767;
+}
+.box_content_other .sign_up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0.7rem 0.7rem;
+  text-decoration: none;
+  color: #686767;
+}
+.box_content_other .sign_up a {
+  text-decoration: none;
+  color: #726b6b;
+}
+p {
+  text-align: center;
+  font-size: 1rem;
+  color: #686767;
+  margin: 0.8rem 0;
+}
+/* Alert */
+.error {
+  padding: 0.7rem 1rem;
+  background-color: #f8d7da; /* สีพื้นหลังแบบสีแดงอ่อน */
+  border: 1px solid #f5c6cb; /* เพิ่มเส้นขอบ */
+  color: #721c24; /* สีตัวอักษร */
+  border-radius: 5px; /* ทำมุมของกล่องให้เป็นรูปวงกลมบางนิ้ว */
+  margin: 0 1rem;
 }
 
 div .header {
@@ -33,44 +175,5 @@ div .alert {
   margin-top: 5px;
   border: 2px solid red;
   color: white;
-  transition: all .3px;
-}
-
-.input {
-  outline: none;
-  padding-left: 20px;
-  width: 100%;
-  height: 50px;
-  background-color: rgb(231, 231, 231);
-  margin-bottom: 5px;
-  border-radius: 5px;
-  border: none;
-}
-.input:focus{
-  border:1px solid rgb(1, 69, 170);;
-}
-
-.sign-in {
-  width: 100%;
-  height: 45px;
-  border-radius: 5px;
-  background-color: rgb(1, 69, 170);
-  color: white;
-  cursor: pointer;
-  transition: 0.4s;
-  border: none;
-}
-.sign-in:hover {
-  background-color: rgb(43, 128, 226);
-  letter-spacing: 2px;
-}
-.not-remember {
-  margin-top: 10px;
-  display: block;
-  text-align: right;
-}
-.sign-up {
-  text-align: center;
-  margin-top: 15px;
-  padding-bottom: 20px;
+  transition: all 0.3px;
 }

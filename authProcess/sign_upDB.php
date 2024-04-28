@@ -12,11 +12,11 @@ if (isset($_POST['signup'])) {
     $role = $_POST['role'];
     $Lineid = $_POST['Lineid'];
     $Numberphone = $_POST['Numberphone'];
-    $Agency = $_POST['Agency'];
+    $Agency = $_POST['agency'];
     $urole = 'user';
 
     // สร้าง user_id ที่ไม่ซ้ำกัน
-    $user_id = uniqid();
+    $user_id = uniqid(10);
 
     // ตรวจสอบชื่อผู้ใช้ซ้ำ
     $check_username = $conn->prepare("SELECT username FROM users WHERE username = :username");

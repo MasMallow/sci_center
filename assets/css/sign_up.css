@@ -1,12 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@500&display=swap");
-
+@font-face {
+  src: url("../fonts/Sarabun-Regular.ttf");
+  font-family: Sarabun;
+}
+@font-face {
+  src: url("../fonts/Sarabun-Bold.ttf");
+  font-family: Sarabun-bold;
+}
 * {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: "Noto Sans Thai", sans-serif;
+  font-family: Sarabun;
   text-decoration: none;
-  overflow: auto;
+  list-style: none;
+}
+#B {
+  font-family: Sarabun-bold;
 }
 .register {
   position: absolute;
@@ -24,6 +33,34 @@
   font-size: 1.5rem;
   color: #333;
   border-bottom: 2px solid gray;
+}
+.register-page .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: .7rem 1rem;
+}
+.register-page .pagination .number {
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  border-radius: 50%;
+  background-color: #00aaee;
+  color: #FFF;
+  font-size: 15px;
+}
+.register-page .pagination .bar {
+  width: 50px;
+  height: 4px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #00aaee;
+}
+.register-page .pagination .active ~ div {
+  background-color: #ddd;
+  color: #111;
 }
 .form .input-box {
   width: 100%;
@@ -50,7 +87,7 @@ select:focus {
 }
 
 /* description */
-.description{
+.description {
   font-size: 14px;
   font-weight: 550;
   color: red;
@@ -63,7 +100,7 @@ div.button {
   margin-top: 20px;
   border-top: 2px solid gray;
 }
-div.button-1{
+div.button-1 {
   width: 40%;
 }
 button.submit {
