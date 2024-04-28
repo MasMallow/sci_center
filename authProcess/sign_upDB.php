@@ -12,7 +12,7 @@ if (isset($_POST['signup'])) {
     $role = $_POST['role'];
     $Lineid = $_POST['Lineid'];
     $Numberphone = $_POST['Numberphone'];
-    $Agency = $_POST['agency'];
+    $agency = $_POST['agency'];
     $urole = 'user';
 
     // สร้าง user_id ที่ไม่ซ้ำกัน
@@ -96,7 +96,7 @@ if (isset($_POST['signup'])) {
                 $stmt->bindParam(":Phone", $Numberphone);
                 $stmt->bindParam(":Lineid", $Lineid);
                 $stmt->bindParam(":Role", $role);
-                $stmt->bindParam(":Agency", $Agency);
+                $stmt->bindParam(":Agency", $agency);
                 $stmt->bindParam(":Urole", $urole);
                 $stmt->execute();
                 $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว <a href='sign_in.php' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";

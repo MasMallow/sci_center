@@ -26,11 +26,11 @@ if (isset($_POST['sign-in'])) {
                 if ($Username == $row['username']) {
                     if (password_verify($Password, $row['password'])) {
                         if ($row['urole'] == 'admin') {
-                            $_SESSION['admin_login'] = $row['id'];
-                            header("location: ../index.php");
+                            $_SESSION['admin_login'] = $row['user_id'];
+                            header("location: ../");
                         } else {
-                            $_SESSION['user_login'] = $row['id'];
-                            header("location: ../index.php");
+                            $_SESSION['user_login'] = $row['user_id'];
+                            header("location: ../");
                         }
                     } else {
                         $_SESSION['errorLogin'] = 'รหัสผ่านไม่ถูกต้อง';
