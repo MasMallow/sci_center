@@ -58,7 +58,7 @@
 }
 
 .menu ul li a:hover,
-.menu ul li a-active {
+.menu ul li a.active {
   color: #000;
   background-color: #f6f6f6;
 }
