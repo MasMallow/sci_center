@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_ids'])) {
     $booking_ids = $_POST['booking_ids'];
     
     foreach ($booking_ids as $booking_id) {
-        $stmt = $conn->prepare("DELETE FROM bookings WHERE id = :booking_id");
+        $stmt = $conn->prepare("DELETE FROM bookings WHERE user_id = :booking_id");
         $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
         $stmt->execute();
     }

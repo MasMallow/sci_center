@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user_id = $_SESSION['admin_login'];
         }
 
-        $user_query = $conn->prepare("SELECT firstname FROM users WHERE id = :user_id");
+        $user_query = $conn->prepare("SELECT firstname FROM users WHERE user_id = :user_id");
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);

@@ -3,13 +3,13 @@ session_start();
 include_once 'assets/database/connect.php';
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE id =$user_id");
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 if (isset($_SESSION['admin_login'])) {
     $user_id = $_SESSION['admin_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE id =$user_id");
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }

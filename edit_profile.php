@@ -15,7 +15,7 @@
         $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['admin_login'];
 
         // ดึงข้อมูลเดิมจากฐานข้อมูล
-        $stmt = $conn->query("SELECT * FROM users WHERE id =$user_id");
+        $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
         $row = $stmt->fetch_assoc();
     ?>
         <form action="update_profile.php" method="post">

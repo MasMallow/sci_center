@@ -20,7 +20,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
     }
 
     // อัปเดตข้อมูลในฐานข้อมูล
-    $sql = "UPDATE users SET firstname='$firstname', lastname='$lastname', urole='$urole', username='$newUsername' $passwordUpdateQuery WHERE id=$user_id";
+    $sql = "UPDATE users SET firstname='$firstname', lastname='$lastname', urole='$urole', username='$newUsername' $passwordUpdateQuery WHERE user_id=$user_id";
 
     if ($conn->query($sql) === TRUE) {
         echo "Record updated successfully";

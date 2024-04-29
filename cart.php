@@ -52,13 +52,13 @@
     // Fetch user data if logged in
     if (isset($_SESSION['user_login'])) {
         $user_id = $_SESSION['user_login'];
-        $stmt = $conn->prepare("SELECT * FROM users WHERE id = :user_id");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     } elseif (isset($_SESSION['admin_login'])) {
         $user_id = $_SESSION['admin_login'];
-        $stmt = $conn->prepare("SELECT * FROM users WHERE id = :user_id");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -91,7 +91,8 @@
                         </div>
                 </div>';
             } else {
-                echo '<form method="post" action="process_return.php">';
+                
+                echo '<form method="post" action="Waiting_for_approval.php">';
                 echo '<table class="cart-data">';
                 echo '<tr>
                         <th>ลำดับ</th>
@@ -136,7 +137,7 @@
             <div class="firstname">
                 <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["firstname"]; ?>
             </div>
-            <a href="index.php" style="color: red;">*ตรวจสอบการจองก่อนยืมอุปกรณ์*</a>
+            <a href="booking_log.php" style="color: red;">*ตรวจสอบการจองก่อนยืมอุปกรณ์*</a>
             <?php
                 echo '<div class="btn-section">';
                 echo '<button class="submit" type="submit" name="update">ยืนยัน</button>';

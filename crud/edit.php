@@ -7,7 +7,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Retrieve product information based on the ID
-    $query = $conn->query("SELECT * FROM crud WHERE id = $id");
+    $query = $conn->query("SELECT * FROM crud WHERE user_id = $id");
 
     if ($query->num_rows == 1) {
         $row = $query->fetch();

@@ -48,13 +48,13 @@ exit;
 // Fetch user data if logged in
 if (isset($_SESSION['user_login'])) {
 $user_id = $_SESSION['user_login'];
-$stmt = $conn->prepare("SELECT * FROM users WHERE id = :user_id");
+$stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 } elseif (isset($_SESSION['admin_login'])) {
 $user_id = $_SESSION['admin_login'];
-$stmt = $conn->prepare("SELECT * FROM users WHERE id = :user_id");
+$stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
