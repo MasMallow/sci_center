@@ -56,11 +56,10 @@ span#B {
   justify-content: center;
   align-items: center;
   margin: 1rem 0rem;
-  gap: 10px;
 }
 .box_content_logo img {
-  height: 60px;
-  width: 60px;
+  height: 80px;
+  width: 80px;
   border-radius: 50%;
 }
 .box_content_content {
@@ -142,7 +141,7 @@ button.sign-in:hover {
   gap: 0.7rem;
   margin: 0.7rem 0.7rem;
   text-decoration: none;
-  color: #686767;
+  color: #000000;
 }
 .box_content_other .sign_up a {
   text-decoration: none;

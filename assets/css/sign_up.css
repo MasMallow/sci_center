@@ -23,25 +23,27 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.register-page {
+.register_page_body {
+  background-color: #707070;
+  border-radius: 5px;
   min-width: 500px;
   max-width: 700px;
   width: 100%;
   padding: 20px;
 }
-.register-page .head {
+.register_page_body .head {
   font-size: 1.5rem;
   color: #333;
   border-bottom: 2px solid gray;
 }
-.register-page .pagination {
+.register_page_body .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
   padding: .7rem 1rem;
 }
-.register-page .pagination .number {
+.register_page_body .pagination .number {
   width: 28px;
   height: 28px;
   text-align: center;
@@ -51,16 +53,26 @@
   color: #FFF;
   font-size: 15px;
 }
-.register-page .pagination .bar {
+.register_page_body .pagination .bar {
   width: 50px;
   height: 4px;
   text-align: center;
   border-radius: 5px;
   background-color: #00aaee;
 }
-.register-page .pagination .active ~ div {
+.register_page_body .pagination .active ~ div {
   background-color: #ddd;
   color: #111;
+}
+.register_page_body .steps {
+  width: 400%;
+  display: flex;
+}
+.register_page_body  .form {
+  display: none;
+}
+.register_page_body  .form.active {
+  display: block;
 }
 .form .input-box {
   width: 100%;

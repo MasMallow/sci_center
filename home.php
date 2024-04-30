@@ -62,17 +62,17 @@ require_once 'assets/database/connect.php';
                         </a>
                         <ul class="sb-sub-ul">
                             <li>
-                                <a class="link<?php echo isset($_GET['page']) && ($_GET['page'] == 'material') ? 'active ' : '' ?>" href="?page=material">
+                                <a class="link <?php echo isset($_GET['page']) && ($_GET['page'] == 'material') ? 'active ' : '' ?>" href="?page=material">
                                     <span class="text">ประเภทวัสดุ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="?page=equipment">
+                                <a class="link <?php echo isset($_GET['page']) && ($_GET['page'] == 'equipment') ? 'active ' : '' ?>" href="?page=equipment">
                                     <span class="text">ประเภทอุปกรณ์</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="?page=tools">
+                                <a class="link <?php echo isset($_GET['page']) && ($_GET['page'] == 'tools') ? 'active ' : '' ?>" href="?page=tools">
                                     <span class="text">ประเภทเครื่องมือ</span>
                                 </a>
                             </li>
@@ -152,6 +152,10 @@ require_once 'assets/database/connect.php';
             include('MET/index.php');
         } elseif (isset($_GET['page']) && $_GET['page'] == 'material') {
             include('material/index.php');
+        } elseif (isset($_GET['page']) && $_GET['page'] == 'equipment') {
+            include('equipment/index.php');
+        } elseif (isset($_GET['page']) && $_GET['page'] == 'tools') {
+            include('tools/index.php');
         }
         ?>
     </main>
@@ -184,10 +188,10 @@ require_once 'assets/database/connect.php';
                     <li><a onclick="tool(this);">หมวดเครื่องมือ</a></li>
                 </ul>
             </div>
-            <div class="footer-map">
+            <!-- <div class="footer-map">
                 <h2>แผนที่</h2>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2304.5470977317045!2d100.48893255781918!3d13.732322577161767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e298fe8dcd0d13%3A0x8166225c8081ce3a!2z4Lih4Lir4Liy4Lin4Li04LiX4Lii4Liy4Lil4Lix4Lii4Lij4Liy4LiK4Lig4Lix4LiP4Lia4LmJ4Liy4LiZ4Liq4Lih4LmA4LiU4LmH4LiI4LmA4LiI4LmJ4Liy4Lie4Lij4Liw4Lii4Liy!5e0!3m2!1sth!2sth!4v1697617426190!5m2!1sth!2sth" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
+            </div> -->
         </div>
     </footer>
     <div class="copyright">
@@ -245,38 +249,9 @@ require_once 'assets/database/connect.php';
 <!-- partial -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 <script>
-    function tool() {
-        $.ajax({
-            url: "tool.php",
-            dataType: "html",
-            success: function(data) {
-                $(".product").empty().append(data);
-            },
-            error: function() {
-                alert("การโหลดรายงานผิดพลาด");
-            },
-        });
-    }
-</script>
-<script>
     function Return() {
         $.ajax({
             url: "Return.php",
-            dataType: "html",
-            success: function(data) {
-                $(".product").empty().append(data);
-            },
-            error: function() {
-                alert("การโหลดรายงานผิดพลาด");
-            },
-        });
-    }
-</script>
-
-<script>
-    function equipment() {
-        $.ajax({
-            url: "equipment.php",
             dataType: "html",
             success: function(data) {
                 $(".product").empty().append(data);

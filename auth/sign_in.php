@@ -60,11 +60,11 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="footer">
+                    <!-- <div class="footer">
                         <p>
                             บริหารจัดการโดย แผนกกรรมวิธีข้อมูล กองสารบรรณ <br> กรมสารบรรณทหารเรือ
                         </p>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </main>

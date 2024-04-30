@@ -46,7 +46,6 @@
                             <span><?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?> </span>
                             <a href="edit_profile.php">
                                 <i class="fa-solid fa-user-pen"></i>
-                                <span>แก้ไขข้อมูล</span>
                             </a>
                         </div>
                     </div>

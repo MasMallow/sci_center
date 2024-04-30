@@ -39,7 +39,7 @@
     <div class="content_area_grid">
         <?php
         try {
-            $query = $conn->query("SELECT * FROM crud WHERE categories = 'วัสดุ' ORDER BY uploaded_on DESC");
+            $query = $conn->query("SELECT * FROM crud WHERE categories = 'เครื่องมือ' ORDER BY uploaded_on DESC");
             $displayedImages = array(); // สร้างอาร์เรย์เพื่อเก็บ URL รูปภาพที่แสดงแล้ว
             while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
                 $imageURL = 'uploads/' . $data['file_name'];
