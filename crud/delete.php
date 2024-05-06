@@ -7,7 +7,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Delete the product based on the ID
-    $delete = $conn->query("DELETE FROM crud WHERE id = $id");
+    $delete = $conn->query("DELETE FROM crud WHERE user_id = $id");
 
     if ($delete) {
         echo "Product deleted successfully.";

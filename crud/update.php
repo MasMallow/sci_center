@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (in_array($fileType, $allowTypes)) {
                 if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
                     // Update product information in the database with the new image
-                    $stmt = $conn->prepare("UPDATE crud SET product_name = ?, amount = ?, Type = ?, file_name = ? WHERE id = ?");
+                    $stmt = $conn->prepare("UPDATE crud SET product_name = ?, amount = ?, Type = ?, file_name = ? WHERE user_id = ?");
                     $stmt->bind_param('sissi', $product_name, $quantity, $productType, $fileName, $id);
                     $stmt->execute();
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             // No new image uploaded; update product information without changing the image
-            $stmt = $conn->prepare("UPDATE crud SET product_name = ?, amount = ?, Type = ? WHERE id = ?");
+            $stmt = $conn->prepare("UPDATE crud SET product_name = ?, amount = ?, Type = ? WHERE user_id = ?");
             $stmt->bind_param('sisi', $product_name, $quantity, $productType, $id);
             $stmt->execute();
 
