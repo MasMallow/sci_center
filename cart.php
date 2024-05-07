@@ -73,8 +73,8 @@
                     การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ
                 </div>
                 <div class="select">
-                    <button class="btn-cancel" onclick="location.href='index.php'">ยกเลิก</button>
-                    <button class="btn-select" onclick="location.href='index.php'">เลือกรายการวัสดุ อุปกรณ์
+                    <button class="btn-cancel" onclick="location.href='home.php'">ยกเลิก</button>
+                    <button class="btn-select" onclick="location.href='home.php'">เลือกรายการวัสดุ อุปกรณ์
                         และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                 </div>';
             } else {
                 
-                echo '<form method="post" action="Waiting_for_approval.php">';
+                echo '<form method="post" action="waiting_for_approval.php">';
                 echo '<table class="cart-data">';
                 echo '<tr>
                         <th>ลำดับ</th>

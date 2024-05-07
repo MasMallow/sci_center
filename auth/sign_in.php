@@ -101,8 +101,8 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
 
 <?php
 } elseif (isset($_SESSION['user_login'])) {
-    header('location:../index.php');
+    header('location:../home.php');
 } elseif (isset($_SESSION['admin_login'])) {
-    header('location:../index.php');
+    header('location:../home.php');
 }
 ?>

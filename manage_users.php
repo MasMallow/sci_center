@@ -26,7 +26,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <h1>Manage Users</h1>
-    <a href="index.php">กลับหน้าหลัก</a>
+    <a href="home.php">กลับหน้าหลัก</a>
     <table>
         <tr>
             <th>ID</th>

@@ -70,7 +70,7 @@ include_once '../assets/database/connect.php';
                     ระบบเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ
                 </div>
                 <div class="head-btn">
-                    <button class="cancel" onclick="window.location.href='../index.php';"><i class="icon fa-solid fa-xmark"></i>ยกเลิกการเพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
+                    <button class="cancel" onclick="window.location.href='../home.php';"><i class="icon fa-solid fa-xmark"></i>ยกเลิกการเพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
                     <button class="showPopup add"><i class="icon fa-solid fa-plus"></i>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
                 </div>
             </div>

@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_insert->execute();
         }
 
-        header("Location: index.php");
+        header("Location: home.php");
         exit();
     }
 }

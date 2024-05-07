@@ -77,7 +77,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 การขอใช้งานวัสดุ อุปกรณ์ และเครื่องมือ
 </div>
 <div class="select">
-<button class="btn-select" onclick="location.href='index.php'">เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
+<button class="btn-select" onclick="location.href='home.php'">เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือเพิ่ม (จะถูกนำพาไปหน้าหลัก)</button>
 </div>
 </div>
 

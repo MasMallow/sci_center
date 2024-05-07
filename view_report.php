@@ -12,7 +12,7 @@ require_once 'assets/database/connect.php';
 </head>
 
 <body>
-    <a href="index.php">กลับหน้าหลัก</a>
+    <a href="home.php">กลับหน้าหลัก</a>
     <div class="">
         <h1 class="">รายงานการยืมอุปกรณ์</h1>
 

@@ -140,6 +140,12 @@ require_once 'assets/database/connect.php';
                                     <span class="text">ดูประวัติการใช้งาน</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="approval.php">
+                                    <i class="icon fa-solid fa-square-check"></i>
+                                    <span class="text">การอนุมัติ</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>';
                     }
