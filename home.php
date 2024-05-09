@@ -23,14 +23,14 @@ require_once 'assets/database/connect.php';
 
     <?php
     if (isset($_SESSION['user_login'])) {
-        $userCategories = $_SESSION['user_login'];
-        $stmt = $conn->query("SELECT * FROM users WHERE user_id =$userCategories");
+        $user_id = $_SESSION['user_login'];
+        $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
         $stmt->execute();
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     if (isset($_SESSION['admin_login'])) {
-        $userCategories = $_SESSION['admin_login'];
-        $stmt = $conn->query("SELECT * FROM users WHERE user_id =$userCategories");
+        $user_id = $_SESSION['admin_login'];
+        $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
         $stmt->execute();
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
     }

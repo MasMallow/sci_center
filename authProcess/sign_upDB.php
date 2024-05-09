@@ -15,8 +15,7 @@ if (isset($_POST['signup'])) {
     $agency = $_POST['agency'];
     $urole = 'user';
 
-    // สร้าง user_id ที่ไม่ซ้ำกัน
-    $user_id = uniqid(10);
+    $user_id = rand(10000, 99999);
 
     // ตรวจสอบชื่อผู้ใช้ซ้ำ
     $check_username = $conn->prepare("SELECT username FROM users WHERE username = :username");

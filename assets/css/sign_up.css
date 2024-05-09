@@ -18,30 +18,33 @@
   font-family: Sarabun-bold;
 }
 .register {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height: 100vh;
+  /* background: rgba(0, 0, 0, 0.4); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.register_page_body {
+.register_page {
   background-color: #707070;
   border-radius: 5px;
   min-width: 500px;
   max-width: 700px;
   width: 100%;
-  padding: 20px;
 }
-.register_page_body .head {
-  font-size: 1.5rem;
-  color: #333;
-  border-bottom: 2px solid gray;
+.register_page .register_page_head {
+  font-size: 2rem;
+  padding: 0.7rem 1.2rem;
+}
+.register_page .register_page_body {
+  background-color: #00aaee;
+  padding: 20px;
 }
 .register_page_body .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  padding: .7rem 1rem;
+  padding: 0.7rem 1rem;
 }
 .register_page_body .pagination .number {
   width: 28px;
@@ -50,7 +53,7 @@
   line-height: 28px;
   border-radius: 50%;
   background-color: #00aaee;
-  color: #FFF;
+  color: #fff;
   font-size: 15px;
 }
 .register_page_body .pagination .bar {
@@ -68,15 +71,26 @@
   width: 400%;
   display: flex;
 }
-.register_page_body  .form {
+.register_page_body .form {
   display: none;
 }
-.register_page_body  .form.active {
+.register_page_body .form.active {
   display: block;
+}
+.form .form_header {
+  font-size: 1.1rem;
+}
+.form .form_body {
+  margin-top: 1.25rem;
+  background-color: #a14343;
 }
 .form .input-box {
   width: 100%;
   margin-top: 5px;
+}
+.form .input-box span {
+  display: block;
+  margin-bottom: .25rem;
 }
 .input-box input,
 .input-box select {
@@ -85,17 +99,17 @@
   width: 100%;
   outline: none;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 0 15px;
-  color: #707070;
+  border-radius: 5px;
+  padding: 0 1rem;
+  color: #000;
 }
 .form .col {
   display: flex;
-  column-gap: 15px;
+  column-gap: 1rem;
 }
 input:focus,
 select:focus {
-  border: 2px solid rgb(0, 119, 255);
+  border: 1px solid rgb(0, 119, 255);
 }
 
 /* description */
