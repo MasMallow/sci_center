@@ -4,11 +4,11 @@ session_start();
 // Add item to cart
 if (isset($_POST['add_to_cart'])) {
     $product_id = $_POST['product_id'];
-    $product_name = $_POST['product_name'];
+    $sci_name = $_POST['sci_name'];
 
     $cart_item = array(
         'id' => $product_id,
-        'name' => $product_name
+        'name' => $sci_name
     );
 
     // Check if cart exists in session, if not, create it
@@ -138,8 +138,8 @@ if (isset($_GET['clear'])) {
                 <input type="text" class="form-control" id="product_id" name="product_id" required>
             </div>
             <div class="form-group">
-                <label for="product_name">Product Name</label>
-                <input type="text" class="form-control" id="product_name" name="product_name" required>
+                <label for="sci_name">Product Name</label>
+                <input type="text" class="form-control" id="sci_name" name="sci_name" required>
             </div>
             <button type="submit" name="add_to_cart" class="btn btn-primary">Add to Cart</button>
         </form>

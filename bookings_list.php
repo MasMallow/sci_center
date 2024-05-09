@@ -50,7 +50,7 @@ if (empty($bookings)) {
             </tr>
             <?php foreach ($bookings as $booking): ?>
                 <tr>
-                    <td><?php echo $booking['product_name']; ?></td>
+                    <td><?php echo $booking['sci_name']; ?></td>
                     <td><?php echo $booking['quantity']; ?></td>
                     <td><?php echo $booking['reservation_date']; ?></td>
                     <td><?php echo $booking['created_at']; ?></td>

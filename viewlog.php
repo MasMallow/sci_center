@@ -13,7 +13,7 @@ if (isset($_SESSION['admin_login'])) {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-$stmt = $conn->prepare("SELECT product_name, quantity, borrow_date, return_date FROM borrow_history WHERE user_id = :user_id");
+$stmt = $conn->prepare("SELECT sci_name, quantity, borrow_date, return_date FROM borrow_history WHERE user_id = :user_id");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $borrowHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -35,7 +35,7 @@ if (empty($borrowHistory)) {
                         <tbody>';
     foreach ($borrowHistory as $item) {
         $reportHTML .= '<tr>
-                            <td>' . $item['product_name'] . '</td>
+                            <td>' . $item['sci_name'] . '</td>
                             <td>' . $item['quantity'] . '</td>
                             <td>' . $item['borrow_date'] . '</td>
                             <td>' . $item['return_date'] . '</td>

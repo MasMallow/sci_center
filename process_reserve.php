@@ -39,11 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         foreach ($_SESSION['reserve_cart'] as $item) {
             // Retrieve product details from the database based on the item
-            $query = $conn->prepare("SELECT * FROM crud WHERE file_name = :item");
+            $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);
-            $productName = $product['product_name'];
+            $productName = $product['sci_name'];
 
             // Retrieve the quantity of the item
             $quantity = isset($items[$item]) ? $items[$item] : 0;
@@ -61,20 +61,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $productName = '';
 
             // Retrieve product details from the database based on the item
-            $query = $conn->prepare("SELECT product_name FROM crud WHERE file_name = :item");
+            $query = $conn->prepare("SELECT sci_name FROM crud WHERE img = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);
-            $productName = $product['product_name'];
+            $productName = $product['sci_name'];
 
             // Retrieve the quantity of the item
             $quantity = isset($items[$item]) ? $items[$item] : 0;
 
             // Insert the borrow history into the database
-            $stmt = $conn->prepare("INSERT INTO bookings (user_id, firstname, product_name, quantity, reservation_date, created_at) VALUES (:user_id, :firstname, :product_name, :quantity, :reservation_date, NOW())");
+            $stmt = $conn->prepare("INSERT INTO bookings (user_id, firstname, sci_name, quantity, reservation_date, created_at) VALUES (:user_id, :firstname, :sci_name, :quantity, :reservation_date, NOW())");
             $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-            $stmt->bindParam(':product_name', $productName, PDO::PARAM_STR);
+            $stmt->bindParam(':sci_name', $productName, PDO::PARAM_STR);
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->bindParam(':reservation_date', $reservationDate, PDO::PARAM_STR);
             $stmt->execute();

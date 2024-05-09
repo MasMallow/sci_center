@@ -36,8 +36,8 @@ include_once '../assets/database/connect.php';
                     <p class="upload-tip"><b>Note:</b>Only JPG, JPEG, PNG & GIF files allowed to upload.</p>
                     <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button>
                     <div class="input-box">
-                        <label for="product_name">ชื่อ :</label>
-                        <input type="text" id="product_name" name="product_name" required placeholder="กรุณาระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">
+                        <label for="sci_name">ชื่อ :</label>
+                        <input type="text" id="sci_name" name="sci_name" required placeholder="กรุณาระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">
                     </div>
                     <div class="col">
                         <div class="input-box">
@@ -97,7 +97,7 @@ include_once '../assets/database/connect.php';
                     $query = $conn->query("SELECT * FROM crud ORDER BY uploaded_on DESC");
                     if ($query) {
                         while ($row = $query->fetch()) {
-                            $imageURL = '../uploads/' . $row['file_name'];
+                            $imageURL = '../uploads/' . $row['img'];
                     ?>
                             <tr>
                                 <td>
@@ -106,7 +106,7 @@ include_once '../assets/database/connect.php';
                                 <td>
                                     <div class="img"><img src="<?php echo $imageURL ?>" alt=""></div>
                                 </td>
-                                <td class="product-name"><?php echo $row['product_name']; ?></td>
+                                <td class="product-name"><?php echo $row['sci_name']; ?></td>
                                 <td><?php echo $row['Type']; ?></td>
                                 <td>
                                     <p>คงเหลือ : <?php echo $row['amount']; ?></p>

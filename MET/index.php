@@ -13,7 +13,7 @@ try {
     $sql = "SELECT * FROM crud";
     if (isset($_GET["search"]) && !empty($_GET["search"])) {
         $search = $_GET["search"];
-        $sql .= " WHERE product_name LIKE '%$search%'";
+        $sql .= " WHERE sci_name LIKE '%$search%'";
     }
     $sql .= " ORDER BY RAND() LIMIT 50;";
     $stmt = $conn->prepare($sql);
@@ -68,7 +68,7 @@ try {
                 <div class="grid_content">
                     <div class="grid_content_header">
                         <div class="content_img">
-                            <img src="assets/uploads/<?php echo $data['file_name']; ?>">
+                            <img src="assets/uploads/<?php echo $data['img']; ?>">
                         </div>
                     </div>
                     <div class="content_status">
@@ -93,7 +93,7 @@ try {
                     </div>
                     <div class="grid_content_body">
                         <div class="content_name">
-                            <span id="B">ชื่อ </span><?php echo $data['product_name']; ?>
+                            <span id="B">ชื่อ </span><?php echo $data['sci_name']; ?>
                         </div>
                         <div class="content_categories">
                             <span id="B">ประเภท </span><?php echo $data['categories']; ?>
@@ -109,7 +109,7 @@ try {
                             if ($data['amount'] >= 1) {
                             ?>
                                 <div class="button">
-                                    <button onclick="location.href='cart.php?action=add&item=<?= $data['file_name'] ?>'" class="use-it">
+                                    <button onclick="location.href='cart.php?action=add&item=<?= $data['img'] ?>'" class="use-it">
                                         <i class="icon fa-solid fa-ardata-up"></i>
                                         <span>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</span>
                                     </button>

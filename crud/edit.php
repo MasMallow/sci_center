@@ -11,10 +11,10 @@ if (isset($_GET['id'])) {
 
     if ($query->num_rows == 1) {
         $row = $query->fetch();
-        $product_name = $row['product_name'];
+        $sci_name = $row['sci_name'];
         $quantity = $row['amount'];
         // $product_type = $row['product_type'];
-        $imageURL = '../uploads/' . $row['file_name'];
+        $imageURL = '../uploads/' . $row['img'];
     } else {
         echo "ไม่พบรายการวัสดุ อุปกรณ์ เครื่องมือที่ต้องการ.";
         exit();
@@ -54,7 +54,7 @@ if (isset($_GET['id'])) {
                 <button class="select-image">เลือกรูปภาพที่จะอัพโหลด</button> -->
                 <div class="input-box">
                     <label>ชื่อ: </label>
-                    <input type="text" name="product_name" value="<?php echo $product_name; ?>">
+                    <input type="text" name="sci_name" value="<?php echo $sci_name; ?>">
                 </div>
                 <div class="col">
                     <div class="input-box">

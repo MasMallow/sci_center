@@ -95,7 +95,7 @@ require_once 'assets/database/connect.php';
                         echo "<tr>";
                         echo "<td>" . $row["user_id"] . "</td>";
                         echo "<td>" . $row["firstname"] . "</td>";
-                        echo "<td>" . $row["product_name"] . "</td>";
+                        echo "<td>" . $row["sci_name"] . "</td>";
                         echo "<td>" . $row["quantity"] . "</td>";
                         echo "<td>" . date('d/m/Y H:i:s', strtotime($row["borrow_date"])) . "</td>"; // แสดงวันที่และเวลาที่ยืมในรูปแบบวัน/เดือน/ปี และ เวลา
                         echo "<td>" . date('d/m/Y H:i:s', strtotime($row["return_date"])) . "</td>"; // แสดงวันที่และเวลาที่คืนในรูปแบบวัน/เดือน/ปี และ เวลา

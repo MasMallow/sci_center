@@ -19,10 +19,10 @@ include 'conassets/database/connect.php'
             $sql = "SELECT * FROM image ORDER BY id";
             $result = mysqli_query($conn, $sql);
             while ($row = mysqli_fetch_array($result)) {
-                $imageURL = '/test' . $row['file_name'];
+                $imageURL = '/test' . $row['img'];
                     ?>
                     <div class="col-sm-3">
-                        <img src="img/<?= $row['file_name'] ?>" width="200px" height="250px"><br>
+                        <img src="img/<?= $row['img'] ?>" width="200px" height="250px"><br>
                         ID :
                         <?= $row['id'] ?><br>
                     </div>

@@ -84,7 +84,7 @@ if (isset($_POST['signup'])) {
                 header("location:../auth/sign_up.php");
             } else {
                 $passwordHash = password_hash($Password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("INSERT INTO users (user_id, username, password, pre, firstname, lastname, phone, lineid, role, agency, urole)
+                $stmt = $conn->prepare("INSERT INTO users (user_id, username, password, pre, surname, lastname, phone_number, lineid, role, agency, urole)
                 VALUES (:user_id, :Username,:Password, :pre, :Firstname, :Lastname, :Phone, :Lineid, :Role, :Agency,:Urole)");
                 $stmt->bindParam(":user_id", $user_id);
                 $stmt->bindParam(":Username", $Username);

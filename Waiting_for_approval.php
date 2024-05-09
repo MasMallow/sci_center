@@ -28,11 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         foreach ($_SESSION['cart'] as $item) {
             // Retrieve product details from the database based on the item
-            $query = $conn->prepare("SELECT * FROM crud WHERE file_name = :item");
+            $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);
-            $productName = $product['product_name'];
+            $productName = $product['sci_name'];
             // Retrieve the quantity of the item
             $quantity = isset($items[$item]) ? $items[$item] : 0;
             

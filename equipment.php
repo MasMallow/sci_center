@@ -24,7 +24,7 @@ if ($query->rowCount() > 0) {
     // Check if a search query is provided
     if (isset($_GET['search'])) {
         $search_query = $_GET['search'];
-        $query = $conn->query("SELECT * FROM crud WHERE product_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
+        $query = $conn->query("SELECT * FROM crud WHERE sci_name LIKE '%$search_query%' ORDER BY uploaded_on DESC");
     } else {
         // No search query, display all images
         $query = $conn->query("SELECT * FROM crud WHERE Type = 'อุปกรณ์' ORDER BY uploaded_on DESC");
@@ -52,7 +52,7 @@ if ($query->rowCount() > 0) {
             </thead>
             <?php
             while ($row = $query->fetch()) {
-                $imageURL = 'uploads/' . $row['file_name'];
+                $imageURL = 'uploads/' . $row['img'];
                 if (!in_array($imageURL, $displayedImages)) {
                     $displayedImages[] = $imageURL;
             ?>
@@ -64,7 +64,7 @@ if ($query->rowCount() > 0) {
                                 </div>
                             </td>
                             <td class="product-name">
-                                <p><?php echo $row['product_name']; ?></p>
+                                <p><?php echo $row['sci_name']; ?></p>
                             </td>
                             <td><?php echo $row['Type']; ?></td>
                             <td>
@@ -100,12 +100,12 @@ if ($query->rowCount() > 0) {
                                 if ($row['amount'] >= 1) {
                                 ?>
                                     <div class="button">
-                                        <button onclick="location.href='cart.php?action=add&item=<?= $row['file_name'] ?>'" class="use-it"><i class="icon fa-solid fa-arrow-up"></i>
+                                        <button onclick="location.href='cart.php?action=add&item=<?= $row['img'] ?>'" class="use-it"><i class="icon fa-solid fa-arrow-up"></i>
                                             <p>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</p>
                                         </button>
                                     </div>
                                     <div class="button">
-                                        <button onclick="location.href='reserve_cart.php?action=add&item=<?= $row['file_name'] ?>'" class="reserve-it">
+                                        <button onclick="location.href='reserve_cart.php?action=add&item=<?= $row['img'] ?>'" class="reserve-it">
                                             <i class="icon fa-solid fa-check"></i>
                                             <p>จองวัสดุ อุปกรณ์ และเครื่องมือ</p>
                                         </button>

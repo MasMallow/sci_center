@@ -21,7 +21,7 @@ try {
         </tr>";
         while ($row = $stmt->fetch()) {
             echo "<tr>";
-            echo "<td>" . $row['product_name'] . "</td>";
+            echo "<td>" . $row['sci_name'] . "</td>";
             echo "<td>" . $row['quantity'] . "</td>";
             echo "<td>" . $row['reservation_date'] . "</td>";
             echo "</tr>";

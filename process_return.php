@@ -37,11 +37,11 @@
 
             foreach ($_SESSION['cart'] as $item) {
                 // Retrieve product details from the database based on the item
-                $query = $conn->prepare("SELECT * FROM crud WHERE file_name = :item");
+                $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
                 $query->bindParam(':item', $item, PDO::PARAM_STR);
                 $query->execute();
                 $product = $query->fetch(PDO::FETCH_ASSOC);
-                $productName = $product['product_name'];
+                $productName = $product['sci_name'];
 
                 // Retrieve the quantity of the item
                 $quantity = isset($items[$item]) ? $items[$item] : 0;
@@ -59,26 +59,26 @@
                 $productName = '';
 
                 // Retrieve product details from the database based on the item
-                $query = $conn->prepare("SELECT product_name FROM crud WHERE file_name = :item");
+                $query = $conn->prepare("SELECT sci_name FROM crud WHERE img = :item");
                 $query->bindParam(':item', $item, PDO::PARAM_STR);
                 $query->execute();
                 $product = $query->fetch(PDO::FETCH_ASSOC);
-                $productName = $product['product_name'];
+                $productName = $product['sci_name'];
 
                 // Retrieve the quantity of the item
                 $quantity = isset($items[$item]) ? $items[$item] : 0;
 
                 // Insert the borrow history into the database
-                $stmt = $conn->prepare("INSERT INTO borrow_history (user_id, firstname, product_name, quantity, borrow_date, return_date) VALUES (:user_id, :firstname, :product_name, :quantity, NOW(), :return_date)");
+                $stmt = $conn->prepare("INSERT INTO borrow_history (user_id, firstname, sci_name, quantity, borrow_date, return_date) VALUES (:user_id, :firstname, :sci_name, :quantity, NOW(), :return_date)");
                 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                 $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-                $stmt->bindParam(':product_name', $productName, PDO::PARAM_STR);
+                $stmt->bindParam(':sci_name', $productName, PDO::PARAM_STR);
                 $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
                 $stmt->bindParam(':return_date', $returnDate, PDO::PARAM_STR);
                 $stmt->execute();
 
                 // Update the product quantity in the database
-                $stmtUpdate = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE file_name = :item");
+                $stmtUpdate = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE img = :item");
                 $stmtUpdate->bindParam(':quantity', $quantity, PDO::PARAM_INT);
                 $stmtUpdate->bindParam(':item', $item, PDO::PARAM_STR);
                 $stmtUpdate->execute();

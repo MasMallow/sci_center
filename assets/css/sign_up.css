@@ -36,7 +36,6 @@
   padding: 0.7rem 1.2rem;
 }
 .register_page .register_page_body {
-  background-color: #00aaee;
   padding: 20px;
 }
 .register_page_body .pagination {
@@ -57,11 +56,11 @@
   font-size: 15px;
 }
 .register_page_body .pagination .bar {
+  background-color: #00aaee;
   width: 50px;
   height: 4px;
   text-align: center;
   border-radius: 5px;
-  background-color: #00aaee;
 }
 .register_page_body .pagination .active ~ div {
   background-color: #ddd;
@@ -82,18 +81,24 @@
 }
 .form .form_body {
   margin-top: 1.25rem;
-  background-color: #a14343;
 }
-.form .input-box {
+.form .input_box_1 {
   width: 100%;
-  margin-top: 5px;
+  margin: 1.25rem 0;
 }
-.form .input-box span {
+.form .input_box_2 {
+  width: 100%;
+  margin: 0.75rem 0;
+}
+.form .input_box_1 span,
+.form .input_box_2 span {
   display: block;
-  margin-bottom: .25rem;
+  margin-bottom: 0.25rem;
 }
-.input-box input,
-.input-box select {
+.input_box_1 input,
+.input_box_1 select,
+.input_box_2 input,
+.input_box_2 select {
   position: relative;
   height: 50px;
   width: 100%;
@@ -115,66 +120,103 @@ select:focus {
 /* description */
 .description {
   font-size: 14px;
-  font-weight: 550;
   color: red;
+  margin-top: 3px;
+  padding-left: 5px;
+}
+
+.register_page_footer_1 {
+  display: flex;
+  justify-content: end;
+}
+.register_page_footer_2 {
+  display: flex;
+  justify-content: start;
+}
+.register_page_footer_1 .btn_next {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  background-color: rgb(0, 119, 255);
+  padding: 0.55rem 1.2rem;
+  font-size: 0.95rem;
+  border-radius: 5px;
+  color: black;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.register_page_footer_2 .btn_prev {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  background-color: rgb(113, 155, 204);
+  padding: 0.55rem 1.2rem;
+  font-size: 0.95rem;
+  border-radius: 5px;
+  color: black;
+  transition: all 0.3s;
+  cursor: pointer;
 }
 
 /* Button */
-div.button {
+.btn_section_sign_up {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
-  border-top: 2px solid gray;
+  margin-top: 1.5rem;
 }
-div.button-1 {
-  width: 40%;
-}
-button.submit {
+.btn_section_sign_up .submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
   outline: none;
   border: none;
-  margin-top: 8px;
-  margin-left: 12px;
   padding: 10px 5px;
   border-radius: 5px;
-  width: 200px;
+  height: 40px;
+  width: 120px;
   color: white;
   background-color: rgb(62, 143, 248);
   transition: all 0.3s;
   cursor: pointer;
+  font-size: .9rem;
 }
-button.submit:hover {
+.btn_section_sign_up .submit:hover {
   background-color: rgb(0, 110, 255);
 }
 
-button.reset {
+.btn_section_sign_up .reset {
   outline: none;
   border: none;
-  margin-top: 8px;
-  margin-left: 12px;
   padding: 10px 5px;
+  height: 40px;
   width: 120px;
   border-radius: 5px;
   color: black;
   background-color: #f1d979;
   transition: all 0.3s;
   cursor: pointer;
+  font-size: .9rem;
 }
-button.reset:hover {
+.btn_section_sign_up .reset:hover {
   background-color: #ffd119;
 }
-button.cancel {
+.btn_section_sign_up .cancel {
   outline: none;
   border: none;
-  margin-top: 8px;
-  margin-left: 12px;
   padding: 10px 5px;
+  height: 40px;
+
   width: 120px;
   border-radius: 5px;
   color: white;
   background-color: rgb(247, 95, 95);
   transition: all 0.3s;
   cursor: pointer;
+  font-size: .9rem;
 }
-button.cancel:hover {
+.btn_section_sign_up .cancel:hover {
   background-color: #c50014;
 }

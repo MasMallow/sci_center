@@ -1,10 +1,10 @@
 <?php
 include_once '../assets/database/connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && isset($_POST['quantity']) && isset($_POST['product_name'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && isset($_POST['quantity']) && isset($_POST['sci_name'])) {
     $productType = $_POST['productType'];
     $quantity = $_POST['quantity'];
-    $productName = $_POST['product_name'];
+    $productName = $_POST['sci_name'];
 
     $targetDir = "../uploads/"; // เปลี่ยนเป็นชื่อโฟลเดอร์ที่ต้องการ
 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && iss
     // ทำการอัปโหลดไฟล์
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
         // เพิ่มข้อมูลลงในฐานข้อมูล
-        $insert = $conn->query("INSERT INTO crud (product_name, file_name, uploaded_on, status, amount, Type) VALUES ('$productName', '$fileName', NOW(), 1, '$quantity', '$productType')");
+        $insert = $conn->query("INSERT INTO crud (sci_name, img, uploaded_on, status, amount, Type) VALUES ('$productName', '$fileName', NOW(), 1, '$quantity', '$productType')");
 
         if ($insert) {
             header("Location: add-remove-update.php");

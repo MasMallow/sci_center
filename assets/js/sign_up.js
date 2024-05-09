@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const forms = document.querySelectorAll('.form');
     const paginationNumbers = document.querySelectorAll('.pagination .number');
-    const prevBtn = document.querySelector('.btn-prev');
-    const nextBtn = document.querySelector('.btn-next');
+    const prevBtn = document.querySelector('.btn_prev');
+    const nextBtn = document.querySelector('.btn_next');
 
     let currentFormIndex = 0;
 

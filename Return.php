@@ -9,11 +9,11 @@ if (isset($_SESSION['user_login'])) {
 }
 
 $stmt = $conn->prepare("
-    SELECT DISTINCT bh.product_name, MAX(bh.borrow_date) AS lauploads_borrow_date, MAX(rh.In_return_date) AS lauploads_return_date
+    SELECT DISTINCT bh.sci_name, MAX(bh.borrow_date) AS lauploads_borrow_date, MAX(rh.In_return_date) AS lauploads_return_date
     FROM borrow_history bh
-    LEFT JOIN return_history rh ON bh.product_name = rh.product_name AND bh.user_id = rh.user_id
+    LEFT JOIN return_history rh ON bh.sci_name = rh.sci_name AND bh.user_id = rh.user_id
     WHERE bh.user_id = :user_id
-    GROUP BY bh.product_name
+    GROUP BY bh.sci_name
     HAVING MAX(rh.In_return_date) < MAX(bh.borrow_date) OR MAX(rh.In_return_date) IS NULL
 ");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -45,7 +45,7 @@ $borrowHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($borrowHistory as $product) :
                     ?>
                     <tr>
-                        <td><?php echo $product['product_name']; ?></td>
+                        <td><?php echo $product['sci_name']; ?></td>
                         <td><?php echo $product['lauploads_borrow_date']; ?></td>
                         <td><?php echo $product['lauploads_return_date']; ?></td>
                         <td>
@@ -54,7 +54,7 @@ $borrowHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             $return_date = strtotime($product['lauploads_return_date']);
 
                             if ($return_date <= $borrow_date || $return_date === false) {
-                                echo '<input type="checkbox" name="return_item[]" value="' . $product['product_name'] . '">';
+                                echo '<input type="checkbox" name="return_item[]" value="' . $product['sci_name'] . '">';
                             }
                             ?>
                         </td>

@@ -42,7 +42,7 @@
             $query = $conn->query("SELECT * FROM crud WHERE categories = 'อุปกรณ์' ORDER BY uploaded_on DESC");
             $displayedImages = array(); // สร้างอาร์เรย์เพื่อเก็บ URL รูปภาพที่แสดงแล้ว
             while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
-                $imageURL = 'uploads/' . $data['file_name'];
+                $imageURL = 'uploads/' . $data['img'];
                 if (!in_array($imageURL, $displayedImages)) { // ตรวจสอบว่า URL รูปภาพนี้ถูกแสดงแล้วหรือไม่
                     $displayedImages[] = $imageURL; // เพิ่ม URL รูปภาพนี้เข้าไปในอาร์เรย์
 
@@ -76,7 +76,7 @@
                         </div>
                         <div class="grid_content_body">
                             <div class="content_name">
-                                <span id="B">ชื่อ </span><?php echo $data['product_name']; ?>
+                                <span id="B">ชื่อ </span><?php echo $data['sci_name']; ?>
                             </div>
                             <div class="content_categories">
                                 <span id="B">ประเภท </span><?php echo $data['categories']; ?>
@@ -92,7 +92,7 @@
                                 if ($data['amount'] >= 1) {
                                 ?>
                                     <div class="button">
-                                        <button onclick="location.href='cart.php?action=add&item=<?= $data['file_name'] ?>'" class="use-it">
+                                        <button onclick="location.href='cart.php?action=add&item=<?= $data['img'] ?>'" class="use-it">
                                             <i class="icon fa-solid fa-ardata-up"></i>
                                             <span>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</ห>
                                         </button>

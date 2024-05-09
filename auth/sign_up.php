@@ -12,6 +12,7 @@ require_once '../assets/database/connect.php';
 
 <!-- ส่วน Link -->
 <link href="../assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+<link rel="stylesheet" href="../assets/font-awesome/css/all.css">
 <link rel="stylesheet" href="../assets/css/sign_up.css">
 
 <body>
@@ -57,13 +58,12 @@ require_once '../assets/database/connect.php';
                             <span>กรอก USERNAME และ PASSWORD</span>
                         </div>
                         <div class="form_body">
-                            <div class="input-box">
+                            <div class="input_box_1">
                                 <span>ชื่อผู้ใช้</span>
                                 <input type="text" class="" placeholder="กรุณากรอกชื่อผู้ใช้ (Username)" name="Username" require autofocus>
                                 <span class="description"><b>Note : </b>Username ต้องมีความยาวระหว่าง 6 ถึง 12 ตัวอักษร</span>
                             </div>
-                            <div class="line"></div>
-                            <div class="input-box">
+                            <div class="input_box_1">
                                 <span>รหัสผ่าน</span>
                                 <input type="password" class="" placeholder="กรุณากรอกรหัสผ่าน (Password)" name="Password" require>
                                 <span class="description">
@@ -71,13 +71,12 @@ require_once '../assets/database/connect.php';
                                     <b>Note : </b>รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว
                                 </span>
                             </div>
-                            <div class="line"></div>
-                            <div class="input-box">
+                            <div class="input_box_1">
                                 <span>ยืนยันรหัสผ่านอีกครั้ง</span>
                                 <input type="password" class="" placeholder="กรุณายืนยันรหัสผ่าน" name="ConfirmPassword" require>
                             </div>
-                            <div class="register_page_footer">
-                                <a href="#2" class="btn-next"><span>ถัดไป</span></a>
+                            <div class="register_page_footer_1">
+                                <a href="#2" class="btn_next"><span>ถัดไป</span><i class="fa-solid fa-angle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -88,7 +87,7 @@ require_once '../assets/database/connect.php';
                         </div>
                         <div class="form_body">
                             <div class="col">
-                                <div class="input-box">
+                                <div class="input_box_2">
                                     <span for="">คำนำหน้า</span>
                                     <div class="select">
                                         <select name="pre">
@@ -99,17 +98,17 @@ require_once '../assets/database/connect.php';
                                         </select>
                                     </div>
                                 </div>
-                                <div class="input-box">
+                                <div class="input_box_2">
                                     <span for="">ชื่อ</span>
                                     <input type="text" class="" placeholder="ชื่อภาษาไทย" name="Firstname">
                                 </div>
-                                <div class="input-box">
+                                <div class="input_box_2">
                                     <span for="">นามสกุล</span>
                                     <input type="text" class="" placeholder="นามสกุลภาษาไทย" name="Lastname">
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="input-box">
+                                <div class="input_box_2">
                                     <span for="">ตำแหน่ง</span>
                                     <div class="select">
                                         <select name="role">
@@ -120,7 +119,7 @@ require_once '../assets/database/connect.php';
                                         </select>
                                     </div>
                                 </div>
-                                <div class="input-box">
+                                <div class="input_box_2">
                                     <span for="">หน่วยงาน</span>
                                     <div class="select">
                                         <select name="agency">
@@ -132,25 +131,25 @@ require_once '../assets/database/connect.php';
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="input-box">
+                                <div class="input_box_2">
                                     <span for="">เบอร์โทรศัพท์</span>
                                     <input type="text" class="" placeholder="เช่น 0999999999" name="Numberphone">
                                 </div>
-                                <div class="input-box">
+                                <div class="input_box_2">
                                     <span for="">Line ID</span>
                                     <input type="text" class="" placeholder="เช่นเบอร์โทรศัพท์" name="Lineid">
                                 </div>
                             </div>
-                            <div class="register_page_footer">
-                                <a href="#1" class="btn-prev">ก่อนหน้า</a>
+                            <div class="register_page_footer_2">
+                                <a href="#1" class="btn_prev"><i class="fa-solid fa-angle-left"></i><span>ก่อนหน้า</span></a>
                             </div>
-                            <div class="button">
-                                <div class="button-1">
-                                    <button type="submit" class="submit" name="signup">ยืนยัน</button>
+                            <div class="btn_section_sign_up">
+                                <div class="btn_section_sign_up_1">
+                                    <button type="submit" class="submit" name="signup"><i class="fa-solid fa-circle-check"></i><span>ยืนยัน</span></button>
                                 </div>
-                                <div class="button-2">
-                                    <button type="reset" class="reset">เคลียร์</button>
-                                    <a href="sign_in.php">ยกเลิก</a>
+                                <div class="btn_section_sign_up_btn_2">
+                                    <button type="reset" class="reset"><i class="fa-solid fa-rotate"></i><span>เคลียร์</span></button>
+                                    <a href="sign_in.php" class="cancel"><i class="fa-solid fa-circle-xmark"></i><span>ยกเลิก</span></a>
                                 </div>
                             </div>
                         </div>
@@ -159,6 +158,7 @@ require_once '../assets/database/connect.php';
             </div>
         </div>
     </form>
+    <script src="../assets/js/sign_up.js"></script>
 </body>
 
 </html>
