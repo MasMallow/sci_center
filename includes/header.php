@@ -18,7 +18,7 @@
                         <?= $userData['surname'] . '&nbsp;' . $userData['lastname'] ?>
                     </span>
                 </button>
-            <?php elseif (isset($_SESSION['admin_login'])) : ?>
+            <?php elseif (isset($_SESSION['staff_login'])) : ?>
                 <button class="header_userinfo_btn">
                     <i class="fa-solid fa-user"></i>
                     <span>
