@@ -116,7 +116,7 @@ require_once 'assets/database/connect.php';
                         </li>
                         <?php
                         // ตรวจสอบว่ามี session ของผู้ใช้ที่ล็อกอินหรือไม่
-                        if (isset($_SESSION['admin_login'])) {
+                        if (isset($_SESSION['staff_login'])) {
                             // ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ
                             echo '<li>
                         <a class="link">

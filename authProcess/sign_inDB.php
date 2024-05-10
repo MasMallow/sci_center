@@ -25,8 +25,8 @@ if (isset($_POST['sign-in'])) {
             if ($check_data->rowCount() > 0) {
                 if ($Username == $row['username']) {
                     if (password_verify($Password, $row['password'])) {
-                        if ($row['urole'] == 'admin') {
-                            $_SESSION['admin_login'] = $row['user_id'];
+                        if ($row['urole'] == 'staff') {
+                            $_SESSION['staff_login'] = $row['user_id'];
                             header("location: ../");
                         } else {
                             $_SESSION['user_login'] = $row['user_id'];
