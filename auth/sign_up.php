@@ -60,12 +60,12 @@ require_once '../assets/database/connect.php';
                         <div class="form_body">
                             <div class="input_box_1">
                                 <span>ชื่อผู้ใช้</span>
-                                <input type="text" class="" placeholder="กรุณากรอกชื่อผู้ใช้ (Username)" name="Username" require autofocus>
+                                <input type="text" class="" placeholder="กรุณากรอกชื่อผู้ใช้ (Username)" name="username" require autofocus>
                                 <span class="description"><b>Note : </b>Username ต้องมีความยาวระหว่าง 6 ถึง 12 ตัวอักษร</span>
                             </div>
                             <div class="input_box_1">
                                 <span>รหัสผ่าน</span>
-                                <input type="password" class="" placeholder="กรุณากรอกรหัสผ่าน (Password)" name="Password" require>
+                                <input type="password" class="" placeholder="กรุณากรอกรหัสผ่าน (Password)" name="password" require>
                                 <span class="description">
                                     <b>Note : </b>รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 12 ตัวอักษร<br>
                                     <b>Note : </b>รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว
@@ -73,7 +73,7 @@ require_once '../assets/database/connect.php';
                             </div>
                             <div class="input_box_1">
                                 <span>ยืนยันรหัสผ่านอีกครั้ง</span>
-                                <input type="password" class="" placeholder="กรุณายืนยันรหัสผ่าน" name="ConfirmPassword" require>
+                                <input type="password" class="" placeholder="กรุณายืนยันรหัสผ่าน" name="confirmpassword" require>
                             </div>
                             <div class="register_page_footer_1">
                                 <a href="#2" class="btn_next"><span>ถัดไป</span><i class="fa-solid fa-angle-right"></i></a>
@@ -88,7 +88,7 @@ require_once '../assets/database/connect.php';
                         <div class="form_body">
                             <div class="col">
                                 <div class="input_box_2">
-                                    <span for="">คำนำหน้า</span>
+                                    <span>คำนำหน้า</span>
                                     <div class="select">
                                         <select name="pre">
                                             <option value="" disabled selected>เลือกคำนำหน้า</option>
@@ -100,11 +100,11 @@ require_once '../assets/database/connect.php';
                                 </div>
                                 <div class="input_box_2">
                                     <span for="">ชื่อ</span>
-                                    <input type="text" class="" placeholder="ชื่อภาษาไทย" name="Firstname">
+                                    <input type="text" class="" placeholder="ชื่อภาษาไทย" name="surname">
                                 </div>
                                 <div class="input_box_2">
                                     <span for="">นามสกุล</span>
-                                    <input type="text" class="" placeholder="นามสกุลภาษาไทย" name="Lastname">
+                                    <input type="text" class="" placeholder="นามสกุลภาษาไทย" name="lastname">
                                 </div>
                             </div>
                             <div class="col">
@@ -133,11 +133,11 @@ require_once '../assets/database/connect.php';
                             <div class="col">
                                 <div class="input_box_2">
                                     <span for="">เบอร์โทรศัพท์</span>
-                                    <input type="text" class="" placeholder="เช่น 0999999999" name="Numberphone">
+                                    <input type="text" class="" placeholder="เช่น 0999999999" name="phone_number">
                                 </div>
                                 <div class="input_box_2">
                                     <span for="">Line ID</span>
-                                    <input type="text" class="" placeholder="เช่นเบอร์โทรศัพท์" name="Lineid">
+                                    <input type="text" class="" placeholder="เช่นเบอร์โทรศัพท์" name="line_id">
                                 </div>
                             </div>
                             <div class="register_page_footer_2">

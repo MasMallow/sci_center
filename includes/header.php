@@ -15,14 +15,14 @@
                 <button class="header_userinfo_btn">
                     <i class="fa-solid fa-user"></i>
                     <span>
-                        <?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
+                        <?= $userData['surname'] . '&nbsp;' . $userData['lastname'] ?>
                     </span>
                 </button>
             <?php elseif (isset($_SESSION['admin_login'])) : ?>
                 <button class="header_userinfo_btn">
                     <i class="fa-solid fa-user"></i>
                     <span>
-                        <?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
+                        <?= $userData['surname'] . '&nbsp;' . $userData['lastname'] ?>
                     </span>
                 </button>
             <?php else : ?>
@@ -43,7 +43,7 @@
                     <div class="user-info-content">
                         <span id="B">รายละเอียดผู้ใช้งาน</span>
                         <div class="user-info-content-edit">
-                            <span><?= $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?> </span>
+                            <span><?= $userData['surname'] . '&nbsp;' . $userData['lastname'] ?> </span>
                             <a href="edit_profile.php">
                                 <i class="fa-solid fa-user-pen"></i>
                             </a>

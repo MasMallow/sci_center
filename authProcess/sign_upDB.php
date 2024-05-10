@@ -3,23 +3,23 @@ session_start();
 require_once '../assets/database/connect.php';
 
 if (isset($_POST['signup'])) {
-    $Username = $_POST['Username'];
-    $Password = $_POST['Password'];
-    $ConfirmPassword = $_POST['ConfirmPassword'];
+    $user_id = rand(10000, 99999);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $confirmpassword = $_POST['confirmpassword'];
     $pre = $_POST['pre'];
-    $firstname = $_POST['Firstname'];
-    $lastname = $_POST['Lastname'];
+    $surname = $_POST['surname'];
+    $lastname = $_POST['lastname'];
     $role = $_POST['role'];
-    $Lineid = $_POST['Lineid'];
-    $Numberphone = $_POST['Numberphone'];
+    $line_id = $_POST['line_id'];
+    $phone_number = $_POST['phone_number'];
     $agency = $_POST['agency'];
     $urole = 'user';
-
-    $user_id = rand(10000, 99999);
+    $status = 'wait_approved';
 
     // ตรวจสอบชื่อผู้ใช้ซ้ำ
     $check_username = $conn->prepare("SELECT username FROM users WHERE username = :username");
-    $check_username->bindParam(":username", $Username);
+    $check_username->bindParam(":username", $username);
     $check_username->execute();
     $username_exists = $check_username->fetch(PDO::FETCH_ASSOC);
 
@@ -30,80 +30,92 @@ if (isset($_POST['signup'])) {
     }
 
     // ตรวจสอบข้อผิดพลาดและดำเนินการต่อ
-    if (empty($Username)) {
-        $_SESSION['error1'] = 'กรุณากรอก Username';
+    if (empty($username)) {
+        $_SESSION['error1'] = 'กรุณากรอก username';
         header("location:../auth/sign_up.php");
-    } elseif (strlen($Username) < 6) {
-        $_SESSION['error1'] = 'Username ต้องมีความยาวระหว่าง 6';
-        header("location:../auth/sign_up.php");
-    } elseif (empty($Password)) {
+        exit;
+    } elseif (empty($password)) {
         $_SESSION['error1'] = 'กรุณากรอกรหัสผ่าน';
         header("location:../auth/sign_up.php");
-    } elseif (strlen($Password) > 12 || strlen($Password) < 8) {
-        $_SESSION['error1'] = 'รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 12 ตัวอักษร';
+        exit;
+    } elseif (strlen($password) < 8) {
+        $_SESSION['error1'] = 'รหัสผ่านต้องมีความยาวระหว่าง 8';
         header("location:../auth/sign_up.php");
-    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/', $Password) || !preg_match('/[a-zA-Z\d]/', $Password)) {
+        exit;
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/', $password) || !preg_match('/[a-zA-Z\d]/', $password)) {
         $_SESSION['error1'] = 'รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว';
         header("location:../auth/sign_up.php");
-    } elseif (empty($ConfirmPassword)) {
+        exit;
+    } elseif (empty($confirmpassword)) {
         $_SESSION['error1'] = 'กรุณายืนยันรหัสผ่าน';
         header("location:../auth/sign_up.php");
-    } elseif ($Password != $ConfirmPassword) {
+        exit;
+    } elseif ($password != $confirmpassword) {
         $_SESSION['error1'] = 'รหัสผ่านไม่ตรงกัน';
         header("location:../auth/sign_up.php");
+        exit;
     } elseif (empty($role)) {
         $_SESSION['error1'] = 'กรุณาเลือกตำแหน่งของคุณ';
         header("location:../auth/sign_up.php");
-    } elseif (empty($firstname)) {
+        exit;
+    } elseif (empty($surname)) {
         $_SESSION['error1'] = 'กรุณากรอกชื่อ';
         header("location:../auth/sign_up.php");
+        exit;
     } elseif (empty($lastname)) {
         $_SESSION['error1'] = 'กรุณากรอกนามสกุล';
         header("location:../auth/sign_up.php");
-    } elseif (empty($Numberphone)) {
+        exit;
+    } elseif (empty($phone_number)) {
         $_SESSION['error1'] = 'กรุณาใส่เบอร์โทรของคุณ';
         header("location:../auth/sign_up.php");
-    } elseif (!is_numeric($Numberphone)) {
+        exit;
+    } elseif (!is_numeric($phone_number)) {
         $_SESSION['error1'] = 'กรุณาใส่เบอร์โทรให้เป็นตัวเลขเท่านั้น';
         header("location:../auth/sign_up.php");
-    } elseif (empty($Lineid)) {
+        exit;
+    } elseif (empty($line_id)) {
         $_SESSION['error1'] = 'กรุณาใส่ไอดี Line ของคุณ';
         header("location:../auth/sign_up.php");
+        exit;
     } elseif (empty($agency)) {
         $_SESSION['error1'] = 'กรุณาใส่หน่วยงาน';
         header("location:../auth/sign_up.php");
+        exit;
     } else {
         try {
-            $check_lineid = $conn->prepare("SELECT lineid FROM users WHERE lineid  = :lineid");
-            $check_lineid->bindParam(":lineid", $Lineid);
+            $check_lineid = $conn->prepare("SELECT lineid FROM users WHERE lineid  = :line_id");
+            $check_lineid->bindParam(":line_id", $line_id);
             $check_lineid->execute();
             $row = $check_lineid->fetch(PDO::FETCH_ASSOC);
 
-            if (isset($row['lineid']) && $row['lineid'] == $Lineid) {
+            if (isset($row['lineid']) && $row['lineid'] == $line_id) {
                 $_SESSION['warning'] = "ไอดี Line นี้มีอยู่ในระบบแล้ว";
                 header("location:../auth/sign_up.php");
+                exit;
             } else {
-                $passwordHash = password_hash($Password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("INSERT INTO users (user_id, username, password, pre, surname, lastname, phone_number, lineid, role, agency, urole)
-                VALUES (:user_id, :Username,:Password, :pre, :Firstname, :Lastname, :Phone, :Lineid, :Role, :Agency,:Urole)");
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                $stmt = $conn->prepare("INSERT INTO users (user_id, username, password, pre, surname, lastname, phone_number, lineid, role, agency, urole, status)
+                    VALUES (:user_id, :username,:password, :pre, :surname, :lastname, :phone_number, :line_id, :role, :agency,:urole,:status)");
                 $stmt->bindParam(":user_id", $user_id);
-                $stmt->bindParam(":Username", $Username);
-                $stmt->bindParam(":Password", $passwordHash);
+                $stmt->bindParam(":username", $username);
+                $stmt->bindParam(":password", $passwordHash);
                 $stmt->bindParam(":pre", $pre);
-                $stmt->bindParam(":Firstname", $firstname);
-                $stmt->bindParam(":Lastname", $lastname);
-                $stmt->bindParam(":Phone", $Numberphone);
-                $stmt->bindParam(":Lineid", $Lineid);
-                $stmt->bindParam(":Role", $role);
-                $stmt->bindParam(":Agency", $agency);
-                $stmt->bindParam(":Urole", $urole);
+                $stmt->bindParam(":surname", $surname);
+                $stmt->bindParam(":lastname", $lastname);
+                $stmt->bindParam(":phone_number", $phone_number);
+                $stmt->bindParam(":line_id", $line_id);
+                $stmt->bindParam(":role", $role);
+                $stmt->bindParam(":agency", $agency);
+                $stmt->bindParam(":urole", $urole);
+                $stmt->bindParam(":status", $status); // ต้องเพิ่มการ bind ตัวแปร $status ด้วย
                 $stmt->execute();
                 $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว <a href='sign_in.php' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";
                 header("location:../auth/sign_up.php");
+                exit;
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
 }
-?>

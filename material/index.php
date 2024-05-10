@@ -51,15 +51,6 @@ try {
             <div class="time" id="time"></div>
         </div>
     </nav>
-    <div class="content_area_header">
-        <div class="content_area_header_name">
-            <h2>หมวดวัสดุ</h2>
-        </div>
-        <form>
-            <input class="search" type="search" name="search" value="<?php echo $searchValue ?>" placeholder="ค้นหา">
-            <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </form>
-    </div>
     <div class="content_area_grid">
         <?php
         foreach ($result as $data) {
