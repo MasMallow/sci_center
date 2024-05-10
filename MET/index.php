@@ -99,7 +99,7 @@ try {
                             <span id="B">ประเภท </span><?php echo $data['categories']; ?>
                         </div>
                         <div class="content_amount">
-                            <span>คงเหลือ : <?php echo $data['amount']; ?></span>
+                            <span id="B">คงเหลือ </span><?php echo $data['amount']; ?>
                         </div>
                     </div>
                     <div class="grid_content_footer">
@@ -111,14 +111,14 @@ try {
                                 <div class="button">
                                     <button onclick="location.href='cart.php?action=add&item=<?= $data['img'] ?>'" class="use-it">
                                         <i class="icon fa-solid fa-ardata-up"></i>
-                                        <span>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</span>
+                                        <span>ขอใช้</span>
                                     </button>
                                 </div>
                             <?php } else { ?>
                                 <div class="button">
                                     <button class="out-of">
                                         <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
-                                        <span>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</span>
+                                        <span>ไม่สามารถขอใช้ได้</span>
                                     </button>
                                 </div>
                             <?php } ?>

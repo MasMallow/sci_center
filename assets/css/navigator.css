@@ -1,3 +1,22 @@
+@font-face {
+  src: url("../fonts/Sarabun-Regular.ttf");
+  font-family: Sarabun;
+}
+@font-face {
+  src: url("../fonts/Sarabun-Bold.ttf");
+  font-family: Sarabun-bold;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Sarabun;
+  text-decoration: none;
+  list-style: none;
+}
+#B {
+  font-family: Sarabun-bold;
+}
 .header {
   background-color: #01bdb6;
   color: white;
@@ -40,14 +59,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: .8rem;
+  gap: 0.8rem;
   outline: none;
   border: none;
   border-radius: 5px;
   padding: 0.7rem 1rem;
 }
 .header_nav_userinfo .header_userinfo_btn span {
-  font-size: .85rem;
+  font-size: 0.85rem;
 }
 .header_nav_userinfo .header_userinfo_btn i {
   display: flex;
@@ -57,7 +76,7 @@
   height: 23px;
   border-radius: 50%;
   background-color: #000;
-  color: #FFF;
+  color: #fff;
 }
 
 /* USER INFO */
@@ -136,12 +155,12 @@
 }
 .user-info-content-edit a {
   margin-left: 1rem;
-  font-size: .95rem;
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  padding: 0.5rem .5rem;
+  padding: 0.5rem 0.5rem;
   text-decoration: none;
   background-color: #005df1;
   color: #fff;
@@ -159,7 +178,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
   border: none;
   outline: none;
   border-radius: 6px;

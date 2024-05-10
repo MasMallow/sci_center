@@ -41,9 +41,9 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
                     <?php } ?>
                     <div class="box_content_content">
                         <input type="text" class="input" placeholder="ชื่อผู้ใช้" name="Username" autofocus>
-                        <div class="show-password">
+                        <div class="show_password">
                             <input type="Password" class="input" id="password" placeholder="รหัสผ่าน" name="Password">
-                            <i class="icon-password fas fa-eye-slash" onclick="togglePassword()"></i>
+                            <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
                         </div>
                         <div class="box_content_btn">
                             <button class="sign-in" name="sign-in">เข้าสู่ระบบ</button>

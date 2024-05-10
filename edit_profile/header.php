@@ -2,10 +2,10 @@
     <div class="header_nav">
         <div class="header_nav_banner">
             <div class="header_navbanner_img">
-                <img src="assets/logo/scicenter_logo.png">
+                <img src="../assets/logo/scicenter_logo.png">
             </div>
             <div class="header_navbanner_name">
-                <span id="B" class="header_navbanner_name-1">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ</span><br>
+                <span id="B" class="header_navbanner_name-1">แก้ไขบัญชีผู้ใช้</span><br>
                 <span class="header_navbanner_name-2">ศูนย์วิทยาศาสตร์ มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา</span>
             </div>
         </div>
