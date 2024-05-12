@@ -34,62 +34,49 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     <?php
     include_once('header.php')
     ?>
+    <!-- <div class="edit_profile_status">
+        <div class="edit_profile_status_content">
+            <div class="edit_profile_header_status">
+                <span id="B">แจ้งเตือน</span>
+                <div class="modalClose" id="close"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+            <div class="edit_profile_header_body">
+                <div class="edit_profile_header_body_error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+                <div class="edit_profile_header_body_2">
+                    <span id="B">!! เกิดข้อผิดพลาด แก้ไขบัญชีผู้ใช้ไม่สำเร็จ !!</span>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <?php
+    if (isset($_SESSION['edit_profile_success'])) {
+    ?>
+        <div class="edit_profile_status">
+            <div class="edit_profile_status_content">
+                <div class="edit_profile_header_status">
+                    <span id="B">แจ้งเตือน</span>
+                </div>
+                <div class="edit_profile_header_body">
+                    <div class="edit_profile_header_body_1">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="edit_profile_header_body_2">
+                        <span id="B">แก้ไขบัญชีผู้ใช้สำเร็จ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php
+        unset($_SESSION['edit_profile_success']); // เคลียร์ค่า error ใน session
+    }
+    ?>
     <div class="edit_profile">
         <div class="edit_profile_header">
             <div class="edit_profile_header_name">
                 <span id="B">แก้ไขบัญชีผู้ใช้</span>
             </div>
-            <?php
-            if (isset($_SESSION['edit_profile_success'])) {
-            ?>
-                <div class="edit_profile_header_status">
-                    <div class="edit_profile_header_status">
-                        <div class="modalAlertbook-header">
-                            <span id="B">แจ้งเตือนการแก้ไขบัญชีผู้ใช้</span>
-                        </div>
-                        <div class="modalAlertbook-Page">
-                            <div class="head">
-                                <?php echo $_SESSION['error']; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    // เลือกปุ่มปิด Modal
-                    var closeModalButton = document.getElementById('closeModal');
-                    // เลือกพื้นหลังของ Modal
-                    var modalAlertbook = document.querySelector('.modalAlertbook');
-
-                    // เมื่อคลิกที่ปุ่มปิดหรือที่พื้นหลังของ Modal
-                    closeModalButton.addEventListener('click', function() {
-                        closeModal();
-                    });
-
-                    modalAlertbook.addEventListener('click', function(event) {
-                        if (event.target === modalAlertbook) {
-                            closeModal();
-                        }
-                    });
-
-                    // ฟังก์ชันในการปิด Modal
-                    function closeModal() {
-                        var modal = document.querySelector('.modalAlertbook');
-                        modal.style.display = 'none';
-                        // กำหนดค่า overflow เป็น auto และ padding-right เป็น 0 ใน body อีกครั้ง
-                        document.body.style.overflow = 'auto';
-                        document.body.style.paddingRight = '0';
-                        // เคลียร์การตั้งค่าเวลาในการปิด Modal หลังจาก 3 วินาที
-                        clearTimeout(closeModalTimer);
-                    }
-
-                    // กำหนดค่า overflow hidden และ padding-right ใน body เมื่อแสดง Modal
-                    document.body.style.overflow = 'hidden';
-                    document.body.style.paddingRight = '15px';
-                </script>
-            <?php
-                unset($_SESSION['error']); // เคลียร์ค่า error ใน session
-            }
-            ?>
         </div>
         <div class="edit_profile_body">
             <form action="process/update_profile.php" method="post">

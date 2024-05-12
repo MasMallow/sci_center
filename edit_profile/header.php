@@ -2,7 +2,7 @@
     <div class="header_nav">
         <div class="header_nav_banner">
             <div class="header_navbanner_img">
-                <img src="../assets/logo/scicenter_logo.png">
+                <a href="../"><img src="../assets/logo/scicenter_logo.png"></a>
             </div>
             <div class="header_navbanner_name">
                 <span id="B" class="header_navbanner_name-1">แก้ไขบัญชีผู้ใช้</span><br>

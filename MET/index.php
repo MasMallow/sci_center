@@ -28,7 +28,7 @@ try {
     <nav class="content_area_nav">
         <div class="section_1">
             <div class="section_1_btn_1">
-                <a href="cart.php">
+                <a href="cart">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>รายการที่เลือกทั้งหมด</span>
                 </a>

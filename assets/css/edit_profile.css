@@ -31,26 +31,27 @@
   cursor: pointer;
 }
 .edit_profile {
-  max-width: 1000px;
-  margin: 5rem auto;
-  background-color: aqua;
+  max-width: 750px;
+  margin: 10rem auto;
   border-radius: 5px;
+  border: 1px solid #DDD;
 }
 .edit_profile_header {
   font-size: 2rem;
   padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid #DDD;
 }
 .edit_profile_body {
   padding: 0.7rem 1.2rem;
   margin-top: 1.25rem;
 }
 .input_edit {
-  margin: .5rem 0;
+  margin: 0.5rem 0;
   width: 100%;
 }
 .input_edit span {
   display: block;
-  padding-left: .25rem;
+  padding-left: 0.25rem;
   margin-bottom: 0.25rem;
 }
 .input_edit input,
@@ -81,13 +82,11 @@ select:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   outline: none;
   border: none;
-  padding: 10px 5px;
+  padding: .7rem 2rem;
   border-radius: 5px;
-  height: 40px;
-  width: 120px;
   color: white;
   background-color: rgb(62, 143, 248);
   transition: all 0.3s;
@@ -100,13 +99,11 @@ select:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   outline: none;
   border: none;
-  padding: 10px 5px;
+  padding: .7rem 1.5rem;
   border-radius: 5px;
-  height: 40px;
-  width: 120px;
   color: white;
   background-color: rgb(247, 95, 95);
   transition: all 0.3s;
@@ -115,8 +112,8 @@ select:focus {
 .edit_profile_footer .cancel:hover {
   background-color: #c50014;
 }
-/* MODAL ERROR */
-.modalAlertbook {
+/* ALERT */
+.edit_profile_status {
   display: flex; /* Hidden by default */
   justify-content: center;
   align-items: center;
@@ -128,18 +125,17 @@ select:focus {
   height: 100%; /* Full height */
   background-color: rgba(0, 0, 0, 0.4);
 }
-/* Modal header */
-.modalAlertbook-content {
+.edit_profile_status_content {
   display: block;
   justify-content: center;
   align-items: center;
   background-color: #fff;
   border-radius: 7px;
-  max-width: 700px;
-  max-height: 700px;
+  min-width: 400px;
+  min-height: 250px;
   animation: moving 0.3s ease;
 }
-.modalAlertbook-header {
+.edit_profile_header_status {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -147,56 +143,32 @@ select:focus {
   padding: 0.7rem 1rem;
   border-bottom: 1.2px solid gray;
 }
-.modalAlertbook-header span {
+.edit_profile_header_status span {
   font-size: 22px;
 }
-.modalAlertbook-header #closeModal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #e6e6e6;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.modalAlertbook-header #closeModal:hover {
-  background-color: #9c9a9a;
-}
-.modalAlertbook-header #closeModal i {
-  font-size: 12px;
-  color: #525151;
-}
-.modalAlertbook-Page {
+.edit_profile_header_body {
   padding: 0.7rem 2rem;
 }
-.error_icon {
+.edit_profile_header_body_1 {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 1rem 0;
+  font-size: 3.5rem;
+  color: #2d794b;
 }
-.error_icon i {
-  font-size: 5rem;
-  color: red;
-}
-.modalAlertbook-Page .head {
-  font-size: 1.5rem;
-  margin: 0.7rem;
+.edit_profile_header_body_error {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 1rem 0;
+  font-size: 3.5rem;
+  color: #ff2121;
 }
-table.error {
-  width: 100%;
-  font-size: 1.1rem;
-}
-table.error td {
-  padding: 0.5rem 0;
-}
-.footer {
-  margin-top: 3rem;
-  margin-bottom: 0.3rem;
-  color: RED;
+.edit_profile_header_body_2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  padding: 1rem 0;
 }

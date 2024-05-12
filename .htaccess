@@ -4,5 +4,5 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
 
-# Rewrite URLs with a query parameter named "page"
-RewriteRule ^a/([^/]+)$ a.php?page=$1 [QSA,NC,L]
+
+RewriteRule ^project/cart$ /project/cart/home.php [L]
