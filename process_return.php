@@ -25,11 +25,11 @@
             } elseif (isset($_SESSION['admin_login'])) {
                 $user_id = $_SESSION['admin_login'];
             }
-            $user_query = $conn->prepare("SELECT firstname FROM users WHERE user_id = :user_id");
+            $user_query = $conn->prepare("SELECT surname FROM users WHERE user_id = :user_id");
             $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $user_query->execute();
             $user = $user_query->fetch(PDO::FETCH_ASSOC);
-            $firstname = $user['firstname']; // User's first name
+            $firstname = $user['surname']; // User's first name
 
             $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
             $sMessage .= "ชื่อผู้ยืม : " . $firstname . "\n";
