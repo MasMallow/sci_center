@@ -6,34 +6,7 @@ if (!isset($_SESSION['staff_login'])) {
     header('Location: auth/sign_in.php');
     exit;
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
-    // รับค่า ID ของรายการที่กดยืนยัน
-    $id = $_POST['id'];
 
-    // รหัสผู้ดูแลระบบที่กำลังเข้าสู่ระบบ
-    $staff_id = $_SESSION['staff_login'];
-
-    // เลือกชื่อผู้ดูแลระบบจากฐานข้อมูล
-    $user_query = $conn->prepare("SELECT surname FROM users WHERE user_id = :staff_id");
-    $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
-    $user_query->execute();
-    $user = $user_query->fetch(PDO::FETCH_ASSOC);
-    $approver = $user['surname'];
-
-    // วันเวลาปัจจุบัน
-    $approvaldatetime = date('Y-m-d H:i:s');
-
-    // อัปเดตฐานข้อมูล
-    $update_query = $conn->prepare("UPDATE waiting_for_approval SET approver = :approver, approvaldatetime = :approvaldatetime WHERE id = :id");
-    $update_query->bindParam(':id', $id, PDO::PARAM_INT);
-    $update_query->bindParam(':approver', $approver, PDO::PARAM_STR);
-    $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);
-    $update_query->execute();
-
-    // ส่งกลับไปยังหน้าเดิมหลังจากการอัปเดต
-    header('Location: approval.php');
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,9 +45,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
 
                     // แสดงข้อมูลรายการที่ยืม
                     foreach ($items as $item) {
-                        echo "<span class='info'>$item ชิ้น</span><br>";
+                        $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
+                        $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
+                        $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
+                        echo "<span class='info'>$product_name</span> $quantity ชิ้น<br>"; // แสดงข้อมูล
                     }
                     ?>
+                    <span class="info">borrowdatetime:</span> <?php echo date('d/m/Y H:i:s', strtotime($row['borrowdatetime'])); ?><br>
+                    <span class="info">returndate:</span> <?php echo date('d/m/Y H:i:s', strtotime($row['returndate'])); ?><br>
+                    <form method="POST" action="process_return.php">
+                        <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
+                        <input type="submit" name="confirm" value="ยืนยันการอนุมัติ">
+                    </form><br>
                 </div>
             <?php endforeach; ?>
         </div>
