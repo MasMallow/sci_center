@@ -91,11 +91,11 @@ try {
                             </div>
                         <?php } ?>
                         <div class="content_details">
-                            <button class="details_btn">
+                            <button class="details_btn" data-modal="<?php echo $data['id']; ?>">
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
                         </div>
-                        <div class="content_details_popup">
+                        <div class="content_details_popup" id="<?php echo $data['id']; ?>">
                             <div class="details">
                                 <div class="details_header">
                                     <span id="B">รายละเอียด</span>
@@ -107,14 +107,10 @@ try {
                                     <ul class="details_content_li">
                                         <li>
                                             <div class="details_content_1">
-                                                <span id="B">
-                                                    สถานะ
-                                                </span>
+                                                <span id="B">สถานะ</span>
                                             </div>
                                             <div class="details_content_2">
-                                                <?php
-                                                if ($data['amount'] >= 50) {
-                                                ?>
+                                                <?php if ($data['amount'] >= 50) { ?>
                                                     <div class="ready-to-use">
                                                         <i class="fa-solid fa-circle-check"></i>
                                                         <span id="B">พร้อมใช้งาน</span>
@@ -134,9 +130,7 @@ try {
                                         </li>
                                         <li>
                                             <div class="details_content_1">
-                                                <span id="B">
-                                                    Serial Number
-                                                </span>
+                                                <span id="B">Serial Number</span>
                                             </div>
                                             <div class="details_content_2">
                                                 <span>190605002DZ12P054</span>
@@ -144,9 +138,7 @@ try {
                                         </li>
                                         <li>
                                             <div class="details_content_1">
-                                                <span id="B">
-                                                    ชื่อ
-                                                </span>
+                                                <span id="B">ชื่อ</span>
                                             </div>
                                             <div class="details_content_2">
                                                 <?php echo $data['sci_name']; ?>
@@ -154,9 +146,7 @@ try {
                                         </li>
                                         <li>
                                             <div class="details_content_1">
-                                                <span id="B">
-                                                    ประเภท
-                                                </span>
+                                                <span id="B">ประเภท</span>
                                             </div>
                                             <div class="details_content_2">
                                                 <?php echo $data['categories']; ?>
@@ -164,9 +154,7 @@ try {
                                         </li>
                                         <li>
                                             <div class="details_content_1">
-                                                <span id="B">
-                                                    จำนวน
-                                                </span>
+                                                <span id="B">จำนวน</span>
                                             </div>
                                             <div class="details_content_2">
                                                 <?php echo $data['amount']; ?>
@@ -174,47 +162,35 @@ try {
                                         </li>
                                         <li>
                                             <div class="details_content_1">
-                                                <span id="B">
-                                                    รุ่น
-                                                </span>
+                                                <span id="B">รุ่น</span>
                                             </div>
                                             <div class="details_content_2">
-                                                <span>BK-FD12P
-                                                </span>
+                                                <span>BK-FD12P</span>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="details_content_1">
-                                                <span id="B">
-                                                    ยี่ห้อ
-                                                </span>
+                                                <span id="B">ยี่ห้อ</span>
                                             </div>
                                             <div class="details_content_2">
-                                                <span>BIOBASE
-                                                </span>
+                                                <span>BIOBASE</span>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="details_content_1">
-                                                <span id="B">
-                                                    บริษัท
-                                                </span>
+                                                <span id="B">บริษัท</span>
                                             </div>
                                             <div class="details_content_2">
-                                                <span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD
-                                                </span>
+                                                <span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</span>
                                             </div>
                                         </li>
                                     </ul>
                                     <div class="details_content_footer">
                                         <div class="content_btn">
-                                            <?php
-                                            // แสดงปุ่มขอใช้วัสดุ อุปกรณ์ และเครื่องมือ หรือแสดงข้อความเมื่อสินค้าหมด
-                                            if ($data['amount'] >= 1) {
-                                            ?>
+                                            <?php if ($data['amount'] >= 1) { ?>
                                                 <div class="button">
-                                                    <button onclick="location.href='cart.php?action=add&item=<?= $data['img'] ?>'" class="use-it">
-                                                        <i class="icon fa-solid fa-ardata-up"></i>
+                                                    <button onclick="location.href='cart.php?action=add&item=<?php echo $data['img']; ?>'" class="use-it">
+                                                        <i class="icon fa-solid fa-arrow-up"></i>
                                                         <span>ขอใช้</span>
                                                     </button>
                                                 </div>

@@ -1,38 +1,53 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // เลือกปุ่ม "User Info" และ Modal
-    const userInfoButton = document.querySelector('.details_btn');
-    const userInfoModal = document.querySelector('.content_details_popup');
+// ค้นหาปุ่มทั้งหมดที่ใช้เปิด modal
+const modalOpenButtons = document.querySelectorAll(".details_btn");
 
-    // เลือกปุ่ม "Close" ใน Modal
-    const closeButton = document.getElementById('closeDetails');
+// ค้นหาปุ่มทั้งหมดที่ใช้ปิด modal
+const modalCloseButtons = document.querySelectorAll(".modalClose");
 
-    // เพิ่ม event listener เมื่อคลิกที่ปุ่ม "User Info" เพื่อเปิด Modal
-    userInfoButton.addEventListener('click', function () {
-        userInfoModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        document.body.style.paddingRight = '15px';
+// ค้นหา modal ทั้งหมด
+const modals = document.querySelectorAll(".content_details_popup");
+
+// เพิ่มฟังก์ชันเพื่อเปิด modal
+modalOpenButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        // ดึงค่า ID ของ modal จาก attribute data-modal
+        const modalId = button.getAttribute("data-modal");
+        // ค้นหา modal โดยใช้ ID ที่ได้มา
+        const modal = document.getElementById(modalId);
+        // แสดง modal โดยตั้งค่า style.display เป็น 'flex'
+        modal.style.display = "flex";
+
+        // เพิ่ม overflow: hidden และ padding-right: 15px ให้กับ <body>
+        document.body.style.overflow = "hidden";
+        document.body.style.paddingRight = "15px";
     });
+});
 
-    // เพิ่ม event listener เมื่อคลิกที่ปุ่ม "Close" เพื่อปิด Modal
-    closeButton.addEventListener('click', function () {
-        userInfoModal.style.display = 'none';
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
+// เพิ่มฟังก์ชันเพื่อปิด modal
+modalCloseButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        // ค้นหา modal ที่เกี่ยวข้องโดยใช้ closest('.content_details_popup')
+        const modal = button.closest(".content_details_popup");
+        // ซ่อน modal โดยตั้งค่า style.display เป็น 'none'
+        modal.style.display = "none";
+
+        // ลบ overflow: hidden และ padding-right: 15px จาก <body>
+        document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
     });
+});
 
-    // เพิ่ม event listener เมื่อคลิกที่พื้นหลังของ Modal เพื่อปิด Modal
-    window.addEventListener('click', function (event) {
-        if (event.target === userInfoModal) {
-            userInfoModal.style.display = 'none';
-            document.body.style.overflow = '';
-            document.body.style.paddingRight = '';
+// ปิด modal เมื่อคลิกที่พื้นหลังของ modal
+modals.forEach(function (modal) {
+    modal.addEventListener("click", function (event) {
+        // ตรวจสอบว่าคลิกที่พื้นหลังของ modal หรือไม่
+        if (event.target === modal) {
+            // ซ่อน modal โดยตั้งค่า style.display เป็น 'none'
+            modal.style.display = "none";
+
+            // ลบ overflow: hidden และ padding-right: 15px จาก <body>
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
         }
-    });
-
-    // เพิ่ม event listener เมื่อคลิกที่ปุ่ม "Cancel" เพื่อปิด Modal
-    cancelButton.addEventListener('click', function () {
-        userInfoModal.style.display = 'none';
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
     });
 });
