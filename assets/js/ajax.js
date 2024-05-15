@@ -28,7 +28,6 @@ function AdminMode() {
   });
 }
 
-
 // เลือกปุ่ม "User Info" และ Modal
 const userInfoButton = document.querySelector('.header_userinfo_btn');
 const userInfoModal = document.querySelector('.header_userinfo_modal');

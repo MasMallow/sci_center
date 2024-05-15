@@ -98,6 +98,57 @@ require_once 'assets/database/connect.php';
                                 </a>
                             </li>
                         </ul>
+                        <!-- <li>
+                    <a>
+                        <i class="icon fa-solid fa-screwdriver-wrench"></i>
+                        <span class="text">การบำรุงรักษา</span>
+                    </a>
+                </li> -->
+                    <li>
+                        <a onclick="loadReport(); clearChangeContent(); changeButtonBackground(this);">
+                            <i class="icon fa-solid fa-flag"></i>
+                            <span class="text">รายงาน</span>
+                        </a>
+                    </li>
+                    <?php
+                    // ตรวจสอบว่ามี session ของผู้ใช้ที่ล็อกอินหรือไม่
+                    if (isset($_SESSION['staff_login'])) {
+                        // ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ
+                        echo '<li>
+                        <a class="link">
+                            <i class="fa-solid fa-user-tie"></i></i>
+                            <span class="text">สำหรับผู้ดูแล</span>
+                            <i class="ardata fa-solid fa-chevron-down"></i>
+                        </a>
+                        <ul class="sb-sub-ul">
+                            <li>
+                                <a href="manage_users.php">
+                                    <i class="fa-solid fa-user-gear"></i>
+                                    <span class="text">แก้ไขชื่อผู้ใช้</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="crud/add-remove-update.php">
+                                    <i class="fa-solid fa-plus-minus"></i>
+                                    <span class="text">เพิ่ม / ลบ /แก้ไข</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="view_report.php">
+                                    <i class="icon fa-solid fa-square-check"></i>
+                                    <span class="text">ดูประวัติการใช้งาน</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="approval.php">
+                                    <i class="icon fa-solid fa-square-check"></i>
+                                    <span class="text">การอนุมัติ</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>';
+                    }
+                    ?>
                     </li>
                 </ul>
             </div>
@@ -125,6 +176,7 @@ require_once 'assets/database/connect.php';
 
 <!-- JavaScript -->
 <script src="assets/js/ajax.js"></script>
+<script src="assets/js/details.js"></script>
 <script src="assets/js/datetime.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 <script>

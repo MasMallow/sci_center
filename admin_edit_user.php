@@ -1,11 +1,9 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php
 session_start();
 require_once 'assets/database/connect.php';
 
 // Check if the user is logged in and is an admin
-if (!isset($_SESSION['admin_login'])) {
+if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('Location: auth/sign_in.php');
     exit;
@@ -79,11 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="บุคลากร" <?php if ($user['role'] === 'บุคลากร') echo 'selected'; ?>>บุคลากร</option>
             <option value="ผู้บริหาร" <?php if ($user['role'] === 'ผู้บริหาร') echo 'selected'; ?>>ผู้บริหาร</option>
         </select>
-
-
-        <!-- <label for="password">New Password:</label>
-        <input type="password" id="password" name="password" required><br> -->
-
         <button type="submit" name="update">Update</button>
     </form>
 </body>

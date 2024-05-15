@@ -124,7 +124,7 @@
   color: #000;
   font-family: Sarabun-bold;
 }
-.user-info-header #close {
+.user-info-header .modalClose {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,11 +135,11 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.user-info-header #close i {
+.user-info-header .modalClose i {
   font-size: 12px;
   color: #525151;
 }
-.user-info-header #close:hover {
+.user-info-header .modalClose:hover {
   background-color: #d1d1d1;
 }
 .user-info-content {

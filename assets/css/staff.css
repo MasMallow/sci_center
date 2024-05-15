@@ -1,0 +1,22 @@
+@font-face {
+  src: url("../fonts/Sarabun-Regular.ttf");
+  font-family: Sarabun;
+}
+@font-face {
+  src: url("../fonts/Sarabun-Bold.ttf");
+  font-family: Sarabun-bold;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Sarabun;
+  text-decoration: none;
+  list-style: none;
+}
+#B {
+  font-family: Sarabun-bold;
+}
+.staff {
+  background-color: aqua;
+}

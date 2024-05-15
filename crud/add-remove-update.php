@@ -1,6 +1,19 @@
 <?php
 session_start();
 include_once '../assets/database/connect.php';
+
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+if (isset($_SESSION['staff_login'])) {
+    $user_id = $_SESSION['staff_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,15 +21,20 @@ include_once '../assets/database/connect.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ</title>
+    <title>จัดการวัสดุ อุปกรณ์ และเครื่องมือ</title>
 
     <!-- ส่วนของ Link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="../assets/css/navigator.css">
     <link rel="stylesheet" href="add-remove-update.js">
     <link rel="stylesheet" href="add-remove-update.css">
 </head>
 
 <body>
+    <!-- Header -->
+    <?php
+    include('header.php')
+    ?>
     <!-- Modal Popup -->
     <section class="modal-popup">
         <div class="modal-box">
@@ -62,7 +80,6 @@ include_once '../assets/database/connect.php';
             </div>
         </div>
     </section>
-    <!-- Header -->
     <div class="main">
         <div class="container">
             <div class="head-section">
@@ -107,7 +124,7 @@ include_once '../assets/database/connect.php';
                                     <div class="img"><img src="<?php echo $imageURL ?>" alt=""></div>
                                 </td>
                                 <td class="product-name"><?php echo $row['sci_name']; ?></td>
-                                <td><?php echo $row['Type']; ?></td>
+                                <td><?php echo $row['categories']; ?></td>
                                 <td>
                                     <p>คงเหลือ : <?php echo $row['amount']; ?></p>
                                 </td>

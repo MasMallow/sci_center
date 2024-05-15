@@ -84,16 +84,15 @@ span#B {
 }
 
 /* Show Password */
-.show-password {
+.show_password {
   position: relative;
 }
 
-.icon-password {
+.icon_password {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   right: 20px;
-  /* ปรับตำแหน่งไอคอนตามต้องการ */
   cursor: pointer;
 }
 .footer {

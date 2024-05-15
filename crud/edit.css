@@ -1,11 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@500&display=swap");
-
+@font-face {
+  src: url("../fonts/Sarabun-Regular.ttf");
+  font-family: Sarabun;
+}
+@font-face {
+  src: url("../fonts/Sarabun-Bold.ttf");
+  font-family: Sarabun-bold;
+}
 * {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: "Noto Sans Thai", sans-serif;
+  font-family: Sarabun;
   text-decoration: none;
+  list-style: none;
+}
+#B {
+  font-family: Sarabun-bold;
 }
 
 .main {
@@ -163,6 +173,6 @@ a.cancel {
 a.cancel:hover {
   background-color: #c50014;
 }
-p.cancel{
+p.cancel {
   text-align: center;
 }
