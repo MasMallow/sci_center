@@ -1,67 +1,66 @@
 <?php
-    session_start();
-    include_once 'assets/database/connect.php';
-    if (!isset($_SESSION['admin_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('Location: auth/sign_in.php');
-        exit;
-    }
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
-        // รับค่า ID ของรายการที่กดยืนยัน
-        $id = $_POST['id'];
-    
-        // รหัสผู้ดูแลระบบที่กำลังเข้าสู่ระบบ
-        $admin_id = $_SESSION['admin_login'];
-    
-        // เลือกชื่อผู้ดูแลระบบจากฐานข้อมูล
-        $user_query = $conn->prepare("SELECT firstname FROM users WHERE user_id = :admin_id");
-        $user_query->bindParam(':admin_id', $admin_id, PDO::PARAM_INT);
-        $user_query->execute();
-        $user = $user_query->fetch(PDO::FETCH_ASSOC);
-        $approver = $user['firstname'];
-    
-        // วันเวลาปัจจุบัน
-        $approvalDateTime = date('Y-m-d H:i:s');
-    
-        // อัปเดตฐานข้อมูล
-        $update_query = $conn->prepare("UPDATE waiting_for_approval SET Approver = :approver, ApprovalDateTime = :approvalDateTime WHERE id = :id");
-        $update_query->bindParam(':id', $id, PDO::PARAM_INT);
-        $update_query->bindParam(':approver', $approver, PDO::PARAM_STR);
-        $update_query->bindParam(':approvalDateTime', $approvalDateTime, PDO::PARAM_STR);
-        $update_query->execute();
-    
-        // ส่งกลับไปยังหน้าเดิมหลังจากการอัปเดต
-        header('Location: approval.php');
-        exit;
-    }
+session_start();
+include_once 'assets/database/connect.php';
+if (!isset($_SESSION['staff_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-<div class="container">
+    <div class="container">
         <?php
-        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE ApprovalDateTime IS NULL AND Approver IS NULL");
+        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY sn");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo $approver = $_SESSION['admin_login'];
-        foreach ($data as $row): ?>
-        <div class="row">
-            <span class="info">ID:</span> <?php echo $row['id']; ?><br>
-            <span class="info">First Name:</span> <?php echo $row['FirstName']; ?><br>
-            <span class="info">Item Borrowed:</span> <?php echo $row['ItemBorrowed']; ?><br>
-            <span class="info">Borrow DateTime:</span> <?php echo $row['BorrowDateTime']; ?><br>
-            <span class="info">Return Date:</span> <?php echo $row['ReturnDate']; ?><br>
-            <form method="POST" action="">
-                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                <input type="submit" name="confirm" value="ยืนยันการยืม">
-            </form><br><br>
+        $previousSn = '';
+        $previousFirstname = '';
+        ?>
+        <div class="container">
+            <?php
+            foreach ($data as $row) :
+                if ($previousSn != $row['sn']) { ?>
+                    <div class="row">
+                        <span class="info">SN:</span> <?php echo $row['sn']; ?><br>
+                        <span class="info">First Name:</span> <?php echo $row['firstname']; ?><br>
+                    </div>
+                <?php
+                    $previousSn = $row['sn'];
+                }
+                ?>
+                <div class="row">
+                    <?php
+                    // แยกข้อมูล Item Borrowed
+                    $items = explode(',', $row['itemborrowed']);
+
+                    // แสดงข้อมูลรายการที่ยืม
+                    foreach ($items as $item) {
+                        $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
+                        $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
+                        $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
+                        echo "<span class='info'>$product_name</span> $quantity ชิ้น<br>"; // แสดงข้อมูล
+                    }
+                    ?>
+                    <span class="info">borrowdatetime:</span> <?php echo date('d/m/Y H:i:s', strtotime($row['borrowdatetime'])); ?><br>
+                    <span class="info">returndate:</span> <?php echo date('d/m/Y H:i:s', strtotime($row['returndate'])); ?><br>
+                    <form method="POST" action="process_return.php">
+                        <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
+                        <input type="submit" name="confirm" value="ยืนยันการอนุมัติ">
+                    </form><br>
+                </div>
+            <?php endforeach; ?>
         </div>
-        <?php endforeach; ?>
     </div>
 </body>
+
 </html>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../assets/database/connect.php';
-if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
+if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isset($_SESSION['staff_login'])) {
 ?>
     <div class="alert alert-danger" role="alert">
         <?php
@@ -100,9 +100,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
 
 
 <?php
-} elseif (isset($_SESSION['user_login'])) {
-    header('location:../home.php');
-} elseif (isset($_SESSION['admin_login'])) {
+} else {
     header('location:../home.php');
 }
 ?>

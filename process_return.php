@@ -1,134 +1,116 @@
-<html>
+<?php
+session_start();
+include_once 'assets/database/connect.php';
 
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-</head>
+if (!isset($_SESSION['staff_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
+}
 
-<body>
-    <?php
-    session_start();
-    include_once 'assets/database/connect.php';
-    if (!isset($_SESSION['admin_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('Location: auth/sign_in.php');
-        exit;
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['confirm'])) {
+        // $returnDate = $_POST['return_date'];
+        // $returnDates = $_POST['return_date'];
+        if (isset($_SESSION['staff_login'])) {
+            $user_id = $_SESSION['staff_login'];
+        }
+        $sn = $_POST['id'];
+        // รหัสผู้ดูแลระบบที่กำลังเข้าสู่ระบบ
+        $staff_id = $_SESSION['staff_login'];
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (isset($_POST['update'])) {
-            $returnDate = $_POST['return_date'];
-            $items = $_POST['amount'];
-            $returnDates = $_POST['return_date'];
-            if (isset($_SESSION['user_login'])) {
-                $user_id = $_SESSION['user_login'];
-            } elseif (isset($_SESSION['admin_login'])) {
-                $user_id = $_SESSION['admin_login'];
-            }
-            $user_query = $conn->prepare("SELECT firstname FROM users WHERE user_id = :user_id");
-            $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            $user_query->execute();
-            $user = $user_query->fetch(PDO::FETCH_ASSOC);
-            $firstname = $user['firstname']; // User's first name
+        // เลือกชื่อผู้ดูแลระบบจากฐานข้อมูล
+        $user_query = $conn->prepare("SELECT surname FROM users WHERE user_id = :staff_id");
+        $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
+        $user_query->execute();
+        $user = $user_query->fetch(PDO::FETCH_ASSOC);
+        $approver = $user['surname'];
 
-            $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
-            $sMessage .= "ชื่อผู้ยืม : " . $firstname . "\n";
+        // วันเวลาปัจจุบัน
+        date_default_timezone_set('Asia/Bangkok');
+        $approvaldatetime = date('Y-m-d H:i:s');
 
-            foreach ($_SESSION['cart'] as $item) {
-                // Retrieve product details from the database based on the item
-                $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
-                $query->bindParam(':item', $item, PDO::PARAM_STR);
-                $query->execute();
-                $product = $query->fetch(PDO::FETCH_ASSOC);
-                $productName = $product['sci_name'];
+        // อัปเดตฐานข้อมูล
+        $update_query = $conn->prepare("UPDATE waiting_for_approval SET approver = :approver, approvaldatetime = :approvaldatetime WHERE sn = :sn");
+        $update_query->bindParam(':sn', $sn, PDO::PARAM_INT);
+        $update_query->bindParam(':approver', $approver, PDO::PARAM_STR);
+        $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);
+        $update_query->execute();
 
-                // Retrieve the quantity of the item
-                $quantity = isset($items[$item]) ? $items[$item] : 0;
+        $user_query = $conn->prepare("SELECT firstname FROM waiting_for_approval WHERE sn = :sn");
+        $user_query->bindParam(':sn', $sn, PDO::PARAM_INT);
+        $user_query->execute();
+        $user = $user_query->fetch(PDO::FETCH_ASSOC);
+        $firstname = $user['firstname']; // User's first name
 
-                // Append product details to sMessage
-                $sMessage .= "ชื่ออุปกรณ์ : " . $productName . ", จำนวน : " . $quantity . " ชิ้น\n";
-            }
+        $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
 
-            // Get the first and last return dates for the message
-            $firstReturnDate = ($returnDates);
-            $lastReturnDate = ($returnDates);
+        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE sn = :sn");
+        $stmt->bindParam(':sn', $sn, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Insert borrow history into the database
-            foreach ($_SESSION['cart'] as $item) {
-                $productName = '';
+        foreach ($data as $row) {
+            $items = explode(',', $row['itemborrowed']);
+            $productNames = [];
 
-                // Retrieve product details from the database based on the item
-                $query = $conn->prepare("SELECT sci_name FROM crud WHERE img = :item");
-                $query->bindParam(':item', $item, PDO::PARAM_STR);
-                $query->execute();
-                $product = $query->fetch(PDO::FETCH_ASSOC);
-                $productName = $product['sci_name'];
+            $sMessage .= "ชื่อผู้ยืม : " . $row['firstname'] . "\n"; // Borrower's first name
+            $sMessage .= "SN : " . $row['sn'] . "\n"; // SN
+            $sMessage .= "วันที่ขอยืม : " . date('d/m/Y H:i:s', strtotime($row['borrowdatetime'])) . "\n"; // Date of borrowing
+            $sMessage .= "วันที่นำมาคืน : " . date('d/m/Y H:i:s', strtotime($row['returndate'])) . "\n"; // Return date
 
-                // Retrieve the quantity of the item
-                $quantity = isset($items[$item]) ? $items[$item] : 0;
+            // แยกข้อมูล Item Borrowed
+            $items = explode(',', $row['itemborrowed']);
+            foreach ($items as $item) {
+                $item_parts = explode('(', $item); // แยกชื่ออุปกรณ์และจำนวน
+                $product_name = trim($item_parts[0]); // ชื่ออุปกรณ์ (ตัดช่องว่างที่เป็นไปได้)
+                $quantity = str_replace(')', '', $item_parts[1]); // จำนวน (ตัดวงเล็บออก)
 
-                // Insert the borrow history into the database
-                $stmt = $conn->prepare("INSERT INTO borrow_history (user_id, firstname, sci_name, quantity, borrow_date, return_date) VALUES (:user_id, :firstname, :sci_name, :quantity, NOW(), :return_date)");
-                $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-                $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-                $stmt->bindParam(':sci_name', $productName, PDO::PARAM_STR);
-                $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-                $stmt->bindParam(':return_date', $returnDate, PDO::PARAM_STR);
-                $stmt->execute();
+                $sMessage .= "อุปกรณ์ที่ยืม : ". $product_name . " " . $quantity . " ชิ้น\n";
 
-                // Update the product quantity in the database
-                $stmtUpdate = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE img = :item");
+                $stmtUpdate = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE sci_name = :product_name");
                 $stmtUpdate->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-                $stmtUpdate->bindParam(':item', $item, PDO::PARAM_STR);
+                $stmtUpdate->bindParam(':product_name', $product_name, PDO::PARAM_STR);
                 $stmtUpdate->execute();
             }
-            $firstReturnDate = date('Y-m-d', strtotime($returnDates));
-            $lastReturnDate = date('Y-m-d', strtotime($returnDates));
-            $sMessage .= "วันที่ขอยืม : " . date('Y-m-d') . "\n"; // Date of borrowing
-            $sMessage .= "วันที่นำมาคืน : " . $firstReturnDate . "\n"; // Return dates range
+            $sMessage .= "ผู้อนุมัติการยืม : ".$approver ."\n";
             $sMessage .= "-------------------------------";
-
-            $_SESSION['cart'] = [];
-
-            $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
-
-            // Line Notify settings
-            $chOne = curl_init();
-            curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
-            curl_setopt($chOne, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($chOne, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($chOne, CURLOPT_POST, 1);
-            curl_setopt($chOne, CURLOPT_POSTFIELDS, "message=" . $sMessage);
-            $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer ' . $sToken . '');
-            curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($chOne, CURLOPT_RETURNTRANSFER, 1);
-            $result = curl_exec($chOne);
-
-            //Result error 
-            if (curl_error($chOne)) {
-                echo 'error:' . curl_error($chOne);
-            } else {
-                $result_ = json_decode($result, true);
-                // echo "status : " . $result_['status'];
-                // echo "message : " . $result_['message'];
-                echo "<script>
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'การยืมเสร็จสิ้น',
-            showConfirmButton: false,
-            timer: 1500
-        }).then(function() {
-            window.location.href = 'home.php';
-        });
-    </script>";
-            }
-            curl_close($chOne);
-            exit;
         }
+
+
+        $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
+
+        // Line Notify settings
+        $chOne = curl_init();
+        curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
+        curl_setopt($chOne, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($chOne, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($chOne, CURLOPT_POST, 1);
+        curl_setopt($chOne, CURLOPT_POSTFIELDS, "message=" . $sMessage);
+        $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer ' . $sToken . '');
+        curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($chOne, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($chOne);
+
+        //Result error 
+        if (curl_error($chOne)) {
+            echo 'error:' . curl_error($chOne);
+        } else {
+            $result_ = json_decode($result, true);
+            echo "<script>
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'การยืมเสร็จสิ้น',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(function() {
+                window.location.href = 'home.php';
+            });
+            </script>";
+        }
+        curl_close($chOne);
+        header('Location: /home');
+        exit;
     }
-    ?>
-
-</body>
-
-</html>
+}
