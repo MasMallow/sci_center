@@ -82,147 +82,78 @@ if (isset($_SESSION['user_login'])) {
                     <span class="warning">!! ถ้าต้องการเลือกวัสดุ อุปกรณ์และเครื่องมือเพิ่มให้กลับหน้าหลัก !!</span>
                 </div>
             </div>
-
-            <?php
-
-            if (empty($_SESSION['cart'])) {
-                echo '<div class="non-select">
-                        <div class="non-select-1">
-                        ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่
+        <?php else : ?>
+            <div class="main_cart_content">
+                <form method="post" action="waiting_for_approval.php">
+                    <div class="table_section">
+                        <div class="count_list">
+                            <div class="count_list_1">
+                                <span>รายการที่เลือกทั้งหมด </span>
+                                <?php echo count($_SESSION['cart']); ?><span> รายการ</span>
+                            </div>
+                            <div class="count_list_2">
+                                <a href="booking_log.php">ตรวจสอบการจอง</a>
+                            </div>
                         </div>
-                        <div class="non-select-2">
-                        " กรุณากดปุ่มขวาบนเพื่อเลือกวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่ " 
+                        <table class="cart_data">
+                            <tr>
+                                <th class="th_img"></th>
+                                <th class="th_name"><span id="B">ชื่อรายการ</span></th>
+                                <th class="th_categories"><span id="B">ประเภท</span></th>
+                                <th class="th_amount"><span id="B">จำนวน</span></th>
+                            </tr>
+                            <?php foreach ($_SESSION['cart'] as $item) : ?>
+                                <?php
+                                // Retrieve product details from the database based on the item
+                                $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
+                                $query->bindParam(':item', $item, PDO::PARAM_STR);
+                                $query->execute();
+                                $product = $query->fetch(PDO::FETCH_ASSOC);
+
+                                // Check if the product is found
+                                if ($product) {
+                                    $categories = $product['categories'];
+                                    $productName = $product['sci_name'];
+                                    $imageURL = 'assets/uploads/' . $product['img'];
+                                ?>
+                                    <tr>
+                                        <td><img src="<?php echo $imageURL; ?>" alt="<?php echo $productName; ?>"></td>
+                                        <td><?php echo $productName; ?></td>
+                                        <td>
+                                            <span><?php echo $categories ?></span>
+                                        </td>
+                                        <td>
+                                            <div class="amount_delete">
+                                                <input type="number" name="amount[<?php echo $item; ?>]" value="1" min="1">
+                                                <a class="btn_delete" href="cart.php?action=remove&item=<?php echo $item; ?>">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                    <div class="footer_section">
+                        <div class="footer_section_return_date">
+                            <span>ระบุวันที่ เวลาที่คืนอุปกรณ์ และเครื่องมือ</span>
+                            <input type="datetime-local" name="return_date" required>
                         </div>
-                </div>';
-            } else {
-                
-                echo '<form method="post" action="waiting_for_approval.php">';
-                echo '<table class="cart-data">';
-                echo '<tr>
-                        <th>ลำดับ</th>
-                        <th>รูปภาพ</th>
-                        <th>ชื่ออุปกรณ์</th>
-                        <th>ประเภท</th>
-                        <th>จำนวน</th>
-                        <th>การดำเนินการ</th>
-                    </tr>';
-                $num = 1;
-                foreach ($_SESSION['cart'] as $item) {
-                    // Retrieve product details from the database based on the item
-                    $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
-                    $query->bindParam(':item', $item, PDO::PARAM_STR);
-                    $query->execute();
-                    $product = $query->fetch(PDO::FETCH_ASSOC);
-                    $productName = $product['sci_name'];
-                    $imageURL = 'uploads/' . $product['img'];
-                    if (file_exists($imageURL)) {
-                        echo '<tr class="row">';
-                        echo "<td><p>$num</p></td>";
-                        echo '<td><img src="' . $imageURL . '" alt="' . $productName . '"></td>';
-                        echo '<td class="product-name">' . $productName . '</td>';
-                        echo '<td class="product-name"><p>ประเภท</p></td>';
-                        // echo '<td class="">' . $Type . '</td>';
-                        echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1" ></td>';
-                        echo '<td>
-                                <a class="btn-delete" href="cart.php?action=remove&item=' . $item . '">
-                                <i class="fa fa-trash"></i>
-                                </a>
-                            </td>';
-                        $num++;
-                    }
-                }
-                echo '</tr>';
-                echo '</table>';
-            ?>
-            <div class="date">
-                <label class="date" for="return_date">กรุณาเลือกวันที่และเวลาที่คืนอุปกรณ์ และเครื่องมือ</label>
-                <input type="datetime-local" name="return_date" required>
+                        <div class="footer_section_btn">
+                            <div class="footer_section_btn_1">
+                                <a href="../project/" class="back_to_main">กลับหน้าหลัก</a>
+                            </div>
+                            <div class="footer_section_btn_2">
+                                <button class="submit" type="submit" name="update">ยืนยัน</button>
+                                <a href="cart.php?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="firstname">
-                <?php echo 'ผู้ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ : ' . $row["surname"]; ?>
-            </div>
-            <a href="booking_log.php" style="color: red;">*ตรวจสอบการจองก่อนยืมอุปกรณ์*</a>
-            <?php
-                echo '<div class="btn-section">';
-                echo '<button class="submit" type="submit" name="update">ยืนยัน</button>';
-                echo '<button class="delete-all" onclick="location.href=\'cart.php?action=clear\'">ยกเลิกสิ่งที่เลือกทั้งหมด</button>';
-                echo '</div>';
-                echo '</form>';
-            }
-            ?>
-        </div>
-    <?php else : ?>
-        <div class="main_cart_content">
-            <form method="post" action="waiting_for_approval.php">
-                <div class="table_section">
-                    <div class="count_list">
-                        <div class="count_list_1">
-                            <span>รายการที่เลือกทั้งหมด </span>
-                            <?php echo count($_SESSION['cart']); ?><span> รายการ</span>
-                        </div>
-                        <div class="count_list_2">
-                            <a href="booking_log.php">ตรวจสอบการจอง</a>
-                        </div>
-                    </div>
-                    <table class="cart_data">
-                        <tr>
-                            <th class="th_img"></th>
-                            <th class="th_name"><span id="B">ชื่อรายการ</span></th>
-                            <th class="th_categories"><span id="B">ประเภท</span></th>
-                            <th class="th_amount"><span id="B">จำนวน</span></th>
-                        </tr>
-                        <?php foreach ($_SESSION['cart'] as $item) : ?>
-                            <?php
-                            // Retrieve product details from the database based on the item
-                            $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
-                            $query->bindParam(':item', $item, PDO::PARAM_STR);
-                            $query->execute();
-                            $product = $query->fetch(PDO::FETCH_ASSOC);
-
-                            // Check if the product is found
-                            if ($product) {
-                                $categories = $product['categories'];
-                                $productName = $product['sci_name'];
-                                $imageURL = 'assets/uploads/' . $product['img'];
-                            ?>
-                                <tr>
-                                    <td><img src="<?php echo $imageURL; ?>" alt="<?php echo $productName; ?>"></td>
-                                    <td class="product-name"><?php echo $productName; ?></td>
-                                    <td class="product-name">
-                                        <span><?php echo $categories ?></span>
-                                    </td>
-                                    <td>
-                                        <div class="amount_delete">
-                                            <input type="number" name="amount[<?php echo $item; ?>]" value="1" min="1">
-                                            <a class="btn_delete" href="cart.php?action=remove&item=<?php echo $item; ?>">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <div class="footer_section">
-                    <div class="footer_section_return_date">
-                        <span>ระบุวันที่ เวลาที่คืนอุปกรณ์ และเครื่องมือ</span>
-                        <input type="datetime-local" name="return_date" required>
-                    </div>
-                    <div class="footer_section_btn">
-                        <div class="footer_section_btn_1">
-                            <a href="../project/" class="back_to_main">กลับหน้าหลัก</a>
-                        </div>
-                        <div class="footer_section_btn_2">
-                            <button class="submit" type="submit" name="update">ยืนยัน</button>
-                            <a href="cart.php?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    <?php endif; ?>
-    <script src="assets/js/ajax.js"></script>
+        <?php endif; ?>
+        <script src="assets/js/ajax.js"></script>
 </body>
 
 </html>

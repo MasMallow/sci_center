@@ -112,9 +112,9 @@ require_once 'assets/database/connect.php';
                     </li>
                     <?php
                     // ตรวจสอบว่ามี session ของผู้ใช้ที่ล็อกอินหรือไม่
-                    if (isset($_SESSION['staff_login'])) {
-                        // ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ
-                        echo '<li>
+                    if (isset($_SESSION['staff_login'])) { ?>
+                        <!-- ถ้ามี session ของผู้ใช้ (ล็อกอินอยู่) ให้แสดงปุ่มออกจากระบบ -->
+                        <li>
                         <a class="link">
                             <i class="fa-solid fa-user-tie"></i></i>
                             <span class="text">สำหรับผู้ดูแล</span>
@@ -128,7 +128,7 @@ require_once 'assets/database/connect.php';
                                 </a>
                             </li>
                             <li>
-                                <a href="crud/add-remove-update.php">
+                                <a href="crud/management.php">
                                     <i class="fa-solid fa-plus-minus"></i>
                                     <span class="text">เพิ่ม / ลบ /แก้ไข</span>
                                 </a>
@@ -146,7 +146,8 @@ require_once 'assets/database/connect.php';
                                 </a>
                             </li>
                         </ul>
-                    </li>';
+                    </li>
+                    <?php
                     }
                     ?>
                     </li>

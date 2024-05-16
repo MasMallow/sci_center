@@ -3,7 +3,7 @@ session_start();
 require_once 'assets/database/connect.php';
 
 // Check if the user is logged in and is an admin
-if (!isset($_SESSION['admin_login'])) {
+if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('Location: auth/sign_in.php');
     exit;
@@ -36,7 +36,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </tr>
         <?php foreach ($users as $user) : ?>
             <tr>
-                <td><?php echo $user['id']; ?></td>
+                <td><?php echo $user['user_id']; ?></td>
                 <td><?php echo $user['firstname']; ?></td>
                 <td><?php echo $user['lastname']; ?></td>
                 <td><?php echo $user['role']; ?></td>

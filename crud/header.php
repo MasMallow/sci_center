@@ -5,7 +5,7 @@
                 <a href="../"><img src="../assets/logo/scicenter_logo.png"></a>
             </div>
             <div class="header_navbanner_name">
-                <span id="B" class="header_navbanner_name-1">แก้ไขบัญชีผู้ใช้</span><br>
+                <span id="B" class="header_navbanner_name-1">จัดการวัสดุ อุปกรณ์ และเครื่องมือ</span><br>
                 <span class="header_navbanner_name-2">ศูนย์วิทยาศาสตร์ มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา</span>
             </div>
         </div>
