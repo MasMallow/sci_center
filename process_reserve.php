@@ -10,9 +10,9 @@
 session_start();
 include_once 'assets/database/connect.php';
 
-if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
+if (!isset($_SESSION['user_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: auth/sign_in.php');
+    header('Location: /home.php');
     exit;
 }
 
@@ -24,10 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (isset($_SESSION['user_login'])) {
             $user_id = $_SESSION['user_login'];
-        } elseif (isset($_SESSION['admin_login'])) {
-            $user_id = $_SESSION['admin_login'];
         }
-
+        
         $user_query = $conn->prepare("SELECT surname FROM users WHERE user_id = :user_id");
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $user_query->execute();
