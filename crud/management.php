@@ -38,6 +38,7 @@ try {
     echo 'เกิดข้อผิดพลาด: ' . $e->getMessage();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,6 +51,7 @@ try {
     <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="../assets/css/navigator.css">
     <link rel="stylesheet" href="add-remove-update.css">
+    <link rel="stylesheet" href="../assets/css/edit.css">
 </head>
 
 <body>
@@ -62,6 +64,7 @@ try {
             <div class="head-section">
                 <div class="head-name">
                     ระบบเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ
+                   
                 </div>
                 <div class="head-btn">
                     <button class="cancel" onclick="window.location.href='../home.php';">
@@ -72,16 +75,22 @@ try {
             <hr>
         </div>
     </div>
-    <div class="content_area_grid">
+    <div class="count_list">
+        <div class="count_list_1">
+            <span>รายการที่เลือกทั้งหมด </span>
+            <?php echo count($_SESSION['cart']); ?><span> รายการ</span>
+        </div>
+    </div>
+    <div class="management_grid">
         <?php
         if (empty($result)) { ?>
-            <div class="grid_content_not_found">ไม่พบข้อมูล</div>
+            <div class="management_grid_not_found">ไม่พบข้อมูล</div>
             <?php
         } else {
             foreach ($result as $results) {
             ?>
-                <div class="grid_content">
-                    <div class="grid_content_header">
+                <div class="management_grid_content">
+                    <div class="management_grid_header">
                         <div class="content_img">
                             <img src="../assets/uploads/<?php echo $results['img']; ?>">
                         </div>
@@ -105,8 +114,108 @@ try {
                                 <span id="B">ไม่พร้อมใช้งาน</span>
                             </div>
                         <?php } ?>
+                        <div class="content_details">
+                            <button class="details_btn" data-modal="<?php echo $results['id']; ?>">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </button>
+                        </div>
+                        <div class="content_details_popup" id="<?php echo $results['id']; ?>">
+                            <div class="details">
+                                <div class="details_header">
+                                    <span id="B">แก้ไขข้อมูล</span>
+                                    <div class="modalClose" id="closeDetails">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </div>
+                                </div>
+                                <form class="details_content_edit" action="update.php" method="post" enctype="multipart/form-data">
+                                    <div class="details_content_left">
+                                        <div class="img_details">
+                                            <div class="img">
+                                                <div class="imgInput">
+                                                    <i class="upload fa-solid fa-upload"></i>
+                                                    <span class="img">เลือกรูปภาพที่จะอัพโหลด</span>
+                                                    <img loading="lazy" class="previewImg" id="previewImg" src="../assets/uploads/<?php echo $results['img']; ?>">
+                                                </div>
+                                            </div>
+                                            <span class="upload-tip"><b>Note: </b>Only JPG, JPEG, PNG & GIF files allowed to upload.</span>
+                                            <div class="btn_img">
+                                                <label class="choose-file" for="imgInput">เลือกรูปภาพที่จะอัพโหลด</label>
+                                                <span class="file_chosen_img" id="file-chosen-img"><?php echo $results['img'] ?></span>
+                                            </div>
+                                            <input type="file" class="input-img" id="imgInput" name="img" accept="image/jpeg, image/png" hidden>
+                                            <input type="hidden" value="<?php echo $results['img']; ?>" required name="img2">
+                                        </div>
+                                    </div>
+                                    <div class="details_content_right">
+                                        <input type="text" name="id" value="<?php echo $results['id']; ?>" hidden>
+                                        <ul class="details_content_li">
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">ชื่อ</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <input type="text" name="sci_name" value="<?php echo $results['sci_name']; ?>">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">จำนวน</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <input type="number" name="amount" value="<?php echo $results['amount']; ?>">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">ประเภท</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <select name="categories">
+                                                        <?php
+                                                        $categoriesfixes = ['วัสดุ', 'อุปกรณ์', 'เครื่องมือ'];
+                                                        foreach ($categoriesfixes as $categoriesfixe) {
+                                                            $selected = ($results['categories'] == $categoriesfixe) ? "selected" : "";
+                                                            echo "<option value='$categoriesfixe' $selected>$categoriesfixe</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">รุ่น</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <span>BK-FD12P</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">ยี่ห้อ</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <span>BIOBASE</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">บริษัท</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="details_content_footer">
+                                            <button class="reset">คืนค่าเดิม</button>
+                                            <button type="submit" name="update">ยืนยัน</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div class="grid_content_body">
+                    <div class="management_grid_content_body">
                         <div class="content_name">
                             <span id="B">ชื่อ </span><?php echo $results['sci_name']; ?>
                         </div>
@@ -117,17 +226,13 @@ try {
                             <span id="B">คงเหลือ </span><?php echo $results['amount']; ?>
                         </div>
                     </div>
-                    <div class="grid_content_footer">
-                        <div class="content_btn">
-                            <div class="btn-process">
-                                <a href="edit.php?id=<?php echo $results['id']; ?>" class="Edit"> <!-- ลิงก์แก้ไขสินค้า -->
-                                    <i class="icon fa-solid fa-pen-to-square"></i><span>Edit</span>
-                                </a>
-                                <a href="delete.php?id=<?php echo $results['id']; ?>" class="Delete"> <!-- ลิงก์ลบสินค้า -->
-                                    <i class="icon fa-solid fa-trash"></i><span>Delete</span>
-                                </a>
-                            </div>
-                        </div>
+                    <div class="management_grid_content_footer">
+                        <a href="edit.php?id=<?php echo $results['id']; ?>" class="Edit"> <!-- ลิงก์แก้ไขสินค้า -->
+                            <i class="icon fa-solid fa-pen-to-square"></i><span>Edit</span>
+                        </a>
+                        <a href="delete.php?id=<?php echo $results['id']; ?>" class="Delete"> <!-- ลิงก์ลบสินค้า -->
+                            <i class="icon fa-solid fa-trash"></i><span>Delete</span>
+                        </a>
                     </div>
                 </div>
         <?php
@@ -135,110 +240,8 @@ try {
         }
         ?>
     </div>
-    <div class="management">
-        <div class="count_list">
-            <div class="count_list_1">
-                <span>รายการที่เลือกทั้งหมด </span>
-                <?php echo count($_SESSION['cart']); ?><span> รายการ</span>
-            </div>
-        </div>
-        <table class="management_section_table">
-            <thead>
-                <tr>
-                    <th class="th_num"><span id="B">ลำดับ</span></th>
-                    <th class="th_img"></th>
-                    <th class="th_name"><span id="B">ชื่อรายการ</span></th>
-                    <th class="th_categories"><span id="B">ประเภท</span></th>
-                    <th class="th_amount"><span id="B">จำนวน</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $num = 1;
-                // ดึงรายละเอียดสินค้าจากฐานข้อมูล
-                $query = $conn->prepare("SELECT * FROM crud ORDER BY uploaded_on DESC");
-                $query->execute();
-                $products = $query->fetchAll(PDO::FETCH_ASSOC); // ดึงข้อมูลทั้งหมดและเก็บในตัวแปรอาร์เรย์
-                if (!empty($products)) {
-                    foreach ($products as $product) { // ลูปผ่านข้อมูลสินค้าแต่ละรายการ
-                        // กำหนดตัวแปรข้อมูลสินค้าจากฐานข้อมูล
-                        $categories = $product['categories'];
-                        $productName = $product['sci_name'];
-                        $imageURL = '../assets/uploads/' . $product['img'];
-                ?>
-                        <tr>
-                            <td>
-                                <p><?php echo $num; ?></p> <!-- แสดงลำดับที่ -->
-                            </td>
-                            <td>
-                                <img src="<?php echo $imageURL; ?>" alt=""> <!-- แสดงรูปภาพสินค้า -->
-                            </td>
-                            <td><?php echo $productName; ?></td> <!-- แสดงชื่อสินค้า -->
-                            <td><?php echo $categories; ?></td> <!-- แสดงหมวดหมู่สินค้า -->
-                            <td>
-                                <p><?php echo $product['amount']; ?></p>
-                                <div class="btn-process">
-                                    <a href="edit.php?id=<?php echo $product['id']; ?>" class="Edit"> <!-- ลิงก์แก้ไขสินค้า -->
-                                        <i class="icon fa-solid fa-pen-to-square"></i><span>Edit</span>
-                                    </a>
-                                    <a href="delete.php?id=<?php echo $product['id']; ?>" class="Delete"> <!-- ลิงก์ลบสินค้า -->
-                                        <i class="icon fa-solid fa-trash"></i><span>Delete</span>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php
-                        $num++; // เพิ่มลำดับที่
-                    }
-                } else {
-                    ?>
-                    <tr>
-                        <td colspan="7">ไม่พบข้อมูล</td>
-                    </tr> <!-- แสดงข้อความเมื่อไม่มีข้อมูลสินค้า -->
-                <?php
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-    <!-- JavaScprti -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script>
-        // Modal Popup
-        const showPopup = document.querySelector(".showPopup");
-        const modalpopup = document.querySelector(".modal-popup");
-        const closePopup = document.querySelector("#close");
-
-        showPopup.onclick = () => {
-            modalpopup.classList.add("active");
-        };
-
-        closePopup.onclick = () => {
-            modalpopup.classList.remove("active");
-        }
-
-
-        // IMG PREVIREW
-        const selectImage = document.querySelector('.select-image');
-        const inputFile = document.querySelector('#file');
-        const imgInput = document.querySelector('.imgInput');
-
-        selectImage.addEventListener('click', function() {
-            inputFile.click();
-        })
-        inputFile.addEventListener('change', function() {
-            const image = this.files[0]
-            console.log(image);
-            const reader = new FileReader();
-            reader.onload = () => {
-                const imgUrl = reader.result;
-                const img = document.createElement('img');
-                img.src = imgUrl
-                imgInput.appendChild(img);
-            }
-            reader.readAsresultsURL(image);
-        })
-    </script>
+    <script src="../assets/js/pop_upEdit.js"></script>
+    <script src="../assets/js/add.js"></script>
 </body>
 
 </html>

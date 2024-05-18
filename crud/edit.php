@@ -1,29 +1,4 @@
-<?php
-// Include the database connection file
-include_once '../assets/database/connect.php';
 
-// Check if product ID is provided
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-
-    // Retrieve product information based on the ID
-    $query = $conn->query("SELECT * FROM crud WHERE user_id = $id");
-
-    if ($query->num_rows == 1) {
-        $row = $query->fetch();
-        $sci_name = $row['sci_name'];
-        $quantity = $row['amount'];
-        // $product_type = $row['product_type'];
-        $imageURL = '../uploads/' . $row['img'];
-    } else {
-        echo "ไม่พบรายการวัสดุ อุปกรณ์ เครื่องมือที่ต้องการ.";
-        exit();
-    }
-} else {
-    echo "ไม่ได้รับอนุญาต.";
-    exit();
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,28 +75,4 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 </body>
-<script>
-    // 
-
-    const selectImage = document.querySelector(".select-image");
-    const inputFile = document.querySelector("#file");
-    const imgInput = document.querySelector(".imgInput");
-
-    selectImage.addEventListener("click", function() {
-        inputFile.click();
-    });
-    inputFile.addEventListener("change", function() {
-        const image = this.files[0];
-        console.log(image);
-        const reader = new FileReader();
-        reader.onload = () => {
-            const imgUrl = reader.result;
-            const img = document.createElement("img");
-            img.src = imgUrl;
-            imgInput.appendChild(img);
-        };
-        reader.readAsDataURL(image);
-    });
-</script>
-
 </html>

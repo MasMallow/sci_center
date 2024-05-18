@@ -1,38 +1,90 @@
 <?php
 include_once '../assets/database/connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productType']) && isset($_POST['quantity']) && isset($_POST['sci_name'])) {
-    $productType = $_POST['productType'];
-    $quantity = $_POST['quantity'];
-    $productName = $_POST['sci_name'];
+if (isset($_POST['submit'])) {
+    // รับข้อมูลจากฟอร์ม
+    $sci_name = $_POST['sci_name'];
+    $s_number = $_POST['s_number'];
+    $amount = $_POST['amount'];
+    $categories = $_POST['categories'];
+    $installation_date = $_POST['installation_date'];
+    $company = $_POST['company'];
+    $contact_number = $_POST['contact_number'];
+    $contact = $_POST['contact'];
+    $brand = $_POST['brand'];
+    $model = $_POST['model'];
 
-    $targetDir = "../uploads/"; // เปลี่ยนเป็นชื่อโฟลเดอร์ที่ต้องการ
+    // Upload Thumbnail
+    $img = $_FILES['img'];
+    $thumbnail_extension = pathinfo($img['name'], PATHINFO_EXTENSION);
+    $thumbnail_path = '../assets/uploads/' . uniqid() . '.' . $thumbnail_extension;
 
-    $fileName = basename($_FILES["file"]["name"]);
-    $targetFilePath = $targetDir . $fileName;
-    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-    $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+    // ตรวจสอบประเภทของไฟล์ภาพ
+    $allow = array('jpg', 'jpeg', 'png');
+    if (in_array($thumbnail_extension, $allow)) {
+        if ($img['size'] > 0 && $img['error'] == 0) {
 
-    // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นชนิดที่อนุญาตหรือไม่
-    if (!in_array($fileType, $allowTypes)) {
-        echo "Sorry, only JPG, JPEG, PNG, GIF, and PDF files are allowed.";
-        exit();
-    }
+            // ตรวจสอบว่ามีชื่อไฟล์ภาพอยู่ในฐานข้อมูลหรือไม่
+            $stmt = $conn->prepare("SELECT * FROM crud WHERE img = :img");
+            $stmt->bindParam(":img", $img['name']);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // ทำการอัปโหลดไฟล์
-    if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
-        // เพิ่มข้อมูลลงในฐานข้อมูล
-        $insert = $conn->query("INSERT INTO crud (sci_name, img, uploaded_on, status, amount, Type) VALUES ('$productName', '$fileName', NOW(), 1, '$quantity', '$productType')");
+            if ($row) {
+                $_SESSION['error'] = "ชื่อไฟล์ภาพนี้ถูกใช้ไปแล้ว";
+                header("location: ../addData.php");
+                exit();
+            } else {
+                // อัปโหลดไฟล์ภาพ
+                if (move_uploaded_file($img['tmp_name'], $thumbnail_path)) {
+                    // เพิ่มข้อมูลลงในฐานข้อมูล
+                    $thumbnail_new_name = basename($thumbnail_path);
+                    date_default_timezone_set('Asia/Bangkok'); // ตั้งค่าโซนเวลาเป็น Asia/Bangkok
+                    $uploaded = date("Y-m-d H:i:s"); // ใส่วันที่และเวลาปัจจุบัน
+                    $sql = $conn->prepare("INSERT INTO crud (img, sci_name, s_number, amount, categories, installation_date, company, contact_number, contact, brand, model, uploaded_on) 
+                        VALUES(:img, :sci_name, :s_number, :amount, :categories, :installation_date, :company, :contact_number, :contact, :brand, :model, :uploaded)");
+                    $sql->bindParam(":img", $thumbnail_new_name);
+                    $sql->bindParam(":sci_name", $sci_name);
+                    $sql->bindParam(":s_number", $s_number);
+                    $sql->bindParam(":amount", $amount);
+                    $sql->bindParam(":categories", $categories);
+                    $sql->bindParam(":installation_date", $installation_date);
+                    $sql->bindParam(":company", $company);
+                    $sql->bindParam(":contact_number", $contact_number);
+                    $sql->bindParam(":contact", $contact);
+                    $sql->bindParam(":brand", $brand);
+                    $sql->bindParam(":model", $model);
+                    $sql->bindParam(":uploaded", $uploaded);
+                    $sql->execute();
 
-        if ($insert) {
-            header("Location: add-remove-update.php");
-            exit();
+                    if ($sql) {
+                        $_SESSION['success'] = "เพิ่มหนังสือสำเร็จ <a href='dashboard.php'><span id='B'>กลับหน้า Dashboard</span></a>";
+                        header("location: add.php");
+                        exit();
+                    } else {
+                        $_SESSION['error'] = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
+                        header("location: add.php");
+                        exit();
+                    }
+                } else {
+                    $_SESSION['error'] = "เกิดข้อผิดพลาดในการอัปโหลดไฟล์ภาพ";
+                    header("location: add.php");
+                    exit();
+                }
+            }
         } else {
-            echo "Failed to upload file.";
+            $_SESSION['error'] = "ขนาดของไฟล์ภาพหรือข้อผิดพลาดในการอัปโหลด";
+            header("location: add.php");
+            exit();
         }
     } else {
-        echo "Sorry, there was an error uploading your file.";
+        $_SESSION['error'] = "ประเภทของไฟล์ภาพไม่ถูกต้อง (รูปภาพ: jpg, jpeg, png)";
+        header("location: add.php");
+        exit();
     }
 } else {
-    echo "Please select a file to upload, provide the quantity, and enter the product name.";
+    $_SESSION['error'] = "คุณไม่ได้ส่งคำขอเพิ่มข้อมูล";
+    header("location: add.php");
+    exit();
 }
+?>

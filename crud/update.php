@@ -1,56 +1,47 @@
 <?php
-include_once '../assets/database/connect.php';
+session_start();
+include_once('../assets/database/connect.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['id'], $_POST['sci_name'], $_POST['quantity'], $_POST['product_type'])) {
-        $id = $_POST['id'];
-        $sci_name = $_POST['sci_name'];
-        $quantity = $_POST['quantity'];
-        $productType = $_POST['product_type'];
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $sci_name = $_POST['sci_name'];
+    $amount = $_POST['amount'];
+    $categories = $_POST['categories'];
+    $img = $_FILES['img'];
 
-        // ทำการกรองข้อมูลที่รับเข้ามา
-        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-        $sci_name = filter_var($sci_name, FILTER_SANITIZE_STRING);
-        $quantity = filter_var($quantity, FILTER_SANITIZE_NUMBER_INT);
-        $productType = filter_var($productType, FILTER_SANITIZE_STRING);
+    $img2 = $_POST['img2'];
+    $upload = $_FILES['img']['name'];
 
-        try {
-            // ตรวจสอบว่ามีการอัปโหลดไฟล์ใหม่หรือไม่
-            if (is_uploaded_file($_FILES['file']['tmp_name'])) {
-                $targetDir = "../uploads/";
-                $fileName = basename($_FILES["file"]["name"]);
-                $targetFilePath = $targetDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+    if ($upload != '') {
+        $allow = array('jpg', 'jpeg', 'png');
+        $extension = explode('.', $img['name']);
+        $fileActExt = strtolower(end($extension));
+        $fileNew = rand() . "." . $fileActExt;
+        $filePath = '../assets/uploads/' . $fileNew;
 
-                if (in_array($fileType, $allowTypes)) {
-                    if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
-                        // อัปเดตข้อมูลสินค้าในฐานข้อมูลพร้อมกับรูปภาพใหม่
-                        $stmt = $conn->prepare("UPDATE crud SET sci_name = ?, amount = ?, Type = ?, img = ? WHERE user_id = ?");
-                        $stmt->execute([$sci_name, $quantity, $productType, $fileName, $id]);
-
-                        header("Location: add-remove-update.php");
-                        exit();
-                    } else {
-                        echo "ไม่สามารถย้ายไฟล์ที่อัปโหลดได้";
-                    }
-                } else {
-                    echo "ประเภทไฟล์ไม่ถูกต้อง กรุณาอัปโหลดไฟล์ JPG, JPEG, PNG, GIF หรือ PDF.";
-                }
-            } else {
-                // ไม่มีการอัปโหลดไฟล์ใหม่ อัปเดตข้อมูลสินค้าโดยไม่เปลี่ยนรูปภาพ
-                $stmt = $conn->prepare("UPDATE crud SET sci_name = ?, amount = ?, Type = ? WHERE user_id = ?");
-                $stmt->execute([$sci_name, $quantity, $productType, $id]);
-
-                header("Location: add-remove-update.php");
-                exit();
+        if (in_array($fileActExt, $allow)) {
+            if ($img['size'] > 0 && $img['error'] == 0) {
+                move_uploaded_file($img['tmp_name'], $filePath);
             }
-        } catch (PDOException $e) {
-            echo "ข้อผิดพลาดฐานข้อมูล: " . $e->getMessage();
         }
     } else {
-        echo "ข้อมูลไม่ถูกต้อง";
+        $fileNew = $img2;
     }
-} else {
-    echo "วิธีการร้องขอไม่ถูกต้อง";
+
+    $sql = $conn->prepare("UPDATE crud SET sci_name = :sci_name, amount = :amount, categories = :categories, img = :img WHERE id = :id");
+    $sql->bindParam(":id", $id);
+    $sql->bindParam(":sci_name", $sci_name);
+    $sql->bindParam(":amount", $amount);
+    $sql->bindParam(":categories", $categories);
+    $sql->bindParam(":img", $fileNew);
+    $sql->execute();
+
+    if ($sql) {
+        $_SESSION['success'] = "Data has been updated successfully";
+        header("location: management");
+    } else {
+        $_SESSION['error'] = "Data has not been updated successfully";
+        header("location: management");
+    }
 }
+?>

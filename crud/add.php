@@ -47,9 +47,12 @@ if (isset($_SESSION['staff_login'])) {
                 <div class="add_MET_section_form active">
                     <div class="img">
                         <div class="imgInput">
-                            <i class="upload fa-solid fa-upload"></i>
-                            <span class="img">เลือกรูปภาพที่จะอัพโหลด</span>
-                            <img loading="lazy" class="previewImg" id="previewImg" alt="">
+                            <label for="imgInput">
+                                <i class="upload fa-solid fa-upload"></i>
+                                <span class="img">เลือกรูปภาพที่จะอัพโหลด</span>
+                                <img loading="lazy" class="previewImg" id="previewImg" alt="">
+                            </label>
+                            <input type="file" required class="input-img" id="imgInput" name="img" accept="image/jpeg, image/png" hidden>
                         </div>
                     </div>
                     <span class="upload-tip"><b>Note: </b>Only JPG, JPEG, PNG & GIF files allowed to upload.</span>
@@ -57,7 +60,6 @@ if (isset($_SESSION['staff_login'])) {
                         <label class="choose-file" for="imgInput">เลือกรูปภาพที่จะอัพโหลด</label>
                         <span class="file_chosen_img" id="file-chosen-img">ยังไม่ได้เลือกไฟล์</span>
                     </div>
-                    <input type="file" required class="input-img" id="imgInput" name="img" accept="image/jpeg, image/png" hidden>
                     <div class="input_box">
                         <span>ชื่อ</span>
                         <input type="text" name="sci_name" required placeholder="ระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">
@@ -69,11 +71,11 @@ if (isset($_SESSION['staff_login'])) {
                     <div class="col">
                         <div class="input_box">
                             <span>จำนวน</span>
-                            <input type="number" id="quantity" name="quantity" min="1" required placeholder="กรุณาระบุจำนวน">
+                            <input type="number" name="amount" min="1" required placeholder="กรุณาระบุจำนวน">
                         </div>
                         <div class="input_box">
                             <span>ประเภท</span>
-                            <select name="productType" id="productType">
+                            <select name="categories">
                                 <option value="" disabled selected>กรุณาเลือก</option>
                                 <option value="วัสดุ">วัสดุ</option>
                                 <option value="อุปกรณ์">อุปกรณ์</option>
@@ -93,27 +95,27 @@ if (isset($_SESSION['staff_login'])) {
                         </div>
                         <div class="input_box">
                             <span>บริษัท</span>
-                            <input type="text" name="s_number" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                            <input type="text" name="company" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
                         </div>
                     </div>
                     <div class="col">
                         <div class="input_box">
                             <span>เบอร์โทร บริษัท</span>
-                            <input type="text" name="s_number" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                            <input type="text" name="contact_number" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
                         </div>
                         <div class="input_box">
                             <span>คนติดต่อ</span>
-                            <input type="text" name="s_number" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                            <input type="text" name="contact" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
                         </div>
                     </div>
                     <div class="col">
                         <div class="input_box">
                             <span>ยี่ห้อ</span>
-                            <input type="text" name="quantity" required placeholder="กรุณาระบุจำนวน">
+                            <input type="text" name="brand" required placeholder="กรุณาระบุจำนวน">
                         </div>
                         <div class="input_box">
                             <span>รุ่น</span>
-                            <input type="text" name="quantity" required placeholder="กรุณาระบุจำนวน">
+                            <input type="text" name="model" required placeholder="กรุณาระบุจำนวน">
                         </div>
                     </div>
                     <div class="add_MET_footer_2">
@@ -124,7 +126,8 @@ if (isset($_SESSION['staff_login'])) {
                         <button type="reset" class="reset">ล้างข้อมูล</button>
                     </div>
                 </div>
-            </form>
+        </div>
+        </form>
         </div>
     </main>
     <script src="../assets/js/add.js"></script>
