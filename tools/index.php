@@ -105,6 +105,26 @@
                                         </button>
                                     </div>
                                 <?php } ?>
+                                <?php
+                                if ($data['amount'] >= 1) {
+                                ?>
+                                    <div class="button">
+                                        <button onclick="location.href='reserve_cart.php?action=add&item=<?= $data['sci_name'] ?>'" class="reserve-it">
+                                            <i class="icon fa-solid fa-check"></i>
+                                            <p>จองวัสดุ อุปกรณ์ และเครื่องมือ</p>
+                                        </button>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="button">
+                                        <button class="out-of">
+                                            <div class="icon"><i class="icon fa-solid fa-check"></i>
+                                                <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                <?php
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>

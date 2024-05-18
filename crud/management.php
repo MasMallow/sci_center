@@ -2,22 +2,15 @@
 session_start();
 include_once '../assets/database/connect.php';
 
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-if (isset($_SESSION['staff_login'])) {
-    $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
-    $stmt->execute();
+if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
+    $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
+    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt->execute(['user_id' => $user_id]);
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 ?>
 <?php
 try {
-    // สร้าง SQL เพื่อดึงข้อมูลจากฐานข้อมูล
     $sql = "SELECT * FROM crud";
     if (isset($_GET["search"]) && !empty($_GET["search"])) {
         $search = $_GET["search"];
@@ -26,7 +19,6 @@ try {
     $sql .= " ORDER BY uploaded_on DESC";
     $stmt = $conn->prepare($sql);
 
-    // ถ้ามีการค้นหา ให้ผูกค่าพารามิเตอร์
     if (isset($search)) {
         $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
     }
@@ -41,34 +33,27 @@ try {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จัดการวัสดุ อุปกรณ์ และเครื่องมือ</title>
-
-    <!-- ส่วนของ Link -->
     <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="../assets/css/navigator.css">
     <link rel="stylesheet" href="add-remove-update.css">
     <link rel="stylesheet" href="../assets/css/edit.css">
 </head>
-
 <body>
-    <!-- Header -->
-    <?php
-    include('header.php')
-    ?>
+    <?php include('header.php'); ?>
     <div class="main">
         <div class="container">
             <div class="head-section">
                 <div class="head-name">
                     ระบบเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ
-                   
                 </div>
                 <div class="head-btn">
                     <button class="cancel" onclick="window.location.href='../home.php';">
-                        <i class="icon fa-solid fa-xmark"></i>ยกเลิกการเพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
+                        <i class="icon fa-solid fa-xmark"></i>ยกเลิกการเพิ่มวัสดุ อุปกรณ์ และเครื่องมือ
+                    </button>
                     <a class="showPopup add" href="add.php"><i class="icon fa-solid fa-plus"></i>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</a>
                 </div>
             </div>
@@ -78,27 +63,21 @@ try {
     <div class="count_list">
         <div class="count_list_1">
             <span>รายการที่เลือกทั้งหมด </span>
-            <?php echo count($_SESSION['cart']); ?><span> รายการ</span>
         </div>
     </div>
     <div class="management_grid">
-        <?php
-        if (empty($result)) { ?>
+        <?php if (empty($result)) { ?>
             <div class="management_grid_not_found">ไม่พบข้อมูล</div>
-            <?php
-        } else {
-            foreach ($result as $results) {
-            ?>
+        <?php } else {
+            foreach ($result as $results) { ?>
                 <div class="management_grid_content">
                     <div class="management_grid_header">
                         <div class="content_img">
-                            <img src="../assets/uploads/<?php echo $results['img']; ?>">
+                            <img src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>">
                         </div>
                     </div>
                     <div class="content_status_details">
-                        <?php
-                        if ($results['amount'] >= 50) {
-                        ?>
+                        <?php if ($results['amount'] >= 50) { ?>
                             <div class="ready-to-use">
                                 <i class="fa-solid fa-circle-check"></i>
                                 <span id="B">พร้อมใช้งาน</span>
@@ -134,27 +113,27 @@ try {
                                                 <div class="imgInput">
                                                     <i class="upload fa-solid fa-upload"></i>
                                                     <span class="img">เลือกรูปภาพที่จะอัพโหลด</span>
-                                                    <img loading="lazy" class="previewImg" id="previewImg" src="../assets/uploads/<?php echo $results['img']; ?>">
+                                                    <img loading="lazy" class="previewImg" id="previewImg" src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>">
                                                 </div>
                                             </div>
                                             <span class="upload-tip"><b>Note: </b>Only JPG, JPEG, PNG & GIF files allowed to upload.</span>
                                             <div class="btn_img">
                                                 <label class="choose-file" for="imgInput">เลือกรูปภาพที่จะอัพโหลด</label>
-                                                <span class="file_chosen_img" id="file-chosen-img"><?php echo $results['img'] ?></span>
+                                                <span class="file_chosen_img" id="file-chosen-img"><?php echo htmlspecialchars($results['img']); ?></span>
                                             </div>
                                             <input type="file" class="input-img" id="imgInput" name="img" accept="image/jpeg, image/png" hidden>
-                                            <input type="hidden" value="<?php echo $results['img']; ?>" required name="img2">
+                                            <input type="hidden" value="<?php echo htmlspecialchars($results['img']); ?>" name="img2">
                                         </div>
                                     </div>
                                     <div class="details_content_right">
-                                        <input type="text" name="id" value="<?php echo $results['id']; ?>" hidden>
+                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['id']); ?>">
                                         <ul class="details_content_li">
                                             <li>
                                                 <div class="details_content_1">
                                                     <span id="B">ชื่อ</span>
                                                 </div>
                                                 <div class="details_content_2">
-                                                    <input type="text" name="sci_name" value="<?php echo $results['sci_name']; ?>">
+                                                    <input type="text" name="sci_name" value="<?php echo htmlspecialchars($results['sci_name']); ?>">
                                                 </div>
                                             </li>
                                             <li>
@@ -162,7 +141,7 @@ try {
                                                     <span id="B">จำนวน</span>
                                                 </div>
                                                 <div class="details_content_2">
-                                                    <input type="number" name="amount" value="<?php echo $results['amount']; ?>">
+                                                    <input type="number" name="amount" value="<?php echo htmlspecialchars($results['amount']); ?>">
                                                 </div>
                                             </li>
                                             <li>
@@ -207,7 +186,7 @@ try {
                                             </li>
                                         </ul>
                                         <div class="details_content_footer">
-                                            <button class="reset">คืนค่าเดิม</button>
+                                            <button class="reset" type="reset">คืนค่าเดิม</button>
                                             <button type="submit" name="update">ยืนยัน</button>
                                         </div>
                                     </div>
@@ -217,31 +196,28 @@ try {
                     </div>
                     <div class="management_grid_content_body">
                         <div class="content_name">
-                            <span id="B">ชื่อ </span><?php echo $results['sci_name']; ?>
+                            <span id="B">ชื่อ </span><?php echo htmlspecialchars($results['sci_name']); ?>
                         </div>
                         <div class="content_categories">
-                            <span id="B">ประเภท </span><?php echo $results['categories']; ?>
+                            <span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?>
                         </div>
                         <div class="content_amount">
-                            <span id="B">คงเหลือ </span><?php echo $results['amount']; ?>
+                            <span id="B">คงเหลือ </span><?php echo htmlspecialchars($results['amount']); ?>
                         </div>
                     </div>
                     <div class="management_grid_content_footer">
-                        <a href="edit.php?id=<?php echo $results['id']; ?>" class="Edit"> <!-- ลิงก์แก้ไขสินค้า -->
+                        <a href="edit.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Edit">
                             <i class="icon fa-solid fa-pen-to-square"></i><span>Edit</span>
                         </a>
-                        <a href="delete.php?id=<?php echo $results['id']; ?>" class="Delete"> <!-- ลิงก์ลบสินค้า -->
+                        <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
                             <i class="icon fa-solid fa-trash"></i><span>Delete</span>
                         </a>
                     </div>
                 </div>
-        <?php
-            }
-        }
-        ?>
+        <?php }
+        } ?>
     </div>
     <script src="../assets/js/pop_upEdit.js"></script>
     <script src="../assets/js/add.js"></script>
 </body>
-
 </html>

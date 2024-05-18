@@ -37,11 +37,11 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($users as $user) : ?>
             <tr>
                 <td><?php echo $user['user_id']; ?></td>
-                <td><?php echo $user['firstname']; ?></td>
+                <td><?php echo $user['surname']; ?></td>
                 <td><?php echo $user['lastname']; ?></td>
                 <td><?php echo $user['role']; ?></td>
                 <td>
-                    <a href="admin_edit_user.php?user_id=<?php echo $user['id']; ?>">แก้ไข</a>
+                    <a href="admin_edit_user.php?user_id=<?php echo $user['user_id']; ?>">แก้ไข</a>
                 </td>
             </tr>
         <?php endforeach; ?>
