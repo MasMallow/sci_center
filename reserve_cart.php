@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ตะกร้าจองสินค้า</title>
     <link rel="stylesheet" href="cart.css">
+    <style>
+        img {
+            width: 50px;
+        }
+    </style>
 </head>
 
 <body>
@@ -60,7 +65,7 @@
     } else {
         echo '<form method="post" action="approval_reserve.php">';
         echo '<table>';
-        echo'<tr>
+        echo '<tr>
                 <th>ลำดับ</th>
                 <th>รูปภาพ</th>
                 <th>ชื่อสินค้า</th>
@@ -68,22 +73,22 @@
                 <th>การดำเนินการ</th>
             </tr>';
         $num = 1;
-        foreach ($_SESSION['reserve_cart'] as $item) {
+        foreach ($_SESSION['reserve_cart'] as $itemToAdd) {
             // Retrieve product details from the database based on the item
-            $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
-            $query->bindParam(':item', $item, PDO::PARAM_STR);
+            $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :itemToAdd");
+            $query->bindParam(':itemToAdd', $itemToAdd, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);
             $productName = $product['sci_name'];
-            $imageURL = 'uploads/' . $product['img'];
+            $imageURL = 'assets/uploads/' . $product['img'];
 
             if (file_exists($imageURL)) {
                 echo '<tr>';
                 echo "<td>$num</td>";
-                echo '<td><img src="' . $imageURL . '" alt="' . $productName . '"></td>';
+                echo '<td><img src="' . $imageURL . '" alt="' .  '"></td>';
                 echo '<td>' . $productName . '</td>';
-                echo '<td><input type="number" name="amount[' . $item . ']" value="1" min="1"></td>';
-                echo '<td><a href="reserve_cart.php?action=remove&item=' . $item . '">ลบ</a></td>';
+                echo '<td><input type="number" name="amount[' . $itemToAdd . ']" value="1" min="1"></td>';
+                echo '<td><a href="reserve_cart.php?action=remove&item=' . $itemToAdd . '">ลบ</a></td>';
                 echo '</tr>';
                 $num++;
             }
