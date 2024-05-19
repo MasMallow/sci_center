@@ -106,26 +106,27 @@
                                     </div>
                                 <?php } ?>
                                 <?php
-                                    if ($row['amount'] >= 1) {
-                                    ?>
-                                        <div class="button">
-                                            <button onclick="location.href='reserve_cart.php?action=add&item=<?= $row['file_name'] ?>'" class="reserve-it">
-                                                <i class="icon fa-solid fa-check"></i>
-                                                <p>จองวัสดุ อุปกรณ์ และเครื่องมือ</p>
-                                            </button>
-                                        </div>
-                                    <?php } elseif ($row['amount'] <= 0) { ?>
-                                        <div class="button">
-                                            <button class="out-of">
-                                                <div class="icon"><i class="icon fa-solid fa-check"></i>
-                                                    <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p></i>
-                                                </div>
-                                            </button>
-                                        </div>
-                                    <?php
-                                    }
-                                    ?>
+                                if ($row['amount'] >= 1) {
+                                ?>
+                                    <div class="button">
+                                        <button onclick="location.href='reserve_cart.php?action=add&item=<?= $row['file_name'] ?>'" class="reserve-it">
+                                            <i class="icon fa-solid fa-check"></i>
+                                            <p>จองวัสดุ อุปกรณ์ และเครื่องมือ</p>
+                                        </button>
+                                    </div>
+                                <?php } elseif ($row['amount'] <= 0) { ?>
+                                    <div class="button">
+                                        <button class="out-of">
+                                            <div class="icon"><i class="icon fa-solid fa-check"></i>
+                                                <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                <?php
+                                }
+                                ?>
                                 </td>
+                            </div>
                         </div>
                     </div>
         <?php

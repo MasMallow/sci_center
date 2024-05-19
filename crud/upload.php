@@ -7,6 +7,7 @@ if (isset($_POST['submit'])) {
     $s_number = $_POST['s_number'];
     $amount = $_POST['amount'];
     $categories = $_POST['categories'];
+    $details = $_POST['details'];
     $installation_date = $_POST['installation_date'];
     $company = $_POST['company'];
     $contact_number = $_POST['contact_number'];
@@ -32,7 +33,7 @@ if (isset($_POST['submit'])) {
 
             if ($row) {
                 $_SESSION['error'] = "ชื่อไฟล์ภาพนี้ถูกใช้ไปแล้ว";
-                header("location: ../addData.php");
+                header("location: add");
                 exit();
             } else {
                 // อัปโหลดไฟล์ภาพ
@@ -41,13 +42,14 @@ if (isset($_POST['submit'])) {
                     $thumbnail_new_name = basename($thumbnail_path);
                     date_default_timezone_set('Asia/Bangkok'); // ตั้งค่าโซนเวลาเป็น Asia/Bangkok
                     $uploaded = date("Y-m-d H:i:s"); // ใส่วันที่และเวลาปัจจุบัน
-                    $sql = $conn->prepare("INSERT INTO crud (img, sci_name, s_number, amount, categories, installation_date, company, contact_number, contact, brand, model, uploaded_on) 
-                        VALUES(:img, :sci_name, :s_number, :amount, :categories, :installation_date, :company, :contact_number, :contact, :brand, :model, :uploaded)");
+                    $sql = $conn->prepare("INSERT INTO crud (img, sci_name, s_number, amount, categories, details, installation_date, company, contact_number, contact, brand, model, uploaded_on) 
+                        VALUES(:img, :sci_name, :s_number, :amount, :categories, :details, :installation_date, :company, :contact_number, :contact, :brand, :model, :uploaded)");
                     $sql->bindParam(":img", $thumbnail_new_name);
                     $sql->bindParam(":sci_name", $sci_name);
                     $sql->bindParam(":s_number", $s_number);
                     $sql->bindParam(":amount", $amount);
                     $sql->bindParam(":categories", $categories);
+                    $sql->bindParam(":details", $details);
                     $sql->bindParam(":installation_date", $installation_date);
                     $sql->bindParam(":company", $company);
                     $sql->bindParam(":contact_number", $contact_number);
@@ -58,33 +60,33 @@ if (isset($_POST['submit'])) {
                     $sql->execute();
 
                     if ($sql) {
-                        $_SESSION['success'] = "เพิ่มหนังสือสำเร็จ <a href='dashboard.php'><span id='B'>กลับหน้า Dashboard</span></a>";
-                        header("location: add.php");
+                        $_SESSION['success'] = "เพิ่มข้อมูลสำเร็จ <a href='dashboard.php'><span id='B'>กลับหน้า Dashboard</span></a>";
+                        header("location: add");
                         exit();
                     } else {
                         $_SESSION['error'] = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
-                        header("location: add.php");
+                        header("location: add");
                         exit();
                     }
                 } else {
                     $_SESSION['error'] = "เกิดข้อผิดพลาดในการอัปโหลดไฟล์ภาพ";
-                    header("location: add.php");
+                    header("location: add");
                     exit();
                 }
             }
         } else {
             $_SESSION['error'] = "ขนาดของไฟล์ภาพหรือข้อผิดพลาดในการอัปโหลด";
-            header("location: add.php");
+            header("location: add");
             exit();
         }
     } else {
         $_SESSION['error'] = "ประเภทของไฟล์ภาพไม่ถูกต้อง (รูปภาพ: jpg, jpeg, png)";
-        header("location: add.php");
+        header("location: add");
         exit();
     }
 } else {
     $_SESSION['error'] = "คุณไม่ได้ส่งคำขอเพิ่มข้อมูล";
-    header("location: add.php");
+    header("location: add");
     exit();
 }
 ?>

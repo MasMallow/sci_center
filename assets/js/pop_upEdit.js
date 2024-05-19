@@ -1,53 +1,58 @@
-// ค้นหาปุ่มทั้งหมดที่ใช้เปิด modal
-const modalOpenButtons = document.querySelectorAll(".details_btn");
+document.addEventListener("DOMContentLoaded", function () {
+    let currentModal = null;
 
-// ค้นหาปุ่มทั้งหมดที่ใช้ปิด modal
-const modalCloseButtons = document.querySelectorAll(".modalClose");
+    // ใช้ event delegation เพื่อจัดการ click event
+    document.body.addEventListener("click", function (event) {
+        // ตรวจสอบว่าคลิกที่ปุ่มเปิด modal หรือไม่
+        if (event.target.closest(".details_btn")) {
+            const button = event.target.closest(".details_btn");
+            const modalId = button.getAttribute("data-modal");
+            currentModal = document.getElementById(modalId);
 
-// ค้นหา modal ทั้งหมด
-const modals = document.querySelectorAll(".content_details_popup");
+            if (currentModal) {
+                currentModal.style.display = "flex";
+                document.body.style.overflow = "hidden";
+                document.body.style.paddingRight = "15px";
+            }
+        }
 
-// เพิ่มฟังก์ชันเพื่อเปิด modal
-modalOpenButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-        // ดึงค่า ID ของ modal จาก attribute data-modal
-        const modalId = button.getAttribute("data-modal");
-        // ค้นหา modal โดยใช้ ID ที่ได้มา
-        const modal = document.getElementById(modalId);
-        // แสดง modal โดยตั้งค่า style.display เป็น 'flex'
-        modal.style.display = "flex";
-
-        // เพิ่ม overflow: hidden และ padding-right: 15px ให้กับ <body>
-        document.body.style.overflow = "hidden";
-        document.body.style.paddingRight = "15px";
+        // ตรวจสอบว่าคลิกที่ปุ่มปิด modal หรือไม่
+        if (event.target.closest(".modalClose") || (event.target.closest(".content_details_popup") && event.target === currentModal)) {
+            closeModal();
+        }
     });
-});
 
-// เพิ่มฟังก์ชันเพื่อปิด modal
-modalCloseButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-        // ค้นหา modal ที่เกี่ยวข้องโดยใช้ closest('.content_details_popup')
-        const modal = button.closest(".content_details_popup");
-        // ซ่อน modal โดยตั้งค่า style.display เป็น 'none'
-        modal.style.display = "none";
-
-        // ลบ overflow: hidden และ padding-right: 15px จาก <body>
-        document.body.style.overflow = "";
-        document.body.style.paddingRight = "";
-    });
-});
-
-// ปิด modal เมื่อคลิกที่พื้นหลังของ modal
-modals.forEach(function (modal) {
-    modal.addEventListener("click", function (event) {
-        // ตรวจสอบว่าคลิกที่พื้นหลังของ modal หรือไม่
-        if (event.target === modal) {
-            // ซ่อน modal โดยตั้งค่า style.display เป็น 'none'
-            modal.style.display = "none";
-
-            // ลบ overflow: hidden และ padding-right: 15px จาก <body>
+    // ฟังก์ชันเพื่อปิด modal
+    function closeModal() {
+        if (currentModal) {
+            currentModal.style.display = "none";
+            currentModal = null;
             document.body.style.overflow = "";
             document.body.style.paddingRight = "";
         }
+    }
+
+    // ตรวจจับการเปลี่ยนแปลงใน input element ที่ใช้สำหรับเลือกไฟล์ภาพ
+    const imgInputs = document.querySelectorAll('.input-img');
+    imgInputs.forEach(imgInput => {
+        imgInput.addEventListener("change", function () {
+            const fileName = this.files[0].name;
+            const modalId = this.id.split("_")[1]; // ปรับแก้ตรงนี้เพื่อให้ได้ modalId จาก id ของ input-img
+            document.getElementById("file-chosen-img_" + modalId).textContent = fileName; // แก้ไขตรงนี้เพื่อให้มันตรงกับ id ใน HTML
+
+            const previewImg = document.getElementById("previewImg_" + modalId); // ปรับแก้ตรงนี้เพื่อให้ตรงกับ id ของ previewImg
+            const [file] = this.files;
+            if (file) {
+                previewImg.src = URL.createObjectURL(file);
+            }
+        });
+    });
+
+    document.querySelectorAll('.input-img').forEach(function (inputImg) {
+        const modalId = inputImg.getAttribute("id").split("_")[1];
+        inputImg.addEventListener("change", function () {
+            const fileName = this.files[0] ? this.files[0].name : ''; // เพิ่มเงื่อนไขเพื่อตรวจสอบว่ามีไฟล์ที่ถูกเลือกหรือไม่
+            document.getElementById("file-chosen-img_" + modalId).textContent = fileName;
+        });
     });
 });

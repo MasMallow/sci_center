@@ -36,13 +36,15 @@ if (isset($_SESSION['staff_login'])) {
     <main class="add_MET">
         <div class="add_MET_section">
             <div class="add_MET_section_header">
-                <span id="B">เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
+                <span id="B">เพิ่มอุปกรณ์ และเครื่องมือ</span>
             </div>
             <form action="upload.php" method="POST" enctype="multipart/form-data">
                 <div class="pagination">
                     <div class="number active">1</div>
                     <div class="bar"></div>
                     <div class="number">2</div>
+                    <div class="bar"></div>
+                    <div class="number">3</div>
                 </div>
                 <div class="add_MET_section_form active">
                     <div class="img">
@@ -120,14 +122,25 @@ if (isset($_SESSION['staff_login'])) {
                     </div>
                     <div class="add_MET_footer_2">
                         <a href="#1" class="btn_prev"><i class="fa-solid fa-angle-left"></i><span>ก่อนหน้า</span></a>
+                        <a href="#3" class="btn_next"><i class="fa-solid fa-angle-rigth"></i><span>ถัดไป</span></a>
+                    </div>
+                </div>
+                <div class="add_MET_section_form">
+                    <div class="col">
+                        <div class="input_box">
+                            <label for="details">รายละเอียด</label>
+                            <textarea id="details" name="details" required placeholder="กรุณาระบุรายละเอียด"></textarea>
+                        </div>
+                    </div>
+                    <div class="add_MET_footer_2">
+                        <a href="#1" class="btn_prev"><i class="fa-solid fa-angle-left"></i><span>ก่อนหน้า</span></a>
                     </div>
                     <div class="btn">
                         <button type="submit" name="submit" value="Upload" class="">ยืนยัน</button>
                         <button type="reset" class="reset">ล้างข้อมูล</button>
                     </div>
                 </div>
-        </div>
-        </form>
+            </form>
         </div>
     </main>
     <script src="../assets/js/add.js"></script>

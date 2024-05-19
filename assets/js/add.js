@@ -1,56 +1,42 @@
 document.addEventListener('DOMContentLoaded', function () {
     const forms = document.querySelectorAll('.add_MET_section_form');
     const paginationNumbers = document.querySelectorAll('.pagination .number');
-    const prevBtn = document.querySelector('.btn_prev');
-    const nextBtn = document.querySelector('.btn_next');
+    const prevBtns = document.querySelectorAll('.btn_prev');
+    const nextBtns = document.querySelectorAll('.btn_next');
     const addMET = document.querySelector('.add_MET');
 
     let currentFormIndex = 0;
 
     function showForm(index) {
         forms.forEach((form, i) => {
-            if (i === index) {
-                form.classList.add('active');
-            } else {
-                form.classList.remove('active');
-            }
+            form.classList.toggle('active', i === index);
         });
 
         paginationNumbers.forEach((number, i) => {
-            if (i === index) {
-                number.classList.add('active');
-            } else {
-                number.classList.remove('active');
-            }
+            number.classList.toggle('active', i === index);
         });
 
-        if (index === 0) {
-            prevBtn.style.display = 'none';
-        } else {
-            prevBtn.style.display = 'inline-block';
-            addMET.style.margin = '9.5rem auto';
-        }
-
-        if (index === forms.length - 1) {
-            nextBtn.style.display = 'none';
-        } else {
-            nextBtn.style.display = 'inline-block';
-            addMET.style.margin = '3rem auto';
-        }
+        prevBtns.forEach(btn => btn.style.display = index === 0 ? 'none' : 'inline-block');
+        nextBtns.forEach(btn => btn.style.display = index === forms.length - 1 ? 'none' : 'inline-block');
+        addMET.style.margin = index === 0 ? '3rem auto' : '9.5rem auto';
     }
 
-    nextBtn.addEventListener('click', function () {
-        if (currentFormIndex < forms.length - 1) {
-            currentFormIndex++;
-            showForm(currentFormIndex);
-        }
+    nextBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (currentFormIndex < forms.length - 1) {
+                currentFormIndex++;
+                showForm(currentFormIndex);
+            }
+        });
     });
 
-    prevBtn.addEventListener('click', function () {
-        if (currentFormIndex > 0) {
-            currentFormIndex--;
-            showForm(currentFormIndex);
-        }
+    prevBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (currentFormIndex > 0) {
+                currentFormIndex--;
+                showForm(currentFormIndex);
+            }
+        });
     });
 
     paginationNumbers.forEach((number, i) => {
@@ -59,19 +45,18 @@ document.addEventListener('DOMContentLoaded', function () {
             showForm(currentFormIndex);
         });
     });
-});
 
-let imgInput = document.getElementById('imgInput');
-let previewImg = document.getElementById('previewImg');
+    let imgInput = document.getElementById('imgInput');
+    let previewImg = document.getElementById('previewImg');
+    let fileChosenImg = document.getElementById('file-chosen-img');
 
-imgInput.onchange = evt => {
-    const [file] = imgInput.files;
-    if (file) {
-        previewImg.src = URL.createObjectURL(file)
-    }
-}
-// เลือกไฟล์รูป
-document.getElementById("imgInput").addEventListener("change", function () {
-    const fileName = this.files[0].name;
-    document.getElementById("file-chosen-img").textContent = fileName;
+    imgInput.addEventListener('change', function () {
+        const [file] = imgInput.files;
+        if (file) {
+            previewImg.src = URL.createObjectURL(file);
+            fileChosenImg.textContent = file.name;
+        }
+    });
+
+    showForm(currentFormIndex); // Initialize the first form view
 });

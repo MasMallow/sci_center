@@ -2,15 +2,11 @@
 session_start();
 include_once '../assets/database/connect.php';
 
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-if (isset($_SESSION['staff_login'])) {
-    $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
+// ดึงข้อมูลผู้ใช้เพียงครั้งเดียว
+if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
+    $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
+    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -56,49 +52,57 @@ try {
 
 <body>
     <!-- Header -->
-    <?php
-    include('header.php')
-    ?>
-    <div class="main">
-        <div class="container">
-            <div class="head-section">
-                <div class="head-name">
-                    ระบบเพิ่ม ลบ แก้ไข วัสดุ อุปกรณ์ และเครื่องมือ
-                   
-                </div>
-                <div class="head-btn">
-                    <button class="cancel" onclick="window.location.href='../home.php';">
-                        <i class="icon fa-solid fa-xmark"></i>ยกเลิกการเพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</button>
-                    <a class="showPopup add" href="add.php"><i class="icon fa-solid fa-plus"></i>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</a>
+    <?php include('header.php'); ?>
+    <div class="header_management">
+        <div class="header_management_section">
+            <div class="header_name_section">
+                <a href="../"><i class="fa-solid fa-arrow-left-long"></i></a>
+                <span>จัดการระบบ</span>
+            </div>
+            <div class="header_btn_section">
+                <button class="choose_categories_btn">
+                    <i class="icon fa-solid fa-plus"></i>
+                    <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
+                </button>
+                <div class="choose_categories_popup">
+                    <div class="choose_categories">
+                        <div class="choose_categories_header">
+                            <span id="B">เลือกประเภทที่จะเพิ่มข้อมูล</span>
+                            <div class="modalClose" id="closeDetails">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                        </div>
+                        <div class="choose_categories_content">
+                            <ul class="choose_categories_content">
+                                <li>
+                                    <a href="add?=material"><i class="fa-solid fa-flask-vial"></i><span>เพิ่มวัสดุ</span></a>
+                                </li>
+                                <li>
+                                    <a href="add?=equipment"><i class="fa-solid fa-toolbox"></i><span>เพิ่มอุปกรณ์</span></a>
+                                </li>
+                                <li>
+                                    <a href="add?=tools"><i class="fa-solid fa-microscope"></i><span>เพิ่มเครื่องมือ</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <hr>
-        </div>
-    </div>
-    <div class="count_list">
-        <div class="count_list_1">
-            <span>รายการที่เลือกทั้งหมด </span>
-            <?php echo count($_SESSION['cart']); ?><span> รายการ</span>
         </div>
     </div>
     <div class="management_grid">
-        <?php
-        if (empty($result)) { ?>
+        <?php if (empty($result)) { ?>
             <div class="management_grid_not_found">ไม่พบข้อมูล</div>
-            <?php
-        } else {
-            foreach ($result as $results) {
-            ?>
+            <?php } else {
+            foreach ($result as $results) { ?>
                 <div class="management_grid_content">
                     <div class="management_grid_header">
                         <div class="content_img">
-                            <img src="../assets/uploads/<?php echo $results['img']; ?>">
+                            <img src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>" loading="lazy">
                         </div>
                     </div>
                     <div class="content_status_details">
-                        <?php
-                        if ($results['amount'] >= 50) {
-                        ?>
+                        <?php if ($results['amount'] >= 50) { ?>
                             <div class="ready-to-use">
                                 <i class="fa-solid fa-circle-check"></i>
                                 <span id="B">พร้อมใช้งาน</span>
@@ -132,43 +136,31 @@ try {
                                         <div class="img_details">
                                             <div class="img">
                                                 <div class="imgInput">
-                                                    <i class="upload fa-solid fa-upload"></i>
-                                                    <span class="img">เลือกรูปภาพที่จะอัพโหลด</span>
-                                                    <img loading="lazy" class="previewImg" id="previewImg" src="../assets/uploads/<?php echo $results['img']; ?>">
+                                                    <img class="previewImg" id="previewImg_<?php echo htmlspecialchars($results['img']); ?>" src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>" loading="lazy">
                                                 </div>
                                             </div>
                                             <span class="upload-tip"><b>Note: </b>Only JPG, JPEG, PNG & GIF files allowed to upload.</span>
                                             <div class="btn_img">
-                                                <label class="choose-file" for="imgInput">เลือกรูปภาพที่จะอัพโหลด</label>
-                                                <span class="file_chosen_img" id="file-chosen-img"><?php echo $results['img'] ?></span>
+                                                <label class="choose-file" for="imgInput_<?php echo htmlspecialchars($results['img']); ?>">เลือกรูปภาพที่จะอัพโหลด</label>
+                                                <span class="file_chosen_img" id="file-chosen-img_<?php echo htmlspecialchars($results['img']); ?>"><?php echo htmlspecialchars($results['img']); ?></span>
                                             </div>
-                                            <input type="file" class="input-img" id="imgInput" name="img" accept="image/jpeg, image/png" hidden>
-                                            <input type="hidden" value="<?php echo $results['img']; ?>" required name="img2">
+                                            <input type="file" class="input-img" id="imgInput_<?php echo htmlspecialchars($results['img']); ?>" name="img" accept="image/jpeg, image/png" hidden>
+                                            <input type="hidden" value="<?php echo htmlspecialchars($results['img']); ?>" required name="img2">
                                         </div>
                                     </div>
                                     <div class="details_content_right">
-                                        <input type="text" name="id" value="<?php echo $results['id']; ?>" hidden>
+                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['id']); ?>">
                                         <ul class="details_content_li">
                                             <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">ชื่อ</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <input type="text" name="sci_name" value="<?php echo $results['sci_name']; ?>">
-                                                </div>
+                                                <div class="details_content_1"><span id="B">ชื่อ</span></div>
+                                                <div class="details_content_2"><input type="text" name="sci_name" value="<?php echo htmlspecialchars($results['sci_name']); ?>"></div>
                                             </li>
                                             <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">จำนวน</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <input type="number" name="amount" value="<?php echo $results['amount']; ?>">
-                                                </div>
+                                                <div class="details_content_1"><span id="B">จำนวน</span></div>
+                                                <div class="details_content_2"><input type="number" name="amount" value="<?php echo htmlspecialchars($results['amount']); ?>"></div>
                                             </li>
                                             <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">ประเภท</span>
-                                                </div>
+                                                <div class="details_content_1"><span id="B">ประเภท</span></div>
                                                 <div class="details_content_2">
                                                     <select name="categories">
                                                         <?php
@@ -182,32 +174,20 @@ try {
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">รุ่น</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <span>BK-FD12P</span>
-                                                </div>
+                                                <div class="details_content_1"><span id="B">รุ่น</span></div>
+                                                <div class="details_content_2"><span>BK-FD12P</span></div>
                                             </li>
                                             <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">ยี่ห้อ</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <span>BIOBASE</span>
-                                                </div>
+                                                <div class="details_content_1"><span id="B">ยี่ห้อ</span></div>
+                                                <div class="details_content_2"><span>BIOBASE</span></div>
                                             </li>
                                             <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">บริษัท</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</span>
-                                                </div>
+                                                <div class="details_content_1"><span id="B">บริษัท</span></div>
+                                                <div class="details_content_2"><span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</span></div>
                                             </li>
                                         </ul>
                                         <div class="details_content_footer">
-                                            <button class="reset">คืนค่าเดิม</button>
+                                            <button type="reset">คืนค่าเดิม</button>
                                             <button type="submit" name="update">ยืนยัน</button>
                                         </div>
                                     </div>
@@ -216,32 +196,23 @@ try {
                         </div>
                     </div>
                     <div class="management_grid_content_body">
-                        <div class="content_name">
-                            <span id="B">ชื่อ </span><?php echo $results['sci_name']; ?>
-                        </div>
-                        <div class="content_categories">
-                            <span id="B">ประเภท </span><?php echo $results['categories']; ?>
-                        </div>
-                        <div class="content_amount">
-                            <span id="B">คงเหลือ </span><?php echo $results['amount']; ?>
-                        </div>
+                        <div class="content_name"><span id="B">ชื่อ </span><?php echo htmlspecialchars($results['sci_name']); ?></div>
+                        <div class="content_categories"><span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?></div>
+                        <div class="content_amount"><span id="B">คงเหลือ </span><?php echo htmlspecialchars($results['amount']); ?></div>
                     </div>
                     <div class="management_grid_content_footer">
-                        <a href="edit.php?id=<?php echo $results['id']; ?>" class="Edit"> <!-- ลิงก์แก้ไขสินค้า -->
+                        <a href="edit.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Edit">
                             <i class="icon fa-solid fa-pen-to-square"></i><span>Edit</span>
                         </a>
-                        <a href="delete.php?id=<?php echo $results['id']; ?>" class="Delete"> <!-- ลิงก์ลบสินค้า -->
+                        <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
                             <i class="icon fa-solid fa-trash"></i><span>Delete</span>
                         </a>
                     </div>
                 </div>
-        <?php
-            }
-        }
-        ?>
+        <?php }
+        } ?>
     </div>
     <script src="../assets/js/pop_upEdit.js"></script>
-    <script src="../assets/js/add.js"></script>
 </body>
 
 </html>
