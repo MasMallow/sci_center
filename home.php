@@ -142,7 +142,13 @@ require_once 'assets/database/connect.php';
                             <li>
                                 <a href="approval.php">
                                     <i class="icon fa-solid fa-square-check"></i>
-                                    <span class="text">การอนุมัติ</span>
+                                    <span class="text">การอนุมัติการยืม</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="approval_reserve.php">
+                                    <i class="icon fa-solid fa-square-check"></i>
+                                    <span class="text">การอนุมัติการจอง</span>
                                 </a>
                             </li>
                         </ul>
