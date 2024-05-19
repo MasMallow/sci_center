@@ -63,7 +63,7 @@
     if (empty($_SESSION['reserve_cart'])) {
         echo '<p>ไม่มีสินค้าในตะกร้าจอง</p>';
     } else {
-        echo '<form method="post" action="approval_reserve.php">';
+        echo '<form method="post" action="waiting_approval_reserve.php">';
         echo '<table>';
         echo '<tr>
                 <th>ลำดับ</th>

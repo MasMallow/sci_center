@@ -16,15 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user_id = $_SESSION['staff_login'];
         }
         $sn = $_POST['id'];
+        $userId = $_POST['udi'];
         // รหัสผู้ดูแลระบบที่กำลังเข้าสู่ระบบ
         $staff_id = $_SESSION['staff_login'];
 
         // เลือกชื่อผู้ดูแลระบบจากฐานข้อมูล
-        $user_query = $conn->prepare("SELECT surname FROM users WHERE user_id = :staff_id");
+        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
-        $user = $user_query->fetch(PDO::FETCH_ASSOC);
-        $approver = $user['surname'];
+        $approver = $user_query->fetch(PDO::FETCH_ASSOC);
+        $approvername = $approver['surname'];
 
         // วันเวลาปัจจุบัน
         date_default_timezone_set('Asia/Bangkok');
@@ -33,15 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // อัปเดตฐานข้อมูล
         $update_query = $conn->prepare("UPDATE waiting_for_approval SET approver = :approver, approvaldatetime = :approvaldatetime WHERE sn = :sn");
         $update_query->bindParam(':sn', $sn, PDO::PARAM_INT);
-        $update_query->bindParam(':approver', $approver, PDO::PARAM_STR);
+        $update_query->bindParam(':approver', $approvername, PDO::PARAM_STR);
         $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);
         $update_query->execute();
 
-        $user_query = $conn->prepare("SELECT firstname FROM waiting_for_approval WHERE sn = :sn");
-        $user_query->bindParam(':sn', $sn, PDO::PARAM_INT);
+        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
+        $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
-        $firstname = $user['firstname']; // User's first name
 
         $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $items = explode(',', $row['itemborrowed']);
             $productNames = [];
 
-            $sMessage .= "ชื่อผู้ยืม : " . $row['firstname'] . "\n"; // Borrower's first name
+            $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
             $sMessage .= "SN : " . $row['sn'] . "\n"; // SN
             $sMessage .= "วันที่ขอยืม : " . date('d/m/Y H:i:s', strtotime($row['borrowdatetime'])) . "\n"; // Date of borrowing
             $sMessage .= "วันที่นำมาคืน : " . date('d/m/Y H:i:s', strtotime($row['returndate'])) . "\n"; // Return date
@@ -66,14 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $product_name = trim($item_parts[0]); // ชื่ออุปกรณ์ (ตัดช่องว่างที่เป็นไปได้)
                 $quantity = str_replace(')', '', $item_parts[1]); // จำนวน (ตัดวงเล็บออก)
 
-                $sMessage .= "อุปกรณ์ที่ยืม : ". $product_name . " " . $quantity . " ชิ้น\n";
+                $sMessage .= "ชื่อรายการ : ". $product_name . " " . $quantity . " ชิ้น\n";
 
                 $stmtUpdate = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE sci_name = :product_name");
                 $stmtUpdate->bindParam(':quantity', $quantity, PDO::PARAM_INT);
                 $stmtUpdate->bindParam(':product_name', $product_name, PDO::PARAM_STR);
                 $stmtUpdate->execute();
             }
-            $sMessage .= "ผู้อนุมัติการยืม : ".$approver ."\n";
+            $sMessage .= "ผู้อนุมัติการยืม : " . $approver['pre'] . ' ' . $approver['surname'] . ' ' . $approver['lastname'] . "\n";
             $sMessage .= "-------------------------------";
         }
 
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /home');
+        header('Location: /project/approval.php');
         exit;
     }
 }

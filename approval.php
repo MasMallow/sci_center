@@ -14,7 +14,7 @@ if (!isset($_SESSION['staff_login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>อนุมัติการยืม</title>
 </head>
 
 <body>
@@ -55,10 +55,14 @@ if (!isset($_SESSION['staff_login'])) {
                     <span class="info">returndate:</span> <?php echo date('d/m/Y H:i:s', strtotime($row['returndate'])); ?><br>
                     <form method="POST" action="process_return.php">
                         <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
+                        <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
                         <input type="submit" name="confirm" value="ยืนยันการอนุมัติ">
                     </form><br>
                 </div>
             <?php endforeach; ?>
+            <?php if (empty($data)) { ?>
+                <p>ไม่มีข้อมูลการยืม</p>
+                <?php }?>
         </div>
     </div>
 </body>
