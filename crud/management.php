@@ -57,13 +57,14 @@ try {
         <div class="header_management_section">
             <div class="header_name_section">
                 <a href="../"><i class="fa-solid fa-arrow-left-long"></i></a>
-                <span>จัดการระบบ</span>
+                <span id="B">จัดการระบบ</span>
             </div>
             <div class="header_btn_section">
                 <button class="choose_categories_btn">
                     <i class="icon fa-solid fa-plus"></i>
                     <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
                 </button>
+                <!-- POPUP  -->
                 <div class="choose_categories_popup">
                     <div class="choose_categories">
                         <div class="choose_categories_header">
@@ -73,20 +74,21 @@ try {
                             </div>
                         </div>
                         <div class="choose_categories_content">
-                            <ul class="choose_categories_content">
+                            <ul>
                                 <li>
-                                    <a href="add?=material"><i class="fa-solid fa-flask-vial"></i><span>เพิ่มวัสดุ</span></a>
+                                    <a href="add?add=material"><i class="fa-solid fa-flask-vial"></i><span>เพิ่มวัสดุ</span></a>
                                 </li>
                                 <li>
-                                    <a href="add?=equipment"><i class="fa-solid fa-toolbox"></i><span>เพิ่มอุปกรณ์</span></a>
+                                    <a href="add?add=equipment"><i class="fa-solid fa-toolbox"></i><span>เพิ่มอุปกรณ์</span></a>
                                 </li>
                                 <li>
-                                    <a href="add?=tools"><i class="fa-solid fa-microscope"></i><span>เพิ่มเครื่องมือ</span></a>
+                                    <a href="add?add=tools"><i class="fa-solid fa-microscope"></i><span>เพิ่มเครื่องมือ</span></a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+                <!-- End POPUP -->
             </div>
         </div>
     </div>
@@ -105,12 +107,12 @@ try {
                         <?php if ($results['amount'] >= 50) { ?>
                             <div class="ready-to-use">
                                 <i class="fa-solid fa-circle-check"></i>
-                                <span id="B">พร้อมใช้งาน</span>
+                                <span id="B">ปกติ</span>
                             </div>
                         <?php } elseif ($results['amount'] <= 30 && $results['amount'] >= 1) { ?>
                             <div class="moderately">
                                 <i class="fa-solid fa-circle-exclamation"></i>
-                                <span id="B">ความพร้อมปานกลาง</span>
+                                <span id="B">ปานกลาง</span>
                             </div>
                         <?php } elseif ($results['amount'] == 0) { ?>
                             <div class="not-available">
@@ -201,18 +203,35 @@ try {
                         <div class="content_amount"><span id="B">คงเหลือ </span><?php echo htmlspecialchars($results['amount']); ?></div>
                     </div>
                     <div class="management_grid_content_footer">
-                        <a href="edit.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Edit">
-                            <i class="icon fa-solid fa-pen-to-square"></i><span>Edit</span>
-                        </a>
-                        <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
-                            <i class="icon fa-solid fa-trash"></i><span>Delete</span>
-                        </a>
+                        <button class="details_btn" data-modal="<?php echo $results['id']; ?>">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span>แก้ไขข้อมูล</span>
+                        </button>
+                        <button class="details_btn" data-modal="delete_<?php echo $results['id']; ?>">
+                            <i class="icon fa-solid fa-trash"></i> <span>ลบข้อมูล</span>
+                        </button>
+                        <div class="choose_categories_popup" id="delete_<?php echo $results['id']; ?>">
+                            <div class="choose_categories">
+                                <div class="choose_categories_header">
+                                    <span id="B">ยืนยันการลบ</span>
+                                    <div class="closePOPUP_delete" id="closeDetails">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </div>
+                                </div>
+                                <div class="choose_categories_content">
+                                    <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
+                                        <i class="icon fa-solid fa-trash"></i><span>ลบข้อมูล</span>
+                                    </a>
+                                    <button class="closePOPUP_delete">ปิดหน้าต่าง</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
         <?php }
         } ?>
     </div>
+    <script src="../assets/js/choose_categories.js"></script>
     <script src="../assets/js/pop_upEdit.js"></script>
 </body>
-
 </html>

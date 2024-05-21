@@ -29,22 +29,41 @@ if (isset($_SESSION['staff_login'])) {
 </head>
 
 <body>
-    <?php
-    include('header.php')
-    ?>
+    <?php include('header.php') ?>
     <!-- Modal Popup -->
     <main class="add_MET">
         <div class="add_MET_section">
             <div class="add_MET_section_header">
-                <span id="B">เพิ่มอุปกรณ์ และเครื่องมือ</span>
+                <?php
+                if (isset($_GET['add'])) {
+                    $type = $_GET['add'];
+                    if ($type == 'material') {
+                        echo '<span id="B">เพิ่มวัสดุ</span>';
+                    } elseif ($type == 'equipment') {
+                        echo '<span id="B">เพิ่มอุปกรณ์</span>';
+                    }
+                    elseif ($type == 'tools') {
+                        echo '<span id="B">เพิ่มเครื่องมือ</span>';
+                    }
+                }
+                ?>
             </div>
             <form action="upload.php" method="POST" enctype="multipart/form-data">
                 <div class="pagination">
                     <div class="number active">1</div>
                     <div class="bar"></div>
                     <div class="number">2</div>
-                    <div class="bar"></div>
-                    <div class="number">3</div>
+                    <?php
+                    if (isset($_GET['add'])) {
+                        $type = $_GET['add'];
+                        if ($type == 'equipment' || $type == 'tools') {
+                    ?>
+                            <div class="bar"></div>
+                            <div class="number">3</div>
+                    <?php
+                        }
+                    }
+                    ?>
                 </div>
                 <div class="add_MET_section_form active">
                     <div class="img">
@@ -66,65 +85,79 @@ if (isset($_SESSION['staff_login'])) {
                         <span>ชื่อ</span>
                         <input type="text" name="sci_name" required placeholder="ระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">
                     </div>
-                    <div class="input_box">
-                        <span>Serial Number</span>
-                        <input type="text" name="s_number" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
-                    </div>
                     <div class="col">
+                        <div class="input_box">
+                            <span>Serial Number</span>
+                            <input type="text" name="s_number" required placeholder="ระบุ Serial Number">
+                        </div>
                         <div class="input_box">
                             <span>จำนวน</span>
                             <input type="number" name="amount" min="1" required placeholder="กรุณาระบุจำนวน">
-                        </div>
-                        <div class="input_box">
-                            <span>ประเภท</span>
-                            <select name="categories">
-                                <option value="" disabled selected>กรุณาเลือก</option>
-                                <option value="วัสดุ">วัสดุ</option>
-                                <option value="อุปกรณ์">อุปกรณ์</option>
-                                <option value="เครื่องมือ">เครื่องมือ</option>
-                            </select>
+                            <input type="hidden" name="categories" value="<?php
+                                                                            $category = '';
+                                                                            if (isset($_GET['add'])) {
+                                                                                $type = $_GET['add'];
+                                                                                if ($type == 'material') {
+                                                                                    $category = 'วัสดุ';
+                                                                                } elseif ($type == 'equipment') {
+                                                                                    $category = 'อุปกรณ์';
+                                                                                } elseif ($type == 'tools') {
+                                                                                    $category = 'เครื่องมือ';
+                                                                                }
+                                                                            }
+                                                                            echo $category;
+                                                                            ?>">
                         </div>
                     </div>
                     <div class="add_MET_footer_1">
                         <a href="#2" class="btn_next"><span>ถัดไป</span><i class="fa-solid fa-angle-right"></i></a>
                     </div>
                 </div>
-                <div class="add_MET_section_form">
-                    <div class="col">
-                        <div class="input_box">
-                            <span>วันที่ติดตั้ง</span>
-                            <input type="datetime-local" name="installation_date" required>
+                <?php
+                if (isset($_GET['add'])) {
+                    $type = $_GET['add'];
+                    if ($type == 'equipment' || $type == 'tools') {
+                ?>
+                        <div class="add_MET_section_form">
+                            <div class="col">
+                                <div class="input_box">
+                                    <span>วันที่ติดตั้ง</span>
+                                    <input type="datetime-local" name="installation_date" required>
+                                </div>
+                                <div class="input_box">
+                                    <span>บริษัท</span>
+                                    <input type="text" name="company" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input_box">
+                                    <span>เบอร์โทร บริษัท</span>
+                                    <input type="text" name="contact_number" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                                </div>
+                                <div class="input_box">
+                                    <span>คนติดต่อ</span>
+                                    <input type="text" name="contact" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input_box">
+                                    <span>ยี่ห้อ</span>
+                                    <input type="text" name="brand" required placeholder="กรุณาระบุจำนวน">
+                                </div>
+                                <div class="input_box">
+                                    <span>รุ่น</span>
+                                    <input type="text" name="model" required placeholder="กรุณาระบุจำนวน">
+                                </div>
+                            </div>
+                            <div class="add_MET_footer_2">
+                                <a href="#1" class="btn_prev"><i class="fa-solid fa-angle-left"></i><span>ก่อนหน้า</span></a>
+                                <a href="#3" class="btn_next"><i class="fa-solid fa-angle-rigth"></i><span>ถัดไป</span></a>
+                            </div>
                         </div>
-                        <div class="input_box">
-                            <span>บริษัท</span>
-                            <input type="text" name="company" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input_box">
-                            <span>เบอร์โทร บริษัท</span>
-                            <input type="text" name="contact_number" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
-                        </div>
-                        <div class="input_box">
-                            <span>คนติดต่อ</span>
-                            <input type="text" name="contact" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input_box">
-                            <span>ยี่ห้อ</span>
-                            <input type="text" name="brand" required placeholder="กรุณาระบุจำนวน">
-                        </div>
-                        <div class="input_box">
-                            <span>รุ่น</span>
-                            <input type="text" name="model" required placeholder="กรุณาระบุจำนวน">
-                        </div>
-                    </div>
-                    <div class="add_MET_footer_2">
-                        <a href="#1" class="btn_prev"><i class="fa-solid fa-angle-left"></i><span>ก่อนหน้า</span></a>
-                        <a href="#3" class="btn_next"><i class="fa-solid fa-angle-rigth"></i><span>ถัดไป</span></a>
-                    </div>
-                </div>
+                <?php
+                    }
+                }
+                ?>
                 <div class="add_MET_section_form">
                     <div class="col">
                         <div class="input_box">

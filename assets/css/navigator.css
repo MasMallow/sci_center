@@ -18,6 +18,8 @@
   font-family: Sarabun-bold;
 }
 .header {
+  /* position: absolute;
+  z-index: 9999; */
   background-color: #01bdb6;
   color: white;
   width: 100%;

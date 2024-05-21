@@ -18,5 +18,64 @@
   font-family: Sarabun-bold;
 }
 .staff {
-  background-color: aqua;
+  position: relative;
+  min-height: 100vh;
+  width: 1300px;
+  margin: 3rem auto;
+  /* display: flex;
+  justify-content: center; 
+  align-items: center; */
+}
+.staff_section {
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+
+.staff_header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid #bbb;
+}
+.staff_content {
+  padding: 1rem 1.2rem;
+}
+.staff_content_ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.staff_content_ul li {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+
+  & i{
+    font-size: 1.5rem;
+  }
+}
+.staff_menu a {
+  width: 175px;
+  height: 150px;
+  padding: 1.25rem;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: #444444;
+  transition: all 0.25s;
+  &:hover {
+    border: 1.5px solid #777777;
+    background-color: #e0e0e0;
+  }
 }
