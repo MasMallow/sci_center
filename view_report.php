@@ -54,7 +54,6 @@ require_once 'assets/database/connect.php';
                     <th>รหัสผู้ใช้</th>
                     <th>ชื่อ</th>
                     <th>ชื่อสินค้า</th>
-                    <th>จำนวน</th>
                     <th>วันที่ยืม</th>
                     <th>วันที่คืน</th>
                 </tr>
@@ -62,17 +61,17 @@ require_once 'assets/database/connect.php';
             <tbody>
                 <?php
                 // Construct SQL query based on user_id and time range filters
-                $sql = "SELECT * FROM borrow_history WHERE 1";
+                $sql = "SELECT * FROM waiting_for_approval WHERE 1";
                 
                 if (isset($_GET['user_id']) && $_GET['user_id'] !== 'all') {
                     $user_id = $_GET['user_id'];
-                    $sql .= " AND user_id = :user_id";
+                    $sql .= " AND udi = :user_id";
                 }
 
                 if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
                     $start_date = $_GET['start_date'];
                     $end_date = $_GET['end_date'];
-                    $sql .= " AND (borrow_date BETWEEN :start_date AND :end_date)";
+                    $sql .= " AND (borrowdatetime BETWEEN :start_date AND :end_date)";
                 }
 
                 // Prepare and execute the SQL query
@@ -88,17 +87,27 @@ require_once 'assets/database/connect.php';
                 }
 
                 $stmt->execute();
+                $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Display the fetched records
-                if ($stmt->rowCount() > 0) {
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if (count($data) > 0) {
+                    foreach ($data as $row) {
                         echo "<tr>";
-                        echo "<td>" . $row["user_id"] . "</td>";
-                        echo "<td>" . $row["firstname"] . "</td>";
-                        echo "<td>" . $row["sci_name"] . "</td>";
-                        echo "<td>" . $row["quantity"] . "</td>";
-                        echo "<td>" . date('d/m/Y H:i:s', strtotime($row["borrow_date"])) . "</td>"; // แสดงวันที่และเวลาที่ยืมในรูปแบบวัน/เดือน/ปี และ เวลา
-                        echo "<td>" . date('d/m/Y H:i:s', strtotime($row["return_date"])) . "</td>"; // แสดงวันที่และเวลาที่คืนในรูปแบบวัน/เดือน/ปี และ เวลา
+                        echo "<td>" . htmlspecialchars($row["udi"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["firstname"]) . "</td>";
+
+                        $items = explode(',', $row['itemborrowed']);
+                        echo "<td>";
+                        foreach ($items as $item) {
+                            $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
+                            $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
+                            $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
+                            echo "<span class='info'>$product_name</span> $quantity ชิ้น<br>"; // แสดงข้อมูล
+                        }
+                        echo "</td>";
+
+                        echo "<td>" . date('d/m/Y H:i:s', strtotime($row["borrowdatetime"])) . "</td>"; // แสดงวันที่และเวลาที่ยืมในรูปแบบวัน/เดือน/ปี และ เวลา
+                        echo "<td>" . date('d/m/Y H:i:s', strtotime($row["returndate"])) . "</td>"; // แสดงวันที่และเวลาที่คืนในรูปแบบวัน/เดือน/ปี และ เวลา
                         echo "</tr>";
                     }
                 } else {
