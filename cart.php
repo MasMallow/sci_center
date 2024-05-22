@@ -84,7 +84,7 @@ if (isset($_SESSION['user_login'])) {
             </div>
         <?php else : ?>
             <div class="main_cart_content">
-                <form method="post" action="waiting_for_approval.php">
+                <form method="post" action="waiting_for_approve_for_use.php">
                     <div class="table_section">
                         <div class="count_list">
                             <div class="count_list_1">
