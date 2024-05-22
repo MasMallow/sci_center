@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approval_user'])) {
     $update_status_user->execute(); // แก้ชื่อตัวแปร
 
     // ส่งกลับไปยังหน้าเดิมหลังจากการอัปเดต
-    header('Location: user_approve_for_use.php');
+    header('Location: approve_for_use.php');
     exit;
 }
 ?>
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approval_user'])) {
                 <span>Return Date:</span> <?php echo $user['urole']; ?><br>
                 <span>Return Date:</span> <?php echo $user['created_at']; ?><br>
                 <span>Return Date:</span> <?php echo $user['status']; ?><br>
-                <form method="POST" action="user_approve_for_use.php">
+                <form method="POST" action="approve_for_use.php">
                     <input type="hidden" name="id" value="<?php echo $user['user_id']; ?>">
                     <button type="submit" name="approval_user">ยืนยัน</button>
                 </form>
