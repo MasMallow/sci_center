@@ -29,7 +29,7 @@
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="user_approve_for_use.php">
+                            <a href="user_approval.php">
                                 <i class="fa-solid fa-address-book"></i>
                                 <span>จัดการผู้ใช้งาน</span></a>
                         </div>
