@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /project/approval.php');
+        header('Location: /project/approve_for_use.php');
         exit;
     }
 }

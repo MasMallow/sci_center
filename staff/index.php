@@ -29,7 +29,7 @@
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="user_approval.php">
+                            <a href="user_approve_for_use.php">
                                 <i class="fa-solid fa-address-book"></i>
                                 <span>จัดการผู้ใช้งาน</span></a>
                         </div>
@@ -53,14 +53,14 @@
                 <ul class="staff_content_ul">
                     <li>
                         <div class="staff_menu">
-                            <a href="approval.php">
+                            <a href="approve_for_use.php">
                                 <i class="icon fa-solid fa-square-check"></i>
                                 <span class="text">การอนุมัติการยืม</span>
                             </a>
                         </div>
                     </li>
                     <li>
-                        <div class="staff_menu"> <a href="approval_reserve.php">
+                        <div class="staff_menu"> <a href="approve_for_booking.php">
                                 <i class="icon fa-solid fa-square-check"></i>
                                 <span class="text">การอนุมัติการจอง</span>
                             </a>
