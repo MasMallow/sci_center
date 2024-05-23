@@ -2,31 +2,29 @@
 session_start();
 include_once 'assets/database/connect.php';
 
-// ตรวจสอบว่าพนักงานเข้าสู่ระบบหรือไม่
+// Check if staff is logged in
 if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('Location: auth/sign_in.php');
     exit;
 }
 
-// ดึงข้อมูลผู้ใช้หากเข้าสู่ระบบ
+// Retrieve user data if logged in
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
-    // ตั้งค่า user_id ตาม session ที่มี
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
 
-    // เตรียมคำสั่ง SQL เพื่อป้องกัน SQL Injection
+    // Prepare SQL statement to prevent SQL Injection
     $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
 
-    // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-// ฟังก์ชันแปลงวันที่และเวลาเป็นรูปแบบภาษาไทย
+
+// Function to convert date and time to Thai format
 function thai_date_time($datetime)
 {
     $thai_month_arr = array(
-        "0" => "",
         "1" => "ม.ค.",
         "2" => "ก.พ.",
         "3" => "มี.ค.",
@@ -41,24 +39,23 @@ function thai_date_time($datetime)
         "12" => "ธ.ค."
     );
 
-    $day = date("w", strtotime($datetime)); // วันในสัปดาห์ (0-6)
-    $date = date("j", strtotime($datetime)); // วันที่
-    $month = date("n", strtotime($datetime)); // เดือน (1-12)
-    $year = date("Y", strtotime($datetime)) + 543; // ปี พ.ศ.
-    $time = date("H:i น.", strtotime($datetime)); // เวลา
+    $day = date("w", strtotime($datetime));
+    $date = date("j", strtotime($datetime));
+    $month = date("n", strtotime($datetime));
+    $year = date("Y", strtotime($datetime)) + 543;
+    $time = date("H:i น.", strtotime($datetime));
 
     return "วัน" . "ที่ " . $date . " " . $thai_month_arr[$month] . " พ.ศ." . $year . " <br> เวลา " . $time;
 }
-
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>อนุมัติการจอง</title>
-
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="assets/css/navigator.css">
     <link rel="stylesheet" href="assets/css/approval.css">
@@ -71,8 +68,6 @@ function thai_date_time($datetime)
         $stmt = $conn->prepare("SELECT * FROM bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation = 0 ORDER BY serial_number");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $previousSn = '';
-        $previousFirstname = '';
         ?>
         <div class="table_section_appr_use">
             <div class="table_appr_use_header">
@@ -82,8 +77,7 @@ function thai_date_time($datetime)
                 <div class="table_appr_not_found">
                     <p>ไม่มีข้อมูลการจอง</p>
                 </div>
-            <?php } ?>
-            <?php if (!empty($data)) { ?>
+            <?php } else { ?>
                 <table class="table_data_use">
                     <thead>
                         <tr>
@@ -96,52 +90,36 @@ function thai_date_time($datetime)
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        foreach ($data as $row) :
-                            if ($previousSn != $row['serial_number']) { ?>
-                                <tr>
-                                    <td class="sn"><?php echo $row['serial_number']; ?></td>
-                                    <td><?php echo $row['firstname']; ?></td>
-                                    <td>
-                                        <?php
-                                        // แยกข้อมูล Item Borrowed
-                                        $items = explode(',', $row['product_name']);
-
-                                        // แสดงข้อมูลรายการที่ยืม
-                                        foreach ($items as $item) {
-                                            $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
-                                            $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
-                                            $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                            echo $product_name . ' ' . $quantity . ' ชิ้น<br>';
-                                        }
-                                        ?>
-                                    </td>
-                                    <td><?php echo thai_date_time($row['created_at']); ?></td>
-                                    <td><?php echo thai_date_time($row['reservation_date']); ?></td>
-                                    <td>
-                                        <form method="POST" action="process_reserve.php">
-                                            <input type="hidden" name="id" value="<?php echo $row['serial_number']; ?>">
-                                            <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>"> <button class="submit" type="submit" name="confirm"><span>อนุมัติ</span></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                        <?php
-                                $previousSn = $row['serial_number'];
-                            }
-                        endforeach;
-                        ?>
-                        <span class="info">วันที่กดจอง:</span> <?php echo date('d/m/Y H:i:s', strtotime($row['created_at'])); ?><br>
-                        <span class="info">วันที่จองใช้:</span> <?php echo date('d/m/Y H:i:s', strtotime($row['reservation_date'])); ?><br>
-                        <form method="POST" action="process_reserve.php">
-                            <input type="hidden" name="id" value="<?php echo $row['serial_number']; ?>">
-                            <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
-                            <input type="submit" name="confirm" value="ยืนยันการจอง">
-                            <input type="submit" name="cancel" value="ไม่อนุมัติการจอง">
-                        </form><br>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-                    
+                        <?php foreach ($data as $row) { ?>
+                            <tr>
+                                <td class="sn"><?php echo $row['serial_number']; ?></td>
+                                <td><?php echo $row['firstname']; ?></td>
+                                <td>
+                                    <?php
+                                    $items = explode(',', $row['product_name']);
+                                    foreach ($items as $item) {
+                                        $item_parts = explode('(', $item);
+                                        $product_name = trim($item_parts[0]);
+                                        $quantity = str_replace(')', '', $item_parts[1]);
+                                        echo $product_name . ' ' . $quantity . ' ชิ้น<br>';
+                                    }
+                                    ?>
+                                </td>
+                                <td><?php echo thai_date_time($row['created_at']); ?></td>
+                                <td><?php echo thai_date_time($row['reservation_date']); ?></td>
+                                <td>
+                                    <form method="POST" action="process_reserve.php">
+                                        <input type="hidden" name="id" value="<?php echo $row['serial_number']; ?>">
+                                        <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
+                                        <button class="submit" type="submit" name="confirm"><span>อนุมัติ</span></button>
+                                        <button class="submit" type="submit" name="cancel"><span>ไม่อนุมัติ</span></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            <?php } ?>
         </div>
     </div>
 </body>
