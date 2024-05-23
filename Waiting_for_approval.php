@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $itemBorrowed = implode(', ', $itemList);
 
                 // เพิ่มข้อมูลลงในฐานข้อมูล
-                $insert_query = $conn->prepare("INSERT INTO waiting_for_approval (UDI, FirstName, ItemBorrowed, BorrowDateTime, ReturnDate, ApprovalDateTime, Approver, sn, Status) VALUES (:udi, :firstname, :itemBorrowed, NOW(), :returnDate, NULL, NULL, :random_string, 0)");
+                $insert_query = $conn->prepare("INSERT INTO waiting_for_approval (UDI, FirstName, ItemBorrowed, BorrowDateTime, ReturnDate, ApprovalDateTime, Approver, sn, situation) VALUES (:udi, :firstname, :itemBorrowed, NOW(), :returnDate, NULL, NULL, :random_string, 0)");
                 $insert_query->bindParam(':udi', $user_id, PDO::PARAM_INT);
                 $insert_query->bindParam(':firstname', $firstname, PDO::PARAM_STR);
                 $insert_query->bindParam(':itemBorrowed', $itemBorrowed, PDO::PARAM_STR);

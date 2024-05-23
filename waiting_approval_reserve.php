@@ -46,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $itemBorrowed = implode(', ', $itemList);
 
         $insert_query = $conn->prepare("INSERT INTO bookings 
-        (user_id, firstname, product_name, created_at, reservation_date, ApprovalDateTime, Approver, serial_number) VALUES 
-        (:user_id, :firstname, :itemBorrowed, NOW(), :reservationdate, NULL, NULL, :random_string)");
+        (user_id, firstname, product_name, created_at, reservation_date, ApprovalDateTime, Approver, serial_number, situation) VALUES 
+        (:user_id, :firstname, :itemBorrowed, NOW(), :reservationdate, NULL, NULL, :random_string, 0)");
         $insert_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $insert_query->bindParam(':firstname', $firstname, PDO::PARAM_STR);
         $insert_query->bindParam(':itemBorrowed', $itemBorrowed, PDO::PARAM_STR);

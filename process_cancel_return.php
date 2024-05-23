@@ -7,36 +7,20 @@ if (!isset($_SESSION['staff_login'])) {
     header('Location: auth/sign_in.php');
     exit;
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['confirm'])) {
-        if (isset($_SESSION['staff_login'])) {
-            $user_id = $_SESSION['staff_login'];
-        }
+if (isset($_POST['cancel'])) {
+    if (isset($_POST['id'])) {
         $sn = $_POST['id'];
         $userId = $_POST['udi'];
-        // รหัสผู้ดูแลระบบที่กำลังเข้าสู่ระบบ
-        $staff_id = $_SESSION['staff_login'];
-
-        // เลือกชื่อผู้ดูแลระบบจากฐานข้อมูล
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :staff_id");
-        $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
-        $user_query->execute();
-        $approver = $user_query->fetch(PDO::FETCH_ASSOC);
-        $approvername = $approver['surname'];
 
         // วันเวลาปัจจุบัน
         date_default_timezone_set('Asia/Bangkok');
         $approvaldatetime = date('Y-m-d H:i:s');
 
         // อัปเดตฐานข้อมูล
-        $update_query = $conn->prepare("UPDATE waiting_for_approval SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 WHERE sn = :sn AND udi = :udi");
+        $update_query = $conn->prepare("UPDATE waiting_for_approval SET situation = 2 WHERE sn = :sn AND udi = :udi");
         $update_query->bindParam(':sn', $sn, PDO::PARAM_INT);
         $update_query->bindParam(':udi', $userId, PDO::PARAM_INT);
-        $update_query->bindParam(':approver', $approvername, PDO::PARAM_STR);
-        $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);
         $update_query->execute();
-
 
         $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
@@ -67,16 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $quantity = str_replace(')', '', $item_parts[1]); // จำนวน (ตัดวงเล็บออก)
 
                 $sMessage .= "ชื่อรายการ : " . $product_name . " " . $quantity . " ชิ้น\n";
-
-                $stmtUpdate = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE sci_name = :product_name");
-                $stmtUpdate->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-                $stmtUpdate->bindParam(':product_name', $product_name, PDO::PARAM_STR);
-                $stmtUpdate->execute();
             }
-            $sMessage .= "ผู้อนุมัติการยืม : " . $approver['pre'] . ' ' . $approver['surname'] . ' ' . $approver['lastname'] . "\n";
+            $sMessage .= "****ไม่อนุมัติการยืม****" . "\n";
             $sMessage .= "-------------------------------";
         }
-
 
         $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
 

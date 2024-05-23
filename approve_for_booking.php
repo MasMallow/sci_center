@@ -19,7 +19,7 @@ if (!isset($_SESSION['staff_login'])) {
 <body>
     <div class="container">
         <?php
-        $stmt = $conn->prepare("SELECT * FROM bookings WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY serial_number");
+        $stmt = $conn->prepare("SELECT * FROM bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation = 0 ORDER BY serial_number");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $previousSn = '';
@@ -57,7 +57,8 @@ if (!isset($_SESSION['staff_login'])) {
                         <form method="POST" action="process_reserve.php">
                             <input type="hidden" name="id" value="<?php echo $row['serial_number']; ?>">
                             <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
-                            <input type="submit" name="confirm" value="ยืนยันการอนุมัติ">
+                            <input type="submit" name="confirm" value="ยืนยันการจอง">
+                            <input type="submit" name="cancel" value="ไม่อนุมัติการจอง">
                         </form><br>
                     </div>
                 <?php endforeach; ?>

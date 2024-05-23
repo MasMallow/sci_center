@@ -20,7 +20,7 @@ if (!isset($_SESSION['staff_login'])) {
 <body>
     <div class="container">
         <?php
-        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY sn");
+        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE approvaldatetime IS NULL AND approver IS NULL AND situation = 0 ORDER BY sn");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $previousSn = '';
@@ -57,7 +57,14 @@ if (!isset($_SESSION['staff_login'])) {
                         <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
                         <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
                         <input type="submit" name="confirm" value="ยืนยันการอนุมัติ">
-                    </form><br>
+                    </form>
+                    <form method="POST" action="process_cancel_return.php">
+                        <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
+                        <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
+                        <input type="submit" name="cancel" value="ยกเลิกการยืม">
+                    </form>
+                    
+                    <br>
                 </div>
             <?php endforeach; ?>
             <?php if (empty($data)) { ?>
