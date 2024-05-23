@@ -49,7 +49,11 @@ function thai_date_time($datetime)
 
     return "วัน" . "ที่ " . $date . " " . $thai_month_arr[$month] . " พ.ศ." . $year . " <br> เวลา " . $time;
 }
-
+$stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY sn");
+$stmt->execute();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$num = count($data); // นับจำนวนรายการ
+$previousSn = '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,24 +70,24 @@ function thai_date_time($datetime)
 
 <body>
     <?php include('includes/header.php') ?>
-    <div class="appr_use">
-        <?php
-        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY sn");
-        $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $previousSn = '';
-        ?>
-        <div class="table_section_appr_use">
-            <div class="table_appr_use_header">
-                <span id="B">อนุมัติการขอใช้</span>
-            </div>
+    <div class="header_approve">
+        <div class="header_approve_section">
+            <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <span id="B">อนุมัติการขอใช้</span>
+        </div>
+    </div>
+    <div class="approve_section">
+        <div class="approve_table_section">
             <?php if (empty($data)) { ?>
-                <div class="table_appr_not_found">
-                    <p>ไม่มีข้อมูลการจอง</p>
+                <div class="approve_not_found_section">
+                    <span id="B">ไม่พบข้อมูลการขอใช้</span>
                 </div>
             <?php } ?>
             <?php if (!empty($data)) { ?>
-                <table class="table_data_use">
+                <table class="approve_table_data">
+                    <div class="approve_table_header">
+                        <span>รายการที่ขอใช้งานทั้งหมด <span id="B"><?php echo $num; ?></span> รายการ</span>
+                    </div>
                     <thead>
                         <tr>
                             <th class="s_number"><span id="B">หมายเลขรายการ</span></th>
@@ -111,7 +115,7 @@ function thai_date_time($datetime)
                                             $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
                                             $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
                                             $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                            echo $product_name . ' ' . $quantity . ' ชิ้น<br>';
+                                            echo $product_name . ' <span id="B"> (' . $quantity . ') </span> รายการ<br>';
                                         }
                                         ?>
                                     </td>

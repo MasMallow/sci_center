@@ -18,22 +18,61 @@
   font-family: Sarabun-bold;
 }
 
-.appr_use {
+.header_approve {
+  display: flex;
+  width: 1350px;
+  margin: 3rem auto 1rem auto;
+}
+
+.header_approve_section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  font-size: 1.25rem;
+  & a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8f8f8f;
+    background-color: #fff;
+    text-decoration: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    transition: all 0.25s;
+    &:hover {
+      background-color: #f1efef;
+      color: #000000;
+    }
+  }
+}
+.approve_section {
   width: 1350px;
   margin: 0 auto;
 }
-.table_section_appr_use {
+.approve_not_found_section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.75rem;
+  margin-top: 10rem;
+}
+.approve_table_section {
   margin-top: 3rem;
 }
-.table_appr_use_header {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  padding-left: .75rem;
-}
-.table_data_use {
+.approve_table_data {
   border-collapse: collapse;
   width: 100%;
   border-radius: 5px;
+}
+.approve_table_header{
+  font-size: 1.15rem;
+  padding-left: .75rem;
+  padding-bottom: .5rem;
 }
 thead tr {
   border: 1px solid #bdbdbd;
@@ -48,24 +87,24 @@ thead th {
   background-color: #e7e7e7;
   padding: 0.75rem 0;
 }
-.table_data_use .s_number {
+.approve_table_data .s_number {
   width: 15%;
   padding-left: 0.75rem;
   background-color: #e9e9e9;
 }
-.table_data_use .name_use {
+.approve_table_data .name_use {
   width: 15%;
 }
-.table_data_use .item_name {
+.approve_table_data .item_name {
   width: 25%;
 }
-.table_data_use .borrow_booking {
+.approve_table_data .borrow_booking {
   width: 15%;
 }
-.table_data_use .return {
+.approve_table_data .return {
   width: 15%;
 }
-.table_data_use .approval {
+.approve_table_data .approval {
   width: 5%;
 }
 tbody tr {
@@ -79,7 +118,7 @@ tbody tr {
 tbody tr:nth-child(even) {
   background-color: #ffffff80;
 }
-.sn{
+.sn {
   padding-left: 1rem;
 }
 .submit {

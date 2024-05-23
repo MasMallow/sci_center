@@ -22,6 +22,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
 // ฟังก์ชันแปลงวันที่และเวลาเป็นรูปแบบภาษาไทย
 function thai_date_time($datetime)
 {
@@ -50,6 +51,13 @@ function thai_date_time($datetime)
     return "วัน" . "ที่ " . $date . " " . $thai_month_arr[$month] . " พ.ศ." . $year . " <br> เวลา " . $time;
 }
 
+// ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ
+$stmt = $conn->prepare("SELECT * FROM bookings WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY serial_number");
+$stmt->execute();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$num = count($data); // นับจำนวนรายการ
+$previousSn = '';
+$previousFirstname = '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,32 +74,31 @@ function thai_date_time($datetime)
 
 <body>
     <?php include('includes/header.php') ?>
-    <div class="appr_use">
-        <?php
-        $stmt = $conn->prepare("SELECT * FROM bookings WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY serial_number");
-        $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $previousSn = '';
-        $previousFirstname = '';
-        ?>
-        <div class="table_section_appr_use">
-            <div class="table_appr_use_header">
-                <span id="B">อนุมัติการขอจอง</span>
-            </div>
+    <div class="header_approve">
+        <div class="header_approve_section">
+            <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <span id="B">อนุมัติการขอจอง</span>
+        </div>
+    </div>
+    <div class="approve_section">
+        <div class="approve_table_section">
             <?php if (empty($data)) { ?>
-                <div class="table_appr_not_found">
-                    <p>ไม่มีข้อมูลการจอง</p>
+                <div class="approve_not_found_section">
+                    <span id="B">ไม่พบข้อมูลการจอง</span>
                 </div>
             <?php } ?>
             <?php if (!empty($data)) { ?>
-                <table class="table_data_use">
+                <table class="approve_table_data">
+                    <div class="approve_table_header">
+                        <span>รายการที่ขอจองทั้งหมด <span id="B"><?php echo $num; ?></span> รายการ</span>
+                    </div>
                     <thead>
                         <tr>
                             <th class="s_number"><span id="B">หมายเลขรายการ</span></th>
                             <th class="name_use"><span id="B">ชื่อผู้ขอใช้งาน</span></th>
-                            <th class="item_name"><span id="B">รายการที่ขอใช้งาน</span></th>
-                            <th class="borrow_booking"><span id="B">วันเวลาที่ขอใช้งาน</span></th>
-                            <th class="return"><span id="B">วันเวลาที่สิ้นสุดขอใช้งาน</span></th>
+                            <th class="item_name"><span id="B">รายการที่ขอจอง</span></th>
+                            <th class="borrow_booking"><span id="B">วันเวลาที่ทำรายการ</span></th>
+                            <th class="return"><span id="B">วันเวลาที่ขอจอง</span></th>
                             <th class="approval"><span id="B">อนุมัติ</span></th>
                         </tr>
                     </thead>
@@ -112,7 +119,7 @@ function thai_date_time($datetime)
                                             $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
                                             $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
                                             $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                            echo $product_name . ' ' . $quantity . ' ชิ้น<br>';
+                                            echo $product_name . ' <span id="B"> (' . $quantity . ') </span> รายการ<br>';
                                         }
                                         ?>
                                     </td>
@@ -121,7 +128,8 @@ function thai_date_time($datetime)
                                     <td>
                                         <form method="POST" action="process_reserve.php">
                                             <input type="hidden" name="id" value="<?php echo $row['serial_number']; ?>">
-                                            <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>"> <button class="submit" type="submit" name="confirm"><span>อนุมัติ</span></button>
+                                            <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
+                                            <button class="submit" type="submit" name="confirm"><span>อนุมัติ</span></button>
                                         </form>
                                     </td>
                                 </tr>
