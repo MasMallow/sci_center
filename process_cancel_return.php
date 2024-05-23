@@ -9,7 +9,7 @@ if (!isset($_SESSION['staff_login'])) {
 }
 if (isset($_POST['cancel'])) {
     if (isset($_POST['id'])) {
-        $sn = $_POST['id'];
+        $id = $_POST['id'];
         $userId = $_POST['udi'];
 
         // วันเวลาปัจจุบัน
@@ -17,9 +17,8 @@ if (isset($_POST['cancel'])) {
         $approvaldatetime = date('Y-m-d H:i:s');
 
         // อัปเดตฐานข้อมูล
-        $update_query = $conn->prepare("UPDATE waiting_for_approval SET situation = 2 WHERE sn = :sn AND udi = :udi");
-        $update_query->bindParam(':sn', $sn, PDO::PARAM_INT);
-        $update_query->bindParam(':udi', $userId, PDO::PARAM_INT);
+        $update_query = $conn->prepare("UPDATE waiting_for_approval SET situation = 2 WHERE id = :id ");
+        $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->execute();
 
         $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
@@ -29,8 +28,8 @@ if (isset($_POST['cancel'])) {
 
         $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
 
-        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE sn = :sn");
-        $stmt->bindParam(':sn', $sn, PDO::PARAM_STR);
+        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -9,12 +9,10 @@ if (!isset($_SESSION['staff_login'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['confirm'])) {
-        if (isset($_SESSION['staff_login'])) {
-            $user_id = $_SESSION['staff_login'];
-        }
-        $sn = $_POST['id'];
+    if (isset($_POST['confirm']) && isset($_POST['id'])) {
+        $situation = 1;
         $userId = $_POST['udi'];
+        $id = $_POST['id'];
         // รหัสผู้ดูแลระบบที่กำลังเข้าสู่ระบบ
         $staff_id = $_SESSION['staff_login'];
 
@@ -30,13 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $approvaldatetime = date('Y-m-d H:i:s');
 
         // อัปเดตฐานข้อมูล
-        $update_query = $conn->prepare("UPDATE waiting_for_approval SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 WHERE sn = :sn AND udi = :udi");
-        $update_query->bindParam(':sn', $sn, PDO::PARAM_INT);
-        $update_query->bindParam(':udi', $userId, PDO::PARAM_INT);
+        $update_query = $conn->prepare("UPDATE waiting_for_approval SET approver = :approver, approvaldatetime = :approvaldatetime, situation = :situation WHERE id = :id");
+        $update_query->bindParam(':id', $id, PDO::PARAM_INT);
+        $update_query->bindParam(':situation', $situation, PDO::PARAM_INT);
         $update_query->bindParam(':approver', $approvername, PDO::PARAM_STR);
         $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);
         $update_query->execute();
-
 
         $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
@@ -45,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
 
-        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE sn = :sn");
-        $stmt->bindParam(':sn', $sn, PDO::PARAM_STR);
+        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

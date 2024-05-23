@@ -52,7 +52,7 @@ function thai_date_time($datetime)
 }
 
 // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ
-$stmt = $conn->prepare("SELECT * FROM bookings WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY serial_number");
+$stmt = $conn->prepare("SELECT * FROM bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
@@ -127,7 +127,7 @@ $previousFirstname = '';
                                     <td><?php echo thai_date_time($row['reservation_date']); ?></td>
                                     <td>
                                         <form method="POST" action="process_reserve.php">
-                                            <input type="hidden" name="id" value="<?php echo $row['serial_number']; ?>">
+                                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                             <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
                                             <button class="submit" type="submit" name="confirm"><span>อนุมัติ</span></button>
                                             <button class="submit" type="submit" name="cancel"><span>ไม่อนุมัติ</span></button>

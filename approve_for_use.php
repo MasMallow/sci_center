@@ -49,7 +49,7 @@ function thai_date_time($datetime)
 
     return "วัน" . "ที่ " . $date . " " . $thai_month_arr[$month] . " พ.ศ." . $year . " <br> เวลา " . $time;
 }
-$stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE approvaldatetime IS NULL AND approver IS NULL ORDER BY sn");
+$stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY sn");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
@@ -123,14 +123,14 @@ $previousSn = '';
                                     <td><?php echo thai_date_time($row['returndate']); ?></td>
                                     <td>
                                         <form method="POST" action="process_return.php">
-                                            <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
+                                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                             <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
-                                            <input type="submit" name="confirm" value="ยืนยันการอนุมัติ">
+                                            <button type="submit" name="confirm" >ยืนยันการอนุมัติ</button>
                                         </form>
                                         <form method="POST" action="process_cancel_return.php">
-                                            <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
+                                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                             <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
-                                            <input type="submit" name="cancel" value="ยกเลิกการยืม">
+                                            <button type="submit" name="cancel" >ยกเลิกการยืม</button>
                                         </form>
                                     </td>
                                 </tr>
