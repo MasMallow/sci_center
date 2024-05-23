@@ -125,7 +125,12 @@ $previousSn = '';
                                         <form method="POST" action="process_return.php">
                                             <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
                                             <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
-                                            <button class="submit" type="submit" name="confirm"><span>อนุมัติ</span></button>
+                                            <input type="submit" name="confirm" value="ยืนยันการอนุมัติ">
+                                        </form>
+                                        <form method="POST" action="process_cancel_return.php">
+                                            <input type="hidden" name="id" value="<?php echo $row['sn']; ?>">
+                                            <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
+                                            <input type="submit" name="cancel" value="ยกเลิกการยืม">
                                         </form>
                                     </td>
                                 </tr>

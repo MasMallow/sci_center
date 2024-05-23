@@ -130,6 +130,7 @@ $previousFirstname = '';
                                             <input type="hidden" name="id" value="<?php echo $row['serial_number']; ?>">
                                             <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
                                             <button class="submit" type="submit" name="confirm"><span>อนุมัติ</span></button>
+                                            <button class="submit" type="submit" name="cancel"><span>ไม่อนุมัติ</span></button>
                                         </form>
                                     </td>
                                 </tr>
