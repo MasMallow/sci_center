@@ -140,6 +140,15 @@ if (isset($_SESSION['staff_login'])) {
                 </tbody>
             </table>
         </div>
+                <!-- Button to generate PDF report -->
+<form action="generate_pdf.php" method="GET">
+    <div class="form-group">
+        <input type="hidden" name="user_id" value="<?php echo isset($_GET['user_id']) ? htmlspecialchars($_GET['user_id']) : ''; ?>">
+        <input type="hidden" name="start_date" value="<?php echo isset($_GET['start_date']) ? htmlspecialchars($_GET['start_date']) : ''; ?>">
+        <input type="hidden" name="end_date" value="<?php echo isset($_GET['end_date']) ? htmlspecialchars($_GET['end_date']) : ''; ?>">
+        <button type="submit" class="btn btn-danger">สร้างรายงาน PDF</button>
+    </div>
+</form>
     </div>
 
 </body>
