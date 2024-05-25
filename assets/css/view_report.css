@@ -1,0 +1,95 @@
+@font-face {
+  src: url("../fonts/Sarabun-Regular.ttf");
+  font-family: Sarabun;
+}
+@font-face {
+  src: url("../fonts/Sarabun-Bold.ttf");
+  font-family: Sarabun-bold;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Sarabun;
+  text-decoration: none;
+  list-style: none;
+}
+#B {
+  font-family: Sarabun-bold;
+}
+.header_approve {
+  display: flex;
+  width: 1400px;
+  margin: 3rem auto 1rem auto;
+}
+
+.header_approve_section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  font-size: 1.25rem;
+  & a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8f8f8f;
+    background-color: #fff;
+    text-decoration: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    transition: all 0.25s;
+    &:hover {
+      background-color: #f1efef;
+      color: #000000;
+    }
+  }
+}
+
+.view_report {
+  width: 1400px;
+  margin: 0 auto;
+}
+.view_report_form {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0 1rem;
+  gap: 1rem;
+}
+.form_1 {
+  width: 100%;
+}
+.view_report_column {
+  display: flex;
+  width: 100%;
+  column-gap: 1rem;
+}
+.view_report_input {
+  width: 100%;
+  margin: 0.75rem 0;
+}
+.view_report_input label {
+  display: block;
+  font-size: 1.15rem;
+  padding-left: 0.50rem;
+  padding-bottom: 0.25rem;
+}
+.view_report_input input {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0 1rem;
+  color: #000;
+}
+input:focus,
+select:focus {
+  border: 1px solid rgb(0, 119, 255);
+}

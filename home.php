@@ -2,6 +2,20 @@
 session_start();
 require_once 'assets/database/connect.php';
 ?>
+<?php
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+if (isset($_SESSION['staff_login'])) {
+    $user_id = $_SESSION['staff_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,20 +35,6 @@ require_once 'assets/database/connect.php';
 
 <body>
 
-    <?php
-    if (isset($_SESSION['user_login'])) {
-        $user_id = $_SESSION['user_login'];
-        $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
-        $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    if (isset($_SESSION['staff_login'])) {
-        $user_id = $_SESSION['staff_login'];
-        $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
-        $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    ?>
 
     <?php
     include_once('includes/header.php');

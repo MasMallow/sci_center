@@ -31,7 +31,7 @@
                         <div class="staff_menu">
                             <a href="user_approval.php">
                                 <i class="fa-solid fa-address-book"></i>
-                                <span>จัดการผู้ใช้งาน</span></a>
+                                <span>อนุมัติผู้สร้างบัญชี</span></a>
                         </div>
                     </li>
                     <li>
