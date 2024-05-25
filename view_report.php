@@ -60,6 +60,12 @@ if (isset($_SESSION['staff_login'])) {
                 </div>
                 <div class="view_report_btn">
                     <button type="submit" class="search">ค้นหา</button>
+                    <!-- <button type="submit" class="reset" name="user_id" value="all">แสดงข้อมูลทั้งหมด</button> -->
+                </div>
+            </form>
+            <form class="form_1" action="view_report.php" method="GET">
+                <div class="view_report_btn">
+                    <input type="hidden" name="user_id" value="all">
                     <button type="submit" class="reset" name="user_id" value="all">แสดงข้อมูลทั้งหมด</button>
                 </div>
             </form>
