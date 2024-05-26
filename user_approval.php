@@ -91,6 +91,12 @@ include_once 'includes/thai_date_time.php'; // เปลี่ยนเป็น
             <div class="user_approve_header_section">
                 <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
                 <span id="B">อนุมัติผู้สร้างบัญชี</span>
+
+                <i class="fa-solid fa-user-gear"></i>
+                <a href="user_approval">
+                    <i class="fa-solid fa-address-book"></i>
+                    <span>อนุมัติผู้สร้างบัญชี</span>
+                </a>
             </div>
             <div class="user_approve_section_body">
                 <div class="user_approve_data_header">

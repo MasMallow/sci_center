@@ -20,13 +20,13 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
 }
 
 // สร้างคำสั่ง SQL สำหรับดึงข้อมูลการยืมสินค้าที่รอการอนุมัติ
-$sql = "SELECT * FROM waiting_for_approval WHERE 1=1";
+$sql = "SELECT * FROM bookings WHERE 1=1";
 $params = [];
 
 // ตรวจสอบว่า user_id ถูกส่งมาหรือไม่ และไม่ใช่ค่า 'all'
 if (isset($_GET['user_id']) && $_GET['user_id'] !== 'all') {
     // เพิ่มเงื่อนไข user_id ในคำสั่ง SQL
-    $sql .= " AND udi = :user_id";
+    $sql .= " AND user_id = :user_id";
     // เพิ่มค่า user_id ในอาร์เรย์ params
     $params[':user_id'] = (int)$_GET['user_id'];
 }
@@ -34,7 +34,7 @@ if (isset($_GET['user_id']) && $_GET['user_id'] !== 'all') {
 // ตรวจสอบว่ามีการส่งค่า start_date และ end_date มาหรือไม่
 if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
     // เพิ่มเงื่อนไขช่วงเวลาในคำสั่ง SQL
-    $sql .= " AND borrowdatetime BETWEEN :start_date AND :end_date";
+    $sql .= " AND reservation_date BETWEEN :start_date AND :end_date";
     // เพิ่มค่า start_date และ end_date ในอาร์เรย์ params
     $params[':start_date'] = $_GET['start_date'];
     $params[':end_date'] = $_GET['end_date'];
@@ -125,12 +125,12 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php if (count($data) > 0) : ?>
                         <?php foreach ($data as $row) : ?>
                             <tr>
-                                <td class="UID"><?php echo htmlspecialchars($row["udi"]); ?></td>
+                                <td class="UID"><?php echo htmlspecialchars($row["user_id"]); ?></td>
                                 <td><?php echo htmlspecialchars($row["firstname"]); ?></td>
                                 <td>
                                     <?php
                                     // แยกรายการสินค้าที่ถูกยืมออกเป็นรายการ ๆ
-                                    $items = explode(',', $row['itemborrowed']);
+                                    $items = explode(',', $row['product_name']);
                                     foreach ($items as $item) {
                                         $item_parts = explode('(', $item);
                                         $product_name = trim($item_parts[0]);
@@ -139,8 +139,8 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     }
                                     ?>
                                 </td>
-                                <td><?php echo thai_date_time(($row["borrowdatetime"])); ?></td>
-                                <td><?php echo thai_date_time(($row["returndate"])); ?></td>
+                                <td><?php echo thai_date_time(($row["created_at"])); ?></td>
+                                <td><?php echo thai_date_time(($row["reservation_date"])); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else : ?>
@@ -152,36 +152,14 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </table>
         </div>
         <!-- ปุ่มสำหรับสร้างรายงาน PDF -->
-        <form id="pdfForm" action="generate_pdf.php" method="GET">
-            <?php
-            if (isset($_GET["user_id"]) && $_GET["user_id"] != "NULL") : ?>
-                <input type="hidden" name="user_id" value="<?= htmlspecialchars($_GET["user_id"]) ?>">
-            <?php
-            endif;
-            if (isset($_GET["start_date"]) && $_GET["start_date"] != "empty" && isset($_GET["end_date"]) && $_GET["end_date"] != "empty") : ?>
-                <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($_GET["start_date"]) ?>">
-                <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($_GET["end_date"]) ?>">
-            <?php
-            endif; ?>
-            <button type="submit">สร้างรายงาน</button>
+        <form action="generate_pdf.php" method="GET">
+            <div class="form-group">
+                <input type="hidden" name="user_id" value="<?php echo isset($_GET['user_id']) ? htmlspecialchars($_GET['user_id']) : ''; ?>">
+                <input type="hidden" name="start_date" value="<?php echo isset($_GET['start_date']) ? htmlspecialchars($_GET['start_date']) : ''; ?>">
+                <input type="hidden" name="end_date" value="<?php echo isset($_GET['end_date']) ? htmlspecialchars($_GET['end_date']) : ''; ?>">
+                <button type="submit" class="btn btn-danger">สร้างรายงาน PDF</button>
+            </div>
         </form>
-        <!-- <button type="button" class="btn btn-danger" onclick="generatePDF()">สร้างรายงาน PDF</button>
-        <button type="button" class="btn btn-danger" onclick="generateFullReport()">สร้างรายงานทั้งหมด</button>
-        <button type="button" class="btn btn-danger" onclick="generatePDF()">สร้างรายงาน PDF</button>
-        <button type="button" class="btn btn-danger" onclick="generateFullReport()">สร้างรายงานทั้งหมด</button> -->
-        <!-- <script>
-            function generatePDF() {
-                document.getElementById('start_date').value = "<?= htmlspecialchars($_GET['start_date'] ?? '') ?>";
-                document.getElementById('end_date').value = "<?= htmlspecialchars($_GET['end_date'] ?? '') ?>";
-                document.getElementById('pdfForm').submit();
-            }
-
-            function generateFullReport() {
-                document.getElementById('start_date').value = "";
-                document.getElementById('end_date').value = "";
-                document.getElementById('pdfForm').submit();
-            }
-        </script> -->
     </div>
 </body>
 

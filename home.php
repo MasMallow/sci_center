@@ -93,7 +93,7 @@ if (isset($_SESSION['staff_login'])) {
                                     </a>
                                 </li>
                                 <li>
-                                    <a onclick="booking()">
+                                    <a href="booking_log">
                                         <i class="icon fa-solid fa-square-check"></i>
                                         <span class="text">ตรวจสอบการจอง</span>
                                     </a>

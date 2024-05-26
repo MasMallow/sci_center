@@ -1,6 +1,7 @@
 <?php
 require_once 'assets/database/connect.php';
 require_once 'TCPDF-main/tcpdf.php'; // รวมไฟล์ TCPDF
+include'includes/thai_date_time.php';
 
 // รับค่า user_id และวันเวลาจากพารามิเตอร์ GET และตรวจสอบว่ามีการส่งมาหรือไม่
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
@@ -44,9 +45,9 @@ $pdf->AddPage();
 $pdf->SetFont('thsarabunnew', '', 16); // ใช้ฟอนต์ THSarabunNew ที่ติดตั้ง
 
 // เพิ่มเนื้อหา
-$html = '<h1>รายงานการยืมอุปกรณ์</h1>';
-$html .= '<p><strong>วันที่เริ่มต้น:</strong> ' . date('d/m/Y', strtotime($start_date)) . '</p>';
-$html .= '<p><strong>วันที่สิ้นสุด:</strong> ' . date('d/m/Y', strtotime($end_date)) . '</p>';
+$html = '<h1>รายงานการขอใช้</h1>';
+$html .= '<p><strong>วันที่เริ่มต้น:</strong> ' . thai_date_time(($start_date)) . '</p>';
+$html .= '<p><strong>วันที่สิ้นสุด:</strong> ' . thai_date_time(($end_date)) . '</p>';
 $html .= '<table border="1" cellpadding="5">
             <thead>
                 <tr>
@@ -75,8 +76,8 @@ if (count($data) > 0) {
         }
         $html .= '</td>';
 
-        $html .= '<td>' . date('d/m/Y H:i:s', strtotime($row["borrowdatetime"])) . '</td>';
-        $html .= '<td>' . date('d/m/Y H:i:s', strtotime($row["returndate"])) . '</td>';
+        $html .= '<td>' . thai_date_time(($row["borrowdatetime"])) . '</td>';
+        $html .= '<td>' . thai_date_time(($row["returndate"])) . '</td>';
         $html .= '</tr>';
     }
 } else {

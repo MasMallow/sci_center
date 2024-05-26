@@ -54,6 +54,11 @@
   width: 1400px;
   margin: 0 auto;
 }
+.view_report_header {
+  padding-left: 1rem;
+  padding-bottom: 0.345rem;
+  font-size: 1.1rem;
+}
 .view_report_form {
   width: 100%;
   border-radius: 5px;
@@ -76,7 +81,7 @@
 .view_report_input label {
   display: block;
   font-size: 1.15rem;
-  padding-left: 0.50rem;
+  padding-left: 0.5rem;
   padding-bottom: 0.25rem;
 }
 .view_report_input input {
@@ -89,7 +94,92 @@
   padding: 0 1rem;
   color: #000;
 }
-input:focus,
-select:focus {
+input:focus {
   border: 1px solid rgb(0, 119, 255);
+}
+.view_report_btn {
+  padding-bottom: .785rem;
+  & .search {
+    padding: 0.345rem 2rem;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    color: #fff;
+    transition: all 0.15s ease-in-out;
+    background-color: rgb(62, 143, 248);
+    &:hover {
+      background-color: rgb(0, 110, 255);
+    }
+  }
+}
+.view_report_table {
+  border-radius: 5px;
+  margin-top: 2rem;
+}
+.view_report_table_header {
+  padding-left: 1rem;
+  padding-bottom: 0.345rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+
+  & .reset {
+    outline: none;
+    border-radius: 5px;
+    border: none;
+    padding: 0.345rem 2rem;
+  }
+}
+.view_report_table_data {
+  border-collapse: collapse;
+  width: 100%;
+}
+thead {
+  tr {
+    border: 1px solid #bdbdbd;
+
+    th {
+      font-size: 1.2rem;
+      text-align: start;
+      border-left: none;
+      border-right: none;
+      border-top: 1.5px solid #bdbdbd;
+      border-bottom: 1.5px solid #bdbdbd;
+      background-color: #e7e7e7;
+      padding: 0.75rem 0;
+
+      &.UID {
+        max-width: 10%;
+        width: 100%;
+        padding-left: 0.75rem;
+      }
+
+      &.name {
+        max-width: 25%;
+        width: 100%;
+      }
+      &.list {
+        max-width: 30%;
+        width: 100%;
+      }
+      &.start_date,
+      &.end_date {
+        max-width: 15%;
+        width: 100%;
+      }
+    }
+  }
+}
+
+tbody tr {
+  font-size: 0.9rem;
+  border: 1px solid #dbdbdb;
+  border-bottom: 1.5px solid #bdbdbd;
+  background-color: #ffffff;
+  & td {
+    padding: 1rem 0;
+  }
+  & .UID {
+    padding-left: 0.75rem;
+  }
 }

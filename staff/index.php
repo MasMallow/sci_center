@@ -29,15 +29,9 @@
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="user_approval.php">
+                            <a href="user_approval">
                                 <i class="fa-solid fa-address-book"></i>
-                                <span>อนุมัติผู้สร้างบัญชี</span></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="staff_menu"> <a href="manage_users.php">
-                                <i class="fa-solid fa-user-gear"></i>
-                                <span class="text">แก้ไขชื่อผู้ใช้</span>
+                                <span>อนุมัติผู้สร้างบัญชี</span>
                             </a>
                         </div>
                     </li>
@@ -46,6 +40,14 @@
                             <a>
                                 <i class="icon fa-solid fa-screwdriver-wrench"></i>
                                 <span class="text">การบำรุงรักษา</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="staff_menu"> 
+                            <a href="reportPDF">
+                                <i class="icon fa-solid fa-flag"></i>
+                                <span class="text">รายงาน</span>
                             </a>
                         </div>
                     </li>
@@ -60,14 +62,16 @@
                         </div>
                     </li>
                     <li>
-                        <div class="staff_menu"> <a href="approve_for_booking.php">
+                        <div class="staff_menu"> 
+                            <a href="approve_for_booking.php">
                                 <i class="icon fa-solid fa-square-check"></i>
                                 <span class="text">การอนุมัติการจอง</span>
                             </a>
                         </div>
                     </li>
                     <li>
-                        <div class="staff_menu"> <a href="view_report.php">
+                        <div class="staff_menu">
+                            <a href="view_report">
                                 <i class="icon fa-solid fa-square-check"></i>
                                 <span class="text">ดูประวัติการใช้งาน</span>
                             </a>
@@ -75,9 +79,9 @@
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a>
+                            <a href="view_report_booking">
                                 <i class="icon fa-solid fa-flag"></i>
-                                <span class="text">รายงาน</span>
+                                <span class="text">ดูประวัติการใช้งาน</span>
                             </a>
                         </div>
                     </li>
