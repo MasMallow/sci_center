@@ -18,6 +18,13 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $stmt->execute();
     // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (isset($_SESSION['user_login'])) {
+        if ($userData['status'] !== 'approved') {
+            header("Location: home.php");
+            exit();
+        }
+    }
 }
 // สร้างคำสั่ง SQL ตามตัวกรอง user_id และช่วงเวลา
 $sql = "SELECT * FROM waiting_for_approval WHERE 1=1";
@@ -151,7 +158,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         $item_parts = explode('(', $item);
                                         $product_name = trim($item_parts[0]);
                                         $quantity = str_replace(')', '', $item_parts[1]);
-                                        echo $product_name . ' <span id="B"> (' . $quantity . ') </span> รายการ<br>';
+                                        echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
                                     }
                                     ?>
                                 </td>

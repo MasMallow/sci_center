@@ -119,7 +119,7 @@ $previousFirstname = '';
                                             $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
                                             $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
                                             $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                            echo $product_name . ' <span id="B"> (' . $quantity . ') </span> รายการ<br>';
+                                            echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
                                         }
                                         ?>
                                     </td>

@@ -30,28 +30,25 @@ if (isset($_GET['action'])) {
     }
 }
 
-// Check if the user is logged in
-if (!isset($_SESSION['user_login'])) {
-    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: auth/sign_in.php');
-    exit;
-}
-
-// Fetch user data if logged in
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
     $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     if ($userData) {
         if ($userData['status'] !== 'approved') {
             unset($_SESSION['cart']);
             header("Location: home.php");
-            exit(); 
+            exit();
         }
-    } 
+    }
+}
+else {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
 }
 ?>
 

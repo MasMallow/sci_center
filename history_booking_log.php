@@ -7,20 +7,26 @@ session_start();
 require_once 'assets/database/connect.php';
 
 try {
-    $sql = "SELECT * FROM bookings ORDER BY reservation_date DESC LIMIT 10";
+    $sql = "SELECT * FROM bookings ";
     $stmt = $conn->query($sql);
-    
+
     if ($stmt->rowCount() > 0) {
         echo "<table border='1'>
         <tr>
         <th>ชื่ออุปกรณ์</th>
-        <th>จำนวน</th>
         <th>วันที่ถูกจอง</th>
         </tr>";
         while ($row = $stmt->fetch()) {
             echo "<tr>";
-            echo "<td>" . $row['sci_name'] . "</td>";
-            echo "<td>" . $row['quantity'] . "</td>";
+            $items = explode(',', $row['product_name']);
+            echo "<td>";
+            foreach ($items as $item) {
+                $item_parts = explode('(', $item); // แยกชื่ออุปกรณ์และจำนวน
+                $product_name = trim($item_parts[0]); // ชื่ออุปกรณ์ (ตัดช่องว่างที่เป็นไปได้)
+                $quantity = str_replace(')', '', $item_parts[1]); // จำนวน (ตัดวงเล็บออก)
+                echo $product_name . " " . $quantity . " ชิ้น ";
+            }
+            echo "</td>";
             echo "<td>" . $row['reservation_date'] . "</td>";
             echo "</tr>";
         }
@@ -28,7 +34,7 @@ try {
     } else {
         echo "0 results";
     }
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     echo "เกิดข้อผิดพลาด: " . $e->getMessage();
 }
 

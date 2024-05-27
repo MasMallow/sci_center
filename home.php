@@ -5,9 +5,18 @@ require_once 'assets/database/connect.php';
 <?php
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($userData) {
+        if ($userData['status'] == 'not_approved') {
+            unset($_SESSION['user_login']);
+            header('Location: auth/sign_in.php');
+            exit();
+        }
+    }
 }
 if (isset($_SESSION['staff_login'])) {
     $user_id = $_SESSION['staff_login'];
@@ -130,20 +139,6 @@ if (isset($_SESSION['staff_login'])) {
 <script src="assets/js/details.js"></script>
 <script src="assets/js/datetime.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
-<script>
-    function Return() {
-        $.ajax({
-            url: "Return.php",
-            dataType: "html",
-            success: function(data) {
-                $(".product").empty().append(data);
-            },
-            error: function() {
-                alert("การโหลดรายงานผิดพลาด");
-            },
-        });
-    }
-</script>
 <script>
     function log() {
         $.ajax({

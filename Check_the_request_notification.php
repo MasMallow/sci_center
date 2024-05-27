@@ -3,7 +3,21 @@ session_start();
 include_once 'assets/database/connect.php';
 date_default_timezone_set('Asia/Bangkok');
 
-if (!isset($_SESSION['user_login'])) {
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($userData) {
+        if ($userData['status'] !== 'approved') {
+            header("Location: home.php");
+            exit();
+        }
+    }
+}
+else {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('Location: auth/sign_in.php');
     exit;
