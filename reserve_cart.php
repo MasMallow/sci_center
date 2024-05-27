@@ -19,6 +19,22 @@
     session_start();
     include_once 'assets/database/connect.php';
 
+    if (isset($_SESSION['user_login'])) {
+        $user_id = $_SESSION['user_login'];
+        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($userData) {
+            if ($userData['status'] !== 'approved') {
+                unset($_SESSION['reserve_cart']);
+                header("Location: home.php");
+                exit(); 
+            }
+        } 
+    }
+
     // Check if cart session exists, create one if not
     if (!isset($_SESSION['reserve_cart'])) {
         $_SESSION['reserve_cart'] = [];

@@ -3,11 +3,11 @@
     include_once 'assets/database/connect.php';
     date_default_timezone_set('Asia/Bangkok');
 
-    // if (!isset($_SESSION['staff_login'])) {
-    //     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    //     header('Location: auth/sign_in.php');
-    //     exit;
-    // }
+    if (!isset($_SESSION['staff_login'])) {
+        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+        header('Location: auth/sign_in.php');
+        exit;
+    }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         $selectedIds = $_POST['selected_ids'];
