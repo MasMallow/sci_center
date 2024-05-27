@@ -93,8 +93,8 @@
                                 ?>
                                     <div class="button">
                                         <button onclick="location.href='cart.php?action=add&item=<?= $data['img'] ?>'" class="use-it">
-                                            <i class="icon fa-solid fa-ardata-up"></i>
-                                            <span>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</ห>
+                                            <i class="icon fa-solid fa-arrow-up"></i>
+                                            <span>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</span>
                                         </button>
                                     </div>
                                 <?php } else { ?>
@@ -106,26 +106,24 @@
                                     </div>
                                 <?php } ?>
                                 <?php
-                                if ($row['amount'] >= 1) {
+                                if ($data['amount'] >= 1) {
                                 ?>
                                     <div class="button">
-                                        <button onclick="location.href='reserve_cart.php?action=add&item=<?= $row['file_name'] ?>'" class="reserve-it">
+                                        <button onclick="location.href='reserve_cart.php?action=add&item=<?= $data['img'] ?>'" class="reserve-it">
                                             <i class="icon fa-solid fa-check"></i>
                                             <p>จองวัสดุ อุปกรณ์ และเครื่องมือ</p>
                                         </button>
                                     </div>
-                                <?php } elseif ($row['amount'] <= 0) { ?>
+                                <?php } elseif ($data['amount'] <= 0) { ?>
                                     <div class="button">
                                         <button class="out-of">
-                                            <div class="icon"><i class="icon fa-solid fa-check"></i>
-                                                <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p></i>
-                                            </div>
+                                            <div class="icon"><i class="icon fa-solid fa-check"></i></div>
+                                            <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p>
                                         </button>
                                     </div>
                                 <?php
                                 }
                                 ?>
-                                </td>
                             </div>
                         </div>
                     </div>
@@ -137,5 +135,4 @@
         }
         ?>
     </div>
-
 </div>

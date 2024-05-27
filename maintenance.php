@@ -2,11 +2,11 @@
 session_start();
 include_once 'assets/database/connect.php';
 
-// if (!isset($_SESSION['staff_login'])) {
-//     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-//     header('Location: auth/sign_in.php');
-//     exit;
-// }
+if (!isset($_SESSION['staff_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
+}
 
 // เตรียมการเชื่อมต่อฐานข้อมูล (สมมติว่าคุณมีการเชื่อมต่อที่ถูกต้องใน $conn)
 $stmt = $conn->prepare("SELECT * FROM crud WHERE Availability=0 ORDER BY id ASC");
