@@ -99,7 +99,7 @@ $previousFirstname = '';
                             <th class="item_name"><span id="B">รายการที่ขอจอง</span></th>
                             <th class="borrow_booking"><span id="B">วันเวลาที่ทำรายการ</span></th>
                             <th class="return"><span id="B">วันเวลาที่ขอจอง</span></th>
-                            <th class="approval"><span id="B">อนุมัติ</span></th>
+                            <th class="approval"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,11 +126,11 @@ $previousFirstname = '';
                                     <td><?php echo thai_date_time($row['created_at']); ?></td>
                                     <td><?php echo thai_date_time($row['reservation_date']); ?></td>
                                     <td>
-                                        <form method="POST" action="process_reserve.php">
+                                        <form class="approve_form" method="POST" action="process_reserve.php">
                                             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                             <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
-                                            <button class="submit" type="submit" name="confirm"><span>อนุมัติ</span></button>
-                                            <button class="submit" type="submit" name="cancel"><span>ไม่อนุมัติ</span></button>
+                                            <button class="confirm_approve" type="submit" name="confirm"><i class="fa-solid fa-circle-check"></i></button>
+                                            <button class="cancel_approve" type="submit" name="cancel"><i class="fa-solid fa-circle-xmark"></i></button>
                                         </form>
                                     </td>
                                 </tr>

@@ -98,7 +98,7 @@ input:focus {
   border: 1px solid rgb(0, 119, 255);
 }
 .view_report_btn {
-  padding-bottom: .785rem;
+  padding-bottom: 0.785rem;
   & .search {
     padding: 0.345rem 2rem;
     border-radius: 5px;
@@ -123,11 +123,40 @@ input:focus {
   display: flex;
   justify-content: space-between;
 
-  & .reset {
+  & .view_report_table_header_pdf {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+  }
+
+  & .create_pdf {
+    padding: 0.345rem 0.5rem;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #c1f2b0;
+    color: green;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #aeff94;
+    }
+  }
+
+  & .reset_data {
     outline: none;
     border-radius: 5px;
     border: none;
-    padding: 0.345rem 2rem;
+    background-color: transparent;
+    padding: 0.4rem 1.5rem;
+    border: 1px solid #bdbdbd;
+    transition: all 0.3s;
+
+    &:hover {
+      border: 1px solid #777777;
+      background-color: #eeeeee;
+    }
   }
 }
 .view_report_table_data {
@@ -181,5 +210,10 @@ tbody tr {
   }
   & .UID {
     padding-left: 0.75rem;
+  }
+
+  & .date_not_found{
+    text-align: center;
+    font-size: 1rem;
   }
 }

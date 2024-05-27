@@ -1,6 +1,7 @@
 <?php
 // เริ่มต้นเซสชั่น
 session_start();
+
 // เชื่อมต่อกับฐานข้อมูล
 require_once 'assets/database/connect.php';
 include_once 'includes/thai_date_time.php';
@@ -18,40 +19,39 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
-// สร้างคำสั่ง SQL สำหรับดึงข้อมูลการยืมสินค้าที่รอการอนุมัติ
+// สร้างคำสั่ง SQL ตามตัวกรอง user_id และช่วงเวลา
 $sql = "SELECT * FROM bookings WHERE 1=1";
+
+// สร้างอาร์เรย์เพื่อเก็บพารามิเตอร์
 $params = [];
 
-// ตรวจสอบว่า user_id ถูกส่งมาหรือไม่ และไม่ใช่ค่า 'all'
-if (isset($_GET['user_id']) && $_GET['user_id'] !== 'all') {
-    // เพิ่มเงื่อนไข user_id ในคำสั่ง SQL
-    $sql .= " AND user_id = :user_id";
-    // เพิ่มค่า user_id ในอาร์เรย์ params
-    $params[':user_id'] = (int)$_GET['user_id'];
+// ตรวจสอบและกำหนดค่า user_id
+if (isset($_GET['user_id']) && $_GET['user_id'] !== '') {
+    $user_id = $_GET['user_id'];
+    $sql .= " AND user_id LIKE :user_id";
+    $params[':user_id'] = "%" . $user_id . "%";
 }
 
-// ตรวจสอบว่ามีการส่งค่า start_date และ end_date มาหรือไม่
-if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
-    // เพิ่มเงื่อนไขช่วงเวลาในคำสั่ง SQL
-    $sql .= " AND reservation_date BETWEEN :start_date AND :end_date";
-    // เพิ่มค่า start_date และ end_date ในอาร์เรย์ params
-    $params[':start_date'] = $_GET['start_date'];
-    $params[':end_date'] = $_GET['end_date'];
+// ตรวจสอบและกำหนดค่า start_date และ end_date
+if (isset($_GET['start_date']) && $_GET['start_date'] !== '' && isset($_GET['end_date']) && $_GET['end_date'] !== '') {
+    $start_date = $_GET['start_date'];
+    $end_date = $_GET['end_date'];
+    $sql .= " AND (reservation_date BETWEEN :start_date AND :end_date)";
+    $params[':start_date'] = $start_date;
+    $params[':end_date'] = $end_date;
 }
 
-// เตรียมคำสั่ง SQL
+// เตรียมและดำเนินการคำสั่ง SQL
 $stmt = $conn->prepare($sql);
 
-// ผูกค่าพารามิเตอร์เข้ากับคำสั่ง SQL
-foreach ($params as $key => &$val) {
-    $stmt->bindParam($key, $val);
+// Bind พารามิเตอร์
+foreach ($params as $key => $value) {
+    $stmt->bindValue($key, $value);
 }
 
-// ดำเนินการคำสั่ง SQL
 $stmt->execute();
-// ดึงข้อมูลการยืมสินค้าที่รอการอนุมัติ
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +59,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายงานการยืมสินค้า</title>
+    <title>รายงานการจอง</title>
     <!-- ลิงก์ไปยังไฟล์ CSS -->
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="assets/css/navigator.css">
@@ -73,7 +73,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="header_approve">
         <div class="header_approve_section">
             <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
-            <span id="B">รายงานการยืมอุปกรณ์</span>
+            <span id="B">รายงานการจอง</span>
         </div>
     </div>
     <div class="view_report">
@@ -81,12 +81,11 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <span id="B">ค้นหา</span>
         </div>
         <div class="view_report_form">
-            <!-- ฟอร์มสำหรับค้นหาการยืมสินค้า -->
-            <form class="form_1" action="view_report.php" method="GET">
+            <form class="form_1" action="view_report_booking" method="GET">
                 <div class="view_report_column">
                     <div class="view_report_input">
                         <label id="B" for="userID">UID ของผู้ใช้งาน</label>
-                        <input type="text" id="userID" name="user_id" placeholder="กรอกไอดีผู้ใช้">
+                        <input type="text" id="userID" name="user_id" placeholder="กรอไอดีผู้ใช้">
                     </div>
                     <div class="view_report_input">
                         <label id="B" for="startDate">ช่วงเวลาเริ่มต้น</label>
@@ -104,11 +103,27 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="view_report_table">
             <div class="view_report_table_header">
-                <span id="B">
-                    ประวัติการขอใช้
-                </span>
-                <form class="form_2" action="view_report" method="GET">
-                    <button type="submit" class="reset">แสดงข้อมูลทั้งหมด</button>
+                <div class="view_report_table_header_pdf">
+                    <span id="B">
+                        ประวัติการขอใช้
+                    </span>
+                    <!-- ปุ่มสำหรับสร้างรายงาน PDF -->
+                    <form id="pdfForm" action="generate_pdf" method="GET">
+                        <?php
+                        if (isset($_GET["user_id"]) && $_GET["user_id"] != "NULL") : ?>
+                            <input type="hidden" name="user_id" value="<?= htmlspecialchars($_GET["user_id"]) ?>">
+                        <?php
+                        endif;
+                        if (isset($_GET["start_date"]) && $_GET["start_date"] != "empty" && isset($_GET["end_date"]) && $_GET["end_date"] != "empty") : ?>
+                            <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($_GET["start_date"]) ?>">
+                            <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($_GET["end_date"]) ?>">
+                        <?php
+                        endif; ?>
+                        <button type="submit" class="create_pdf">สร้างรายงาน</button>
+                    </form>
+                </div>
+                <form class="form_2" action="view_report_booking" method="GET">
+                    <button type="submit" class="reset_data">แสดงข้อมูลทั้งหมด</button>
                 </form>
             </div>
             <table class="view_report_table_data">
@@ -122,14 +137,15 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (count($data) > 0) : ?>
-                        <?php foreach ($data as $row) : ?>
+                    <?php
+                    // แสดงผลลัพธ์ที่ดึงมาได้
+                    if (count($data) > 0) {
+                        foreach ($data as $row) { ?>
                             <tr>
                                 <td class="UID"><?php echo htmlspecialchars($row["user_id"]); ?></td>
                                 <td><?php echo htmlspecialchars($row["firstname"]); ?></td>
                                 <td>
                                     <?php
-                                    // แยกรายการสินค้าที่ถูกยืมออกเป็นรายการ ๆ
                                     $items = explode(',', $row['product_name']);
                                     foreach ($items as $item) {
                                         $item_parts = explode('(', $item);
@@ -139,28 +155,19 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     }
                                     ?>
                                 </td>
-                                <td><?php echo thai_date_time(($row["created_at"])); ?></td>
-                                <td><?php echo thai_date_time(($row["reservation_date"])); ?></td>
+                                <td><?php echo thai_date_time($row["created_at"]); ?></td>
+                                <td><?php echo thai_date_time($row["reservation_date"]); ?></td>
                             </tr>
-                        <?php endforeach; ?>
-                    <?php else : ?>
+                        <?php }
+                    } else { ?>
                         <tr>
-                            <td colspan='6'>ไม่พบข้อมูลในฐานข้อมูล</td>
+                            <td colspan='5' class="date_not_found"><span id="B">ไม่พบข้อมูล</span></td>
                         </tr>
-                    <?php endif; ?>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
-        <!-- ปุ่มสำหรับสร้างรายงาน PDF -->
-        <form action="generate_pdf.php" method="GET">
-            <div class="form-group">
-                <input type="hidden" name="user_id" value="<?php echo isset($_GET['user_id']) ? htmlspecialchars($_GET['user_id']) : ''; ?>">
-                <input type="hidden" name="start_date" value="<?php echo isset($_GET['start_date']) ? htmlspecialchars($_GET['start_date']) : ''; ?>">
-                <input type="hidden" name="end_date" value="<?php echo isset($_GET['end_date']) ? htmlspecialchars($_GET['end_date']) : ''; ?>">
-                <button type="submit" class="btn btn-danger">สร้างรายงาน PDF</button>
-            </div>
-        </form>
-    </div>
+
 </body>
 
 </html>

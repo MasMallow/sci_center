@@ -69,10 +69,10 @@
   width: 100%;
   border-radius: 5px;
 }
-.approve_table_header{
+.approve_table_header {
   font-size: 1.15rem;
-  padding-left: .75rem;
-  padding-bottom: .5rem;
+  padding-left: 0.75rem;
+  padding-bottom: 0.5rem;
 }
 thead tr {
   border: 1px solid #bdbdbd;
@@ -93,7 +93,7 @@ thead th {
   background-color: #e9e9e9;
 }
 .approve_table_data .name_use {
-  width: 15%;
+  width: 17.5%;
 }
 .approve_table_data .item_name {
   width: 25%;
@@ -105,7 +105,7 @@ thead th {
   width: 15%;
 }
 .approve_table_data .approval {
-  width: 5%;
+  width: 7.5%;
 }
 tbody tr {
   border: 1px solid #dbdbdb;
@@ -120,6 +120,47 @@ tbody tr:nth-child(even) {
 }
 .sn {
   padding-left: 1rem;
+}
+.approve_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .75rem;
+
+  & .confirm_approve {
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #c1f2b0;
+    border: 1px solid green;
+    color: green;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #aeff94;
+    }
+  }
+
+  & .cancel_approve {
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: red;
+    color: #ffffff;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #a30000;
+      color: #ffffff;
+    }
+  }
+  & i {
+    font-size: 1rem;
+  }
 }
 .submit {
   border: 1px solid #dbdbdb;

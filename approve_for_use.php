@@ -91,11 +91,11 @@ $previousSn = '';
                     <thead>
                         <tr>
                             <th class="s_number"><span id="B">หมายเลขรายการ</span></th>
-                            <th class="name_use"><span id="B">ชื่อผู้ขอใช้งาน</span></th>
+                            <th class="name_use"><span id="B">ชื่อ - นามสกุล</span></th>
                             <th class="item_name"><span id="B">รายการที่ขอใช้งาน</span></th>
                             <th class="borrow_booking"><span id="B">วันเวลาที่ขอใช้งาน</span></th>
                             <th class="return"><span id="B">วันเวลาที่สิ้นสุดขอใช้งาน</span></th>
-                            <th class="approval"><span id="B">อนุมัติ</span></th>
+                            <th class="approval"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,15 +122,11 @@ $previousSn = '';
                                     <td><?php echo thai_date_time($row['borrowdatetime']); ?></td>
                                     <td><?php echo thai_date_time($row['returndate']); ?></td>
                                     <td>
-                                        <form method="POST" action="process_return.php">
+                                        <form class="approve_form" method="POST" action="process_return">
                                             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                             <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
-                                            <button type="submit" name="confirm" >ยืนยันการอนุมัติ</button>
-                                        </form>
-                                        <form method="POST" action="process_cancel_return.php">
-                                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                            <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
-                                            <button type="submit" name="cancel" >ยกเลิกการยืม</button>
+                                            <button class="confirm_approve" type="submit" name="confirm"><i class="fa-solid fa-circle-check"></i></button>
+                                            <button class="cancel_approve" type="submit" name="cancel"><i class="fa-solid fa-circle-xmark"></i></button>
                                         </form>
                                     </td>
                                 </tr>

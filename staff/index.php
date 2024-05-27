@@ -37,20 +37,21 @@
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a>
+                            <a href="manage_users">
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>อนุมัติผู้สร้างบัญชี</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="staff_menu">
+                            <a href="maintenance">
                                 <i class="icon fa-solid fa-screwdriver-wrench"></i>
                                 <span class="text">การบำรุงรักษา</span>
                             </a>
                         </div>
                     </li>
-                    <li>
-                        <div class="staff_menu"> 
-                            <a href="reportPDF">
-                                <i class="icon fa-solid fa-flag"></i>
-                                <span class="text">รายงาน</span>
-                            </a>
-                        </div>
-                    </li>
+
                 </ul>
                 <ul class="staff_content_ul">
                     <li>
@@ -62,7 +63,7 @@
                         </div>
                     </li>
                     <li>
-                        <div class="staff_menu"> 
+                        <div class="staff_menu">
                             <a href="approve_for_booking.php">
                                 <i class="icon fa-solid fa-square-check"></i>
                                 <span class="text">การอนุมัติการจอง</span>
@@ -72,16 +73,16 @@
                     <li>
                         <div class="staff_menu">
                             <a href="view_report">
-                                <i class="icon fa-solid fa-square-check"></i>
-                                <span class="text">ดูประวัติการใช้งาน</span>
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                <span class="text">ประวัติการขอใช้</span>
                             </a>
                         </div>
                     </li>
                     <li>
                         <div class="staff_menu">
                             <a href="view_report_booking">
-                                <i class="icon fa-solid fa-flag"></i>
-                                <span class="text">ดูประวัติการใช้งาน</span>
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                <span class="text">ประวัติการจอง</span>
                             </a>
                         </div>
                     </li>
