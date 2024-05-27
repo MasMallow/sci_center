@@ -87,7 +87,7 @@ if (isset($_SESSION['staff_login'])) {
                             </a>
                             <ul class="sb-sub-ul">
                                 <li>
-                                    <a onclick="log()">
+                                    <a href="Check_the_request.php">
                                         <i class="icon fa-solid fa-square-check"></i>
                                         <span class="text">ตรวจสอบการขอใช้</span>
                                     </a>
