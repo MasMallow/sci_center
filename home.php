@@ -24,11 +24,9 @@ if (isset($_SESSION['staff_login'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.2/dist/css/splide.min.css">
+    <link rel="stylesheet" href="assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="assets/css/navigator.css">
-    <link rel="stylesheet" href="assets/font-awesome/css/all.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="ajax.js"></script>
     <title>SCICENTER Management</title>
 </head>

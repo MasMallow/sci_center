@@ -225,12 +225,10 @@ try {
                             // แสดงปุ่มขอใช้วัสดุ อุปกรณ์ และเครื่องมือ หรือแสดงข้อความเมื่อสินค้าหมด
                             if ($data['amount'] >= 1) {
                             ?>
-                                <div class="button">
-                                    <button onclick="location.href='cart.php?action=add&item=<?= $data['img'] ?>'" class="use-it">
-                                        <i class="icon fa-solid fa-ardata-up"></i>
-                                        <span>ขอใช้</span>
-                                    </button>
-                                </div>
+                                <a href="cart.php?action=add&item=<?= $data['img'] ?>" class="used_it">
+                                    <i class="icon fa-solid fa-arrow-up"></i>
+                                    <span>ขอใช้อุปกรณ์</span>
+                                </a>
                             <?php } else { ?>
                                 <div class="button">
                                     <button class="out-of">
@@ -239,6 +237,21 @@ try {
                                     </button>
                                 </div>
                             <?php } ?>
+                            <?php
+                            // เงื่อนไขสำหรับประเภท 'อุปกรณ์' หรือ 'เครื่องมือ'
+                            if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') {
+                                if ($data['amount'] >= 1) { ?>
+                                    <a href="reserve_cart.php?action=add&item=<?= $data['img'] ?>" class="reserved_it">
+                                        <i class="fa-solid fa-address-book"></i>
+                                        <span>จองอุปกรณ์</span>
+                                    </a>
+                                <?php } else { ?>
+                                    <div class="not_available">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
+                                    </div>
+                            <?php }
+                            } ?>
                         </div>
                     </div>
                 </div>

@@ -16,9 +16,7 @@
     opacity: 1;
   }
 }
-p#B,
-label#B,
-span#B {
+#B {
   font-family: Sarabun-bold;
 }
 * {
@@ -29,7 +27,6 @@ span#B {
 }
 .sign_in_box {
   height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,24 +35,23 @@ span#B {
 .box_content {
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  border-radius: 7px;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
   min-width: 480px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   animation: movingY 0.5s ease;
 }
 
 /* header */
 .box_content_header {
   padding: 1rem 1rem;
-  border-bottom: 1px solid gray;
-  font-size: 1.6rem;
+  border-bottom: 1px solid #dbdbdb;
+  font-size: 1.35rem;
 }
 .box_content_logo {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0rem;
+  margin-top: 0.345rem;
 }
 .box_content_logo img {
   height: 80px;
@@ -64,16 +60,15 @@ span#B {
 }
 .box_content_content {
   display: grid;
-  margin-top: 0.5rem;
   padding: 0.6rem 1rem;
-  gap: 10px;
+  gap: 0.785rem;
 }
 .input {
   width: 100%;
   outline: none;
   border: none;
-  height: 50px;
-  padding: 20px 0px;
+  height: 45px;
+  padding: 1.25rem 0px;
   padding-left: 20px;
   border-radius: 7px;
   font-size: 1rem;
@@ -95,38 +90,34 @@ span#B {
   right: 20px;
   cursor: pointer;
 }
-.footer {
-  display: grid;
-  gap: 10px;
-}
 .btn-section {
   padding: 0.6rem 1rem;
 }
-button.sign-in {
+.sign-in {
   width: 100%;
   padding: 13px;
   outline: none;
   border: none;
   border-radius: 7px;
-  margin-top: 0.5rem;
   background-color: #2176ff;
   color: #fff;
   cursor: pointer;
   transition: 0.3s;
 }
-button.sign-in:hover {
+.sign-in:hover {
   background-color: #125cd3;
 }
 .box_content_other {
   display: grid;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 .box_content_other .not_remember {
+  font-size: 0.9rem;
   display: flex;
   justify-content: end;
   align-items: center;
   text-decoration: none;
-  margin: 0.7rem 0.7rem;
+  margin: 0.5rem 0.7rem;
   color: #686767;
 }
 .box_content_other .not_remember a {
@@ -134,11 +125,11 @@ button.sign-in:hover {
   color: #686767;
 }
 .box_content_other .sign_up {
+  font-size: 0.9rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.7rem;
-  margin: 0.7rem 0.7rem;
+  gap: 0.5rem;
   text-decoration: none;
   color: #000000;
 }
@@ -146,32 +137,21 @@ button.sign-in:hover {
   text-decoration: none;
   color: #726b6b;
 }
-p {
+.footer {
+  font-size: 0.875rem;
+  border-top: 1px solid #dbdbdb;
   text-align: center;
-  font-size: 1rem;
   color: #686767;
-  margin: 0.8rem 0;
+  padding: 0.5rem;
 }
+
 /* Alert */
 .error {
+  font-size: 0.9rem;
   padding: 0.7rem 1rem;
   background-color: #f8d7da; /* สีพื้นหลังแบบสีแดงอ่อน */
   border: 1px solid #f5c6cb; /* เพิ่มเส้นขอบ */
   color: #721c24; /* สีตัวอักษร */
   border-radius: 5px; /* ทำมุมของกล่องให้เป็นรูปวงกลมบางนิ้ว */
   margin: 0 1rem;
-}
-
-div .header {
-  text-align: center;
-  border-bottom: 2px solid gray;
-}
-div .alert {
-  background-color: rgb(247, 95, 95);
-  text-align: center;
-  padding: 7px;
-  margin-top: 5px;
-  border: 2px solid red;
-  color: white;
-  transition: all 0.3px;
 }

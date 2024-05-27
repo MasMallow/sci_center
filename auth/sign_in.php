@@ -3,12 +3,6 @@ session_start();
 require_once '../assets/database/connect.php';
 if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isset($_SESSION['staff_login'])) {
 ?>
-    <div class="alert alert-danger" role="alert">
-        <?php
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        ?>
-    </div>
-
     <!DOCTYPE html>
     <html lang="en">
 
@@ -17,6 +11,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>เข้าสู่ระบบ</title>
+        <link href="../assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
         <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
         <link rel="stylesheet" href="../assets/css/login.css">
     </head>
@@ -40,9 +35,9 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                         </div>
                     <?php } ?>
                     <div class="box_content_content">
-                        <input type="text" class="input" placeholder="ชื่อผู้ใช้" name="Username" autofocus>
+                        <input type="text" class="input" placeholder="ชื่อผู้ใช้" name="username" autofocus>
                         <div class="show_password">
-                            <input type="Password" class="input" id="password" placeholder="รหัสผ่าน" name="Password">
+                            <input type="Password" class="input" id="password" placeholder="รหัสผ่าน" name="password">
                             <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
                         </div>
                         <div class="box_content_btn">
@@ -60,11 +55,11 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="footer">
+                    <div class="footer">
                         <p>
-                            บริหารจัดการโดย แผนกกรรมวิธีข้อมูล กองสารบรรณ <br> กรมสารบรรณทหารเรือ
+                            ศูนย์วิทยาศาสตร์  มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา
                         </p>
-                    </div> -->
+                    </div>
                 </form>
             </div>
         </main>

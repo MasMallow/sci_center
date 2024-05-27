@@ -3,49 +3,50 @@ session_start();
 require_once '../assets/database/connect.php';
 
 if (isset($_POST['sign-in'])) {
-    $Username = $_POST['Username'];
-    $Password = $_POST['Password'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    if (empty($Username) && empty($Password)) {
-        $_SESSION['errorLogin'] = 'กรุณาเข้าสู่ระบบ';
-        header("location:../auth/sign_in.php");
-    } elseif (empty($Username)) {
-        $_SESSION['errorLogin'] = 'กรุณากรอก Username';
-        header("location:../auth/sign_in.php");
-    } elseif (empty($Password)) {
-        $_SESSION['errorLogin'] = 'กรุณากรอก Password';
-        header("location:../auth/sign_in.php");
+    if (empty($username) && empty($password)) {
+        $_SESSION['errorLogin'] = '<span id="B">กรุณาเข้าสู่ระบบ</span>';
+        header("location: ../auth/sign_in.php");
+        exit();
+    } elseif (empty($username)) {
+        $_SESSION['errorLogin'] = '<span id="B">กรุณากรอก Username</span>';
+        header("location: ../auth/sign_in.php");
+        exit();
+    } elseif (empty($password)) {
+        $_SESSION['errorLogin'] = '<span id="B">กรุณากรอก Password</span>';
+        header("location: ../auth/sign_in.php");
+        exit();
     } else {
         try {
-            $check_data = $conn->prepare("SELECT * FROM users WHERE username  = :username");
-            $check_data->bindParam(":username", $Username);
+            $check_data = $conn->prepare("SELECT * FROM users WHERE username = :username");
+            $check_data->bindParam(":username", $username);
             $check_data->execute();
             $row = $check_data->fetch(PDO::FETCH_ASSOC);
-            var_dump($Username, $row['username']);
+
             if ($check_data->rowCount() > 0) {
-                if ($Username == $row['username']) {
-                    if (password_verify($Password, $row['password'])) {
-                        if ($row['urole'] == 'staff') {
-                            $_SESSION['staff_login'] = $row['user_id'];
-                            header("location: ../");
-                        } else {
-                            $_SESSION['user_login'] = $row['user_id'];
-                            header("location: ../");
-                        }
+                if (password_verify($password, $row['password'])) {
+                    if ($row['urole'] == 'staff') {
+                        $_SESSION['staff_login'] = $row['user_id'];
                     } else {
-                        $_SESSION['errorLogin'] = 'รหัสผ่านไม่ถูกต้อง';
-                        header("location: ../auth/sign_in.php");
+                        $_SESSION['user_login'] = $row['user_id'];
                     }
+                    header("location: ../");
+                    exit();
                 } else {
-                    $_SESSION['errorLogin'] = 'Username ไม่ถูกต้อง';
+                    $_SESSION['errorLogin'] = '<span id="B">รหัสผ่านไม่ถูกต้อง</span>';
                     header("location: ../auth/sign_in.php");
+                    exit();
                 }
             } else {
-                $_SESSION['errorLogin'] = "ไม่มีข้อมูลในระบบ";
+                $_SESSION['errorLogin'] = '<span id="B">ไม่มีข้อมูลในระบบ</span>';
                 header("location: ../auth/sign_in.php");
+                exit();
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
 }
+?>

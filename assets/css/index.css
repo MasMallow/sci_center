@@ -306,11 +306,11 @@ button.search:active {
     opacity: 1;
   }
 }
-.details_btn{
+.details_btn {
   border-radius: 5px;
   border: 1px solid #bbb;
   background-color: transparent;
-  padding: .3rem;
+  padding: 0.3rem;
 }
 .content_details_popup {
   position: fixed;
@@ -365,7 +365,7 @@ button.search:active {
 }
 .details_content {
   padding: 0rem 1.1rem;
-  padding-bottom: .7rem;
+  padding-bottom: 0.7rem;
   color: #000;
 }
 .user-info-content span {
@@ -409,12 +409,55 @@ button.search:active {
   bottom: 0px;
   padding: 0.5rem;
   width: 100%;
-}
-.icon {
-  font-size: 16px;
-  display: flex;
-  justify-content: center;
-  margin: 3px 0px;
+
+  & .content_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    & .used_it {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      font-size: 14px;
+      outline: none;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 5px;
+      background-color: rgb(30, 124, 248);
+      transition: all 0.3s;
+      color: #fff;
+      width: 200px;
+      cursor: pointer;
+    }
+
+    & .used_it:hover {
+      background-color: rgb(0, 86, 199);
+    }
+
+    & .reserved_it {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      font-size: 14px;
+      outline: none;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 5px;
+      background-color: #50c878;
+      transition: all 0.3s;
+      color: #fff;
+      width: 200px;
+      cursor: pointer;
+    }
+
+    & .reserved_it:hover {
+      background-color: #008000;
+    }
+  }
 }
 
 button.out-of {
@@ -428,41 +471,6 @@ button.out-of {
   color: #fff;
   width: 200px;
   cursor: pointer;
-}
-
-button.use-it {
-  font-size: 14px;
-  outline: none;
-  border: none;
-  padding: 8px 10px;
-  border-radius: 5px;
-  background-color: rgb(30, 124, 248);
-  transition: all 0.3s;
-  color: #fff;
-  width: 200px;
-  cursor: pointer;
-}
-
-button.use-it:hover {
-  background-color: rgb(0, 86, 199);
-}
-
-button.reserve-it {
-  font-size: 14px;
-  outline: none;
-  border: none;
-  padding: 8px 10px;
-  border-radius: 5px;
-  background-color: #50c878;
-  transition: all 0.3s;
-  color: #fff;
-  width: 200px;
-  cursor: pointer;
-  margin-top: 5px;
-}
-
-button.reserve-it:hover {
-  background-color: #008000;
 }
 
 /* Footer */
