@@ -42,7 +42,7 @@
             $query = $conn->query("SELECT * FROM crud WHERE categories = 'เครื่องมือ' ORDER BY uploaded_on DESC");
             $displayedImages = array(); // สร้างอาร์เรย์เพื่อเก็บ URL รูปภาพที่แสดงแล้ว
             while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
-                $imageURL = 'uploads/' . $data['img'];
+                $imageURL = 'assets/uploads/' . $data['img'];
                 if (!in_array($imageURL, $displayedImages)) { // ตรวจสอบว่า URL รูปภาพนี้ถูกแสดงแล้วหรือไม่
                     $displayedImages[] = $imageURL; // เพิ่ม URL รูปภาพนี้เข้าไปในอาร์เรย์
 
@@ -54,7 +54,7 @@
                                 <img src="<?php echo $imageURL ?>" alt="">
                             </div>
                         </div>
-                        <div class="content_status">
+                        <div class="content_status_details">
                             <?php
                             if ($data['amount'] >= 50) {
                             ?>
@@ -73,6 +73,123 @@
                                     <span id="B">ไม่พร้อมใช้งาน</span>
                                 </div>
                             <?php } ?>
+                            <div class="content_details">
+                                <button class="details_btn" data-modal="<?php echo $data['id']; ?>">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </button>
+                            </div>
+                            <div class="content_details_popup" id="<?php echo $data['id']; ?>">
+                                <div class="details">
+                                    <div class="details_header">
+                                        <span id="B">รายละเอียด</span>
+                                        <div class="modalClose" id="closeDetails">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </div>
+                                    </div>
+                                    <div class="details_content">
+                                        <ul class="details_content_li">
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">สถานะ</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <?php if ($data['amount'] >= 50) { ?>
+                                                        <div class="ready-to-use">
+                                                            <i class="fa-solid fa-circle-check"></i>
+                                                            <span id="B">พร้อมใช้งาน</span>
+                                                        </div>
+                                                    <?php } elseif ($data['amount'] <= 30 && $data['amount'] >= 1) { ?>
+                                                        <div class="moderately">
+                                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                                            <span id="B">ความพร้อมปานกลาง</span>
+                                                        </div>
+                                                    <?php } elseif ($data['amount'] == 0) { ?>
+                                                        <div class="not-available">
+                                                            <i class="fa-solid fa-ban"></i>
+                                                            <span id="B">ไม่พร้อมใช้งาน</span>
+                                                        </div>
+                                                    <?php } ?>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">Serial Number</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <span>190605002DZ12P054</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">ชื่อ</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <?php echo $data['sci_name']; ?>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">ประเภท</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <?php echo $data['categories']; ?>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">จำนวน</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <?php echo $data['amount']; ?>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">รุ่น</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <span>BK-FD12P</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">ยี่ห้อ</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <span>BIOBASE</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">บริษัท</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="details_content_footer">
+                                            <div class="content_btn">
+                                                <?php if ($data['amount'] >= 1) { ?>
+                                                    <div class="button">
+                                                        <button onclick="location.href='cart.php?action=add&item=<?php echo $data['img']; ?>'" class="use-it">
+                                                            <i class="icon fa-solid fa-arrow-up"></i>
+                                                            <span>ขอใช้</span>
+                                                        </button>
+                                                    </div>
+                                                <?php } else { ?>
+                                                    <div class="button">
+                                                        <button class="out-of">
+                                                            <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
+                                                            <span>ไม่สามารถขอใช้ได้</span>
+                                                        </button>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="grid_content_body">
                             <div class="content_name">
@@ -87,44 +204,28 @@
                         </div>
                         <div class="grid_content_footer">
                             <div class="content_btn">
-                                <?php
-                                // แสดงปุ่มขอใช้วัสดุ อุปกรณ์ และเครื่องมือ หรือแสดงข้อความเมื่อสินค้าหมด
-                                if ($data['amount'] >= 1) {
-                                ?>
-                                    <div class="button">
-                                        <button onclick="location.href='cart.php?action=add&item=<?= $data['img'] ?>'" class="use-it">
-                                            <i class="icon fa-solid fa-ardata-up"></i>
-                                            <span>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</ห>
-                                        </button>
-                                    </div>
+                                <?php if ($data['amount'] >= 1) { ?>
+                                    <a href="cart.php?action=add&item=<?= $data['img'] ?>" class="used_it">
+                                        <i class="icon fa-solid fa-arrow-up"></i>
+                                        <span>ขอใช้อุปกรณ์</span>
+                                    </a>
                                 <?php } else { ?>
-                                    <div class="button">
-                                        <button class="out-of">
-                                            <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
-                                            <span>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</span>
-                                        </button>
+                                    <div class="not_available">
+                                        <i class="icon fa-solid fa-ban"></i>
+                                        <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
                                     </div>
                                 <?php } ?>
-                                <?php
-                                if ($data['amount'] >= 1) {
-                                ?>
-                                    <div class="button">
-                                        <button onclick="location.href='reserve_cart.php?action=add&item=<?= $data['sci_name'] ?>'" class="reserve-it">
-                                            <i class="icon fa-solid fa-check"></i>
-                                            <p>จองวัสดุ อุปกรณ์ และเครื่องมือ</p>
-                                        </button>
-                                    </div>
+                                <?php if ($data['amount'] >= 1) { ?>
+                                    <a href="reserve_cart.php?action=add&item=<?= $data['img'] ?>" class="reserved_it">
+                                        <i class="fa-solid fa-address-book"></i>
+                                        <span>จองอุปกรณ์</span>
+                                    </a>
                                 <?php } else { ?>
-                                    <div class="button">
-                                        <button class="out-of">
-                                            <div class="icon"><i class="icon fa-solid fa-check"></i>
-                                                <p>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</p></i>
-                                            </div>
-                                        </button>
+                                    <div class="not_available">
+                                        <i class="icon fa-solid fa-check"></i>
+                                        <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
                                     </div>
-                                <?php
-                                }
-                                ?>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>

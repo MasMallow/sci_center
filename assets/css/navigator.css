@@ -66,19 +66,20 @@
   border: none;
   border-radius: 5px;
   padding: 0.7rem 1rem;
-}
-.header_nav_userinfo .header_userinfo_btn span {
-  font-size: 0.85rem;
-}
-.header_nav_userinfo .header_userinfo_btn i {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 23px;
-  height: 23px;
-  border-radius: 50%;
-  background-color: #000;
-  color: #fff;
+
+  & .userinfo_01 {
+    font-size: 0.85rem;
+  }
+  & i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background-color: #000;
+    color: #fff;
+  }
 }
 
 /* USER INFO */
@@ -122,7 +123,7 @@
   padding: 0.7rem 1.1rem;
   margin-bottom: 1rem;
   border-bottom: 1.2px solid gray;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: #000;
   font-family: Sarabun-bold;
 }
@@ -140,54 +141,114 @@
 .user-info-header .modalClose i {
   font-size: 12px;
   color: #525151;
-}
-.user-info-header .modalClose:hover {
-  background-color: #d1d1d1;
+
+  &:hover {
+    background-color: #d1d1d1;
+  }
 }
 .user-info-content {
-  padding: 0rem 1.1rem;
+  padding: 0rem 2.75rem;
   color: #000;
-}
-.user-info-content span {
-  font-size: 1.1rem;
-  margin-bottom: 0.3rem;
-}
-.user-info-content-edit {
-  display: flex;
-}
-.user-info-content-edit a {
-  margin-left: 1rem;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 0.5rem 0.5rem;
-  text-decoration: none;
-  background-color: #005df1;
-  color: #fff;
-}
-.user-info-footer {
-  margin: 1rem 0;
-  padding: 0 1rem;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+
+  & span {
+    font-size: 1rem;
+  }
+
+  & div {
+    padding: 0.5rem 0;
+  }
+
+  & .userid_status {
+    display: flex;
+    justify-content: space-between;
+
+    & .user_id {
+      text-align: center;
+      font-size: 0.8rem;
+      gap: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #bdbdbd;
+      padding: 0.5rem 1rem;
+    }
+
+    & .approved {
+      text-align: center;
+      font-size: 0.8rem;
+      gap: 0.5rem;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      color: #2d794b;
+      background-color: #b6fdd4;
+    }
+    & .wait_approved {
+      text-align: center;
+      font-size: 0.8rem;
+      gap: 0.5rem;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      background-color: #d22b2b;
+      color: white;
+    }
+  }
+
+  & .phone_line {
+    display: flex;
+    width: 100%;
+    gap: 0.5rem;
+
+    & .phone_number {
+      width: 100%;
+    }
+    & .lineid {
+      width: 100%;
+    }
+  }
 }
 
-.user-info-footer .confirm {
-  margin-top: 5rem;
+.user_info_footer {
+  margin: 1rem 0;
+  margin-top: 4rem;
+  padding: 0 1rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.user_info_footer .edit_users {
+  display: flex;
+  justify-content: start;
   align-items: center;
   gap: 0.5rem;
   border: none;
   outline: none;
-  border-radius: 6px;
-  padding: 0.5rem 1.2rem;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #fff;
+  background-color: rgb(30, 124, 248);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.25s;
+
+  &:hover {
+    background-color: rgb(0, 86, 199);
+  }
+}
+.user_info_footer .sign_out_confirm {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
   text-decoration: none;
   background-color: #ff0c0c;
   color: #fff;
+  font-size: 0.8rem;
 }
 
 /* Not LogIn */

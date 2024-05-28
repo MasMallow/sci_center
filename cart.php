@@ -44,8 +44,7 @@ if (isset($_SESSION['user_login'])) {
             exit();
         }
     }
-}
-else {
+} else {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('Location: auth/sign_in.php');
     exit;
@@ -58,7 +57,7 @@ else {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เลือกรายการวัสดุ อุปกรณ์ และเครื่องมือ</title>
+    <title>ขอใช้วัสดุ อุปกรณ์ และเครื่องมือ</title>
     <!-- ส่วนของ Link -->
     <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
@@ -67,8 +66,9 @@ else {
 </head>
 
 <body>
-    <?php include('includes/header.php'); ?>
-
+    <header>
+        <?php include('includes/header.php'); ?>
+    </header>
     <?php if (empty($_SESSION['cart'])) : ?>
         <div class="main_cart">
             <div class="main_cart_content_non_select">
@@ -88,7 +88,7 @@ else {
                         <div class="count_list">
                             <div class="count_list_1">
                                 <span>รายการที่เลือกทั้งหมด </span>
-                                <?php echo count($_SESSION['cart']); ?><span> รายการ</span>
+                                <span id="B">( <?php echo count($_SESSION['cart']); ?> )</span><span> รายการ</span>
                             </div>
                             <div class="count_list_2">
                                 <a href="booking_log.php">ตรวจสอบการจอง</a>

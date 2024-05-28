@@ -211,22 +211,15 @@ try {
                 </div>
                 <div class="grid_content_footer">
                     <div class="content_btn">
-                        <?php
-                        // แสดงปุ่มขอใช้วัสดุ อุปกรณ์ และเครื่องมือ หรือแสดงข้อความเมื่อสินค้าหมด
-                        if ($data['amount'] >= 1) {
-                        ?>
-                            <div class="button">
-                                <button onclick="location.href='cart.php?action=add&item=<?= $data['img'] ?>'" class="use-it">
-                                    <i class="icon fa-solid fa-ardata-up"></i>
-                                    <span>ขอใช้วัสดุ</ห>
-                                </button>
-                            </div>
+                        <?php if ($data['amount'] >= 1) { ?>
+                            <a href="cart.php?action=add&item=<?= $data['img'] ?>" class="used_it">
+                                <i class="icon fa-solid fa-arrow-up"></i>
+                                <span>ขอใช้อุปกรณ์</span>
+                            </a>
                         <?php } else { ?>
-                            <div class="button">
-                                <button class="out-of">
-                                    <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
-                                    <span>วัสดุ อุปกรณ์ และเครื่องมือ "หมด"</span>
-                                </button>
+                            <div class="not_available">
+                                <i class="icon fa-solid fa-ban"></i>
+                                <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
                             </div>
                         <?php } ?>
                     </div>
