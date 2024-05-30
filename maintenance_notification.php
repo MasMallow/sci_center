@@ -11,7 +11,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         $selectedIds = $_POST['selected_ids'];
-        $end_date =$_POST['end_date'];
+        $end_date = $_POST['end_date'];
         if (isset($_POST['note'])) {
             $note = $_POST['note'];
         } else {
@@ -28,6 +28,17 @@
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $item = $stmt->fetch(PDO::FETCH_ASSOC);
+            $s_number = $item['s_number'];
+            $sci_name = $item['sci_name'];
+            $categories = $item['categories'];
+
+            $insert_query = $conn->prepare("INSERT INTO maintenance_history (s_number, sci_name, categories, start_maintenance, end_maintenance, detail) VALUES (:s_number, :sci_name, :categories, NOW(), :end_date, :note)");
+            $insert_query->bindParam(':s_number', $s_number, PDO::PARAM_STR);
+            $insert_query->bindParam(':sci_name', $sci_name, PDO::PARAM_STR);
+            $insert_query->bindParam(':categories', $categories, PDO::PARAM_STR);
+            $insert_query->bindParam(':end_date', $end_date, PDO::PARAM_STR);
+            $insert_query->bindParam(':note', $note, PDO::PARAM_STR);
+            $insert_query->execute();
 
             if ($item) {
                 $sMessage .= "รายการ: " . $item['sci_name'] . "\n";
@@ -35,7 +46,7 @@
             }
         }
         $sMessage .= "วันที่บำรุงรักษา : " . date('d/m/Y') . "\n";
-        $sMessage .= "บำรุงรักษาสำเร็จ : " . $end_date . "\n";
+        $sMessage .= "บำรุงรักษาสำเร็จ : " . date('d/m/Y',strtotime($end_date)) . "\n";
         $sMessage .=  "หมายเหตุ: " . $note . "\n";
         $sMessage .= "-------------------------------";
 
@@ -72,4 +83,4 @@
         curl_close($chOne);
         header('Location: /project/maintenance.php');
         exit;
-    } 
+    }
