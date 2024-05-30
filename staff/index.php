@@ -51,12 +51,11 @@
                             </a>
                         </div>
                     </li>
-
                 </ul>
                 <ul class="staff_content_ul">
                     <li>
                         <div class="staff_menu">
-                            <a href="approve_for_use.php">
+                            <a href="approve_for_use">
                                 <i class="icon fa-solid fa-square-check"></i>
                                 <span class="text">การอนุมัติการยืม</span>
                             </a>
@@ -64,7 +63,7 @@
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="approve_for_booking.php">
+                            <a href="approve_for_booking">
                                 <i class="icon fa-solid fa-square-check"></i>
                                 <span class="text">การอนุมัติการจอง</span>
                             </a>

@@ -21,7 +21,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
 
     if (isset($_SESSION['user_login'])) {
         if ($userData['status'] !== 'approved') {
-            header("Location: home.php");
+            header("Location: home");
             exit();
         }
     }
