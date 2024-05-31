@@ -22,7 +22,7 @@ if (isset($_SESSION['user_login'])) {
     exit;
 }
 $firstname = $userData['surname'];
-$stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE firstname = :firstname AND situation IS NULL");
+$stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE firstname = :firstname  ORDER BY id ");
 $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -57,7 +57,6 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>UDI</th>
                 <th>Serial Number</th>
                 <th>Firstname</th>
@@ -70,7 +69,6 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <tbody>
             <?php foreach ($data as $row) : ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($row['id']); ?></td>
                     <td><?php echo htmlspecialchars($row['udi']); ?></td>
                     <td><?php echo htmlspecialchars($row['sn']); ?></td>
                     <td><?php echo htmlspecialchars($row['firstname']); ?></td>
@@ -89,7 +87,11 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </td>
                     <td><?php echo htmlspecialchars($row['borrowdatetime']); ?></td>
                     <td><?php echo htmlspecialchars($row['returndate']); ?></td>
-                    <td><?php echo htmlspecialchars($row['situation']); ?></td>
+                    <td>
+                        <?php
+                        echo $row['situation'] === null ? 'ยังไม่ได้รับอนุมัติ' : ($row['situation'] == 1 ? 'ได้รับอนุมัติ' : htmlspecialchars($row['situation']));
+                        ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

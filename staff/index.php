@@ -31,10 +31,16 @@ require_once 'assets/database/connect.php';
                         </div>
                     </li>
                     <li>
+                        <?php 
+                        $user = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' AND urole = 'user'");;
+                        $user->execute();
+                        $datauser = $user->fetchAll(PDO::FETCH_ASSOC);
+                        $numuser = count($datauser); // นับจำนวนรายการ
+                        ?>
                         <div class="staff_menu">
                             <a href="user_approval">
                                 <i class="fa-solid fa-address-book"></i>
-                                <span>อนุมัติผู้สร้างบัญชี</span>
+                                <span>อนุมัติผู้สร้างบัญชี<?php echo "(" . $numuser . ")"; ?></span>
                             </a>
                         </div>
                     </li>
