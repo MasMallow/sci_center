@@ -85,17 +85,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 try {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' AND urole = 'user'");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' ");
     $stmt->execute();
     $num = $stmt->rowCount();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt_banned = $conn->prepare("SELECT * FROM users WHERE status = 'not_approved' AND urole = 'user'");
+    $stmt_banned = $conn->prepare("SELECT * FROM users WHERE status = 'not_approved' ");
     $stmt_banned->execute();
     $num_banned = $stmt_banned->rowCount();
     $banned_users = $stmt_banned->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt_approved = $conn->prepare("SELECT * FROM users WHERE status = 'approved' AND urole = 'user'");
+    $stmt_approved = $conn->prepare("SELECT * FROM users WHERE status = 'approved' ");
     $stmt_approved->execute();
     $num_approved = $stmt_approved->rowCount();
     $approved_users = $stmt_approved->fetchAll(PDO::FETCH_ASSOC);

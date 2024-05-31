@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+require_once 'assets/database/connect.php';
 include_once 'includes/thai_date_time.php';
 
 $searchTitle = "";
@@ -77,7 +77,6 @@ try {
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="assets/css/navigator.css">
     <link rel="stylesheet" href="assets/css/maintenance.css">
-    <script src="ajax.js"></script>
 </head>
 
 <body>
