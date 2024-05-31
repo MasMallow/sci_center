@@ -197,7 +197,7 @@ try {
                                     <td><?= htmlspecialchars($row['amount'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><label>
-                                            <input type="checkbox" name="selected_ids[]" value="<?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <input type="checkbox" name="id[]" value="<?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') ?>">
                                             <span class="custom-checkbox"></span>
                                         </label></td>
                                 </tr>
