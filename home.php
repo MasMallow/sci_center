@@ -32,12 +32,12 @@ if (isset($_SESSION['staff_login'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCICENTER Management</title>
     <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="assets/css/navigator.css">
     <script src="ajax.js"></script>
-    <title>SCICENTER Management</title>
 </head>
 
 <body>
@@ -94,13 +94,19 @@ if (isset($_SESSION['staff_login'])) {
                             </a>
                             <ul class="sb-sub-ul">
                                 <li>
-                                    <a href="Check_the_request.php">
+                                    <a href="check_request">
                                         <i class="icon fa-solid fa-square-check"></i>
                                         <span class="text">ตรวจสอบการขอใช้</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="booking_log">
+                                        <i class="icon fa-solid fa-square-check"></i>
+                                        <span class="text">ตรวจสอบการจอง</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="check_request_notification">
                                         <i class="icon fa-solid fa-square-check"></i>
                                         <span class="text">ตรวจสอบการจอง</span>
                                     </a>

@@ -6,6 +6,16 @@
   src: url("../fonts/Sarabun-Bold.ttf");
   font-family: Sarabun-bold;
 }
+@keyframes movingY {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
 * {
   margin: 0;
   padding: 0;
@@ -24,24 +34,28 @@
   align-items: center;
 }
 .register_page {
-  background-color: #707070;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dbdbdb;
   border-radius: 5px;
-  min-width: 500px;
-  max-width: 700px;
-  width: 100%;
+  min-width: 550px;
+  animation: movingY 0.5s ease;
 }
 .register_page .register_page_head {
-  font-size: 2rem;
-  padding: 0.7rem 1.2rem;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dbdbdb;
+  font-size: 1.35rem;
 }
 .register_page .register_page_body {
-  padding: 20px;
+  display: grid;
+  padding: 0.6rem 1rem;
+  gap: 0.785rem;
 }
 .register_page_body .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 0.7rem 1rem;
 }
 .register_page_body .pagination .number {
@@ -50,12 +64,12 @@
   text-align: center;
   line-height: 28px;
   border-radius: 50%;
-  background-color: #00aaee;
+  background-color: #01bdb6;
   color: #fff;
   font-size: 15px;
 }
 .register_page_body .pagination .bar {
-  background-color: #00aaee;
+  background-color: #01bdb6;
   width: 50px;
   height: 4px;
   text-align: center;
@@ -65,10 +79,6 @@
   background-color: #ddd;
   color: #111;
 }
-.register_page_body .steps {
-  width: 400%;
-  display: flex;
-}
 .register_page_body .form {
   display: none;
 }
@@ -76,7 +86,12 @@
   display: block;
 }
 .form .form_header {
-  font-size: 1.1rem;
+  font-size: 1rem;
+}
+.form .form_header_3 {
+  text-align: center;
+  font-size: 1.25em;
+  padding: 1rem 0;
 }
 .form .form_body {
   margin-top: 1.25rem;
@@ -92,6 +107,7 @@
 .form .input_box_1 span,
 .form .input_box_2 span {
   display: block;
+  padding-left: 0.5rem;
   margin-bottom: 0.25rem;
 }
 .input_box_1 input,
@@ -99,7 +115,7 @@
 .input_box_2 input,
 .input_box_2 select {
   position: relative;
-  height: 50px;
+  height: 45px;
   width: 100%;
   outline: none;
   border: 1px solid #ddd;
@@ -130,33 +146,26 @@ select:focus {
 }
 .register_page_footer_2 {
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
 }
-.register_page_footer_1 .btn_next {
+.register_page_footer_1 .btn_next,
+.register_page_footer_2 .btn_prev,
+.register_page_footer_2 .btn_next {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.7rem;
-  background-color: rgb(0, 119, 255);
-  padding: 0.55rem 1.2rem;
-  font-size: 0.95rem;
+  gap: 0.5rem;
+  color: #fff;
+  background-color: rgb(30, 124, 248);
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
   border-radius: 5px;
-  color: black;
   transition: all 0.3s;
   cursor: pointer;
-}
-.register_page_footer_2 .btn_prev {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.7rem;
-  background-color: rgb(113, 155, 204);
-  padding: 0.55rem 1.2rem;
-  font-size: 0.95rem;
-  border-radius: 5px;
-  color: black;
-  transition: all 0.3s;
-  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(0, 86, 199);
+  }
 }
 
 /* Button */
@@ -164,58 +173,47 @@ select:focus {
   display: flex;
   justify-content: space-between;
   margin-top: 1.5rem;
+
+  & .btn_sign_up {
+    display: flex;
+    gap: 0.5rem;
+  }
 }
 .btn_section_sign_up .submit {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
   outline: none;
   border: none;
-  padding: 10px 5px;
-  border-radius: 5px;
-  height: 40px;
-  width: 120px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   color: white;
-  background-color: rgb(62, 143, 248);
+  background-color: rgb(30, 124, 248);
   transition: all 0.3s;
   cursor: pointer;
-  font-size: .9rem;
-}
-.btn_section_sign_up .submit:hover {
-  background-color: rgb(0, 110, 255);
-}
+  font-size: 0.875rem;
 
-.btn_section_sign_up .reset {
-  outline: none;
-  border: none;
-  padding: 10px 5px;
-  height: 40px;
-  width: 120px;
-  border-radius: 5px;
-  color: black;
-  background-color: #f1d979;
-  transition: all 0.3s;
-  cursor: pointer;
-  font-size: .9rem;
-}
-.btn_section_sign_up .reset:hover {
-  background-color: #ffd119;
+  &:hover {
+    background-color: rgb(0, 86, 199);
+  }
 }
 .btn_section_sign_up .cancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   outline: none;
   border: none;
-  padding: 10px 5px;
-  height: 40px;
-
-  width: 120px;
-  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   color: white;
-  background-color: rgb(247, 95, 95);
+  background-color: rgb(201, 53, 53);
   transition: all 0.3s;
   cursor: pointer;
-  font-size: .9rem;
-}
-.btn_section_sign_up .cancel:hover {
-  background-color: #c50014;
+  font-size: 0.875rem;
+
+  &:hover {
+  background-color: rgb(167, 6, 6);
+  }
 }

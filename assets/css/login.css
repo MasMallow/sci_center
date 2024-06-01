@@ -40,8 +40,6 @@
   min-width: 480px;
   animation: movingY 0.5s ease;
 }
-
-/* header */
 .box_content_header {
   padding: 1rem 1rem;
   border-bottom: 1px solid #dbdbdb;

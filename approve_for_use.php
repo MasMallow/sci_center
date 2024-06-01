@@ -69,7 +69,7 @@ $previousSn = '';
 </head>
 
 <body>
-    <?php include('includes/header.php') ?>
+    <header><?php include('includes/header.php') ?></header>
     <div class="header_approve">
         <div class="header_approve_section">
             <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>

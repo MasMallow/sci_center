@@ -17,18 +17,40 @@ if (isset($_POST['signup'])) {
     $urole = 'user';
     $status = 'wait_approved';
 
+    // $_SESSION['form_values'] = array(
+    //     'username' => $username,
+    //     'password' => $password,
+    //     'confirmpassword' => $confirmpassword,
+    //     'pre' => $pre,
+    //     'surname' => $surname,
+    //     'lastname' => $lastname,
+    //     'role' => $role,
+    //     'line_id' => $line_id,
+    //     'phone_number' => $phone_number,
+    //     'agency' => $agency
+    // );
+
+
     // ตรวจสอบชื่อผู้ใช้ซ้ำ
     $check_username = $conn->prepare("SELECT username FROM users WHERE username = :username");
     $check_username->bindParam(":username", $username);
     $check_username->execute();
-    $username_exists = $check_username->fetch(PDO::FETCH_ASSOC);
-
-    if ($username_exists) {
+    if ($check_username->rowCount() > 0) {
         $_SESSION['error1'] = "Username นี้มีอยู่ในระบบแล้ว";
         header("location:../auth/sign_up.php");
-        exit; // หยุดการทำงานเพื่อป้องกันการทำงานเพิ่มเติม
+        $_SESSION['form_values'] = array(
+            'password' => $password,
+            'confirmpassword' => $confirmpassword,
+            'pre' => $pre,
+            'surname' => $surname,
+            'lastname' => $lastname,
+            'role' => $role,
+            'line_id' => $line_id,
+            'phone_number' => $phone_number,
+            'agency' => $agency
+        );
+        exit;
     }
-
     // ตรวจสอบข้อผิดพลาดและดำเนินการต่อ
     if (empty($username)) {
         $_SESSION['error1'] = 'กรุณากรอก username';
@@ -108,7 +130,7 @@ if (isset($_POST['signup'])) {
                 $stmt->bindParam(":role", $role);
                 $stmt->bindParam(":agency", $agency);
                 $stmt->bindParam(":urole", $urole);
-                $stmt->bindParam(":status", $status); // ต้องเพิ่มการ bind ตัวแปร $status ด้วย
+                $stmt->bindParam(":status", $status);
                 $stmt->execute();
                 $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว <a href='sign_in.php' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";
                 header("location:../auth/sign_up.php");
