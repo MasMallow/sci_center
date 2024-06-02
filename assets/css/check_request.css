@@ -101,3 +101,23 @@ tbody tr {
 .serial_number {
   padding-left: 1rem;
 }
+.return {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  outline: none;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #50c878;
+  transition: all 0.3s;
+  width: 200px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #008000;
+  }
+}

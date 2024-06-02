@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+require_once 'assets/database/connect.php';
 
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
@@ -136,7 +136,7 @@ if (isset($_GET['action'])) {
                     </div>
                     <div class="footer_section">
                         <div class="footer_section_return_date">
-                            <span>ระบุวันที่ เวลาที่คืนอุปกรณ์ และเครื่องมือ</span>
+                            <span>ระบุวันที่ เวลาที่ต้องการจองอุปกรณ์ และเครื่องมือ</span>
                             <input type="datetime-local" name="reservation_date" required>
                         </div>
                         <div class="footer_section_btn">
@@ -144,7 +144,7 @@ if (isset($_GET['action'])) {
                                 <a href="../project/" class="back_to_main">กลับหน้าหลัก</a>
                             </div>
                             <div class="footer_section_btn_2">
-                                <button class="submit" type="submit" name="update">ยืนยัน</button>
+                                <button class="submit" type="submit" name="reservation">ยืนยัน</button>
                                 <a href="reserve_cart.php?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
                             </div>
                         </div>

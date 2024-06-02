@@ -41,8 +41,6 @@ if (isset($_SESSION['staff_login'])) {
 </head>
 
 <body>
-
-
     <?php
     include_once('includes/header.php');
     ?>
@@ -102,11 +100,11 @@ if (isset($_SESSION['staff_login'])) {
                                 <li>
                                     <a href="booking_log">
                                         <i class="icon fa-solid fa-square-check"></i>
-                                        <span class="text">ตรวจสอบการจอง</span>
+                                        <span class="text">ติดตามการจอง</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="check_request_notification">
+                                    <a href="bookings_list">
                                         <i class="icon fa-solid fa-square-check"></i>
                                         <span class="text">ตรวจสอบการจอง</span>
                                     </a>

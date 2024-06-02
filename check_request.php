@@ -48,6 +48,24 @@ if (isset($_SESSION['user_login'])) {
             }
         }
     </script>
+    <style>
+        /* ซ่อนแถวขยายโดยค่าเริ่มต้น */
+        .expand_row {
+            display: none;
+        }
+
+        /* แสดงแถวขยายเมื่อมีคลาส visible */
+        .expand_row.visible {
+            display: table-row;
+        }
+
+        /* กำหนดสไตล์ให้ปุ่มเปิด/ปิดเป็นลิงก์และมีสีฟ้า */
+        .open_expand_row {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
@@ -64,21 +82,24 @@ if (isset($_SESSION['user_login'])) {
         <table class="table_maintenace">
             <thead>
                 <tr>
-                    <th class="serial_number">Serial Number</th>
-                    <th class="list">รายการที่ขอใช้งาน</th>
-                    <th class="borrowdatetime">วันเวลาที่ขอใช้งาน</th>
-                    <th class="returndate">วันเวลาที่สิ้นสุดขอใช้งาน</th>
-                    <th class="approver">ผู้อนุมัติ</th>
-                    <th class="approvaldatetime">วันเวลาที่อนุมัติ</th>
-                    <th class="situation">สถานะ</th>
-                    <th class="return_list">คืนรายการที่ขอใช้งาน</th>
+                    <th class="serial_number"><span id="B">Serial Number</span></th>
+                    <th class="list"><span id="B">รายการที่ขอใช้งาน</span></th>
+                    <th class="borrowdatetime"><span id="B">วันเวลาที่ขอใช้งาน</span></th>
+                    <th class="returndate"><span id="B">วันเวลาที่สิ้นสุดขอใช้งาน</span></th>
+                    <th class="return_list"><span id="B">คืนรายการที่ขอใช้งาน</span></th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (!empty($dataList)) : ?>
                     <?php foreach ($dataList as $data) : ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($data['sn']); ?></td>
+                            <!-- คอลัมน์สำหรับหมายเลขลำดับและปุ่มเปิด/ปิด -->
+                            <td class="serial_number">
+                                <!-- ปุ่มเปิด/ปิดแถวขยาย เมื่อคลิกจะเรียกใช้ฟังก์ชัน toggleExpandRow -->
+                                <span class="open_expand_row" onclick="toggleExpandRow(this)">เปิด</span>
+                                <?php echo htmlspecialchars($data['sn']); ?>
+                            </td>
+                            <!-- คอลัมน์สำหรับแสดงรายการที่ยืม -->
                             <td>
                                 <?php
                                 $items = explode(',', $data['itemborrowed']);
@@ -90,17 +111,28 @@ if (isset($_SESSION['user_login'])) {
                                 }
                                 ?>
                             </td>
+                            <!-- คอลัมน์สำหรับแสดงวันที่ยืม -->
                             <td><?php echo thai_date_time(htmlspecialchars($data['borrowdatetime'])); ?></td>
+                            <!-- คอลัมน์สำหรับแสดงวันที่คืน -->
                             <td><?php echo thai_date_time($data['returndate']); ?></td>
-                            <td><?php echo htmlspecialchars($data['approver']); ?></td>
-                            <td><?php echo thai_date_time($data['approvaldatetime']); ?></td>
-                            <td><?php echo htmlspecialchars($data['situation']); ?></td>
+                            <!-- คอลัมน์สำหรับปุ่มคืนรายการ -->
                             <td>
                                 <form method="POST" action="check_request_notification">
                                     <input type="hidden" name="return_id" value="<?php echo htmlspecialchars($data['id']); ?>">
                                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($data['udi']); ?>">
-                                    <button type="submit" onclick="confirmReturn(event)">คืนอุปกรณ์</button>
+                                    <button type="submit" class="return" onclick="confirmReturn(event)">คืนรายการที่ขอใช้งาน</button>
                                 </form>
+                            </td>
+                        </tr>
+                        <!-- แถวขยายสำหรับแสดงข้อมูลผู้อนุมัติและวันที่อนุมัติ -->
+                        <tr class="expand_row">
+                            <td colspan="5">
+                                <div>
+                                    <?php echo htmlspecialchars($data['approver']); ?>
+                                </div>
+                                <div>
+                                    <?php echo thai_date_time($data['approvaldatetime']); ?>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -112,6 +144,23 @@ if (isset($_SESSION['user_login'])) {
             </tbody>
         </table>
     </div>
+    <script>
+        function toggleExpandRow(element) {
+            // หาตัวแถวที่ใกล้ที่สุดกับปุ่มที่ถูกคลิก
+            const row = element.closest('tr');
+            // หาแถวถัดไปที่เป็นแถวขยาย
+            const expandRow = row.nextElementSibling;
+
+            // สลับคลาส visible เพื่อแสดงหรือซ่อนแถวขยาย
+            if (expandRow.classList.contains('visible')) {
+                expandRow.classList.remove('visible');
+                element.textContent = 'เปิด'; // เปลี่ยนข้อความปุ่มเป็น 'เปิด'
+            } else {
+                expandRow.classList.add('visible');
+                element.textContent = 'ปิด'; // เปลี่ยนข้อความปุ่มเป็น 'ปิด'
+            }
+        }
+    </script>
 </body>
 
 </html>
