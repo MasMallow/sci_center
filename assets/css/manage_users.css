@@ -87,7 +87,7 @@ button.search:active {
 }
 
 .user_approve_data_header {
-  font-size: 1.05rem;
+  font-size: 1rem;
   padding-left: 0.75rem;
   padding-bottom: 0.5rem;
 }
@@ -274,4 +274,21 @@ tbody tr {
 input:focus,
 select:focus {
   border: 1px solid rgb(0, 119, 255);
+}
+
+.user_approve_not_found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10rem;
+}
+.user_approve_not_found i {
+  font-size: 4rem;
+  color: #bdbdbd;
+  margin: 1rem 0;
+}
+.user_approve_not_found span {
+  font-size: 1.5rem;
+  margin-top: 1rem;
 }

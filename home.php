@@ -93,23 +93,29 @@ if (isset($_SESSION['staff_login'])) {
                             <ul class="sb-sub-ul">
                                 <li>
                                     <a href="check_request">
-                                        <i class="icon fa-solid fa-square-check"></i>
-                                        <span class="text">ตรวจสอบการขอใช้</span>
+                                        <i class="fa-solid fa-hourglass-end"></i>
+                                        <span class="text">สิ้นสุดการขอใช้</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="booking_log">
-                                        <i class="icon fa-solid fa-square-check"></i>
+                                        <i class="fa-solid fa-calendar-check"></i>
                                         <span class="text">ติดตามการจอง</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="bookings_list">
-                                        <i class="icon fa-solid fa-square-check"></i>
-                                        <span class="text">ตรวจสอบการจอง</span>
+                                        <i class="fa-solid fa-calendar-xmark"></i>
+                                        <span class="text">ยกเลิกการจอง</span>
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                        <li>
+                            <a class="link" href="notification">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span class="text">แจ้งเตือน</span>
+                            </a>
                         </li>
                     </ul>
                 </div>

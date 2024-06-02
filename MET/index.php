@@ -28,23 +28,23 @@ try {
     <nav class="content_area_nav">
         <div class="section_1">
             <div class="section_1_btn_1">
-                <a href="cart">
+                    <a href="cart">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>รายการที่เลือกทั้งหมด</span>
                 </a>
-            </div>
-            <div class="section_1_btn_2">
-                <a href="reserve_cart.php">
+                </div>
+            <a class="section_1_btn_2" href="reserve_cart.php">
+                <div>
                     <i class="fa-solid fa-thumbtack"></i>
                     <span>รายการที่จอง</span>
-                </a>
-            </div>
-            <div class="section_1_btn_3">
-                <a href="booking_log.php">
+                </div>
+            </a>
+            <a class="section_1_btn_3" href="booking_log.php">
+                <div>
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>ดูประวัติการจองก่อนยืมใช้</span>
-                </a>
-            </div>
+                </div>
+            </a>
         </div>
         <div class="section_2">
             <div class="date" id="date"></div>

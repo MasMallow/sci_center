@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="user_info_footer">
-                        <a class="edit_users" href="edit_profile/home.php">
+                        <a class="edit_users" href="edit_profile/edit">
                             <i class="fa-solid fa-user-pen"></i>
                             <span>แก้ไขบัญชีผู้ใช้</span>
                         </a>
