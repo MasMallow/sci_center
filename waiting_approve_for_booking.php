@@ -35,7 +35,7 @@ for ($i = 0; $i < 7; $i++) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reservation'])) {
         $reservationdate = $_POST['reservation_date'];
-        $items = $_POST['amount'] ?? [];
+        $items = $_POST['amount'];
 
         $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);

@@ -1,4 +1,4 @@
-<h1>ประวัติการจอง</h1>
+<h1>ตารางการจอง</h1>
 <h1>*ห้ามยืมอุปกรณ์ที่ถูกจองในวันที่จอง*</h1>
 <a href="home.php">กลับหน้าหลัก</a>
 <a href="history_booking_log.php">ประวัติการจองทั้งหมด</a>
@@ -7,6 +7,7 @@
 <?php
 session_start();
 require_once 'assets/database/connect.php';
+include_once 'includes/thai_date_time.php';
 
 try {
     $sql = "SELECT * FROM bookings WHERE reservation_date >= CURDATE() AND situation = 1";
@@ -20,7 +21,7 @@ try {
         </tr>";
         while ($row = $stmt->fetch()) {
             echo "<tr>";
-            $items = explode(',', $row['product_name']);
+            $items = explode(',', $row['list_name']);
             echo "<td>";
             foreach ($items as $item) {
                 $item_parts = explode('(', $item); // แยกชื่ออุปกรณ์และจำนวน
@@ -29,7 +30,7 @@ try {
                 echo $product_name . " " . $quantity . " ชิ้น ";
             }
             echo "</td>";
-            echo "<td>" . $row['reservation_date'] . "</td>";
+            echo "<td>" . thai_date_time($row['reservation_date']) . "</td>";
             echo "</tr>";
         }
         echo "</table>";

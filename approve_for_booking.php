@@ -112,7 +112,7 @@ $previousFirstname = '';
                                     <td>
                                         <?php
                                         // แยกข้อมูล Item Borrowed
-                                        $items = explode(',', $row['product_name']);
+                                        $items = explode(',', $row['list_name']);
 
                                         // แสดงข้อมูลรายการที่ยืม
                                         foreach ($items as $item) {
