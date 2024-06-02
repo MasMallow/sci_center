@@ -101,11 +101,11 @@ if (isset($_GET['action'])) {
                                 <th class="th_categories"><span id="B">ประเภท</span></th>
                                 <th class="th_amount"><span id="B">จำนวน</span></th>
                             </tr>
-                            <?php foreach ($_SESSION['reserve_cart'] as $itemToAdd) : ?>
+                            <?php foreach ($_SESSION['reserve_cart'] as $item) : ?>
                                 <?php
                                 // Retrieve product details from the database based on the item
                                 $query = $conn->prepare("SELECT * FROM crud WHERE img = :itemToAdd");
-                                $query->bindParam(':itemToAdd', $itemToAdd, PDO::PARAM_STR);
+                                $query->bindParam(':itemToAdd', $item, PDO::PARAM_STR);
                                 $query->execute();
                                 $product = $query->fetch(PDO::FETCH_ASSOC);
 
