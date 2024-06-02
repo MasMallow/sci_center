@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_ids'])) {
     }
     
     // Redirect back to bookings_list.php or display a confirmation message
-    header('Location: bookings_list.php');
+    header('Location: bookings_list');
     exit();
 }
 ?>

@@ -1,6 +1,7 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+require_once 'assets/database/connect.php';
+include 'includes/thai_date_time.php';
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
     $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
@@ -57,32 +58,53 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
     ?>
         <form method="POST" action="cancel_booking">
-            <table>
-                <tr>
-                    <th>ชื่ออุปกรณ์</th>
-                    <th>จำนวน</th>
-                    <th>วันที่จะยืมของ</th>
-                    <th>วันที่กดจอง</th>
-                    <th>ยกเลิกการจอง</th>
-                </tr>
-                <?php foreach ($bookings as $booking) : ?>
-                    <tr>
-                        <td><?php echo $booking['sci_name']; ?></td>
-                        <td><?php echo $booking['quantity']; ?></td>
-                        <td><?php echo $booking['reservation_date']; ?></td>
-                        <td><?php echo $booking['created_at']; ?></td>
-                        <td>
-                            <input type="checkbox" name="booking_ids[]" value="<?php echo $booking['id']; ?>">
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                <input type="hidden" name="user_id" value="<?php echo $bookings[0]['user_id']; ?>">
-            </table>
-            <button type="submit">ยกเลิกการจอง</button>
+            <div class="maintenance_section">
+                <div class="table_maintenace_section">
+                    <table class="table_maintenace">
+                        <thead>
+                            <tr>
+                                <th class="serial_number"><span id="B">Serial Number</span></th>
+                                <th><span id="B">รายการ</span></th>
+                                <th><span id="B">วัน เวลาที่ทำรายการ</span></th>
+                                <th><span id="B">วัน เวลาจอง</span></th>
+                                <th>
+                                    <span id="B">ยกเลิกการจอง</span>
+                                    <input type="hidden" name="user_id" value="<?php echo $bookings[0]['user_id']; ?>">
+                                    <button type="submit">ยกเลิกการจอง</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <?php foreach ($bookings as $booking) : ?>
+                            <tbody>
+                                <tr>
+                                    <td class="serial_number"><?= $booking['serial_number'] ?></td>
+                                    <td>
+                                        <?php
+                                        // แยกข้อมูล Item Borrowed
+                                        $items = explode(',', $booking['list_name']);
+
+                                        // แสดงข้อมูลรายการที่ยืม
+                                        foreach ($items as $item) {
+                                            $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
+                                            $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
+                                            $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
+                                            echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
+                                        }
+                                        ?>
+                                    <td><?php echo thai_date_time($booking['reservation_date']); ?></td>
+                                    <td><?php echo thai_date_time($booking['created_at']); ?></td>
+                                    <td>
+                                        <input type="checkbox" name="booking_ids[]" value="<?php echo $booking['id']; ?>">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+            </div>
         </form>
     <?php } ?>
 
-    <!-- Add necessary JavaScript here -->
 </body>
 
 </html>
