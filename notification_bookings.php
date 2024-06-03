@@ -26,11 +26,13 @@ if (isset($_SESSION['user_login'])) {
     exit();
 }
 
-$firstname = $userData['surname'];
-$stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE firstname = :firstname ORDER BY id");
+// ตรวจสอบว่ามีข้อมูลผู้ใช้หรือไม่
+$firstname = $userData['pre'] . $userData['surname'] . ' ' . $userData['lastname'];
+$stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE firstname = :firstname");
 $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -57,35 +59,34 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <div class="notification_section">
-        <?php
-        if (!empty($data)) { ?>
+        <?php if (!empty($data)) : ?>
             <table class="table_notification">
                 <thead>
                     <tr>
                         <th class="serial_number"><span id="B">หมายเลขรายการ</span></th>
-                        <th><span id="B">รายการที่ขอใช้งาน</span></th>
-                        <th><span id="B">วันเวลาที่ขอใช้งาน</span></th>
-                        <th><span id="B">วันเวลาที่สิ้นสุดขอใช้งาน</span></th>
+                        <th><span id="B">รายการที่ขอจอง</span></th>
+                        <th><span id="B">วันเวลาที่ทำรายการ</span></th>
+                        <th><span id="B">วันเวลาที่ขอจอง</span></th>
                         <th><span id="B">สถานะ</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($data as $row) : ?>
                         <tr>
-                            <td class="serial_number"><?php echo htmlspecialchars($row['sn']); ?></td>
+                            <td class="serial_number"><?php echo htmlspecialchars($row['serial_number']); ?></td>
                             <td>
                                 <?php
-                                $items = explode(',', $row['itemborrowed']);
+                                $items = explode(',', $row['list_name']);
                                 foreach ($items as $item) {
                                     $item_parts = explode('(', $item);
                                     $product_name = trim($item_parts[0]);
                                     $quantity = isset($item_parts[1]) ? str_replace(')', '', $item_parts[1]) : 'ไม่ระบุ';
-                                    echo htmlspecialchars($product_name) . ' <span>( ' . htmlspecialchars($quantity) . ' รายการ)</span><br>';
+                                    echo htmlspecialchars($product_name) . ' <span id="B">( ' . htmlspecialchars($quantity) . ' รายการ )</span><br>';
                                 }
                                 ?>
                             </td>
-                            <td><?php echo thai_date_time($row['borrowdatetime']); ?></td>
-                            <td><?php echo thai_date_time($row['returndate']); ?></td>
+                            <td><?php echo thai_date_time($row['created_at']); ?></td>
+                            <td><?php echo thai_date_time($row['reservation_date']); ?></td>
                             <td>
                                 <?php
                                 echo $row['situation'] === null ? 'ยังไม่ได้รับอนุมัติ' : ($row['situation'] == 1 ? 'ได้รับอนุมัติ' : htmlspecialchars($row['situation']));
@@ -95,14 +96,12 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php } else { ?>
+        <?php else : ?>
             <div class="user_approve_not_found">
                 <i class="fa-solid fa-address-book"></i>
                 <span id="B">ไม่มีแจ้งเตือนการจอง</span>
-            </div> <?php
-
-                }
-                    ?>
+            </div>
+        <?php endif; ?>
     </div>
 </body>
 

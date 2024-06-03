@@ -41,8 +41,7 @@ if (isset($_SESSION['staff_login'])) {
                         echo '<span id="B">เพิ่มวัสดุ</span>';
                     } elseif ($type == 'equipment') {
                         echo '<span id="B">เพิ่มอุปกรณ์</span>';
-                    }
-                    elseif ($type == 'tools') {
+                    } elseif ($type == 'tools') {
                         echo '<span id="B">เพิ่มเครื่องมือ</span>';
                     }
                 }
@@ -136,7 +135,7 @@ if (isset($_SESSION['staff_login'])) {
                                 </div>
                                 <div class="input_box">
                                     <span>คนติดต่อ</span>
-                                    <input type="text" name="contact" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                                    <input type="text" name="contact" placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
                                 </div>
                             </div>
                             <div class="col">

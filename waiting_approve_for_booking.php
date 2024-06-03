@@ -59,8 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $itemBorrowed = implode(', ', $itemList);
 
-        $insert_query = $conn->prepare("INSERT INTO bookings 
-            (user_id, firstname, list_name, created_at, reservation_date, approvaldatetime, approver, serial_number, situation) VALUES 
+        $insert_query = $conn->prepare("INSERT INTO approve_to_bookings (
+            user_id, firstname, list_name, created_at, reservation_date, approvaldatetime, approver, serial_number, situation) VALUES 
             (:user_id, :firstname, :itemBorrowed, NOW(), :reservationdate, NULL, NULL, :random_string, NULL)");
         $insert_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $insert_query->bindParam(':firstname', $firstname, PDO::PARAM_STR);
@@ -76,13 +76,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     รออนุมัติจากAdminนะครับ
     <a href="home.php">กลับหน้าหลัก</a>
 </body>
+
 </html>
