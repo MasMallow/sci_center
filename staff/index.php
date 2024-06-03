@@ -1,5 +1,19 @@
 <?php
 require_once 'assets/database/connect.php';
+
+$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY sn");
+$stmt->execute();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$num = count($data); // นับจำนวนรายการ
+
+$bookings = $conn->prepare("SELECT * FROM approve_to_bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
+$bookings->execute();
+$data = $bookings->fetchAll(PDO::FETCH_ASSOC);
+$numbookings = count($data); // นับจำนวนรายการ
+$user = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' AND urole = 'user'");;
+$user->execute();
+$datauser = $user->fetchAll(PDO::FETCH_ASSOC);
+$numuser = count($datauser); // นับจำนวนรายการ
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +22,6 @@ require_once 'assets/database/connect.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCICENTER Management || Staff</title>
-
     <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="assets/css/staff.css">
 </head>
@@ -24,37 +37,38 @@ require_once 'assets/database/connect.php';
                 <ul class="staff_content_ul">
                     <li>
                         <div class="staff_menu">
-                            <a href="crud/management.php">
+                            <a href="crud/management.php" class="user_approval_btn">
                                 <i class="fa-solid fa-plus-minus"></i>
                                 <span class="text">จัดการระบบข้อมูล</span>
                             </a>
                         </div>
                     </li>
                     <li>
-                        <?php 
-                        $user = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' AND urole = 'user'");;
-                        $user->execute();
-                        $datauser = $user->fetchAll(PDO::FETCH_ASSOC);
-                        $numuser = count($datauser); // นับจำนวนรายการ
-                        ?>
                         <div class="staff_menu">
-                            <a href="user_approval">
+                            <a href="user_approval" class="<?php if ($numuser == '0') {
+                                                                echo 'user_approval_btn';
+                                                            } elseif ($numuser > 0) {
+                                                                echo 'user_approval_have';
+                                                            } ?>">
                                 <i class="fa-solid fa-address-book"></i>
-                                <span>อนุมัติผู้สร้างบัญชี<?php echo "(" . $numuser . ")"; ?></span>
+                                <span class="text">อนุมัติผู้สร้างบัญชี</span>
+                                <span id="B">
+                                    <?php echo "(" . $numuser . ")"; ?>
+                                </span>
                             </a>
                         </div>
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="manage_users">
+                            <a href="manage_users" class="user_approval_btn">
                                 <i class="fa-solid fa-user-gear"></i>
-                                <span>อนุมัติผู้สร้างบัญชี</span>
+                                <span>การจัดการบัญชีผู้ใช้</span>
                             </a>
                         </div>
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="maintenance">
+                            <a href="maintenance" class="user_approval_btn">
                                 <i class="icon fa-solid fa-screwdriver-wrench"></i>
                                 <span class="text">การบำรุงรักษา</span>
                             </a>
@@ -62,36 +76,35 @@ require_once 'assets/database/connect.php';
                     </li>
                 </ul>
                 <ul class="staff_content_ul">
-                    <?php
-                    $stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY sn");
-                    $stmt->execute();
-                    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $num = count($data); // นับจำนวนรายการ
-
-                    $bookings = $conn->prepare("SELECT * FROM approve_to_bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
-                    $bookings->execute();
-                    $data = $bookings->fetchAll(PDO::FETCH_ASSOC);
-                    $numbookings = count($data); // นับจำนวนรายการ
-                    ?>
                     <li>
                         <div class="staff_menu">
-                            <a href="approve_for_use">
+                            <a href="approve_for_use" class="<?php if ($numuser == '0') {
+                                                                    echo 'user_approval_btn';
+                                                                } elseif ($numuser > 0) {
+                                                                    echo 'user_approval_have';
+                                                                } ?>">
                                 <i class="icon fa-solid fa-square-check"></i>
-                                <span class="text">การอนุมัติการยืม <?php echo "(" . $num . ")"; ?></span>
+                                <span class="text">การอนุมัติการยืม</span>
+                                <span id="B"><?php echo "(" . $num . ")"; ?></span>
                             </a>
                         </div>
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="approve_for_booking">
+                            <a href="approve_for_booking" class="<?php if ($numuser == '0') {
+                                                                        echo 'user_approval_btn';
+                                                                    } elseif ($numuser > 0) {
+                                                                        echo 'user_approval_have';
+                                                                    } ?>">
                                 <i class="icon fa-solid fa-square-check"></i>
-                                <span class="text">การอนุมัติการจอง <?php echo "(" . $numbookings . ")"; ?></span>
+                                <span class="text">การอนุมัติการจอง</span>
+                                <span id="B"><?php echo "(" . $numbookings . ")"; ?></span>
                             </a>
                         </div>
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="view_report">
+                            <a href="view_report" class="user_approval_btn">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
                                 <span class="text">ประวัติการขอใช้</span>
                             </a>
@@ -99,7 +112,7 @@ require_once 'assets/database/connect.php';
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="view_report_booking">
+                            <a href="view_report_booking" class="user_approval_btn">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
                                 <span class="text">ประวัติการจอง</span>
                             </a>

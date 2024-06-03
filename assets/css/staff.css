@@ -22,9 +22,6 @@
   min-height: 100vh;
   width: 1300px;
   margin: 3rem auto;
-  /* display: flex;
-  justify-content: center; 
-  align-items: center; */
 }
 .staff_section {
   border: 1px solid #bbb;
@@ -54,25 +51,45 @@
 .staff_content_ul li {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 20%;
 
-  & i{
+  & i {
     font-size: 1.5rem;
   }
 }
-.staff_menu a {
+.user_approval_btn  {
   width: 175px;
   height: 150px;
-  padding: 1.25rem;
+  padding: 0.75rem;
   border-radius: 5px;
   border: 1px solid #bbb;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
   text-decoration: none;
   color: #444444;
+  transition: all 0.25s;
+  &:hover {
+    border: 1.5px solid #777777;
+    background-color: #e0e0e0;
+  }
+}
+.user_approval_have {
+  width: 175px;
+  height: 150px;
+  padding: 0.75rem;
+  border-radius: 5px;
+  border: 1px solid #e90f0f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #e90f0f;
   transition: all 0.25s;
   &:hover {
     border: 1.5px solid #777777;

@@ -26,7 +26,8 @@ if (isset($_SESSION['user_login'])) {
     exit();
 }
 
-$firstname = $userData['surname'];
+$firstname = $userData['pre'] . $userData['surname'] . ' ' . $userData['lastname'];
+var_dump($firstname);
 $stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE firstname = :firstname ORDER BY id");
 $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
 $stmt->execute();

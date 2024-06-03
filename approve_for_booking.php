@@ -66,7 +66,7 @@ $previousFirstname = '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>อนุมัติการจอง</title>
-
+    <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="assets/css/navigator.css">
     <link rel="stylesheet" href="assets/css/approval.css">
@@ -84,6 +84,7 @@ $previousFirstname = '';
         <div class="approve_table_section">
             <?php if (empty($data)) { ?>
                 <div class="approve_not_found_section">
+                    <i class="fa-solid fa-xmark"></i>
                     <span id="B">ไม่พบข้อมูลการจอง</span>
                 </div>
             <?php } ?>
