@@ -34,12 +34,33 @@
   max-width: 750px;
   margin: 10rem auto;
   border-radius: 5px;
-  border: 1px solid #DDD;
+  border: 1px solid #ddd;
 }
+
 .edit_profile_header {
   font-size: 1.5rem;
-  padding: 0.7rem 1.2rem;
-  border-bottom: 1px solid #DDD;
+  padding: 0.5rem 1.2rem;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  & a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8f8f8f;
+    background-color: #fff;
+    text-decoration: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    transition: all 0.25s;
+    &:hover {
+      background-color: #f1efef;
+      color: #000000;
+    }
+  }
 }
 .edit_profile_body {
   padding: 0.7rem 1.2rem;
@@ -74,43 +95,49 @@ select:focus {
   border: 1px solid rgb(0, 119, 255);
 }
 .edit_profile_footer {
+  margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
 }
 .edit_profile_footer .submit {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  font-size: 0.8rem;
-  outline: none;
+  gap: 0.5rem;
   border: none;
-  padding: .7rem 2rem;
+  outline: none;
   border-radius: 5px;
-  color: white;
-  background-color: rgb(62, 143, 248);
-  transition: all 0.3s;
+  padding: 0.5rem 2rem;
+  text-decoration: none;
+  color: #fff;
+  background-color: rgb(30, 124, 248);
+  font-size: 0.8rem;
   cursor: pointer;
-}
-.edit_profile_footer .submit:hover {
-  background-color: rgb(0, 110, 255);
+  transition: all 0.25s;
+
+  &:hover {
+    background-color: rgb(0, 86, 199);
+  }
 }
 .edit_profile_footer .cancel {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
-  font-size: 0.8rem;
-  outline: none;
+  gap: 0.5rem;
   border: none;
-  padding: .7rem 1.5rem;
+  outline: none;
   border-radius: 5px;
-  color: white;
-  background-color: rgb(247, 95, 95);
-  transition: all 0.3s;
-  cursor: pointer;
-}
-.edit_profile_footer .cancel:hover {
-  background-color: #c50014;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  background-color: #ff0c0c;
+  color: #fff;
+  font-size: 0.8rem;
+  transition: all 0.25s;
+
+  &:hover {
+    background-color: #df0000;
+  }
 }
 /* ALERT */
 .edit_profile_status {

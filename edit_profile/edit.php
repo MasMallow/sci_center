@@ -74,9 +74,8 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     ?>
     <div class="edit_profile">
         <div class="edit_profile_header">
-            <div class="edit_profile_header_name">
-                <span id="B">แก้ไขบัญชีผู้ใช้</span>
-            </div>
+            <a href="../../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <span id="B">แก้ไขบัญชีผู้ใช้</span>
         </div>
         <div class="edit_profile_body">
             <form action="process/update_profile.php" method="post">
@@ -139,26 +138,11 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
                     </div>
                     <div class="input_edit">
                         <span>สังกัด</span>
-                        <select name="agency">
-                            <?php
-                            // สร้างคำสั่ง SQL เพื่อดึงข้อมูลคำนำหน้า
-                            $sql = "SELECT DISTINCT agency FROM users";
-
-                            // ดำเนินการ query
-                            $stmt = $conn->query($sql);
-                            while ($row = $stmt->fetch()) {
-                                $agencyfix = $row['agency'];
-                                // ตรวจสอบว่าคำนำหน้าในฐานข้อมูลตรงกับคำนำหน้าที่กำหนดหรือไม่
-                                $selected = ($userData['agency'] == $agencyfix) ? "selected" : "";
-                                // แสดง option
-                                echo "<option value='$agencyfix' $selected>$agencyfix</option>";
-                            }
-                            ?>
-                        </select>
+                        <input type="text" name="agency" value="<?php echo $userData['agency']; ?>">
                     </div>
                     <div class="input_edit">
                         <span>เบอร์โทรศัพท์</span>
-                        <input type="text" name="phone_number" value="<?php echo $userData['phone_number']; ?>"><br><br>
+                        <input type="text" name="phone_number" value="<?php echo $userData['phone_number']; ?>">
                     </div>
                 </div>
                 <div class="edit_profile_footer">

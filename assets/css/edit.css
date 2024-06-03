@@ -83,12 +83,6 @@
   padding-bottom: 0.7rem;
   color: #000;
 }
-.details_content_left {
-  background-color: #00aaee;
-}
-.details_content_right {
-  background-color: #82bbd1;
-}
 .details_content_li {
   list-style: none;
   width: 100%;

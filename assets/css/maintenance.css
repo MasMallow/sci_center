@@ -145,14 +145,14 @@ thead {
     width: 10%;
   }
 }
-.maintenance_button{
+.maintenance_button {
   margin: 0;
   font-size: 0.9rem;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 5px;
   border: 1px solid #9e9e9e;
-  background-color: #Fff;
-  transition: all .3s ;
+  background-color: #fff;
+  transition: all 0.3s;
   cursor: pointer;
 
   &:hover {
@@ -266,7 +266,7 @@ tbody tr {
     transform-origin: center;
   }
 }
-.checkbox{
+.checkbox {
   padding-left: 1.25rem;
 }
 /* Hide the default checkbox */
@@ -315,4 +315,20 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 /* Optional: Add hover effect */
 .custom-checkbox:hover {
   border-color: #125cd3;
+}
+.user_approve_not_found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10rem;
+}
+.user_approve_not_found i {
+  font-size: 4rem;
+  color: #bdbdbd;
+  margin: 1rem 0;
+}
+.user_approve_not_found span {
+  font-size: 1.5rem;
+  margin-top: 1rem;
 }

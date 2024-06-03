@@ -27,23 +27,17 @@ try {
 <div class="content_area">
     <nav class="content_area_nav">
         <div class="section_1">
-            <div class="section_1_btn_1">
-                    <a href="cart">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span>รายการที่เลือกทั้งหมด</span>
-                </a>
-                </div>
+            <a href="cart" class="section_1_btn_1">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>รายการที่เลือกทั้งหมด</span>
+            </a>
             <a class="section_1_btn_2" href="reserve_cart.php">
-                <div>
-                    <i class="fa-solid fa-thumbtack"></i>
-                    <span>รายการที่จอง</span>
-                </div>
+                <i class="fa-solid fa-thumbtack"></i>
+                <span>รายการที่จอง</span>
             </a>
             <a class="section_1_btn_3" href="booking_log.php">
-                <div>
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                    <span>ดูประวัติการจองก่อนยืมใช้</span>
-                </div>
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>ดูประวัติการจองก่อนยืมใช้</span>
             </a>
         </div>
         <div class="section_2">
@@ -103,104 +97,134 @@ try {
                                         </div>
                                     </div>
                                     <div class="details_content">
-                                        <ul class="details_content_li">
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">สถานะ</span>
+                                        <div class="details_content_li_left">
+                                            <div class="img_details">
+                                                <div class="img">
+                                                    <div class="imgInput">
+                                                        <img class="previewImg" src="assets/uploads/<?php echo htmlspecialchars($data['img']); ?>" loading="lazy">
+                                                    </div>
                                                 </div>
-                                                <div class="details_content_2">
-                                                    <?php if ($data['amount'] >= 50) : ?>
-                                                        <div class="ready-to-use">
-                                                            <i class="fa-solid fa-circle-check"></i>
-                                                            <span id="B">พร้อมใช้งาน</span>
-                                                        </div>
-                                                    <?php elseif ($data['amount'] <= 30 && $data['amount'] >= 1) : ?>
-                                                        <div class="moderately">
-                                                            <i class="fa-solid fa-circle-exclamation"></i>
-                                                            <span id="B">ความพร้อมปานกลาง</span>
-                                                        </div>
-                                                    <?php elseif ($data['amount'] == 0) : ?>
-                                                        <div class="not-available">
-                                                            <i class="fa-solid fa-ban"></i>
-                                                            <span id="B">ไม่พร้อมใช้งาน</span>
+                                            </div>
+                                        </div>
+                                        <div class="details_content_li_right">
+                                            <ul class="details_content_li">
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">สถานะ</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <?php if ($data['amount'] >= 50) : ?>
+                                                            <div class="ready-to-use">
+                                                                <i class="fa-solid fa-circle-check"></i>
+                                                                <span id="B">พร้อมใช้งาน</span>
+                                                            </div>
+                                                        <?php elseif ($data['amount'] <= 30 && $data['amount'] >= 1) : ?>
+                                                            <div class="moderately">
+                                                                <i class="fa-solid fa-circle-exclamation"></i>
+                                                                <span id="B">ความพร้อมปานกลาง</span>
+                                                            </div>
+                                                        <?php elseif ($data['amount'] == 0) : ?>
+                                                            <div class="not-available">
+                                                                <i class="fa-solid fa-ban"></i>
+                                                                <span id="B">ไม่พร้อมใช้งาน</span>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">Serial Number</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <span>190605002DZ12P054</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">ชื่อ</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <?= htmlspecialchars($data['sci_name']) ?>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">ประเภท</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <?= htmlspecialchars($data['categories']) ?>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">จำนวน</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <?= htmlspecialchars($data['amount']) ?>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">รุ่น</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <span>BK-FD12P</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">ยี่ห้อ</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <span>BIOBASE</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">บริษัท</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="details_content_1">
+                                                        <span id="B">รายละเอียด</span>
+                                                    </div>
+                                                    <div class="details_content_2">
+                                                        <span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <div class="details_content_footer">
+                                                <div class="content_btn">
+                                                    <?php if ($data['amount'] >= 1) : ?>
+                                                        <a href="cart.php?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="used_it">
+                                                            <i class="icon fa-solid fa-arrow-up"></i>
+                                                            <span>ขอใช้อุปกรณ์</span>
+                                                        </a>
+                                                    <?php else : ?>
+                                                        <div class="button">
+                                                            <button class="out-of">
+                                                                <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
+                                                                <span>ไม่สามารถขอใช้ได้</span>
+                                                            </button>
                                                         </div>
                                                     <?php endif; ?>
+                                                    <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
+                                                        <?php if ($data['amount'] >= 1) : ?>
+                                                            <a href="reserve_cart.php?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="reserved_it">
+                                                                <i class="fa-solid fa-address-book"></i>
+                                                                <span>จองอุปกรณ์</span>
+                                                            </a>
+                                                        <?php else : ?>
+                                                            <div class="not_available">
+                                                                <i class="fa-solid fa-check"></i>
+                                                                <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
                                                 </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">Serial Number</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <span>190605002DZ12P054</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">ชื่อ</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <?= htmlspecialchars($data['sci_name']) ?>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">ประเภท</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <?= htmlspecialchars($data['categories']) ?>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">จำนวน</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <?= htmlspecialchars($data['amount']) ?>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">รุ่น</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <span>BK-FD12P</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">ยี่ห้อ</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <span>BIOBASE</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">บริษัท</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <span>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="details_content_footer">
-                                            <div class="content_btn">
-                                                <?php if ($data['amount'] >= 1) : ?>
-                                                    <div class="button">
-                                                        <button onclick="location.href='cart.php?action=add&item=<?= htmlspecialchars($data['img']) ?>'" class="use-it">
-                                                            <i class="icon fa-solid fa-arrow-up"></i>
-                                                            <span>ขอใช้</span>
-                                                        </button>
-                                                    </div>
-                                                <?php else : ?>
-                                                    <div class="button">
-                                                        <button class="out-of">
-                                                            <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
-                                                            <span>ไม่สามารถขอใช้ได้</span>
-                                                        </button>
-                                                    </div>
-                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -233,7 +257,6 @@ try {
                                         </button>
                                     </div>
                                 <?php endif; ?>
-
                                 <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
                                     <?php if ($data['amount'] >= 1) : ?>
                                         <a href="reserve_cart.php?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="reserved_it">
