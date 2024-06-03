@@ -33,12 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update'])) {
         $returnDate = $_POST['return_date'];
         $items = $_POST['amount'];
-        $returnDates = $_POST['return_date'];
 
         if (isset($_SESSION['user_login'])) {
             $user_id = $_SESSION['user_login'];
         }
-
+        if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
+            $_SESSION['cart'] = array();
+        }
         $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $user_query->execute();
@@ -47,25 +48,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user) {
             $firstname = $user['pre'] . $user['surname'] . '' . $user['lastname'];
 
+            $checkreturnDate = date("Y-m-d", strtotime($returnDate));
             foreach ($_SESSION['cart'] as $item) {
                 // Retrieve product details from the database based on the item
                 $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
                 $query->bindParam(':item', $item, PDO::PARAM_STR);
                 $query->execute();
                 $product = $query->fetch(PDO::FETCH_ASSOC);
-
                 if ($product) {
                     $productName = $product['sci_name'];
+                    $checkBookingsDate = strtotime($product['check_bookings']); // แปลงวันที่ check_bookings เป็น timestamp Unix
+                    $currentDate = time(); // วันที่ปัจจุบันเป็น timestamp Unix
+                    $checkreturnDate = strtotime($checkreturnDate); // สมมติว่า $checkreturnDate ถูกกำหนดไว้แล้ว
+            
+                    // ตรวจสอบว่าวันที่ปัจจุบันอยู่ก่อนวันที่ check_bookings
+                    if ($currentDate < $checkBookingsDate && $checkreturnDate < $checkBookingsDate) {
+                        // ดึงจำนวนของสินค้า
+                        $quantity = isset($items[$item]) ? $items[$item] : 0;
 
-                    // Retrieve the quantity of the item
-                    $quantity = isset($items[$item]) ? $items[$item] : 0;
-
-                    // เพิ่มชื่อสินค้าและจำนวนที่ยืมลงในรายการ
-                    $itemList[] = $productName . ' (' . $quantity . ')';
+                        // เพิ่มสินค้าไปยังรายการยืม
+                        $itemList[] = $productName . ' (' . $quantity . ')';
+                    } else {
+                        // ยกเลิกกระบวนการยืมสำหรับสินค้านี้
+                        echo "อุปกรณ์ " . $product['sci_name'] . ' มีคนจองวันที่ ' . date("d-m-Y", $checkBookingsDate) . ' ต้องยืมหรือคืนก่อนวันที่ ' . date("d-m-Y", $checkBookingsDate) . '<br>';
+                        // คุณสามารถเพิ่มการดำเนินการเพิ่มเติมได้ที่นี่ถ้าจำเป็น
+                    }
                 }
             }
 
-            // รวมรายการที่ยืมเป็นสตริงเดียวโดยคั่นด้วย comma
+            //รวมรายการที่ยืมเป็นสตริงเดียวโดยคั่นด้วย comma
             if (!empty($itemList)) {
                 $itemBorrowed = implode(', ', $itemList);
 
@@ -79,8 +90,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $insert_query->execute();
 
                 unset($_SESSION['cart']);
+                echo'รออนุมัติจากAdminนะครับ';
             }
-        } else {
+        }
+        else {
             echo "Error: User not found";
         }
     }
@@ -97,7 +110,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    รออนุมัติจากAdminนะครับ
     <a href="home.php">กลับหน้าหลัก</a>
 </body>
 

@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sMessage .= "วันที่จองใช้ : " . date('d/m/Y H:i:s', strtotime($data['reservation_date'])) . "\n";
 
         // Process each item in the booking
-        $items = explode(',', $data['product_name']);
+        $items = explode(',', $data['list_name']);
         foreach ($items as $item) {
             $item_parts = explode('(', $item); // Separate product name and quantity
             $product_name = trim($item_parts[0]);
@@ -61,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sMessage .= "ชื่อรายการ : " . $product_name . " " . $quantity . " ชิ้น\n";
 
             // Update the amount of each product in the crud table
-            $stmtUpdate = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE sci_name = :product_name");
-            $stmtUpdate->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+            $stmtUpdate = $conn->prepare("UPDATE crud SET check_bookings = :reservation_date WHERE sci_name = :product_name");
+            $stmtUpdate->bindParam(':reservation_date', $data['reservation_date'], PDO::PARAM_STR);
             $stmtUpdate->bindParam(':product_name', $product_name, PDO::PARAM_STR);
             $stmtUpdate->execute();
         }
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sMessage .= "วันที่จองใช้ : " . date('d/m/Y H:i:s', strtotime($data['reservation_date'])) . "\n";
 
         // Process each item in the booking
-        $items = explode(',', $data['product_name']);
+        $items = explode(',', $data['list_name']);
         foreach ($items as $item) {
             $item_parts = explode('(', $item); // Separate product name and quantity
             $product_name = trim($item_parts[0]);
