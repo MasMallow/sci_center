@@ -27,7 +27,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     }
 }
 // สร้างคำสั่ง SQL ตามตัวกรอง user_id และช่วงเวลา
-$sql = "SELECT * FROM approve_to_use WHERE 1=1";
+$sql = "SELECT * FROM approve_to_use WHERE situation = 1";
 
 // สร้างอาร์เรย์เพื่อเก็บพารามิเตอร์
 $params = [];

@@ -9,12 +9,12 @@ $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
 // สร้าง SQL query เพื่อดึงข้อมูลจากตาราง approve_to_use โดยใช้เงื่อนไขของ user_id และช่วงเวลาถ้ามีการระบุ
-$sql = "SELECT * FROM approve_to_use WHERE 1 AND situation = 1";
+$sql = "SELECT * FROM approve_to_bookings WHERE 1 AND situation = 1 OR situation = 3";
 if (!empty($user_id) && $user_id !== 'all') {
     $sql .= " AND udi = :user_id";
 }
 if (!empty($start_date) && !empty($end_date)) {
-    $sql .= " AND (borrowdatetime BETWEEN :start_date AND :end_date)";
+    $sql .= " AND (reservation_date BETWEEN :start_date AND :end_date)";
 }
 
 // เตรียมและดำเนินการ SQL query
@@ -65,10 +65,10 @@ $html .= '<table border="1" cellpadding="5">
 if (count($data) > 0) {
     foreach ($data as $row) {
         $html .= '<tr>';
-        $html .= '<td>' . htmlspecialchars($row["udi"]) . '</td>';
+        $html .= '<td>' . htmlspecialchars($row["user_id"]) . '</td>';
         $html .= '<td>' . htmlspecialchars($row["firstname"]) . '</td>';
 
-        $items = explode(',', $row['itemborrowed']);
+        $items = explode(',', $row['list_name']);
         $html .= '<td>';
         foreach ($items as $item) {
             $item_parts = explode('(', $item);
@@ -78,8 +78,8 @@ if (count($data) > 0) {
         }
         $html .= '</td>';
 
-        $html .= '<td>' . thai_date_time(($row["borrowdatetime"])) . '</td>';
-        $html .= '<td>' . thai_date_time(($row["returndate"])) . '</td>';
+        $html .= '<td>' . thai_date_time(($row["reservation_date"])) . '</td>';
+        $html .= '<td>' . thai_date_time(($row["end_date"])) . '</td>';
         $html .= '</tr>';
     }
 } else {

@@ -27,7 +27,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     }
 }
 // สร้างคำสั่ง SQL ตามตัวกรอง user_id และช่วงเวลา
-$sql = "SELECT * FROM approve_to_bookings WHERE 1=1 AND situation = 1  OR situation = 3";
+$sql = "SELECT * FROM approve_to_bookings WHERE situation = 1  OR situation = 3";
 
 // สร้างอาร์เรย์เพื่อเก็บพารามิเตอร์
 $params = [];
@@ -115,7 +115,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         ประวัติการขอใช้
                     </span>
                     <!-- ปุ่มสำหรับสร้างรายงาน PDF -->
-                    <form id="pdfForm" action="generate_pdf" method="GET">
+                    <form id="pdfForm" action="generate_pdf_bookings" method="GET">
                         <?php
                         if (isset($_GET["user_id"]) && $_GET["user_id"] != "NULL") : ?>
                             <input type="hidden" name="user_id" value="<?= htmlspecialchars($_GET["user_id"]) ?>">
