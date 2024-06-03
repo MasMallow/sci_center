@@ -72,6 +72,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <input type="hidden" name="user_id" value="<?php echo $bookings[0]['user_id']; ?>">
                                     <button type="submit">ยกเลิกการจอง</button>
                                 </th>
+                                <th><span id="B">สถานะ</span></th>
                             </tr>
                         </thead>
                         <?php foreach ($bookings as $booking) : ?>
@@ -96,6 +97,27 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td>
                                         <input type="checkbox" name="booking_ids[]" value="<?php echo $booking['id']; ?>">
                                     </td>
+                                    <td>
+                                        <?php
+                                        $checkBookingsDate = strtotime($booking['reservation_date']); // แปลงวันที่ check_bookings เป็น timestamp Unix
+                                        $currentDate = time();
+
+                                        if ($booking['situation'] == null) {
+                                            echo 'ยังไม่ได้รับอนุมัติ';
+                                        }  elseif (date('Y-m-d', $checkBookingsDate) == date('Y-m-d', $currentDate) && $booking['situation'] == 1) {
+                                        ?>
+                                            <button onclick="location.href='cart.php?action=add&item=<?php echo 0; ?>'" class="use-it">
+                                                <i class="icon fa-solid fa-arrow-up"></i>
+                                                <span>ขอใช้</span>
+                                            </button>
+                                        <?php
+                                        }elseif ($booking['situation'] == 1) {
+                                            echo 'ได้รับการอนุมัติ';
+                                        }
+                                        ?>
+                                    </td>
+
+
                                 </tr>
                             </tbody>
                         <?php endforeach; ?>
