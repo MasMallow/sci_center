@@ -2,7 +2,7 @@
 session_start();
 require_once '../assets/database/connect.php';
 
-if (isset($_POST['sign-in'])) {
+if (isset($_POST['sign_in'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 

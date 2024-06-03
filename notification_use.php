@@ -27,7 +27,7 @@ if (isset($_SESSION['user_login'])) {
 }
 
 $firstname = $userData['surname'];
-$stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE firstname = :firstname ORDER BY id");
+$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE firstname = :firstname ORDER BY id");
 $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -53,10 +53,12 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="maintenance">
         <div class="header_maintenance_section">
             <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
-            <span id="B">แจ้งเตือน</span>
+            <span id="B">แจ้งเตือนการขอใช้</span>
         </div>
     </div>
     <div class="notification_section">
+        <?php 
+        if (!empty($data)) { ?>
         <table class="table_notification">
             <thead>
                 <tr>
@@ -78,12 +80,12 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 $item_parts = explode('(', $item);
                                 $product_name = trim($item_parts[0]);
                                 $quantity = isset($item_parts[1]) ? str_replace(')', '', $item_parts[1]) : 'ไม่ระบุ';
-                                echo htmlspecialchars($product_name) . ' <span>' . ' <span id="B">( ' . htmlspecialchars($quantity) . ' )</span> '  . ' รายการ</span><br>';
+                                echo htmlspecialchars($product_name) . ' <span id="B">( ' . htmlspecialchars($quantity) . ' รายการ )</span><br>';
                             }
                             ?>
                         </td>
-                        <td><?php echo (thai_date_time($row['borrowdatetime'])); ?></td>
-                        <td><?php echo (thai_date_time($row['returndate'])); ?></td>
+                        <td><?php echo thai_date_time($row['borrowdatetime']); ?></td>
+                        <td><?php echo thai_date_time($row['returndate']); ?></td>
                         <td>
                             <?php
                             echo $row['situation'] === null ? 'ยังไม่ได้รับอนุมัติ' : ($row['situation'] == 1 ? 'ได้รับอนุมัติ' : htmlspecialchars($row['situation']));
@@ -93,6 +95,12 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?php } else { ?>
+        <div class="user_approve_not_found">
+            <i class="icon fa-solid fa-arrow-up"></i>
+            <span id="B">ไม่มีแจ้งเตือนการขอใช้</span>
+        </div>
+        <?php } ?>
     </div>
 </body>
 

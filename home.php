@@ -112,10 +112,24 @@ if (isset($_SESSION['staff_login'])) {
                             </ul>
                         </li>
                         <li>
-                            <a class="link" href="notification">
+                            <a class="link">
                                 <i class="fa-solid fa-envelope"></i>
                                 <span class="text">แจ้งเตือน</span>
                             </a>
+                            <ul class="sb-sub-ul">
+                                <li>
+                                    <a href="notification_use">
+                                        <i class="fa-solid fa-hourglass-end"></i>
+                                        <span class="text">แจ้งเตือนการขอใช้</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="notification_bookings">
+                                        <i class="fa-solid fa-calendar-check"></i>
+                                        <span class="text">แจ้งเตือนการจอง</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

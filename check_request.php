@@ -19,7 +19,7 @@ if (isset($_SESSION['user_login'])) {
         }
     }
 
-    $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE udi = :user_id AND situation = 1 AND date_return IS NULL");
+    $stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE udi = :user_id AND situation = 1 AND date_return IS NULL");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC);

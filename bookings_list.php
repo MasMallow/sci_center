@@ -23,7 +23,7 @@ if (isset($_SESSION['staff_login'])) {
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-$stmt = $conn->prepare("SELECT * FROM bookings WHERE user_id = :user_id AND reservation_date >= CURDATE()");
+$stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE user_id = :user_id AND reservation_date >= CURDATE()");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);

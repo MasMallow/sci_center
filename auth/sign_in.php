@@ -19,7 +19,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
     <body>
         <main class="sign_in_box">
             <div class="box_content">
-                <form action="../authProcess/sign_inDB.php" method="POST">
+                <form id="loginForm" action="../authProcess/sign_inDB.php" method="POST">
                     <div class="box_content_header">
                         <span id="B">เข้าสู่ระบบ</span>
                     </div>
@@ -41,7 +41,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                             <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
                         </div>
                         <div class="box_content_btn">
-                            <button class="sign-in" name="sign-in">เข้าสู่ระบบ</button>
+                            <button id="signInButton" class="sign-in" name="sign_in">เข้าสู่ระบบ</button>
                         </div>
                         <div class="box_content_other">
                             <div class="not_remember">
@@ -57,7 +57,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                     </div>
                     <div class="footer">
                         <p>
-                            ศูนย์วิทยาศาสตร์  มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา
+                            ศูนย์วิทยาศาสตร์ มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา
                         </p>
                     </div>
                 </form>
@@ -65,26 +65,16 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
         </main>
     </body>
     <script>
-        /**
-         * ฟังก์ชัน togglePassword ใช้สำหรับเปิด/ปิดการแสดงข้อมูลในช่องรหัสผ่าน
-         */
         function togglePassword() {
-            // เลือก element ของช่องรหัสผ่าน
             const passwordField = document.getElementById("password");
-            // เลือก icon ที่ใช้สำหรับแสดง/ซ่อน รหัสผ่าน
-            const icon = document.querySelector(".icon-password");
+            const icon = document.querySelector(".icon_password");
 
-            // ตรวจสอบว่าช่องรหัสผ่านมีการแสดงข้อมูลอยู่หรือไม่
             if (passwordField.type === "password") {
-                // ถ้าใช่ ก็เปลี่ยนเป็นการแสดงข้อมูล
                 passwordField.type = "text";
-                // เปลี่ยน icon เพื่อแสดงสถานะการแสดงข้อมูล
                 icon.classList.remove("fa-eye-slash");
                 icon.classList.add("fa-eye");
             } else {
-                // ถ้าไม่ใช่ ก็เปลี่ยนเป็นการซ่อนข้อมูล
                 passwordField.type = "password";
-                // เปลี่ยน icon เพื่อแสดงสถานะการซ่อนข้อมูล
                 icon.classList.remove("fa-eye");
                 icon.classList.add("fa-eye-slash");
             }
@@ -92,8 +82,6 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
     </script>
 
     </html>
-
-
 <?php
 } else {
     header('location:../home.php');

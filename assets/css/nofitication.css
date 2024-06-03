@@ -72,7 +72,6 @@ thead {
   }
 }
 
-
 tbody tr {
   border: 1px solid #dbdbdb;
   border-bottom: 1.5px solid #bdbdbd;
@@ -83,4 +82,21 @@ tbody tr {
 }
 .serial_number {
   padding-left: 1rem;
+}
+.user_approve_not_found {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10rem;
+}
+.user_approve_not_found i {
+  font-size: 4rem;
+  color: #bdbdbd;
+  margin: 1rem 0;
+}
+.user_approve_not_found span {
+  font-size: 1.5rem;
+  margin-top: 1rem;
 }
