@@ -8,8 +8,8 @@ $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
 $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
-// สร้าง SQL query เพื่อดึงข้อมูลจากตาราง waiting_for_approval โดยใช้เงื่อนไขของ user_id และช่วงเวลาถ้ามีการระบุ
-$sql = "SELECT * FROM waiting_for_approval WHERE 1";
+// สร้าง SQL query เพื่อดึงข้อมูลจากตาราง approve_to_use โดยใช้เงื่อนไขของ user_id และช่วงเวลาถ้ามีการระบุ
+$sql = "SELECT * FROM approve_to_use WHERE 1";
 if (!empty($user_id) && $user_id !== 'all') {
     $sql .= " AND udi = :user_id";
 }

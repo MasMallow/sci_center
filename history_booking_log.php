@@ -8,7 +8,7 @@ require_once 'assets/database/connect.php';
 include_once 'includes/thai_date_time.php';
 
 try {
-    $sql = "SELECT * FROM bookings WHERE situation = 1";
+    $sql = "SELECT * FROM approve_to_bookings WHERE situation = 1";
     $stmt = $conn->query($sql);
 
     if ($stmt->rowCount() > 0) {

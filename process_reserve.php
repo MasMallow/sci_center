@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
 
         // Update booking in the database
-        $update_query = $conn->prepare("UPDATE bookings SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 WHERE id = :id");
+        $update_query = $conn->prepare("UPDATE approve_to_bookings SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 WHERE id = :id");
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->bindParam(':approver', $approver['surname'], PDO::PARAM_STR);
         $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
 
-        $stmt = $conn->prepare("SELECT * FROM bookings WHERE id = :id");
+        $stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'];
         $userId = $_POST['userId'];
         // Update booking in the database
-        $update_query = $conn->prepare("UPDATE bookings SET situation = 2 WHERE id = :id AND user_id = :udi ");
+        $update_query = $conn->prepare("UPDATE approve_to_bookings SET situation = 2 WHERE id = :id AND user_id = :udi ");
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->bindParam(':udi', $userId, PDO::PARAM_INT);
         $update_query->execute();
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
 
-        $stmt = $conn->prepare("SELECT * FROM bookings WHERE id = :id");
+        $stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);

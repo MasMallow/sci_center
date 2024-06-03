@@ -17,7 +17,7 @@ if (isset($_POST['cancel'])) {
         $approvaldatetime = date('Y-m-d H:i:s');
 
         // อัปเดตฐานข้อมูล
-        $update_query = $conn->prepare("UPDATE waiting_for_approval SET situation = 2 WHERE id = :id ");
+        $update_query = $conn->prepare("UPDATE approve_to_use SET situation = 2 WHERE id = :id ");
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->execute();
 
@@ -28,7 +28,7 @@ if (isset($_POST['cancel'])) {
 
         $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
 
-        $stmt = $conn->prepare("SELECT * FROM waiting_for_approval WHERE id = :id");
+        $stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);

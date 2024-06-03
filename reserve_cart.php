@@ -87,7 +87,7 @@ if (isset($_GET['action'])) {
                     <div class="table_section">
                         <div class="count_list">
                             <div class="count_list_1">
-                                <span >รายการที่เลือกทั้งหมด </span>
+                                <span>รายการที่เลือกทั้งหมด </span>
                                 <span id="B">( <?php echo count($_SESSION['reserve_cart']); ?> )</span><span> รายการ</span>
                             </div>
                             <div class="count_list_2">
@@ -137,8 +137,13 @@ if (isset($_GET['action'])) {
                     <div class="footer_section">
                         <div class="footer_section_return_date">
                             <span>ระบุวันที่ เวลาที่ต้องการจองอุปกรณ์ และเครื่องมือ</span>
-                            <input type="datetime-local" name="reservation_date" required>
+                            <label for="reservation_date">วันที่จองใช้:</label>
+                            <input type="datetime-local" id="reservation_date" name="reservation_date" required>
+
+                            <label for="end_date">วันที่คืน:</label>
+                            <input type="datetime-local" id="end_date" name="end_date" required>
                         </div>
+
                         <div class="footer_section_btn">
                             <div class="footer_section_btn_1">
                                 <a href="../project/" class="back_to_main">กลับหน้าหลัก</a>

@@ -52,7 +52,7 @@ function thai_date_time($datetime)
 }
 
 // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ
-$stmt = $conn->prepare("SELECT * FROM bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
+$stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ

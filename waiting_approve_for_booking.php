@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reservation'])) {
         $reservationdate = $_POST['reservation_date'];
         $items = $_POST['amount'];
+        $enddate = $_POST['end_date'];
 
         $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -44,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $firstname = $user['pre'] . $user['surname'] . ' ' . $user['lastname'];
 
         $itemList = [];
+        $errorMessages = [];
         foreach ($_SESSION['reserve_cart'] as $item) {
             $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
@@ -53,36 +55,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($product) {
                 $productName = $product['sci_name'];
                 $quantity = isset($items[$item]) ? (int)$items[$item] : 0;
-                $itemList[] = htmlspecialchars($productName) . ' (' . $quantity . ')';
+                if ($quantity <= $product['amount']) {
+                    $itemList[] = htmlspecialchars($productName) . ' (' . $quantity . ')';
+                } else {
+                    $errorMessages[] = "อุปกรณ์ " . htmlspecialchars($productName) . " มีจำนวนไม่เพียงพอ (มีเพียง " . $product['amount'] . " ชิ้นในสต็อก)";
+                }
             }
         }
 
-        $itemBorrowed = implode(', ', $itemList);
+        if (!empty($errorMessages)) {
+            foreach ($errorMessages as $message) {
+                echo $message . '<br>';
+            }
+            echo '<a href="cart.php">กลับหน้าตะกร้า</a><br>';
+        } else {
+            $itemBorrowed = implode(', ', $itemList);
 
-        $insert_query = $conn->prepare("INSERT INTO bookings 
-            (user_id, firstname, list_name, created_at, reservation_date, approvaldatetime, approver, serial_number, situation) VALUES 
-            (:user_id, :firstname, :itemBorrowed, NOW(), :reservationdate, NULL, NULL, :random_string, NULL)");
-        $insert_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $insert_query->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-        $insert_query->bindParam(':itemBorrowed', $itemBorrowed, PDO::PARAM_STR);
-        $insert_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
-        $insert_query->bindParam(':random_string', $random_string, PDO::PARAM_STR);
-        $insert_query->execute();
+            $insert_query = $conn->prepare("INSERT INTO approve_to_bookings 
+                (user_id, firstname, list_name, created_at, reservation_date, approvaldatetime, approver, serial_number, situation, end_date) VALUES 
+                (:user_id, :firstname, :itemBorrowed, NOW(), :reservationdate, NULL, NULL, :random_string, NULL, :enddate)");
+            $insert_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $insert_query->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+            $insert_query->bindParam(':itemBorrowed', $itemBorrowed, PDO::PARAM_STR);
+            $insert_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
+            $insert_query->bindParam(':enddate', $enddate, PDO::PARAM_STR);
+            $insert_query->bindParam(':random_string', $random_string, PDO::PARAM_STR);
+            $insert_query->execute();
 
-        unset($_SESSION['reserve_cart']);
+            unset($_SESSION['reserve_cart']);
+            echo 'รออนุมัติจาก Admin นะครับ<br>';
+            echo '<a href="home.php">กลับหน้าหลัก</a>';
+        }
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    รออนุมัติจากAdminนะครับ
-    <a href="home.php">กลับหน้าหลัก</a>
+    
 </body>
+
 </html>

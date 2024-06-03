@@ -52,12 +52,10 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <span id="B">รายการจอง</span>
         </div>
     </div>
-    <?php
-    if (empty($bookings)) {
-        echo "ไม่มีรายการจอง";
-    } else {
-    ?>
-        <form method="POST" action="cancel_booking">
+    <?php if (empty($bookings)) : ?>
+        <p>ไม่มีรายการจอง</p>
+    <?php else : ?>
+        <form method="POST" action="cancel_booking.php">
             <div class="maintenance_section">
                 <div class="table_maintenace_section">
                     <table class="table_maintenace">
@@ -69,63 +67,61 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <th><span id="B">วัน เวลาจอง</span></th>
                                 <th>
                                     <span id="B">ยกเลิกการจอง</span>
-                                    <input type="hidden" name="user_id" value="<?php echo $bookings[0]['user_id']; ?>">
+                                    <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($bookings[0]['user_id']); ?>">
                                     <button type="submit">ยกเลิกการจอง</button>
                                 </th>
                                 <th><span id="B">สถานะ</span></th>
                             </tr>
                         </thead>
-                        <?php foreach ($bookings as $booking) : ?>
-                            <tbody>
+                        <tbody>
+                            <?php foreach ($bookings as $booking) : ?>
                                 <tr>
-                                    <td class="serial_number"><?= $booking['serial_number'] ?></td>
+                                    <td class="serial_number"><?= htmlspecialchars($booking['serial_number']); ?></td>
                                     <td>
                                         <?php
-                                        // แยกข้อมูล Item Borrowed
+                                        // Separate item list
                                         $items = explode(',', $booking['list_name']);
-
-                                        // แสดงข้อมูลรายการที่ยืม
                                         foreach ($items as $item) {
-                                            $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
-                                            $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
-                                            $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                            echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
+                                            $item_parts = explode('(', $item);
+                                            $product_name = trim($item_parts[0]);
+                                            $quantity = str_replace(')', '', $item_parts[1]);
+                                            echo htmlspecialchars($product_name) . ' <span id="B"> ' . htmlspecialchars($quantity) . ' </span> รายการ<br>';
                                         }
                                         ?>
-                                    <td><?php echo thai_date_time($booking['reservation_date']); ?></td>
+                                    </td>
                                     <td><?php echo thai_date_time($booking['created_at']); ?></td>
+                                    <td><?php echo thai_date_time($booking['reservation_date']); ?></td>
                                     <td>
-                                        <input type="checkbox" name="booking_ids[]" value="<?php echo $booking['id']; ?>">
+                                        <input type="checkbox" name="booking_ids[]" value="<?php echo htmlspecialchars($booking['id']); ?>">
                                     </td>
                                     <td>
                                         <?php
-                                        $checkBookingsDate = strtotime($booking['reservation_date']); // แปลงวันที่ check_bookings เป็น timestamp Unix
+                                        $checkBookingsDate = strtotime($booking['reservation_date']);
                                         $currentDate = time();
 
-                                        if ($booking['situation'] == null) {
+                                        if ($booking['situation'] === null) {
                                             echo 'ยังไม่ได้รับอนุมัติ';
-                                        }  elseif (date('Y-m-d', $checkBookingsDate) == date('Y-m-d', $currentDate) && $booking['situation'] == 1) {
+                                        } elseif (date('Y-m-d', $checkBookingsDate) == date('Y-m-d', $currentDate) && $booking['situation'] == 1) {
                                         ?>
-                                            <button onclick="location.href='cart.php?action=add&item=<?php echo 0; ?>'" class="use-it">
+                                            <button type="button" onclick="location.href='process_booking.php?action=add&item=<?php echo $booking['id']; ?>'" class="use-it">
                                                 <i class="icon fa-solid fa-arrow-up"></i>
                                                 <span>ขอใช้</span>
                                             </button>
                                         <?php
-                                        }elseif ($booking['situation'] == 1) {
+                                        } elseif ($booking['situation'] == 1 || $booking['situation'] == 3) {
                                             echo 'ได้รับการอนุมัติ';
                                         }
                                         ?>
                                     </td>
-
-
                                 </tr>
-                            </tbody>
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </tbody>
                     </table>
                 </div>
             </div>
         </form>
-    <?php } ?>
+    <?php endif; ?>
+
 
 </body>
 
