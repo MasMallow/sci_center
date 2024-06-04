@@ -98,6 +98,12 @@ if (isset($_SESSION['staff_login'])) {
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="check_request_bookings">
+                                        <i class="fa-solid fa-hourglass-end"></i>
+                                        <span class="text">สิ้นสุดการขอใช้</span>
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="booking_log">
                                         <i class="fa-solid fa-calendar-check"></i>
                                         <span class="text">ติดตามการจอง</span>

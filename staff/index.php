@@ -78,9 +78,9 @@ $numuser = count($datauser); // นับจำนวนรายการ
                 <ul class="staff_content_ul">
                     <li>
                         <div class="staff_menu">
-                            <a href="approve_for_use" class="<?php if ($numuser == '0') {
+                            <a href="approve_for_use" class="<?php if ($num == 0) {
                                                                     echo 'user_approval_btn';
-                                                                } elseif ($numuser > 0) {
+                                                                } elseif ($num > 0) {
                                                                     echo 'user_approval_have';
                                                                 } ?>">
                                 <i class="icon fa-solid fa-square-check"></i>
@@ -91,9 +91,9 @@ $numuser = count($datauser); // นับจำนวนรายการ
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="approve_for_booking" class="<?php if ($numuser == '0') {
+                            <a href="approve_for_booking" class="<?php if ($numbookings == 0) {
                                                                         echo 'user_approval_btn';
-                                                                    } elseif ($numuser > 0) {
+                                                                    } elseif ($numbookings > 0) {
                                                                         echo 'user_approval_have';
                                                                     } ?>">
                                 <i class="icon fa-solid fa-square-check"></i>

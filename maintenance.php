@@ -103,6 +103,21 @@ try {
                                 <th class="amount"><span id="B">จำนวน</span></th>
                                 <th class="installation_date"><span id="B">วันที่ติดตั้ง</span></th>
                                 <th><span class="maintenance_button" id="B">บำรุงรักษา</span></th>
+                                <div class="choose_categories_popup">
+                                    <div class="choose_categories">
+                                        <div class="choose_categories_header">
+                                            <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
+                                            <div class="modalClose" id="closeDetails">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </div>
+                                        </div>
+                                        <div class="maintenace_popup">
+                                            <input type="date" name="end_date" required>
+                                            <input type="text" name="note" placeholder="หมายเหตุ">
+                                            <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </tr>
                         </thead>
                         <tbody>
@@ -145,7 +160,10 @@ try {
                                 <th class="categories"><span id="B">ประเภท</span></th>
                                 <th class="amount"><span id="B">จำนวน</span></th>
                                 <th class="installation_date"><span id="B">เริ่มบำรุงรักษา</span></th>
-                                <th><span class="maintenance_button" id="B">การบำรุงรักษาเสร็จสิ้น</span></th>
+                                <th>
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+                                    <button type="submit" class="maintenance_button"  name="complete_maintenance"><span id="B">การบำรุงรักษาเสร็จสิ้น</span></button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
