@@ -26,6 +26,11 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
         }
     }
 }
+if (!isset($_SESSION['staff_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
+}
 // สร้างคำสั่ง SQL ตามตัวกรอง user_id และช่วงเวลา
 $sql = "SELECT * FROM approve_to_use WHERE situation = 1";
 
@@ -174,7 +179,6 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </tbody>
             </table>
         </div>
-
 </body>
 
 </html>
