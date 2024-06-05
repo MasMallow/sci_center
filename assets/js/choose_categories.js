@@ -1,11 +1,13 @@
 // ค้นหาปุ่มทั้งหมดที่ใช้เปิด modal
-const modalOpenButtons1 = document.querySelectorAll(".choose_categories_btn");
+const modalOpenButtons1 = document.querySelectorAll(".management_popup_btn");
+const modalOpenButtons2 = document.querySelectorAll(".management_popup_btn02");
 
 // ค้นหาปุ่มปิด modal
 const modalCloseButton = document.getElementById("closeDetails");
 
 // ค้นหา modal
-const modal = document.querySelector(".choose_categories_popup");
+const modal = document.querySelector(".management_popup");
+const modal2 = document.querySelector(".management_popup02");
 
 // เพิ่มฟังก์ชันเพื่อเปิด modal
 modalOpenButtons1.forEach(function (button) {

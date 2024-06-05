@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once '../assets/database/connect.php';
+require_once '../assets/database/connect.php';
 
 // ดึงข้อมูลผู้ใช้เพียงครั้งเดียว
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
@@ -12,24 +12,42 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
 }
 ?>
 <?php
-try {
-    // สร้าง SQL เพื่อดึงข้อมูลจากฐานข้อมูล
-    $sql = "SELECT * FROM crud";
-    if (isset($_GET["search"]) && !empty($_GET["search"])) {
-        $search = $_GET["search"];
-        $sql .= " WHERE sci_name LIKE :search";
-    }
-    $sql .= " ORDER BY uploaded_on DESC";
-    $stmt = $conn->prepare($sql);
+$searchTitle = "";
+$searchValue = "";
+$result = [];
 
-    // ถ้ามีการค้นหา ให้ผูกค่าพารามิเตอร์
-    if (isset($search)) {
-        $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+if (isset($_GET['search'])) {
+    $searchValue = htmlspecialchars($_GET['search']);
+    $searchTitle = "ค้นหา \"$searchValue\" | ";
+}
+
+try {
+    $action = $_GET['action'] ?? 'all';
+    $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
+    $query = "SELECT * FROM crud WHERE 1=1";
+
+    if ($action === 'material') {
+        $query .= " AND categories = 'วัสดุ'";
+    } elseif ($action === 'equipment') {
+        $query .= " AND categories = 'อุปกรณ์'";
+    } elseif ($action === 'tools') {
+        $query .= " AND categories = 'เครื่องมือ'";
+    }
+
+    if ($searchQuery) {
+        $query .= " AND (sci_name LIKE :search OR s_number LIKE :search)";
+    }
+
+    $query .= " ORDER BY id ASC";
+    $stmt = $conn->prepare($query);
+
+    if ($searchQuery) {
+        $stmt->bindParam(':search', $searchQuery, PDO::PARAM_STR);
     }
 
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $num = 1;
+    $nums = count($result); // นับจำนวนรายการ
 } catch (PDOException $e) {
     echo 'เกิดข้อผิดพลาด: ' . $e->getMessage();
 }
@@ -41,39 +59,55 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>จัดการวัสดุ อุปกรณ์ และเครื่องมือ</title>
+    <title><?= $searchTitle; ?>จัดการวัสดุ อุปกรณ์ และเครื่องมือ</title>
 
     <!-- ส่วนของ Link -->
     <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="../assets/css/navigator.css">
-    <link rel="stylesheet" href="add-remove-update.css">
+    <link rel="stylesheet" href="../assets/css/management_systems.css">
     <link rel="stylesheet" href="../assets/css/edit.css">
 </head>
 
 <body>
     <!-- Header -->
-    <?php include('header.php'); ?>
+    <header><?php include('header.php'); ?></header>
     <div class="header_management">
         <div class="header_management_section">
             <div class="header_name_section">
                 <a href="../"><i class="fa-solid fa-arrow-left-long"></i></a>
                 <span id="B">จัดการระบบ</span>
             </div>
+            <div class="header_num_section">
+                <span id="B">
+                    <?php
+                    if ($action === 'all') {
+                        echo 'วัสดุ อุปกรณ์ และเครื่องมือทั้งหมด';
+                    } elseif ($action === 'material') {
+                        echo 'วัสดุทั้งหมด';
+                    } elseif ($action === 'equipment') {
+                        echo 'อุปกรณ์ทั้งหมด';
+                    } elseif ($action === 'tools') {
+                        echo 'เครื่องมือทั้งหมด';
+                    }
+                    echo " $nums รายการ";
+                    ?>
+                </span>
+            </div>
             <div class="header_btn_section">
-                <button class="choose_categories_btn">
+                <button class="choose_categories_btn management_popup_btn">
                     <i class="icon fa-solid fa-plus"></i>
                     <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
                 </button>
                 <!-- POPUP  -->
-                <div class="choose_categories_popup">
-                    <div class="choose_categories">
-                        <div class="choose_categories_header">
+                <div class="management_popup">
+                    <div class="management_content_popup">
+                        <div class="management_popup_header">
                             <span id="B">เลือกประเภทที่จะเพิ่มข้อมูล</span>
                             <div class="modalClose" id="closeDetails">
                                 <i class="fa-solid fa-xmark"></i>
                             </div>
                         </div>
-                        <div class="choose_categories_content">
+                        <div class="management_popup_content">
                             <ul>
                                 <li>
                                     <a href="add?add=material"><i class="fa-solid fa-flask-vial"></i><span>เพิ่มวัสดุ</span></a>
@@ -91,6 +125,19 @@ try {
                 <!-- End POPUP -->
             </div>
         </div>
+    </div>
+    <div class="management_section_btn">
+        <form class="management_search_header" method="get">
+            <input type="hidden" name="action" value="<?= htmlspecialchars($action); ?>">
+            <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
+            <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+        <form class="btn_management_all" method="get">
+            <button type="submit" class="<?= ($action === 'all') ? 'active' : ''; ?> btn_management_01" name="action" value="all">ทั้งหมด</button>
+            <button type="submit" class="<?= ($action === 'material') ? 'active' : ''; ?> btn_management_02" name="action" value="material">วัสดุ</button>
+            <button type="submit" class="<?= ($action === 'equipment') ? 'active' : ''; ?> btn_management_02" name="action" value="equipment">อุปกรณ์</button>
+            <button type="submit" class="<?= ($action === 'tools') ? 'active' : ''; ?> btn_management_03" name="action" value="tools">เครื่องมือ</button>
+        </form>
     </div>
     <div class="management_grid">
         <?php if (empty($result)) { ?>
@@ -203,26 +250,75 @@ try {
                         <div class="content_amount"><span id="B">คงเหลือ </span><?php echo htmlspecialchars($results['amount']); ?></div>
                     </div>
                     <div class="management_grid_content_footer">
-                        <button class="details_btn" data-modal="<?php echo $results['id']; ?>">
+                        <button class="edit_crud_btn details_btn" data-modal="<?php echo $results['id']; ?>">
                             <i class="fa-solid fa-circle-info"></i>
                             <span>แก้ไขข้อมูล</span>
                         </button>
-                        <button class="details_btn" data-modal="delete_<?php echo $results['id']; ?>">
-                            <i class="icon fa-solid fa-trash"></i> <span>ลบข้อมูล</span>
+                        <button class="delete_btn management_popup_btn02" data-modal="delete_<?php echo $results['id']; ?>">
+                            <i class="icon fa-solid fa-trash"></i>
+                            <span>ลบข้อมูล</span>
                         </button>
-                        <div class="choose_categories_popup" id="delete_<?php echo $results['id']; ?>">
-                            <div class="choose_categories">
-                                <div class="choose_categories_header">
+                        <div class="management_popup02" id="delete_<?php echo $results['id']; ?>">
+                            <div class="management_content_popup">
+                                <div class="management_popup_header">
                                     <span id="B">ยืนยันการลบ</span>
-                                    <div class="closePOPUP_delete" id="closeDetails">
+                                    <div class="modalClose" id="closeDetails">
                                         <i class="fa-solid fa-xmark"></i>
                                     </div>
                                 </div>
-                                <div class="choose_categories_content">
-                                    <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
-                                        <i class="icon fa-solid fa-trash"></i><span>ลบข้อมูล</span>
-                                    </a>
-                                    <button class="closePOPUP_delete">ปิดหน้าต่าง</button>
+                                <div class="management_popup_content">
+                                    <div class="details_content_left">
+                                        <div class="img_details">
+                                            <div class="img">
+                                                <img class="previewImg" id="previewImg_<?php echo htmlspecialchars($results['img']); ?>" src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>" loading="lazy">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="details_content_right">
+                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['id']); ?>">
+                                        <ul class="details_content_li">
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">Serial Number</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <input type="text" name="sci_name" value="<?php echo htmlspecialchars($results['sci_name']); ?>">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1">
+                                                    <span id="B">ชื่อ</span>
+                                                </div>
+                                                <div class="details_content_2">
+                                                    <input type="text" name="sci_name" value="<?php echo htmlspecialchars($results['sci_name']); ?>">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1"><span id="B">จำนวน</span></div>
+                                                <div class="details_content_2"><input type="number" name="amount" value="<?php echo htmlspecialchars($results['amount']); ?>"></div>
+                                            </li>
+                                            <li>
+                                                <div class="details_content_1"><span id="B">ประเภท</span></div>
+                                                <div class="details_content_2">
+                                                    <select name="categories">
+                                                        <?php
+                                                        $categoriesfixes = ['วัสดุ', 'อุปกรณ์', 'เครื่องมือ'];
+                                                        foreach ($categoriesfixes as $categoriesfixe) {
+                                                            $selected = ($results['categories'] == $categoriesfixe) ? "selected" : "";
+                                                            echo "<option value='$categoriesfixe' $selected>$categoriesfixe</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="choose_categories_footer">
+                                            <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
+                                                <i class="icon fa-solid fa-trash"></i><span>ลบข้อมูล</span>
+                                            </a>
+                                            <button class="closePOPUP_delete">ปิดหน้าต่าง</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -234,4 +330,5 @@ try {
     <script src="../assets/js/choose_categories.js"></script>
     <script src="../assets/js/pop_upEdit.js"></script>
 </body>
+
 </html>

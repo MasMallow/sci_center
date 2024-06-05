@@ -66,8 +66,9 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายงานการยืมสินค้า</title>
+    <title>รายงานการขอใช้</title>
     <!-- ลิงก์ไปยังไฟล์ CSS -->
+    <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="assets/css/navigator.css">
     <link rel="stylesheet" href="assets/css/view_report.css">
@@ -84,14 +85,11 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <div class="view_report">
-        <div class="view_report_header">
-            <span id="B">ค้นหา</span>
-        </div>
         <div class="view_report_form">
             <form class="form_1" action="view_report" method="GET">
                 <div class="view_report_column">
                     <div class="view_report_input">
-                        <label id="B" for="userID">UID ของผู้ใช้งาน</label>
+                        <label id="B" for="userID">UID</label>
                         <input type="text" id="userID" name="user_id" placeholder="กรอไอดีผู้ใช้">
                     </div>
                     <div class="view_report_input">
@@ -100,11 +98,11 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="view_report_input">
                         <label id="B" for="endDate">ช่วงเวลาสิ้นสุด</label>
-                        <input type="date" id="endDate" name="end_date">
+                        <div class="view_report_btn">
+                            <input type="date" id="endDate" name="end_date">
+                            <button type="submit" class="search">ค้นหา</button>
+                        </div>
                     </div>
-                </div>
-                <div class="view_report_btn">
-                    <button type="submit" class="search">ค้นหา</button>
                 </div>
             </form>
         </div>

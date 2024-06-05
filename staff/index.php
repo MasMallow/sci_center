@@ -37,7 +37,7 @@ $numuser = count($datauser); // นับจำนวนรายการ
                 <ul class="staff_content_ul">
                     <li>
                         <div class="staff_menu">
-                            <a href="crud/management.php" class="user_approval_btn">
+                            <a href="crud/management" class="user_approval_btn">
                                 <i class="fa-solid fa-plus-minus"></i>
                                 <span class="text">จัดการระบบข้อมูล</span>
                             </a>

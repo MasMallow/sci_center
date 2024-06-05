@@ -62,8 +62,6 @@
 .view_report_form {
   width: 100%;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 0 1rem;
   gap: 1rem;
 }
 .form_1 {
@@ -80,13 +78,13 @@
 }
 .view_report_input label {
   display: block;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   padding-left: 0.5rem;
   padding-bottom: 0.25rem;
 }
 .view_report_input input {
   position: relative;
-  height: 50px;
+  height: 45px;
   width: 100%;
   outline: none;
   border: 1px solid #ddd;
@@ -98,26 +96,32 @@ input:focus {
   border: 1px solid rgb(0, 119, 255);
 }
 .view_report_btn {
-  padding-bottom: 0.785rem;
+  gap: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   & .search {
+    height: 45px;
     padding: 0.345rem 2rem;
     border-radius: 5px;
     outline: none;
     border: none;
     color: #fff;
     transition: all 0.15s ease-in-out;
-    background-color: rgb(62, 143, 248);
+    background-color: rgb(30, 124, 248);
+
     &:hover {
-      background-color: rgb(0, 110, 255);
+      background-color: rgb(0, 86, 199);
     }
   }
 }
 .view_report_table {
   border-radius: 5px;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 .view_report_table_header {
-  padding-left: 1rem;
+  padding-left: .5rem;
   padding-bottom: 0.345rem;
   font-size: 1rem;
   display: flex;
@@ -201,7 +205,7 @@ thead {
 }
 
 tbody tr {
-  font-size: 0.9rem;
+  font-size: .95rem;
   border: 1px solid #dbdbdb;
   border-bottom: 1.5px solid #bdbdbd;
   background-color: #ffffff;
@@ -212,7 +216,7 @@ tbody tr {
     padding-left: 0.75rem;
   }
 
-  & .date_not_found{
+  & .date_not_found {
     text-align: center;
     font-size: 1rem;
   }
