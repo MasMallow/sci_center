@@ -6,6 +6,12 @@ session_start();
 require_once 'assets/database/connect.php';
 include_once 'includes/thai_date_time.php';
 
+if (!isset($_SESSION['staff_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
+}
+
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     // ถ้าผู้ใช้เข้าสู่ระบบด้วย user_login หรือ staff_login

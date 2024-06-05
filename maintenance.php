@@ -10,6 +10,11 @@ if (isset($_GET['search'])) {
     $searchValue = htmlspecialchars($_GET['search']);
     $searchTitle = "ค้นหา \"$searchValue\" | ";
 }
+if (!isset($_SESSION['staff_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
+}
 
 try {
     if (isset($_SESSION['staff_login']) || isset($_SESSION['user_login'])) {

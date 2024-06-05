@@ -10,6 +10,11 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+if (!isset($_SESSION['staff_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
+}
 ?>
 <?php
 $searchTitle = "";

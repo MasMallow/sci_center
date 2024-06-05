@@ -55,6 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($product) {
                 $productName = $product['sci_name'];
                 $quantity = isset($items[$item]) ? (int)$items[$item] : 0;
+                if ($product['check_bookings'] != NULL) {
+                    $errorMessages[] = "อุปกรณ์ " . htmlspecialchars($productName) . " ได้มีคนทำการจองไว้แล้ว";
+                }
                 if ($quantity <= $product['amount']) {
                     $itemList[] = htmlspecialchars($productName) . ' (' . $quantity . ')';
                 } else {

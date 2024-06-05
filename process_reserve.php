@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once 'assets/database/connect.php';
+
 // Current date and time
 date_default_timezone_set('Asia/Bangkok');
 $approvaldatetime = date('Y-m-d H:i:s');
@@ -12,10 +13,8 @@ if (!isset($_SESSION['staff_login'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['confirm'])) {
-        if (isset($_SESSION['staff_login'])) {
-            $user_id = $_SESSION['staff_login'];
-        }
+    if (isset($_POST['confirm']) && isset($_SESSION['staff_login'])) {
+        $user_id = $_SESSION['staff_login'];
         $id = $_POST['id'];
         $userId = $_POST['userId'];
         $staff_id = $_SESSION['staff_login'];
@@ -26,7 +25,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_query->execute();
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
 
-        // Update booking in the database
+        // Check each item in the booking for existing bookings
+        $stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $items = explode(',', $data['list_name']);
+        foreach ($items as $item) {
+            list($product_name, $quantity) = explode('(', $item);
+            $product_name = trim($product_name);
+            $quantity = str_replace(')', '', $quantity);
+
+            $Check_data = $conn->prepare("SELECT * FROM crud WHERE sci_name = :product_name");
+            $Check_data->bindParam(':product_name', $product_name, PDO::PARAM_STR);
+            $Check_data->execute();
+            $result = $Check_data->fetch(PDO::FETCH_ASSOC);
+
+            if ($result && $result['check_bookings'] != NULL) {
+                echo 'ได้มีคนมีจองอุปกรณ์ไปก่อนหน้านี้แล้วหรือยังไม่ได้คืนอุปกรณ์<br>';
+                echo '<a href="home.php">กลับหน้าหลัก</a><br>';
+                exit;
+            }
+        }
+
+        // If no existing bookings, proceed with updating the booking
         $update_query = $conn->prepare("UPDATE approve_to_bookings SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 WHERE id = :id");
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->bindParam(':approver', $approver['surname'], PDO::PARAM_STR);
@@ -39,24 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
 
+        // Create message for Line Notify
         $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
-
-        $stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
-        $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
         $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่กดจอง : " . date('d/m/Y H:i:s', strtotime($data['created_at'])) . "\n";
         $sMessage .= "วันที่จองใช้ : " . date('d/m/Y H:i:s', strtotime($data['reservation_date'])) . "\n";
 
         // Process each item in the booking
-        $items = explode(',', $data['list_name']);
         foreach ($items as $item) {
-            $item_parts = explode('(', $item); // Separate product name and quantity
-            $product_name = trim($item_parts[0]);
-            $quantity = str_replace(')', '', $item_parts[1]);
+            list($product_name, $quantity) = explode('(', $item);
+            $product_name = trim($product_name);
+            $quantity = str_replace(')', '', $quantity);
 
             $sMessage .= "ชื่อรายการ : " . $product_name . " " . $quantity . " ชิ้น\n";
 
@@ -70,9 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sMessage .= "ผู้อนุมัติการจอง : " . $approver['pre'] . ' ' . $approver['surname'] . ' ' . $approver['lastname'] . "\n";
         $sMessage .= "-------------------------------";
 
-        $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
-
         // Line Notify settings
+        $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
         $chOne = curl_init();
         curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
         curl_setopt($chOne, CURLOPT_SSL_VERIFYHOST, 0);
@@ -104,12 +120,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         curl_close($chOne);
         header('Location: /project/approve_for_booking.php');
         exit;
-    }
-    elseif (isset($_POST['cancel'])) {
+    } elseif (isset($_POST['cancel'])) {
         $id = $_POST['id'];
         $userId = $_POST['userId'];
+
         // Update booking in the database
-        $update_query = $conn->prepare("UPDATE approve_to_bookings SET situation = 2 WHERE id = :id AND user_id = :udi ");
+        $update_query = $conn->prepare("UPDATE approve_to_bookings SET situation = 2 WHERE id = :id AND user_id = :udi");
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->bindParam(':udi', $userId, PDO::PARAM_INT);
         $update_query->execute();
@@ -120,13 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
 
+        // Create message for Line Notify
         $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
-
-        $stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
-        $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
         $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่กดจอง : " . date('d/m/Y H:i:s', strtotime($data['created_at'])) . "\n";
@@ -135,21 +146,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Process each item in the booking
         $items = explode(',', $data['list_name']);
         foreach ($items as $item) {
-            $item_parts = explode('(', $item); // Separate product name and quantity
-            $product_name = trim($item_parts[0]);
-            $quantity = str_replace(')', '', $item_parts[1]);
+            list($product_name, $quantity) = explode('(', $item);
+            $product_name = trim($product_name);
+            $quantity = str_replace(')', '', $quantity);
 
             $sMessage .= "ชื่อรายการ : " . $product_name . " " . $quantity . " ชิ้น\n";
-
-            // Update the amount of each product in the crud table
         }
 
-        $sMessage .= "****ไม่อนุมัติการจอง****". "\n";
+        $sMessage .= "****ไม่อนุมัติการจอง****\n";
         $sMessage .= "-------------------------------";
 
-        $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
-
         // Line Notify settings
+        $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
         $chOne = curl_init();
         curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
         curl_setopt($chOne, CURLOPT_SSL_VERIFYHOST, 0);
@@ -183,3 +191,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+?>
