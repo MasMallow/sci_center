@@ -89,7 +89,24 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo thai_date_time($row['reservation_date']); ?></td>
                             <td>
                                 <?php
-                                echo $row['situation'] === null ? 'ยังไม่ได้รับอนุมัติ' : ($row['situation'] == 1 ? 'ได้รับอนุมัติ' : htmlspecialchars($row['situation']));
+                                $checkBookingsDate = strtotime($row['reservation_date']);
+                                $currentDate = time();
+
+                                if ($row['situation'] === null) {
+                                    echo 'ยังไม่ได้รับอนุมัติ';
+                                } elseif (date('Y-m-d', $checkBookingsDate) == date('Y-m-d', $currentDate) && $row['situation'] == 1) {
+                                ?>
+                                    <button type="button" onclick="location.href='process_booking.php?action=add&item=<?php echo $row['id']; ?>'" class="use-it">
+                                        <i class="icon fa-solid fa-arrow-up"></i>
+                                        <span>ขอใช้</span>
+                                    </button>
+                                <?php
+                                } elseif ($row['situation'] == 1) {
+                                    echo 'ได้รับการอนุมัติ';
+                                }
+                                elseif ($row['situation'] == 3) {
+                                    echo 'ได้ทำการขอใช้แล้ว';
+                                }
                                 ?>
                             </td>
                         </tr>

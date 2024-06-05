@@ -101,15 +101,11 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                                         if ($booking['situation'] === null) {
                                             echo 'ยังไม่ได้รับอนุมัติ';
-                                        } elseif (date('Y-m-d', $checkBookingsDate) == date('Y-m-d', $currentDate) && $booking['situation'] == 1) {
-                                        ?>
-                                            <button type="button" onclick="location.href='process_booking.php?action=add&item=<?php echo $booking['id']; ?>'" class="use-it">
-                                                <i class="icon fa-solid fa-arrow-up"></i>
-                                                <span>ขอใช้</span>
-                                            </button>
-                                        <?php
-                                        } elseif ($booking['situation'] == 1 || $booking['situation'] == 3) {
+                                        }elseif ($booking['situation'] == 1) {
                                             echo 'ได้รับการอนุมัติ';
+                                        }
+                                        elseif ($booking['situation'] == 3) {
+                                            echo 'ได้ทำการขอใช้แล้ว';
                                         }
                                         ?>
                                     </td>
