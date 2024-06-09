@@ -156,7 +156,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?php echo htmlspecialchars($row["firstname"]); ?></td>
                                 <td>
                                     <?php
-                                    $items = explode(',', $row['itemborrowed']);
+                                    $items = explode(',', $row['list_name']);
                                     foreach ($items as $item) {
                                         $item_parts = explode('(', $item);
                                         $product_name = trim($item_parts[0]);
