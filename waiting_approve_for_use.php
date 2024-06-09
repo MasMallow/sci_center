@@ -87,11 +87,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $itemBorrowed = implode(', ', $itemList);
 
                 // เตรียมข้อมูลสำหรับการยืมและบันทึกลงฐานข้อมูล
-                $insert_query = $conn->prepare("INSERT INTO approve_to_use (udi, serial_number, name_user, itemborrowed, borrowdatetime, returndate, created_at) VALUES (:udi, :random_string, :name_user, :itemborrowed, NOW(), :returndate, NOW())");
-                $insert_query->bindParam(':udi', $user_id, PDO::PARAM_INT);
+                $insert_query = $conn->prepare("INSERT INTO approve_to_use (user_id, serial_number, name_user, list_name, borrowdatetime, returndate, created_at) VALUES (:user_id, :random_string, :name_user, :list_name, NOW(), :returndate, NOW())");
+                $insert_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                 $insert_query->bindParam(':random_string', $random_string, PDO::PARAM_STR);
                 $insert_query->bindParam(':name_user', $name_user, PDO::PARAM_STR);
-                $insert_query->bindParam(':itemborrowed', $itemBorrowed, PDO::PARAM_STR);
+                $insert_query->bindParam(':list_name', $itemBorrowed, PDO::PARAM_STR);
                 $insert_query->bindParam(':returndate', $returnDateFormatted, PDO::PARAM_STR);
                 $insert_query->execute();
 

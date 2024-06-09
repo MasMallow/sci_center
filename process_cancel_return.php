@@ -34,16 +34,16 @@ if (isset($_POST['cancel'])) {
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($data as $row) {
-            $items = explode(',', $row['itemborrowed']);
+            $items = explode(',', $row['list_name']);
             $productNames = [];
 
             $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
-            $sMessage .= "SN : " . $row['sn'] . "\n"; // SN
+            $sMessage .= "SN : " . $row['serial_number'] . "\n"; // SN
             $sMessage .= "วันที่ขอยืม : " . date('d/m/Y H:i:s', strtotime($row['borrowdatetime'])) . "\n"; // Date of borrowing
             $sMessage .= "วันที่นำมาคืน : " . date('d/m/Y H:i:s', strtotime($row['returndate'])) . "\n"; // Return date
 
             // แยกข้อมูล Item Borrowed
-            $items = explode(',', $row['itemborrowed']);
+            $items = explode(',', $row['list_name']);
             foreach ($items as $item) {
                 $item_parts = explode('(', $item); // แยกชื่ออุปกรณ์และจำนวน
                 $product_name = trim($item_parts[0]); // ชื่ออุปกรณ์ (ตัดช่องว่างที่เป็นไปได้)

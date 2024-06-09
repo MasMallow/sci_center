@@ -23,7 +23,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
+$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL OR situation = 0 ORDER BY serial_number");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
@@ -83,7 +83,7 @@ $previousSn = '';
                                     <td>
                                         <?php
                                         // แยกข้อมูล Item Borrowed
-                                        $items = explode(',', $row['itemborrowed']);
+                                        $items = explode(',', $row['list_name']);
 
                                         // แสดงข้อมูลรายการที่ยืม
                                         foreach ($items as $item) {
@@ -99,7 +99,7 @@ $previousSn = '';
                                     <td>
                                         <form class="approve_form" method="POST" action="process_return">
                                             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                            <input type="hidden" name="udi" value="<?php echo $row['udi']; ?>">
+                                            <input type="hidden" name="udi" value="<?php echo $row['user_id']; ?>">
                                             <button class="confirm_approve" type="submit" name="confirm"><i class="fa-solid fa-circle-check"></i></button>
                                             <button class="cancel_approve" type="submit" name="cancel"><i class="fa-solid fa-circle-xmark"></i></button>
                                         </form>

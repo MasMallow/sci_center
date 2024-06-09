@@ -1,12 +1,12 @@
 <?php
 require_once 'assets/database/connect.php';
 
-$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
+$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL OR situation = 0 ORDER BY serial_number");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
 
-$bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
+$bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL OR situation = 0 ORDER BY serial_number");
 $bookings->execute();
 $data = $bookings->fetchAll(PDO::FETCH_ASSOC);
 $numbookings = count($data); // นับจำนวนรายการ

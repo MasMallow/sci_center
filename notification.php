@@ -83,10 +83,10 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tbody>
                         <?php foreach ($data as $row) : ?>
                             <tr>
-                                <td class="serial_number"><?= htmlspecialchars($row['sn'] ?? $row['serial_number']); ?></td>
+                                <td class="serial_number"><?= htmlspecialchars($row['serial_number'] ?? $row['serial_number']); ?></td>
                                 <td>
                                     <?php
-                                    $items = explode(',', $row['itemborrowed'] ?? $row['list_name']);
+                                    $items = explode(',', $row['list_name'] ?? $row['list_name']);
                                     foreach ($items as $item) {
                                         $item_parts = explode('(', $item);
                                         $product_name = trim($item_parts[0]);

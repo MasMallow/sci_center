@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
     $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
 
     if ($update_data) {
-        $items = explode(',', $update_data['itemborrowed']);
+        $items = explode(',', $update_data['list_name']);
         foreach ($items as $item) {
             $item_parts = explode('(', $item); // Split the item name and quantity
             $product_name = trim($item_parts[0]); // Trim the item name

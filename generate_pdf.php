@@ -68,7 +68,7 @@ if (count($data) > 0) {
         $html .= '<td>' . htmlspecialchars($row["udi"]) . '</td>';
         $html .= '<td>' . htmlspecialchars($row["firstname"]) . '</td>';
 
-        $items = explode(',', $row['itemborrowed']);
+        $items = explode(',', $row['list_name']);
         $html .= '<td>';
         foreach ($items as $item) {
             $item_parts = explode('(', $item);
