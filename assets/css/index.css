@@ -338,9 +338,9 @@ input.search {
 }
 .details_content {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   width: 100%;
-  padding: 0rem 1.1rem;
+  padding: .5rem 1.25rem;
   padding-bottom: 0.7rem;
   color: #000;
 }
@@ -361,15 +361,18 @@ input.search {
   }
 }
 .details_content_li_right {
-  width: 100%;
-}
-.details_content_li_right_content {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 .details_content_table {
   width: 100%;
   border-collapse: collapse;
+
+  & .td_01{
+    width: 30%;
+  }
 }
 
 .details_content_table th,

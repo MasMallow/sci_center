@@ -1,7 +1,6 @@
 <?php
 // เริ่มต้นเซสชั่น
 session_start();
-
 // เชื่อมต่อกับฐานข้อมูล
 require_once 'assets/database/connect.php';
 include_once 'includes/thai_date_time.php';
@@ -27,13 +26,13 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
 
     if (isset($_SESSION['user_login'])) {
         if ($userData['status'] !== 'approved') {
-            header("Location: home.php");
+            header("Location: home");
             exit();
         }
     }
 }
 // สร้างคำสั่ง SQL ตามตัวกรอง user_id และช่วงเวลา
-$sql = "SELECT * FROM approve_to_bookings WHERE situation = 1  OR situation = 3";
+$sql = "SELECT * FROM approve_to_reserve WHERE situation = 1  OR situation = 3";
 
 // สร้างอาร์เรย์เพื่อเก็บพารามิเตอร์
 $params = [];
@@ -154,7 +153,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($data as $row) { ?>
                             <tr>
                                 <td class="UID"><?php echo htmlspecialchars($row["user_id"]); ?></td>
-                                <td><?php echo htmlspecialchars($row["firstname"]); ?></td>
+                                <td><?php echo htmlspecialchars($row["name_user"]); ?></td>
                                 <td>
                                     <?php
                                     $items = explode(',', $row['list_name']);

@@ -61,7 +61,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                 <?php unset($_SESSION['errorLogin']); ?>
             <?php } ?>
             <div class="box_content">
-                <form id="loginForm" action="../authProcess/sign_inDB.php" method="POST">
+                <form action="../authProcess/sign_inDB.php" id="sign-in-form" method="POST">
                     <div class="box_content_header">
                         <span id="B">เข้าสู่ระบบ</span>
                     </div>
@@ -75,8 +75,16 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                             <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
                         </div>
                         <div class="box_content_btn">
-                            <button id="signInButton" class="sign-in" name="sign_in">เข้าสู่ระบบ</button>
+                            <input class="sign-in" type="submit" value="เข้าสู่ระบบ" value-after="กำลังเข้าสู่ระบบ" name="sign_in">
                         </div>
+                        <script>
+                            document.getElementById('sign-in-form').addEventListener('submit', function(event) {
+                                var signInButton = document.querySelector('.sign-in');
+                                signInButton.value = signInButton.getAttribute('value-after');
+                                // Here you can add code to handle the form submission, e.g., via AJAX.
+                                // event.preventDefault(); // Uncomment this line if you don't want the form to submit
+                            });
+                        </script>
                         <div class="box_content_other">
                             <div class="not_remember">
                                 <span><a href="#">ลืมรหัสผ่าน?</a></span>

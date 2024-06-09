@@ -152,8 +152,8 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     if (count($data) > 0) {
                         foreach ($data as $row) { ?>
                             <tr>
-                                <td class="UID"><?php echo htmlspecialchars($row["udi"]); ?></td>
-                                <td><?php echo htmlspecialchars($row["firstname"]); ?></td>
+                                <td class="UID"><?php echo htmlspecialchars($row["user_id"]); ?></td>
+                                <td><?php echo htmlspecialchars($row["name_user"]); ?></td>
                                 <td>
                                     <?php
                                     $items = explode(',', $row['list_name']);

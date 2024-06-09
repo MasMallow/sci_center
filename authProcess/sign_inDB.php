@@ -3,6 +3,7 @@ session_start();
 require_once '../assets/database/connect.php';
 
 if (isset($_POST['sign_in'])) {
+    sleep(2);
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -45,7 +46,7 @@ if (isset($_POST['sign_in'])) {
                 exit();
             }
         } catch (PDOException $e) {
-            echo $e->getMessage();
+            echo 'Database error: ' . $e->getMessage();
         }
     }
 }

@@ -12,7 +12,6 @@
                 <span class="header_navbanner_name-2">ศูนย์วิทยาศาสตร์ มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา</span>
             </div>
         </div>
-        <div class="header_navigator"></div>
         <div class="header_nav_userinfo">
             <?php if (isset($_SESSION['user_login'])) : ?>
                 <button class="header_userinfo_btn">

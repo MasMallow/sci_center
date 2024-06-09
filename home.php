@@ -41,6 +41,7 @@ if (isset($_GET['search'])) {
 }
 
 try {
+    sleep(1);
     // กำหนดเงื่อนไขเบื้องต้น
     $sql = "SELECT * FROM crud";
     $conditions = [];
@@ -260,42 +261,40 @@ try {
                                                         </div>
                                                     </div>
                                                     <div class="details_content_li_right">
-                                                        <div class="details_content_li_right_content">
-                                                            <table class="details_content_table">
-                                                                <tr>
-                                                                    <td><span id="B">Serial Number</span></td>
-                                                                    <td><?= htmlspecialchars($data['s_number']); ?></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><span id="B">ชื่อ</span></td>
-                                                                    <td><?= htmlspecialchars($data['sci_name']) ?></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><span id="B">ประเภท</span></td>
-                                                                    <td><?= htmlspecialchars($data['categories']) ?></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><span id="B">จำนวน</span></td>
-                                                                    <td><?= htmlspecialchars($data['amount']) ?></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><span id="B">รุ่น</span></td>
-                                                                    <td>BK-FD12P</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><span id="B">ยี่ห้อ</span></td>
-                                                                    <td>BIOBASE</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><span id="B">บริษัท</span></td>
-                                                                    <td>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><span id="B">รายละเอียด</span></td>
-                                                                    <td>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
+                                                        <table class="details_content_table">
+                                                            <tr>
+                                                                <td class="td_01"><span id="B">Serial Number</span></td>
+                                                                <td><?= htmlspecialchars($data['s_number']); ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="td_01"><span id="B">ชื่อ</span></td>
+                                                                <td><?= htmlspecialchars($data['sci_name']) ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="td_01"><span id="B">ประเภท</span></td>
+                                                                <td><?= htmlspecialchars($data['categories']) ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="td_01"><span id="B">จำนวน</span></td>
+                                                                <td><?= htmlspecialchars($data['amount']) ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="td_01"><span id="B">รุ่น</span></td>
+                                                                <td><?= htmlspecialchars($data['model']) ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="td_01"><span id="B">ยี่ห้อ</span></td>
+                                                                <td><?= htmlspecialchars($data['brand']) ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="td_01"><span id="B">บริษัท</span></td>
+                                                                <td><?= htmlspecialchars($data['company']) ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="td_01"><span id="B">รายละเอียด</span></td>
+                                                                <td><?= htmlspecialchars($data['details']) ?></td>
+                                                            </tr>
+                                                        </table>
                                                     </div>
                                                 </div>
                                                 <div class="details_content_footer">
