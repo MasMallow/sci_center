@@ -18,22 +18,56 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
 
     <body>
         <main class="sign_in_box">
+            <?php if (isset($_SESSION['errorLogin'])) { ?>
+                <div class="toast">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2"><?php echo $_SESSION['errorLogin'] ?></span>
+                        </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                        <div class="progress"></div>
+                    </div>
+                </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const toast = document.querySelector(".toast");
+                        const closeIcon = document.querySelector(".close");
+                        const progress = document.querySelector(".progress");
+
+                        // Add active class to trigger the animation
+                        setTimeout(() => {
+                            toast.classList.add("active");
+                            progress.classList.add("active");
+                        }); // Delay slightly to ensure the DOM is ready
+
+                        // Remove active class after a timeout
+                        setTimeout(() => {
+                            toast.classList.remove("active");
+                        }, 5100); // 5s + 100ms delay
+
+                        setTimeout(() => {
+                            progress.classList.remove("active");
+                        }, 5400); // 5.3s + 100ms delay
+
+                        closeIcon.addEventListener("click", () => {
+                            toast.classList.remove("active");
+                            setTimeout(() => {
+                                progress.classList.remove("active");
+                            }, 300);
+                        });
+                    });
+                </script>
+                <?php unset($_SESSION['errorLogin']); ?>
+            <?php } ?>
             <div class="box_content">
                 <form id="loginForm" action="../authProcess/sign_inDB.php" method="POST">
                     <div class="box_content_header">
-                        <span id="B">เข้าสู่ระบบ</span>
+                        <span id="B">เข้าสู่ระบบ</span>
                     </div>
                     <div class="box_content_logo">
                         <img src="../assets/logo/scicenter_logo.png">
                     </div>
-                    <?php if (isset($_SESSION['errorLogin'])) { ?>
-                        <div class="error">
-                            <?php
-                            echo $_SESSION['errorLogin'];
-                            unset($_SESSION['errorLogin']);
-                            ?>
-                        </div>
-                    <?php } ?>
                     <div class="box_content_content">
                         <input type="text" class="input" placeholder="ชื่อผู้ใช้" name="username" autofocus>
                         <div class="show_password">
@@ -41,11 +75,11 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                             <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
                         </div>
                         <div class="box_content_btn">
-                            <button id="signInButton" class="sign-in" name="sign_in">เข้าสู่ระบบ</button>
+                            <button id="signInButton" class="sign-in" name="sign_in">เข้าสู่ระบบ</button>
                         </div>
                         <div class="box_content_other">
                             <div class="not_remember">
-                                <span><a href="#">ลืมรหัสผ่าน?</a></label>
+                                <span><a href="#">ลืมรหัสผ่าน?</a></span>
                             </div>
                             <div class="sign_up">
                                 <span>ไม่มีบัญชี ?</span>
@@ -64,26 +98,12 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
             </div>
         </main>
     </body>
-    <script>
-        function togglePassword() {
-            const passwordField = document.getElementById("password");
-            const icon = document.querySelector(".icon_password");
-
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye");
-            } else {
-                passwordField.type = "password";
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash");
-            }
-        }
-    </script>
+    <script src="../assets/js/show_password.js"></script>
+    <script src="../assets/js/noti_toast.js"></script>
 
     </html>
 <?php
 } else {
-    header('location:../home.php');
+    header('location:../home');
 }
 ?>

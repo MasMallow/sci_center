@@ -3,6 +3,15 @@ session_start();
 require_once 'assets/database/connect.php';
 include 'includes/thai_date_time.php';
 
+// กำหนดค่าเริ่มต้น
+$manage = isset($_GET['manage']) ? $_GET['manage'] : 'approval_user';
+$searchTitle = "";
+$searchValue = "";
+if (isset($_GET['search'])) {
+    $searchTitle = "ค้นหา \"" . htmlspecialchars($_GET['search']) . "\" | ";
+    $searchValue = htmlspecialchars($_GET['search']);
+}
+
 // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่ และดึงข้อมูลผู้ใช้
 if (isset($_SESSION['staff_login'])) {
     $user_id = $_SESSION['staff_login'];
@@ -16,13 +25,15 @@ if (isset($_SESSION['staff_login'])) {
     exit;
 }
 
-// กำหนดค่าเริ่มต้น
-$manage = isset($_GET['manage']) ? $_GET['manage'] : 'edit_manage';
-$searchTitle = "";
-$searchValue = "";
-if (isset($_GET['search'])) {
-    $searchTitle = "ค้นหา \"" . htmlspecialchars($_GET['search']) . "\" | ";
-    $searchValue = htmlspecialchars($_GET['search']);
+// ฟังก์ชันในการดึงข้อมูลผู้ใช้ตามเงื่อนไข
+try {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' ");
+    $stmt->execute();
+    $num = $stmt->rowCount();
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
 }
 
 // ฟังก์ชันในการดึงข้อมูลผู้ใช้ตามเงื่อนไข
@@ -74,6 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':approved_by', $approver, PDO::PARAM_STR);
         $stmt->bindParam(':approved_date', $approvalDateTime, PDO::PARAM_STR);
         $stmt->execute();
+
+        // รีเฟรชหน้าเว็บ
+        header('Location: manage_users?manage=undisapprove_user');
+        exit;
     }
     // ระงับผู้ใช้
     elseif (isset($_POST['ban_user']) || isset($_POST['disapprove_user'])) {
@@ -89,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // รีเฟรชหน้าเว็บ
-    header('Location: manage_users.php');
+    header('Location: manage_users');
     exit;
 }
 ?>
@@ -120,9 +135,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="user_manage_section">
         <form class="user_manage_btn" method="get">
             <!-- ปุ่มสำหรับการจัดการต่างๆ -->
-            <button type="submit" class="<?= ($manage === 'edit_manage') ? 'active' : ''; ?> btn_maintenance_01" name="manage" value="edit_manage">ตรวจสอบและแก้ไขบัญชี</button>
-            <button type="submit" class="<?= ($manage === 'manage_user') ? 'active' : ''; ?> btn_maintenance_02" name="manage" value="manage_user">ระงับ และลบบัญชี</button>
-            <button type="submit" class="<?= ($manage === 'undisapprove_user') ? 'active' : ''; ?> btn_maintenance_02" name="manage" value="undisapprove_user">ยกเลิกระงับบัญชี</button>
+            <button type="submit" class="<?= ($manage === 'approval_user') ? 'active' : ''; ?> btn_user_manage_01" name="manage" value="approval_user">อมุมัติบัญชีผู้ใช้</button>
+            <button type="submit" class="<?= ($manage === 'edit_manage') ? 'active' : ''; ?> btn_user_manage_02" name="manage" value="edit_manage">ตรวจสอบและแก้ไขบัญชี</button>
+            <button type="submit" class="<?= ($manage === 'manage_user') ? 'active' : ''; ?> btn_user_manage_02" name="manage" value="manage_user">ระงับ และลบบัญชี</button>
+            <button type="submit" class="<?= ($manage === 'undisapprove_user') ? 'active' : ''; ?> btn_user_manage_03" name="manage" value="undisapprove_user">ยกเลิกระงับบัญชี</button>
         </form>
         <!-- แบบฟอร์มการค้นหา -->
         <form class="user_manage_search" method="get">
@@ -131,13 +147,109 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
-    <?php if ($manage === 'edit_manage') : ?>
+    <?php if ($manage === 'approval_user') : ?>
+        <?php if (!empty($users)) : ?>
+            <div class="manage_user">
+                <div class="user_manage_data_header">
+                    <span>จำนวนบัญชีทั้งหมด <span id="B">(<?= count($users); ?>)</span> บัญชี</span>
+                </div>
+                <table class="user_manage_data">
+                    <thead>
+                        <tr>
+                            <th class="UID"><span id="B">UID</span></th>
+                            <th class="name"><span id="B">ชื่อ - นามสกุล</span></th>
+                            <th class="role"><span id="B">ตำแหน่ง</span></th>
+                            <th class="agency"><span id="B">สังกัด</span></th>
+                            <th class="phone_number"><span id="B">เบอร์โทรศัพท์</span></th>
+                            <th class="created_at"><span id="B">สมัครบัญชีเมื่อ</span></th>
+                            <th class="urole"><span id="B">ประเภท</span></th>
+                            <th class="status"><span id="B">สถานะ</span></th>
+                            <th class="operation"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <?php foreach ($users as $user) : ?>
+                                <tr>
+                                    <td class="UID"><?php echo $user['user_id']; ?></td>
+                                    <td><?php echo $user['pre'] . $user['surname'] . " " . $user['lastname']; ?></td>
+                                    <td><?php echo $user['role']; ?></td>
+                                    <td><?php echo $user['agency']; ?></td>
+                                    <td><?php echo format_phone_number($user['phone_number']); ?></td>
+                                    <td><?php echo thai_date_time($user['created_at']); ?></td>
+                                    <td>
+                                        <?php
+                                        if ($user['urole'] == 'user') {
+                                            echo 'ผู้ใช้งานทั่วไป';
+                                        } elseif ($user['urole'] == 'staff') {
+                                            echo 'เจ้าหน้าที่';
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if ($user['status'] == 'wait_approved') {
+                                            echo 'รอการอนุมัติ';
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="user_approval">
+                                            <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                            <div class="btn_appr_section">
+                                                <button type="submit" class="approval_user" name="approval_user">
+                                                    <i class="fa-regular fa-circle-check"></i>
+                                                </button>
+                                                <button type="submit" class="ban_user" name="ban_user">
+                                                    <i class="fa-regular fa-circle-xmark"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    <tbody>
+                        <!-- แสดงข้อมูลผู้ใช้ที่อนุมัติแล้ว -->
+                        <?php foreach ($users as $user) : ?>
+                            <tr>
+                                <td class="UID"><?= $user['user_id']; ?></td>
+                                <td><?= $user['pre'] . $user['surname'] . " " . $user['lastname']; ?></td>
+                                <td><?= $user['role']; ?></td>
+                                <td><?= $user['agency']; ?></td>
+                                <td><?= format_phone_number($user['phone_number']); ?></td>
+                                <td><?= thai_date_time($user['created_at']); ?></td>
+                                <td><?= $user['urole'] === 'user' ? 'ผู้ใช้งานทั่วไป' : 'อื่น ๆ'; ?></td>
+                                <td class="<?= $user['status'] === 'approved' ? 'green_text' : 'red_text'; ?>"><?= $user['status'] === 'approved' ? 'อนุมัติแล้ว' : 'ไม่ได้รับอนุมัติ'; ?></td>
+                                <td class="operation">
+                                    <!-- ฟอร์มสำหรับการแก้ไข, ระงับ และลบผู้ใช้ -->
+                                    <form method="post">
+                                        <div class="btn_user_manage_section">
+                                            <input type="hidden" name="user_id" value="<?= $user['user_id']; ?>">
+                                            <button class="edit_user" type="submit" name="edit_user"><i class="fa-solid fa-pencil"></i></button>
+                                            <button class="ban_user" type="submit" name="ban_user"><i class="fa-solid fa-user-slash"></i></button>
+                                            <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else : ?>
+            <!-- ข้อความแจ้งเตือนเมื่อไม่พบผู้ใช้ -->
+            <div class="user_manage_not_found">
+            <i class="fa-solid fa-user-xmark"></i>
+            <span id="B">ไม่มีบัญชีที่การรออนุมัติ</span>
+        </div>
+        <?php endif; ?>
+    <?php elseif ($manage === 'edit_manage') : ?>
         <?php if (!empty($users_approved)) : ?>
             <div class="manage_user">
-                <div class="user_approve_data_header">
+                <div class="user_manage_data_header">
                     <span>จำนวนบัญชีทั้งหมด <span id="B">(<?= count($users_approved); ?>)</span> บัญชี</span>
                 </div>
-                <table class="user_approve_data">
+                <table class="user_manage_data">
                     <thead>
                         <tr>
                             <th class="UID"><span id="B">UID</span></th>
@@ -166,10 +278,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td class="operation">
                                     <!-- ฟอร์มสำหรับการแก้ไข, ระงับ และลบผู้ใช้ -->
                                     <form method="post">
-                                        <input type="hidden" name="user_id" value="<?= $approved_user['user_id']; ?>">
-                                        <button class="edit_user" type="submit" name="edit_user"><i class="fa-solid fa-pencil"></i></button>
-                                        <button class="ban_user" type="submit" name="ban_user"><i class="fa-solid fa-user-slash"></i></button>
-                                        <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                        <div class="btn_user_manage_section">
+                                            <input type="hidden" name="user_id" value="<?= $approved_user['user_id']; ?>">
+                                            <button class="edit_user" type="submit" name="edit_user"><i class="fa-solid fa-pencil"></i></button>
+                                            <button class="ban_user" type="submit" name="ban_user"><i class="fa-solid fa-user-slash"></i></button>
+                                            <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -179,7 +293,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php else : ?>
             <!-- ข้อความแจ้งเตือนเมื่อไม่พบผู้ใช้ -->
-            <div class="user_approve_not_found">
+            <div class="user_manage_not_found">
                 <i class="fa-solid fa-user-xmark"></i>
                 <span id="B">ไม่มีพบบัญชีผู้ใช้ในระบบ</span>
             </div>
@@ -187,10 +301,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php elseif ($manage === 'manage_user') : ?>
         <?php if (!empty($users_approved)) : ?>
             <div class="manage_user">
-                <div class="user_approve_data_header">
+                <div class="user_manage_data_header">
                     <span>จำนวนบัญชีทั้งหมด <span id="B">(<?= count($users_approved); ?>)</span> บัญชี</span>
                 </div>
-                <table class="user_approve_data">
+                <table class="user_manage_data">
                     <thead>
                         <tr>
                             <th class="UID"><span id="B">UID</span></th>
@@ -219,9 +333,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td class="operation">
                                     <!-- ฟอร์มสำหรับระงับ และลบผู้ใช้ -->
                                     <form method="post">
-                                        <input type="hidden" name="user_id" value="<?= $approved_user['user_id']; ?>">
-                                        <button class="ban_user" type="submit" name="ban_user"><i class="fa-solid fa-user-slash"></i></button>
-                                        <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                        <div class="btn_user_manage_section">
+                                            <input type="hidden" name="user_id" value="<?= $approved_user['user_id']; ?>">
+                                            <button class="ban_user02" type="submit" name="ban_user"><i class="fa-solid fa-user-slash"></i></button>
+                                            <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -231,7 +347,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php else : ?>
             <!-- ข้อความแจ้งเตือนเมื่อไม่พบผู้ใช้ -->
-            <div class="user_approve_not_found">
+            <div class="user_manage_not_found">
                 <i class="fa-solid fa-user-xmark"></i>
                 <span id="B">ไม่มีพบบัญชีผู้ใช้ในระบบ</span>
             </div>
@@ -239,10 +355,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php elseif ($manage === 'undisapprove_user') : ?>
         <?php if (!empty($users_banned)) : ?>
             <div class="manage_user">
-                <div class="user_approve_data_header">
+                <div class="user_manage_data_header">
                     <span>จำนวนบัญชีทั้งหมด <span id="B">(<?= count($users_banned); ?>)</span> บัญชี</span>
                 </div>
-                <table class="user_approve_data">
+                <table class="user_manage_data">
                     <thead>
                         <tr>
                             <th class="UID"><span id="B">UID</span></th>
@@ -271,9 +387,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td class="operation">
                                     <!-- ฟอร์มสำหรับอนุมัติ และลบผู้ใช้ -->
                                     <form method="post">
-                                        <input type="hidden" name="user_id" value="<?= $banned_user['user_id']; ?>">
-                                        <button class="approval_user" type="submit" name="approval_user"><i class="fa-solid fa-user-check"></i></button>
-                                        <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                        <div class="btn_user_manage_section">
+                                            <input type="hidden" name="user_id" value="<?= $banned_user['user_id']; ?>">
+                                            <button class="approval_user" type="submit" name="approval_user"><i class="fa-solid fa-user-check"></i></button>
+                                            <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -283,7 +401,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php else : ?>
             <!-- ข้อความแจ้งเตือนเมื่อไม่พบผู้ใช้ -->
-            <div class="user_approve_not_found">
+            <div class="user_manage_not_found">
                 <i class="fa-solid fa-ban"></i>
                 <span id="B">ไม่มีบัญชีที่ถูกระงับ</span>
             </div>

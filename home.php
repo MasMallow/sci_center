@@ -25,6 +25,69 @@ if (isset($_SESSION['staff_login'])) {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 ?>
+
+<?php
+// ส่วนการเชื่อมต่อฐานข้อมูล
+require_once 'assets/database/connect.php'; // ไฟล์ที่ใช้สำหรับเชื่อมต่อฐานข้อมูล
+
+// ประกาศตัวแปรเริ่มต้น
+$searchValue = '';
+$results = [];
+$page = '';
+
+// ตรวจสอบว่ามีการส่งค่า search ผ่าน GET มาหรือไม่
+if (isset($_GET['search'])) {
+    $searchValue = htmlspecialchars($_GET['search']);
+}
+
+try {
+    // กำหนดเงื่อนไขเบื้องต้น
+    $sql = "SELECT * FROM crud";
+    $conditions = [];
+    $params = [];
+
+    if (isset($_GET['page'])) {
+        $page = $_GET['page'];
+        $validPages = ['material', 'equipment', 'tools'];
+        if (in_array($page, $validPages)) {
+            switch ($page) {
+                case 'material':
+                    $category = 'วัสดุ';
+                    break;
+                case 'equipment':
+                    $category = 'อุปกรณ์';
+                    break;
+                case 'tools':
+                    $category = 'เครื่องมือ';
+                    break;
+            }
+            $conditions[] = "categories = :category";
+            $params[':category'] = $category;
+        }
+    }
+
+    if (!empty($searchValue)) {
+        $conditions[] = "sci_name LIKE :search";
+        $params[':search'] = '%' . $searchValue . '%';
+    }
+
+    if (!empty($conditions)) {
+        $sql .= ' WHERE ' . implode(' AND ', $conditions);
+    }
+
+    $sql .= " ORDER BY RAND() LIMIT 50;";
+
+    $stmt = $conn->prepare($sql);
+    foreach ($params as $key => &$val) {
+        $stmt->bindParam($key, $val);
+    }
+
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo 'เกิดข้อผิดพลาด: ' . $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,21 +98,19 @@ if (isset($_SESSION['staff_login'])) {
     <title>SCICENTER Management</title>
     <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="assets/css/navigator.css">
-    <script src="ajax.js"></script>
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
 </head>
 
 <body>
-    <?php
-    include_once('includes/header.php');
-    ?>
-    <?php if (isset($userData['urole']) && $userData['urole'] == 'user') : ?>
+    <header> <?php include_once('includes/header.php'); ?> </header>
+    <?php if (isset($userData['urole']) && $userData['urole'] == 'user' || empty($userData['urole'])) : ?>
         <main class="content">
             <div class="content_sidebar">
                 <div class="content_sidebar_header">
                     <div class="content_sidebar_header_details">
-                        <span>dummy</span>
+                        <span></span>
                     </div>
                 </div>
                 <div class="menu">
@@ -92,15 +153,9 @@ if (isset($_SESSION['staff_login'])) {
                             </a>
                             <ul class="sb-sub-ul">
                                 <li>
-                                    <a href="check_request">
+                                    <a href="returned_system">
                                         <i class="fa-solid fa-hourglass-end"></i>
-                                        <span class="text">สิ้นสุดการขอใช้</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="check_request_bookings">
-                                        <i class="fa-solid fa-hourglass-end"></i>
-                                        <span class="text">สิ้นสุดการขอใช้</span>
+                                        <span class="text">สิ้นสุดการใช้งาน</span>
                                     </a>
                                 </li>
                                 <li>
@@ -118,39 +173,211 @@ if (isset($_SESSION['staff_login'])) {
                             </ul>
                         </li>
                         <li>
-                            <a class="link">
+                            <a class="link" href="notification">
                                 <i class="fa-solid fa-envelope"></i>
                                 <span class="text">แจ้งเตือน</span>
                             </a>
-                            <ul class="sb-sub-ul">
-                                <li>
-                                    <a href="notification_use">
-                                        <i class="fa-solid fa-hourglass-end"></i>
-                                        <span class="text">แจ้งเตือนการขอใช้</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="notification_bookings">
-                                        <i class="fa-solid fa-calendar-check"></i>
-                                        <span class="text">แจ้งเตือนการจอง</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
             </div>
-            <?php
-            if (!isset($_GET['page']) || empty($_GET['page'])) {
-                include('MET/index.php');
-            } elseif ($_GET['page'] == 'material') {
-                include('material/index.php');
-            } elseif ($_GET['page'] == 'equipment') {
-                include('equipment/index.php');
-            } elseif ($_GET['page'] == 'tools') {
-                include('tools/index.php');
-            }
-            ?>
+            <div class="content_area">
+                <div class="content_area_nav">
+                    <div class="section_1">
+                        <a href="cart_use" class="section_1_btn_1">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>รายการที่เลือกทั้งหมด</span>
+                        </a>
+                        <a class="section_1_btn_2" href="cart_reserve">
+                            <i class="fa-solid fa-thumbtack"></i>
+                            <span>รายการที่จอง</span>
+                        </a>
+                    </div>
+                    <div class="section_2">
+                        <div class="date" id="date"></div>
+                        <div class="time" id="time"></div>
+                    </div>
+                </div>
+                <div class="content_area_header">
+                    <form method="get">
+                        <input type="hidden" name="page" value="<?= htmlspecialchars($page); ?>">
+                        <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
+                        <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
+                <div class="content_area_all">
+                    <?php if (empty($results)) : ?>
+                        <div class="grid_content_not_found">
+                            <span id="B">ไม่พบข้อมูลที่ค้นหา</span>
+                        </div>
+                    <?php else : ?>
+                        <div class="content_area_grid">
+                            <?php foreach ($results as $data) : ?>
+                                <div class="grid_content">
+                                    <div class="grid_content_header">
+                                        <div class="content_img">
+                                            <img src="assets/uploads/<?= htmlspecialchars($data['img']) ?>" alt="Image">
+                                        </div>
+                                    </div>
+                                    <div class="content_status_details">
+                                        <?php if ($data['amount'] >= 50) : ?>
+                                            <div class="ready-to-use">
+                                                <i class="fa-solid fa-circle-check"></i>
+                                                <span id="B">พร้อมใช้งาน</span>
+                                            </div>
+                                        <?php elseif ($data['amount'] <= 30 && $data['amount'] >= 1) : ?>
+                                            <div class="moderately">
+                                                <i class="fa-solid fa-circle-exclamation"></i>
+                                                <span id="B">ความพร้อมปานกลาง</span>
+                                            </div>
+                                        <?php elseif ($data['amount'] == 0) : ?>
+                                            <div class="not-available">
+                                                <i class="fa-solid fa-ban"></i>
+                                                <span id="B">ไม่พร้อมใช้งาน</span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="content_details">
+                                            <button class="details_btn" data-modal="<?= htmlspecialchars($data['id']) ?>">
+                                                <i class="fa-solid fa-circle-info"></i>
+                                            </button>
+                                        </div>
+                                        <div class="content_details_popup" id="<?= htmlspecialchars($data['id']) ?>">
+                                            <div class="details">
+                                                <div class="details_header">
+                                                    <span id="B">รายละเอียด</span>
+                                                    <div class="modalClose" id="closeDetails">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="details_content">
+                                                    <div class="details_content_li_left">
+                                                        <div class="img_details">
+                                                            <div class="img">
+                                                                <div class="imgInput">
+                                                                    <img class="previewImg" src="assets/uploads/<?= htmlspecialchars($data['img']); ?>" loading="lazy">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="details_content_li_right">
+                                                        <div class="details_content_li_right_content">
+                                                            <table class="details_content_table">
+                                                                <tr>
+                                                                    <td><span id="B">Serial Number</span></td>
+                                                                    <td><?= htmlspecialchars($data['s_number']); ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span id="B">ชื่อ</span></td>
+                                                                    <td><?= htmlspecialchars($data['sci_name']) ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span id="B">ประเภท</span></td>
+                                                                    <td><?= htmlspecialchars($data['categories']) ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span id="B">จำนวน</span></td>
+                                                                    <td><?= htmlspecialchars($data['amount']) ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span id="B">รุ่น</span></td>
+                                                                    <td>BK-FD12P</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span id="B">ยี่ห้อ</span></td>
+                                                                    <td>BIOBASE</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span id="B">บริษัท</span></td>
+                                                                    <td>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span id="B">รายละเอียด</span></td>
+                                                                    <td>BIOBASE BIODUSTRY(SHANDONG) CO.,LTD</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="details_content_footer">
+                                                    <div class="content_btn">
+                                                        <?php if ($data['amount'] >= 1) : ?>
+                                                            <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="used_it">
+                                                                <i class="icon fa-solid fa-arrow-up"></i>
+                                                                <span>ขอใช้อุปกรณ์</span>
+                                                            </a>
+                                                        <?php else : ?>
+                                                            <div class="button">
+                                                                <button class="out-of">
+                                                                    <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
+                                                                    <span>ไม่สามารถขอใช้ได้</span>
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                        <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
+                                                            <?php if ($data['amount'] >= 1) : ?>
+                                                                <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="reserved_it">
+                                                                    <i class="fa-solid fa-address-book"></i>
+                                                                    <span>จองอุปกรณ์</span>
+                                                                </a>
+                                                            <?php else : ?>
+                                                                <div class="not_available">
+                                                                    <i class="fa-solid fa-check"></i>
+                                                                    <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid_content_body">
+                                        <div class="content_name">
+                                            <?= htmlspecialchars($data['sci_name']) ?> (<?= htmlspecialchars($data['s_number']) ?>)
+                                        </div>
+                                        <div class="content_categories">
+                                            <span id="B">ประเภท </span><?= htmlspecialchars($data['categories']) ?>
+                                        </div>
+                                        <div class="content_amount">
+                                            <span id="B">คงเหลือ </span><?= htmlspecialchars($data['amount']) ?>
+                                        </div>
+                                    </div>
+                                    <div class="grid_content_footer">
+                                        <div class="content_btn">
+                                            <?php if ($data['amount'] >= 1) : ?>
+                                                <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="used_it">
+                                                    <i class="icon fa-solid fa-arrow-up"></i>
+                                                    <span>ขอใช้อุปกรณ์</span>
+                                                </a>
+                                            <?php else : ?>
+                                                <div class="button">
+                                                    <button class="out-of">
+                                                        <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
+                                                        <span>ไม่สามารถขอใช้ได้</span>
+                                                    </button>
+                                                </div>
+                                            <?php endif; ?>
+                                            <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
+                                                <?php if ($data['amount'] >= 1) : ?>
+                                                    <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="reserved_it">
+                                                        <i class="fa-solid fa-address-book"></i>
+                                                        <span>จองอุปกรณ์</span>
+                                                    </a>
+                                                <?php else : ?>
+                                                    <div class="not_available">
+                                                        <i class="fa-solid fa-check"></i>
+                                                        <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
         </main>
     <?php endif; ?>
 
@@ -168,35 +395,6 @@ if (isset($_SESSION['staff_login'])) {
 <script src="assets/js/ajax.js"></script>
 <script src="assets/js/details.js"></script>
 <script src="assets/js/datetime.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
-<script>
-    function log() {
-        $.ajax({
-            url: "viewlog.php",
-            dataType: "html",
-            success: function(data) {
-                $(".product").empty().append(data);
-            },
-            error: function() {
-                alert("การโหลดรายงานผิดพลาด");
-            },
-        });
-    }
-</script>
-<script>
-    function booking() {
-        $.ajax({
-            url: "bookings_list.php",
-            dataType: "html",
-            success: function(data) {
-                $(".product").empty().append(data);
-            },
-            error: function() {
-                alert("การโหลดรายงานผิดพลาด");
-            },
-        });
-    }
-</script>
 </body>
 
 </html>

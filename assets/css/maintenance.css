@@ -1,6 +1,6 @@
 .maintenance {
   display: flex;
-  width: 1350px;
+  width: 1400px;
   margin: 3rem auto 1rem auto;
 }
 .btn_maintenance_all {
@@ -8,7 +8,7 @@
 
   & .btn_maintenance_01 {
     font-size: 0.9rem;
-    padding: 0.65rem 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 6px 0 0 6px;
     transition: all 0.3s;
     border: transparent;
@@ -16,7 +16,7 @@
 
   & .btn_maintenance_02 {
     font-size: 0.9rem;
-    padding: 0.65rem 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 0 6px 6px 0;
     border: transparent;
     transition: all 0.3s;
@@ -56,12 +56,12 @@
   }
 }
 .maintenance_section_btn {
+  width: 1400px;
   display: flex;
   justify-content: space-between;
   gap: 3rem;
-  width: 1350px;
   margin: 0 auto;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 .maintenance_search_header {
   display: flex;
@@ -101,10 +101,9 @@ button.search:active {
   transform: scale(0.9);
 }
 .maintenance_section {
-  display: flex;
-  width: 1350px;
+  width: 1400px;
   margin: 0 auto;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 .table_maintenace {
   border-collapse: collapse;

@@ -1,6 +1,10 @@
+.notification_page{
+  max-width: 1400px;
+  margin: 0 auto;
+}
 .maintenance {
   display: flex;
-  width: 1350px;
+  width: 100%;
   margin: 3rem auto 1rem auto;
 }
 .header_maintenance_section {
@@ -29,6 +33,44 @@
       background-color: #f1efef;
       color: #000000;
     }
+  }
+}
+.user_manage_section {
+  width: 1400px;
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+}
+.notification_btn {
+  display: flex;
+  margin-bottom: 1rem;
+
+  .notification_btn_01,
+  .notification_btn_02 {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: transparent;
+    transition: all 0.3s;
+  }
+
+  .notification_btn_01 {
+    border-radius: 6px 0 0 6px;
+  }
+
+  .notification_btn_02 {
+    border-radius: 0 6px 6px 0;
+  }
+
+  .btn_user_manage_01:hover,
+  .btn_user_manage_02:hover,
+  .btn_user_manage_03:hover {
+    background-color: #ccc;
+  }
+  .active {
+    border: 1px solid #01bdb6;
+    background-color: #dffffd81;
   }
 }
 .notification_section {
@@ -99,4 +141,94 @@ tbody tr {
 .user_approve_not_found span {
   font-size: 1.5rem;
   margin-top: 1rem;
+}
+
+.toast {
+  position: absolute;
+  top: 40px;
+  right: 35px;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 20px 35px 20px 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #4070f4;
+  overflow: hidden;
+  transform: translatex(calc(100% + 35px));
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+
+  & .toast_content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .check {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 30px;
+      width: 30px;
+      background-color: #4070f4;
+      color: #fff;
+      border-radius: 50%;
+    }
+
+    & .toast_content_message {
+      display: flex;
+      flex-direction: column;
+      margin: 0 20px;
+
+      & .text {
+        font-size: 1.1rem;
+        color: #666666;
+      }
+
+      & .text-2 {
+        font-size: 1rem;
+        color: #333;
+      }
+    }
+  }
+
+  & .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  & .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background-color: #ddd;
+
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #4070f4;
+    }
+  }
+}
+.toast.active {
+  transform: translateX(0%);
+}
+.toast .progress.active:before {
+  animation: progress 5s linear forwards;
+}
+@keyframes progress {
+  100% {
+    right: 100%;
+  }
 }

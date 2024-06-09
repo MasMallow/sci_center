@@ -10,7 +10,7 @@ require_once 'assets/database/connect.php';
 include_once 'includes/thai_date_time.php';
 
 try {
-    $sql = "SELECT * FROM approve_to_bookings WHERE reservation_date >= CURDATE() AND situation = 1";
+    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date >= CURDATE() AND situation = 1";
     $stmt = $conn->query($sql);
 
     if ($stmt->rowCount() > 0) {

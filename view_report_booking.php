@@ -84,15 +84,15 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <header>
         <?php include 'includes/header.php'; ?>
     </header>
-    <div class="header_approve">
-        <div class="header_approve_section">
+    <div class="header_view_report">
+        <div class="header_view_report_section">
             <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
-            <span id="B">รายงานการจอง</span>
+            <span id="B">รายงานการยืมอุปกรณ์</span>
         </div>
     </div>
     <div class="view_report">
         <div class="view_report_form">
-            <form class="form_1" action="view_report" method="GET">
+            <form class="form_1" action="view_report_booking" method="GET">
                 <div class="view_report_column">
                     <div class="view_report_input">
                         <label id="B" for="userID">UID</label>

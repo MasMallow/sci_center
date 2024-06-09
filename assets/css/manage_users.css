@@ -39,8 +39,44 @@
   justify-content: space-between;
   gap: 3rem;
   margin: 0 auto;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
+.user_manage_btn {
+  display: flex;
+  margin-bottom: 1rem;
+
+  .btn_user_manage_01,
+  .btn_user_manage_02,
+  .btn_user_manage_03 {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: transparent;
+    transition: all 0.3s;
+  }
+
+  .btn_user_manage_01 {
+    border-radius: 6px 0 0 6px;
+  }
+
+  .btn_user_manage_02 {
+    border-radius: 0;
+  }
+
+  .btn_user_manage_03 {
+    border-radius: 0 6px 6px 0;
+  }
+
+  .btn_user_manage_01:hover,
+  .btn_user_manage_02:hover,
+  .btn_user_manage_03:hover {
+    background-color: #ccc;
+  }
+  .active {
+    border: 1px solid #01bdb6;
+    background-color: #dffffd81;
+  }
+}
+
 .user_manage_search {
   display: flex;
   align-items: center;
@@ -53,9 +89,10 @@ input.search {
   outline: none;
   border: 1px solid #ccc;
   border-radius: 10px 0 0 10px;
-}
-input.search:focus {
-  border-color: #007bff;
+
+  &v:focus {
+    border-color: #007bff;
+  }
 }
 button.search {
   display: flex;
@@ -71,22 +108,24 @@ button.search {
   background-color: #2176ff;
   transition: 0.2s;
   font-size: 1rem;
+
+  &:hover {
+    background-color: #125cd3;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
 }
-button.search:hover {
-  background-color: #125cd3;
-}
-button.search:active {
-  transform: scale(0.9);
-}
-.user_approve_section_body {
+.user_manage_section_body {
   margin-top: 2rem;
 }
-.user_approve_data {
+.user_manage_data {
   width: 100%;
   border-collapse: collapse;
 }
 
-.user_approve_data_header {
+.user_manage_data_header {
   font-size: 1rem;
   padding-left: 0.75rem;
   padding-bottom: 0.5rem;
@@ -120,17 +159,17 @@ thead {
       }
 
       &.role,
-      &.agency,
-      &.phone_number,
-      &.created_at,
-      &.urole,
-      &.status {
+      .agency,
+      .phone_number,
+      .created_at,
+      .urole,
+      .status {
         max-width: 10%;
         width: 100%;
       }
 
       &.created_at {
-        max-width: 15%;
+        max-width: 14%;
       }
     }
   }
@@ -145,30 +184,73 @@ tbody tr {
     padding: 1rem 0;
   }
 }
-.btn_appr_section {
+.btn_user_manage_section {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
 
-  & .approval_user {
+  & .edit_user {
     width: 35px;
-    height: 35px;
-    border-radius: 5px;
+    height: 30px;
+    border-radius: 5px 0 0 5px;
     border: none;
     outline: none;
-    background-color: #c1f2b0;
-    color: green;
+    background-color: rgb(30, 124, 248);
+    color: #fff;
     transition: all 0.3s;
 
     &:hover {
-      background-color: #aeff94;
+      background-color: rgb(0, 86, 199);
     }
   }
 
-  & .not_approval_user {
+  & .approval_user {
     width: 35px;
-    height: 35px;
-    border-radius: 5px;
+    height: 30px;
+    border-radius: 5px 0 0 5px;
+    border: none;
+    outline: none;
+    background-color: #50c878;
+    color: #fff;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #008000;
+    }
+  }
+
+  & .ban_user {
+    width: 35px;
+    height: 30px;
+    border: none;
+    outline: none;
+    background-color: #ffcc00;
+    color: #000;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: rgb(252, 158, 28);
+    }
+  }
+
+  & .ban_user02 {
+    width: 35px;
+    height: 30px;
+    border: none;
+    outline: none;
+    border-radius: 5px 0 0 5px;
+    background-color: #ffcc00;
+    color: #000;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: rgb(252, 158, 28);
+    }
+  }
+
+  & .delete_user {
+    width: 35px;
+    height: 30px;
+    border-radius: 0 5px 5px 0;
     border: none;
     outline: none;
     background-color: red;
@@ -276,19 +358,19 @@ select:focus {
   border: 1px solid rgb(0, 119, 255);
 }
 
-.user_approve_not_found {
+.user_manage_not_found {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 10rem;
 }
-.user_approve_not_found i {
+.user_manage_not_found i {
   font-size: 4rem;
-  color: #bdbdbd;
+  color: #000000;
   margin: 1rem 0;
 }
-.user_approve_not_found span {
+.user_manage_not_found span {
   font-size: 1.5rem;
   margin-top: 1rem;
 }

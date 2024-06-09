@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+require_once 'assets/database/connect.php';
 date_default_timezone_set('Asia/Bangkok');
 
 if (!isset($_SESSION['staff_login'])) {
@@ -15,7 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
         $sMessage = "แจ้งเตือนการบำรุงรักษา\n";
 
         foreach ($ids as $id) {
-            $update_query = $conn->prepare("UPDATE crud SET Availability = 0 WHERE id = :id");
+            $update_query = $conn->prepare("UPDATE crud SET availability = 0 WHERE id = :id");
+            $update_query->bindParam(':id', $id, PDO::PARAM_INT);
+            $update_query->execute();
+
+            $update_query = $conn->prepare("UPDATE crud SET last_maintenance_date = NOW() WHERE id = :id");
             $update_query->bindParam(':id', $id, PDO::PARAM_INT);
             $update_query->execute();
 
@@ -84,7 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
         }
         curl_close($chOne);
 
-        header('Location: /project/maintenance.php');
+        header('Location: /project/maintenance?action=end_maintenance');
         exit;
     }
 }
+?>

@@ -52,7 +52,7 @@ function thai_date_time($datetime)
 }
 
 // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ
-$stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
+$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
@@ -91,7 +91,7 @@ $previousFirstname = '';
             <?php if (!empty($data)) { ?>
                 <table class="approve_table_data">
                     <div class="approve_table_header">
-                        <span>รายการที่ขอจองทั้งหมด <span id="B"><?php echo $num; ?></span> รายการ</span>
+                        <span>รายการที่ขอจองทั้งหมด <span id="B">(<?php echo $num; ?>)</span> รายการ</span>
                     </div>
                     <thead>
                         <tr>
@@ -109,7 +109,7 @@ $previousFirstname = '';
                             if ($previousSn != $row['serial_number']) { ?>
                                 <tr>
                                     <td class="sn"><?php echo $row['serial_number']; ?></td>
-                                    <td><?php echo $row['firstname']; ?></td>
+                                    <td><?php echo $row['name_user']; ?></td>
                                     <td>
                                         <?php
                                         // แยกข้อมูล Item Borrowed
@@ -120,7 +120,7 @@ $previousFirstname = '';
                                             $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
                                             $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
                                             $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                            echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
+                                            echo $product_name . ' <span id="B"> ( ' . $quantity . ' รายการ )</span><br>';
                                         }
                                         ?>
                                     </td>

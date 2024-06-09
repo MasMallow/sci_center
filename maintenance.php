@@ -105,8 +105,8 @@ try {
                                 <th class="serial_number"><span id="B">Serial Number</span></th>
                                 <th class="sci_name"><span id="B">ชื่อ</span></th>
                                 <th class="categories"><span id="B">ประเภท</span></th>
-                                <th class="amount"><span id="B">จำนวน</span></th>
                                 <th class="installation_date"><span id="B">วันที่ติดตั้ง</span></th>
+                                <th class="installation_date"><span id="B">วันที่บำรุงรักษาล่าสุด</span></th>
                                 <th><span class="maintenance_button" id="B">บำรุงรักษา</span></th>
                                 <div class="choose_categories_popup">
                                     <div class="choose_categories">
@@ -131,10 +131,19 @@ try {
                                     <td class="serial_number"><?= htmlspecialchars($row['s_number'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
-                                    <td><?= htmlspecialchars($row['amount'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td>
                                         <?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?><br>
                                         <?= htmlspecialchars(thai_time($row['installation_date']), ENT_QUOTES, 'UTF-8') ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if ($row['last_maintenance_date'] == NULL) {
+                                            echo '-';
+                                        } else {
+                                            echo htmlspecialchars(thai_date($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8') . '<br>' .
+                                                htmlspecialchars(thai_time($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8');
+                                        }
+                                        ?>
                                     </td>
                                     <td class="checkbox"><label>
                                             <input type="checkbox" name="selected_ids[]" value="<?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') ?>">
@@ -167,7 +176,7 @@ try {
                                 <th class="installation_date"><span id="B">เริ่มบำรุงรักษา</span></th>
                                 <th>
                                     <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
-                                    <button type="submit" class="maintenance_button"  name="complete_maintenance"><span id="B">การบำรุงรักษาเสร็จสิ้น</span></button>
+                                    <button type="submit" class="maintenance_button" name="complete_maintenance"><span id="B">การบำรุงรักษาเสร็จสิ้น</span></button>
                                 </th>
                             </tr>
                         </thead>

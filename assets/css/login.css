@@ -24,13 +24,110 @@
   padding: 0px;
   font-family: Sarabun;
   box-sizing: border-box;
+  overflow: hidden;
 }
 .sign_in_box {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
+.toast {
+  min-width: 300px;
+  min-height: 60px;
+  position: absolute;
+  top: 40px;
+  right: 35px;
+  padding: .4rem 1.2rem;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #e74c3c; /* เปลี่ยนสีเส้นขอบเป็นสีแดง */
+  overflow: hidden;
+  transform: translateX(calc(100% + 35px));
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+}
+
+.toast .toast_content {
+  display: flex;
+  align-items: center;
+  padding: .5rem 0;
+}
+
+.toast .check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  background-color: #e74c3c; /* เปลี่ยนสีพื้นหลังเป็นสีแดง */
+  color: #fff;
+  border-radius: 50%;
+}
+
+.toast .toast_content_message {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.toast .toast_content_message .text {
+  font-size: ๅrem;
+}
+
+.toast .toast_content_message .text-2 {
+  font-size: .9rem;
+}
+
+.toast .close {
+  font-size: .75rem;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.toast .close:hover {
+  opacity: 1;
+}
+
+.toast .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #ddd;
+}
+
+.toast .progress:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #e74c3c; /* เปลี่ยนสีพื้นหลังเป็นสีแดง */
+}
+
+.toast.active {
+  transform: translateX(0%);
+}
+
+.toast .progress.active:before {
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  100% {
+    right: 100%;
+  }
+}
+
+/* #0e4bf1 */
 
 .box_content {
   justify-content: center;

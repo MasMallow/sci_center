@@ -1,29 +1,10 @@
-@font-face {
-  src: url("../fonts/Sarabun-Regular.ttf");
-  font-family: Sarabun;
-}
-@font-face {
-  src: url("../fonts/Sarabun-Bold.ttf");
-  font-family: Sarabun-bold;
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Sarabun;
-  text-decoration: none;
-  list-style: none;
-}
-#B {
-  font-family: Sarabun-bold;
-}
-.header_approve {
+.header_view_report {
   display: flex;
   width: 1400px;
   margin: 3rem auto 1rem auto;
 }
 
-.header_approve_section {
+.header_view_report_section {
   width: 100%;
   display: flex;
   align-items: center;
@@ -74,7 +55,6 @@
 }
 .view_report_input {
   width: 100%;
-  margin: 0.75rem 0;
 }
 .view_report_input label {
   display: block;
@@ -84,16 +64,17 @@
 }
 .view_report_input input {
   position: relative;
-  height: 45px;
+  height: 40px;
   width: 100%;
   outline: none;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 0 1rem;
   color: #000;
-}
-input:focus {
-  border: 1px solid rgb(0, 119, 255);
+
+  &:focus {
+    border: 1px solid rgb(0, 119, 255);
+  }
 }
 .view_report_btn {
   gap: 0.5rem;
@@ -102,13 +83,13 @@ input:focus {
   align-items: center;
 
   & .search {
-    height: 45px;
-    padding: 0.345rem 2rem;
+    height: 40px;
+    padding: 0 2rem;
     border-radius: 5px;
     outline: none;
     border: none;
     color: #fff;
-    transition: all 0.15s ease-in-out;
+    transition: all 0.2s ease-in-out;
     background-color: rgb(30, 124, 248);
 
     &:hover {
@@ -122,7 +103,7 @@ input:focus {
 }
 .view_report_table_header {
   padding-left: .5rem;
-  padding-bottom: 0.345rem;
+  padding-bottom: .75rem;
   font-size: 1rem;
   display: flex;
   justify-content: space-between;

@@ -8,15 +8,15 @@ if (isset($_POST['sign_in'])) {
 
     if (empty($username) && empty($password)) {
         $_SESSION['errorLogin'] = '<span id="B">กรุณาเข้าสู่ระบบ</span>';
-        header("location: ../auth/sign_in.php");
+        header("location: ../auth/sign_in");
         exit();
     } elseif (empty($username)) {
         $_SESSION['errorLogin'] = '<span id="B">กรุณากรอก Username</span>';
-        header("location: ../auth/sign_in.php");
+        header("location: ../auth/sign_in");
         exit();
     } elseif (empty($password)) {
         $_SESSION['errorLogin'] = '<span id="B">กรุณากรอก Password</span>';
-        header("location: ../auth/sign_in.php");
+        header("location: ../auth/sign_in");
         exit();
     } else {
         try {
@@ -36,12 +36,12 @@ if (isset($_POST['sign_in'])) {
                     exit();
                 } else {
                     $_SESSION['errorLogin'] = '<span id="B">รหัสผ่านไม่ถูกต้อง</span>';
-                    header("location: ../auth/sign_in.php");
+                    header("location: ../auth/sign_in");
                     exit();
                 }
             } else {
                 $_SESSION['errorLogin'] = '<span id="B">ไม่มีข้อมูลในระบบ</span>';
-                header("location: ../auth/sign_in.php");
+                header("location: ../auth/sign_in");
                 exit();
             }
         } catch (PDOException $e) {

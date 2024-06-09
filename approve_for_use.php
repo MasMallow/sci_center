@@ -1,6 +1,7 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+require_once 'assets/database/connect.php';
+include_once 'includes/thai_date_time.php';
 
 // ตรวจสอบว่าพนักงานเข้าสู่ระบบหรือไม่
 if (!isset($_SESSION['staff_login'])) {
@@ -22,34 +23,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-// ฟังก์ชันแปลงวันที่และเวลาเป็นรูปแบบภาษาไทย
-function thai_date_time($datetime)
-{
-    $thai_month_arr = array(
-        "0" => "",
-        "1" => "ม.ค.",
-        "2" => "ก.พ.",
-        "3" => "มี.ค.",
-        "4" => "เม.ย.",
-        "5" => "พ.ค.",
-        "6" => "มิ.ย.",
-        "7" => "ก.ค.",
-        "8" => "ส.ค.",
-        "9" => "ก.ย.",
-        "10" => "ต.ค.",
-        "11" => "พ.ย.",
-        "12" => "ธ.ค."
-    );
-
-    $day = date("w", strtotime($datetime)); // วันในสัปดาห์ (0-6)
-    $date = date("j", strtotime($datetime)); // วันที่
-    $month = date("n", strtotime($datetime)); // เดือน (1-12)
-    $year = date("Y", strtotime($datetime)) + 543; // ปี พ.ศ.
-    $time = date("H:i น.", strtotime($datetime)); // เวลา
-
-    return "วัน" . "ที่ " . $date . " " . $thai_month_arr[$month] . " พ.ศ." . $year . " <br> เวลา " . $time;
-}
-$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY sn");
+$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
@@ -87,7 +61,7 @@ $previousSn = '';
             <?php if (!empty($data)) { ?>
                 <table class="approve_table_data">
                     <div class="approve_table_header">
-                        <span>รายการที่ขอใช้งานทั้งหมด <span id="B"><?php echo $num; ?></span> รายการ</span>
+                        <span>รายการที่ขอใช้งานทั้งหมด <span id="B">(<?php echo $num; ?>)</span> รายการ</span>
                     </div>
                     <thead>
                         <tr>
@@ -102,10 +76,10 @@ $previousSn = '';
                     <tbody>
                         <?php
                         foreach ($data as $row) :
-                            if ($previousSn != $row['sn']) { ?>
+                            if ($previousSn != $row['serial_number']) { ?>
                                 <tr>
-                                    <td class="sn"><?php echo $row['sn']; ?></td>
-                                    <td><?php echo $row['firstname']; ?></td>
+                                    <td class="sn"><?php echo $row['serial_number']; ?></td>
+                                    <td><?php echo $row['name_user']; ?></td>
                                     <td>
                                         <?php
                                         // แยกข้อมูล Item Borrowed
@@ -116,7 +90,7 @@ $previousSn = '';
                                             $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
                                             $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
                                             $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                            echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
+                                            echo $product_name . ' <span id="B"> ( ' . $quantity . ' รายการ )</span><br>';
                                         }
                                         ?>
                                     </td>
@@ -132,7 +106,7 @@ $previousSn = '';
                                     </td>
                                 </tr>
                         <?php
-                                $previousSn = $row['sn'];
+                                $previousSn = $row['serial_number'];
                             }
                         endforeach;
                         ?>

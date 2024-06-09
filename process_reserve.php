@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
 
         // Check each item in the booking for existing bookings
-        $stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE id = :id");
+        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // If no existing bookings, proceed with updating the booking
-        $update_query = $conn->prepare("UPDATE approve_to_bookings SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 WHERE id = :id");
+        $update_query = $conn->prepare("UPDATE approve_to_reserve SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 WHERE id = :id");
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->bindParam(':approver', $approver['surname'], PDO::PARAM_STR);
         $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);

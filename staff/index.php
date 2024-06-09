@@ -1,12 +1,12 @@
 <?php
 require_once 'assets/database/connect.php';
 
-$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY sn");
+$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
 
-$bookings = $conn->prepare("SELECT * FROM approve_to_bookings WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
+$bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
 $bookings->execute();
 $data = $bookings->fetchAll(PDO::FETCH_ASSOC);
 $numbookings = count($data); // นับจำนวนรายการ
@@ -45,13 +45,13 @@ $numuser = count($datauser); // นับจำนวนรายการ
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="user_approval" class="<?php if ($numuser == '0') {
+                            <a href="manage_users" class="<?php if ($numuser == '0') {
                                                                 echo 'user_approval_btn';
                                                             } elseif ($numuser > 0) {
                                                                 echo 'user_approval_have';
                                                             } ?>">
                                 <i class="fa-solid fa-address-book"></i>
-                                <span class="text">อนุมัติผู้สร้างบัญชี</span>
+                                <span class="text">การจัดการบัญชีผู้ใช้</span>
                                 <span id="B">
                                     <?php echo "(" . $numuser . ")"; ?>
                                 </span>
@@ -60,9 +60,9 @@ $numuser = count($datauser); // นับจำนวนรายการ
                     </li>
                     <li>
                         <div class="staff_menu">
-                            <a href="manage_users" class="user_approval_btn">
+                            <a href="top_10_list" class="user_approval_btn">
                                 <i class="fa-solid fa-user-gear"></i>
-                                <span>การจัดการบัญชีผู้ใช้</span>
+                                <span>ดูสถิติ 10 รายการ</span>
                             </a>
                         </div>
                     </li>

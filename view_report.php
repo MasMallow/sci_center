@@ -83,8 +83,8 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <header>
         <?php include 'includes/header.php'; ?>
     </header>
-    <div class="header_approve">
-        <div class="header_approve_section">
+    <div class="header_view_report">
+        <div class="header_view_report_section">
             <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">รายงานการยืมอุปกรณ์</span>
         </div>
@@ -129,7 +129,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($_GET["end_date"]) ?>">
                         <?php
                         endif; ?>
-                        <button type="submit" class="create_pdf">สร้างรายงาน</button>
+                        <button type="submit" class="create_pdf"><span id="B">สร้างรายงาน</span></button>
                     </form>
                 </div>
                 <form class="form_2" action="view_report" method="GET">

@@ -12,17 +12,17 @@ if (isset($_SESSION['user_login'])) {
 
     if ($userData) {
         if ($userData['status'] !== 'approved') {
-            header("Location: home.php");
+            header("Location: home");
             exit();
         }
     } else {
         $_SESSION['error'] = 'ผู้ใช้ไม่พบ!';
-        header('Location: auth/sign_in.php');
+        header('Location: auth/sign_in');
         exit();
     }
 } else {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: auth/sign_in.php');
+    header('Location: auth/sign_in');
     exit();
 }
 

@@ -20,7 +20,7 @@
 
 .header_approve {
   display: flex;
-  width: 1350px;
+  width: 1400px;
   margin: 3rem auto 1rem auto;
 }
 
@@ -50,8 +50,9 @@
     }
   }
 }
+
 .approve_section {
-  width: 1350px;
+  width: 1400px;
   margin: 0 auto;
 }
 .approve_not_found_section {
@@ -76,7 +77,6 @@
 .approve_table_data {
   border-collapse: collapse;
   width: 100%;
-  border-radius: 5px;
 }
 .approve_table_header {
   font-size: 1rem;

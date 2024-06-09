@@ -23,7 +23,7 @@ if (isset($_SESSION['staff_login'])) {
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-$stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE user_id = :user_id AND reservation_date >= CURDATE()");
+$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_id = :user_id AND reservation_date >= CURDATE()");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +34,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <head>
     <meta charset="UTF-8">
-    <title>User's Bookings</title>
+    <title>ยกเลิกการจอง</title>
     <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="assets/css/index.css">
@@ -53,9 +53,12 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <?php if (empty($bookings)) : ?>
-        <p>ไม่มีรายการจอง</p>
+        <div class="approve_not_found_section">
+            <i class="fa-solid fa-xmark"></i>
+            <span id="B">ไม่พบข้อมูลการจอง</span>
+        </div>
     <?php else : ?>
-        <form method="POST" action="cancel_booking.php">
+        <form method="POST" action="cancel_booking">
             <div class="maintenance_section">
                 <div class="table_maintenace_section">
                     <table class="table_maintenace">
@@ -101,10 +104,9 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                                         if ($booking['situation'] === null) {
                                             echo 'ยังไม่ได้รับอนุมัติ';
-                                        }elseif ($booking['situation'] == 1) {
+                                        } elseif ($booking['situation'] == 1) {
                                             echo 'ได้รับการอนุมัติ';
-                                        }
-                                        elseif ($booking['situation'] == 3) {
+                                        } elseif ($booking['situation'] == 3) {
                                             echo 'ได้ทำการขอใช้แล้ว';
                                         }
                                         ?>
