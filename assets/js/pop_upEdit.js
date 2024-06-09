@@ -22,9 +22,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ฟังก์ชันเพื่อปิด modal
+    // ฟังก์ชันเพื่อปิด modal และรีเซ็ตภาพตัวอย่าง
     function closeModal() {
         if (currentModal) {
+            // รีเซ็ตภาพตัวอย่างและข้อความของไฟล์ที่เลือก
+            currentModal.querySelectorAll('.input-img').forEach(input => {
+                const modalId = input.getAttribute("id").split("_")[1];
+                const previewImg = document.getElementById("previewImg_" + modalId);
+                const fileChosen = document.getElementById("file-chosen-img_" + modalId);
+                
+                // รีเซ็ตค่าของ input file
+                input.value = '';
+
+                // รีเซ็ตภาพตัวอย่างเป็นภาพเดิม
+                previewImg.src = "../assets/uploads/" + input.getAttribute("data-default-img");
+
+                // รีเซ็ตข้อความของไฟล์ที่เลือก
+                fileChosen.textContent = input.getAttribute("data-default-img");
+            });
+
             currentModal.style.display = "none";
             currentModal = null;
             document.body.style.overflow = "";
@@ -36,23 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const imgInputs = document.querySelectorAll('.input-img');
     imgInputs.forEach(imgInput => {
         imgInput.addEventListener("change", function () {
-            const fileName = this.files[0].name;
-            const modalId = this.id.split("_")[1]; // ปรับแก้ตรงนี้เพื่อให้ได้ modalId จาก id ของ input-img
-            document.getElementById("file-chosen-img_" + modalId).textContent = fileName; // แก้ไขตรงนี้เพื่อให้มันตรงกับ id ใน HTML
+            const fileName = this.files[0] ? this.files[0].name : '';
+            const modalId = this.id.split("_")[1];
+            document.getElementById("file-chosen-img_" + modalId).textContent = fileName;
 
-            const previewImg = document.getElementById("previewImg_" + modalId); // ปรับแก้ตรงนี้เพื่อให้ตรงกับ id ของ previewImg
+            const previewImg = document.getElementById("previewImg_" + modalId);
             const [file] = this.files;
             if (file) {
                 previewImg.src = URL.createObjectURL(file);
             }
-        });
-    });
-
-    document.querySelectorAll('.input-img').forEach(function (inputImg) {
-        const modalId = inputImg.getAttribute("id").split("_")[1];
-        inputImg.addEventListener("change", function () {
-            const fileName = this.files[0] ? this.files[0].name : ''; // เพิ่มเงื่อนไขเพื่อตรวจสอบว่ามีไฟล์ที่ถูกเลือกหรือไม่
-            document.getElementById("file-chosen-img_" + modalId).textContent = fileName;
         });
     });
 });

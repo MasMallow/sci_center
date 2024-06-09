@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once('../assets/database/connect.php');
+require_once('../assets/database/connect.php');
 
 if (isset($_POST['update'])) {
     $id = $_POST['id'];

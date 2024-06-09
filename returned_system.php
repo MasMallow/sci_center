@@ -4,10 +4,6 @@ require_once 'assets/database/connect.php'; // เรียกใช้งาน
 include 'includes/thai_date_time.php'; // เรียกใช้งานไฟล์ที่เกี่ยวข้องกับการแสดงวันที่และเวลาเป็นภาษาไทย
 
 try {
-    if (!isset($_SESSION['user_login'])) {
-        throw new Exception("User not logged in"); // โยนข้อผิดพลาดเมื่อผู้ใช้ไม่ได้เข้าสู่ระบบ
-    }
-
     $user_id = $_SESSION['user_login'];
     $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);

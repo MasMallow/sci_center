@@ -146,7 +146,10 @@ try {
     </div>
     <div class="management_grid">
         <?php if (empty($result)) { ?>
-            <div class="management_grid_not_found">ไม่พบข้อมูล</div>
+            <div class="user_approve_not_found">
+                <i class="icon fa-solid <?= ($notification === 'noti_use') ? 'fa-arrow-up' : 'fa-address-book'; ?>"></i>
+                <span id="B"><?= ($notification === 'noti_use') ? 'ไม่มีแจ้งเตือนการขอใช้' : 'ไม่มีแจ้งเตือนการจอง'; ?></span>
+            </div>
             <?php } else {
             foreach ($result as $results) { ?>
                 <div class="management_grid_content">
@@ -173,11 +176,11 @@ try {
                             </div>
                         <?php } ?>
                         <div class="content_details">
-                            <button class="details_btn" data-modal="<?php echo $results['id']; ?>">
+                            <button class="details_btn" data-modal="<?php echo htmlspecialchars($results['id']); ?>">
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
                         </div>
-                        <div class="content_details_popup" id="<?php echo $results['id']; ?>">
+                        <div class="content_details_popup" id="<?php echo htmlspecialchars($results['id']); ?>">
                             <div class="details">
                                 <div class="details_header">
                                     <span id="B">แก้ไขข้อมูล</span>
@@ -190,16 +193,16 @@ try {
                                         <div class="img_details">
                                             <div class="img">
                                                 <div class="imgInput">
-                                                    <img class="previewImg" id="previewImg_<?php echo htmlspecialchars($results['img']); ?>" src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>" loading="lazy">
+                                                    <img class="previewImg" id="previewImg_<?php echo htmlspecialchars($results['id']); ?>" src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>" loading="lazy">
                                                 </div>
                                             </div>
                                             <span class="upload-tip"><b>Note: </b>Only JPG, JPEG, PNG & GIF files allowed to upload.</span>
                                             <div class="btn_img">
-                                                <label class="choose-file" for="imgInput_<?php echo htmlspecialchars($results['img']); ?>">เลือกรูปภาพที่จะอัพโหลด</label>
-                                                <span class="file_chosen_img" id="file-chosen-img_<?php echo htmlspecialchars($results['img']); ?>"><?php echo htmlspecialchars($results['img']); ?></span>
+                                                <input type="file" class="input-img" id="imgInput_<?php echo htmlspecialchars($results['id']); ?>" name="img" accept="image/jpeg, image/png, image/gif" data-default-img="<?php echo htmlspecialchars($results['img']); ?>" hidden>
+                                                <label for="imgInput_<?php echo htmlspecialchars($results['id']); ?>">เลือกรูปภาพที่จะอัพโหลด</label>
+                                                <input type="hidden" value="<?php echo htmlspecialchars($results['img']); ?>" required name="img2">
+                                                <span class="file_chosen_img" id="file-chosen-img_<?php echo htmlspecialchars($results['id']); ?>"><?php echo htmlspecialchars($results['img']); ?></span>
                                             </div>
-                                            <input type="file" class="input-img" id="imgInput_<?php echo htmlspecialchars($results['img']); ?>" name="img" accept="image/jpeg, image/png" hidden>
-                                            <input type="hidden" value="<?php echo htmlspecialchars($results['img']); ?>" required name="img2">
                                         </div>
                                     </div>
                                     <div class="details_content_right">
@@ -241,7 +244,6 @@ try {
                                             </li>
                                         </ul>
                                         <div class="details_content_footer">
-                                            <button type="reset">คืนค่าเดิม</button>
                                             <button type="submit" name="update">ยืนยัน</button>
                                         </div>
                                     </div>
@@ -259,71 +261,68 @@ try {
                             <i class="fa-solid fa-circle-info"></i>
                             <span>แก้ไขข้อมูล</span>
                         </button>
-                        <button class="delete_btn management_popup_btn02" data-modal="delete_<?php echo $results['id']; ?>">
+                        <button class="delete_btn delete_popup" data-modal="delete_<?php echo $results['id']; ?>">
                             <i class="icon fa-solid fa-trash"></i>
                             <span>ลบข้อมูล</span>
                         </button>
-                        <div class="management_popup02" id="delete_<?php echo $results['id']; ?>">
-                            <div class="management_content_popup">
-                                <div class="management_popup_header">
+                        <div class="delete_content_popup" id="delete_<?php echo $results['id']; ?>">
+                            <div class="delete_content">
+                                <div class="delete_content_header">
                                     <span id="B">ยืนยันการลบ</span>
-                                    <div class="modalClose" id="closeDetails">
+                                    <div class="close_popup_delete">
                                         <i class="fa-solid fa-xmark"></i>
                                     </div>
                                 </div>
-                                <div class="management_popup_content">
-                                    <div class="details_content_left">
-                                        <div class="img_details">
-                                            <div class="img">
-                                                <img class="previewImg" id="previewImg_<?php echo htmlspecialchars($results['img']); ?>" src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>" loading="lazy">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="details_content_right">
-                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['id']); ?>">
-                                        <ul class="details_content_li">
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">Serial Number</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <input type="text" name="sci_name" value="<?php echo htmlspecialchars($results['sci_name']); ?>">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1">
-                                                    <span id="B">ชื่อ</span>
-                                                </div>
-                                                <div class="details_content_2">
-                                                    <input type="text" name="sci_name" value="<?php echo htmlspecialchars($results['sci_name']); ?>">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1"><span id="B">จำนวน</span></div>
-                                                <div class="details_content_2"><input type="number" name="amount" value="<?php echo htmlspecialchars($results['amount']); ?>"></div>
-                                            </li>
-                                            <li>
-                                                <div class="details_content_1"><span id="B">ประเภท</span></div>
-                                                <div class="details_content_2">
-                                                    <select name="categories">
-                                                        <?php
-                                                        $categoriesfixes = ['วัสดุ', 'อุปกรณ์', 'เครื่องมือ'];
-                                                        foreach ($categoriesfixes as $categoriesfixe) {
-                                                            $selected = ($results['categories'] == $categoriesfixe) ? "selected" : "";
-                                                            echo "<option value='$categoriesfixe' $selected>$categoriesfixe</option>";
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="choose_categories_footer">
-                                            <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
-                                                <i class="icon fa-solid fa-trash"></i><span>ลบข้อมูล</span>
-                                            </a>
-                                            <button class="closePOPUP_delete">ปิดหน้าต่าง</button>
-                                        </div>
-                                    </div>
+                                <div class="delete_content_body">
+                                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['id']); ?>">
+                                    <table class="delete_content_table">
+                                        <tr>
+                                            <td>
+                                                <span id="B">Serial Number</span>
+                                            </td>
+                                            <td>
+                                                <?php echo htmlspecialchars($results['s_number']); ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span id="B">ชื่อ</span>
+                                            </td>
+                                            <td>
+                                                <?php echo htmlspecialchars($results['sci_name']); ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span id="B">จำนวน</span>
+                                            </td>
+                                            <td>
+                                                <?php echo htmlspecialchars($results['amount']); ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span id="B">ประเภท</span>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                $categoriesfixes = ['วัสดุ', 'อุปกรณ์', 'เครื่องมือ'];
+                                                foreach ($categoriesfixes as $categoriesfixe) {
+                                                    if ($results['categories'] == $categoriesfixe) {
+                                                        echo $categoriesfixe;
+                                                        break;
+                                                    }
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="delete_content_footer">
+                                    <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
+                                        <i class="icon fa-solid fa-trash"></i><span>ลบข้อมูล</span>
+                                    </a>
+                                    <button class="close_popup_delete">ปิดหน้าต่าง</button>
                                 </div>
                             </div>
                         </div>

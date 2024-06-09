@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include_once '../assets/database/connect.php';
+require_once '../assets/database/connect.php';
 
 // Check if product ID is provided
 if (isset($_GET['id'])) {
@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
 
     if ($delete) {
         echo "Product deleted successfully.";
-        header("Location: management.php");
+        header("Location: management");
     } else {
         echo "Error deleting product.";
     }

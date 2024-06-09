@@ -2,31 +2,47 @@
 session_start();
 require_once 'assets/database/connect.php';
 include 'includes/thai_date_time.php';
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($userData) {
-        if ($userData['status'] == 'not_approved') {
-            unset($_SESSION['user_login']);
-            header('Location: auth/sign_in.php');
-            exit();
+try {
+    // ตรวจสอบการล็อกอินของผู้ใช้
+    if (isset($_SESSION['user_login'])) {
+        $user_id = $_SESSION['user_login'];
+        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($userData) {
+            if ($userData['status'] == 'not_approved') {
+                unset($_SESSION['user_login']);
+                header('Location: auth/sign_in.php');
+                exit();
+            }
         }
     }
+
+    // ตรวจสอบการล็อกอินของเจ้าหน้าที่
+    if (isset($_SESSION['staff_login'])) {
+        $user_id = $_SESSION['staff_login'];
+        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // ดึงข้อมูลการจอง
+    if (isset($user_id)) {
+        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_id = :user_id AND reservation_date >= CURDATE()");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $bookings = [];
+    }
+} catch (PDOException $e) {
+    // จัดการข้อผิดพลาดที่เกิดจากการเชื่อมต่อฐานข้อมูล
+    echo "Error: " . $e->getMessage();
 }
-if (isset($_SESSION['staff_login'])) {
-    $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_id = :user_id AND reservation_date >= CURDATE()");
-$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-$stmt->execute();
-$bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +74,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <span id="B">ไม่พบข้อมูลการจอง</span>
         </div>
     <?php else : ?>
-        <form method="POST" action="cancel_booking">
+        <form method="POST" action="cancel_booking.php">
             <div class="maintenance_section">
                 <div class="table_maintenace_section">
                     <table class="table_maintenace">
@@ -67,11 +83,10 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <th class="serial_number"><span id="B">Serial Number</span></th>
                                 <th><span id="B">รายการ</span></th>
                                 <th><span id="B">วัน เวลาที่ทำรายการ</span></th>
-                                <th><span id="B">วัน เวลาจอง</span></th>
+                                <th><span id="B">วัน เวลาที่จอง</span></th>
                                 <th>
-                                    <span id="B">ยกเลิกการจอง</span>
                                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($bookings[0]['user_id']); ?>">
-                                    <button type="submit">ยกเลิกการจอง</button>
+                                    <button type="submit"><span id="B">ยกเลิกการจอง</span></button>
                                 </th>
                                 <th><span id="B">สถานะ</span></th>
                             </tr>
@@ -82,7 +97,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="serial_number"><?= htmlspecialchars($booking['serial_number']); ?></td>
                                     <td>
                                         <?php
-                                        // Separate item list
+                                        // แยกรายการสินค้า
                                         $items = explode(',', $booking['list_name']);
                                         foreach ($items as $item) {
                                             $item_parts = explode('(', $item);
@@ -99,9 +114,6 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </td>
                                     <td>
                                         <?php
-                                        $checkBookingsDate = strtotime($booking['reservation_date']);
-                                        $currentDate = time();
-
                                         if ($booking['situation'] === null) {
                                             echo 'ยังไม่ได้รับอนุมัติ';
                                         } elseif ($booking['situation'] == 1) {
@@ -119,8 +131,6 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </form>
     <?php endif; ?>
-
-
 </body>
 
 </html>

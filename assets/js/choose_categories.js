@@ -1,42 +1,53 @@
 // ค้นหาปุ่มทั้งหมดที่ใช้เปิด modal
 const modalOpenButtons1 = document.querySelectorAll(".management_popup_btn");
-const modalOpenButtons2 = document.querySelectorAll(".management_popup_btn02");
+const modalOpenButtons2 = document.querySelectorAll(".delete_popup");
 
 // ค้นหาปุ่มปิด modal
-const modalCloseButton = document.getElementById("closeDetails");
+const modalCloseButtons = document.querySelectorAll(".modalClose");
 
 // ค้นหา modal
-const modal = document.querySelector(".management_popup");
-const modal2 = document.querySelector(".management_popup02");
+const modals = document.querySelectorAll(".modal");
 
-// เพิ่มฟังก์ชันเพื่อเปิด modal
+// ฟังก์ชันเพื่อเปิด modal
+function openModal(modal) {
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    document.body.style.paddingRight = "15px";
+}
+
+// ฟังก์ชันเพื่อปิด modal
+function closeModal(modal) {
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+    document.body.style.paddingRight = "";
+}
+
+// เพิ่มฟังก์ชันเพื่อเปิด modal สำหรับปุ่มทุกปุ่มที่ใช้เปิด modal
 modalOpenButtons1.forEach(function (button) {
     button.addEventListener("click", function () {
-        // แสดง modal โดยตั้งค่า style.display เป็น 'block'
-        modal.style.display = "flex";
-        // เพิ่ม overflow: hidden และ padding-right: 15px ให้กับ <body>
-        document.body.style.overflow = "hidden";
-        document.body.style.paddingRight = "15px";
+        openModal(document.querySelector(".management_popup"));
     });
 });
 
-// เพิ่มฟังก์ชันเพื่อปิด modal
-modalCloseButton.addEventListener("click", function () {
-    // ซ่อน modal โดยตั้งค่า style.display เป็น 'none'
-    modal.style.display = "none";
-    // ลบ overflow: hidden และ padding-right: 15px จาก <body>
-    document.body.style.overflow = "";
-    document.body.style.paddingRight = "";
+modalOpenButtons2.forEach(function (button) {
+    button.addEventListener("click", function () {
+        openModal(document.querySelector(".delete_content_popup"));
+    });
+});
+
+// เพิ่มฟังก์ชันเพื่อปิด modal สำหรับปุ่มปิดทุกปุ่ม
+modalCloseButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        const modal = button.closest(".modal");
+        closeModal(modal);
+    });
 });
 
 // ปิด modal เมื่อคลิกที่พื้นหลังของ modal
-modal.addEventListener("click", function (event) {
-    // ตรวจสอบว่าคลิกที่พื้นหลังของ modal หรือไม่
-    if (event.target === modal) {
-        // ซ่อน modal โดยตั้งค่า style.display เป็น 'none'
-        modal.style.display = "none";
-        // ลบ overflow: hidden และ padding-right: 15px จาก <body>
-        document.body.style.overflow = "";
-        document.body.style.paddingRight = "";
-    }
+modals.forEach(function (modal) {
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            closeModal(modal);
+        }
+    });
 });
