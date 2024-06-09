@@ -25,7 +25,7 @@ if (isset($_SESSION['staff_login'])) {
 
     <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="../assets/css/navigator.css">
-    <link rel="stylesheet" href="add-remove-update.css">
+    <link rel="stylesheet" href="../assets/css/management_systems.css">
 </head>
 
 <body>

@@ -8,10 +8,10 @@ $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
 $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
-// สร้าง SQL query เพื่อดึงข้อมูลจากตาราง approve_to_use โดยใช้เงื่อนไขของ user_id และช่วงเวลาถ้ามีการระบุ
-$sql = "SELECT * FROM approve_to_bookings WHERE 1 AND situation = 1 OR situation = 3";
+// สร้าง SQL query เพื่อดึงข้อมูลจากตาราง approve_to_reserve โดยใช้เงื่อนไขของ user_id และช่วงเวลาถ้ามีการระบุ
+$sql = "SELECT * FROM approve_to_reserve WHERE 1 AND (situation = 1 OR situation = 3)";
 if (!empty($user_id) && $user_id !== 'all') {
-    $sql .= " AND udi = :user_id";
+    $sql .= " AND user_id = :user_id";
 }
 if (!empty($start_date) && !empty($end_date)) {
     $sql .= " AND (reservation_date BETWEEN :start_date AND :end_date)";
@@ -44,50 +44,12 @@ $pdf->AddPage();
 // ตั้งค่า font
 $pdf->SetFont('thsarabunnew', '', 16); // ใช้ฟอนต์ THSarabunNew ที่ติดตั้ง
 
-// เพิ่มเนื้อหา
-$html = '<h1>รายงานการขอใช้</h1>';
-if (!empty($start_date) && !empty($end_date)) {
-    $html .= '<p><strong>วันที่เริ่มต้น:</strong> ' . thai_date_time($start_date) . '</p>';
-    $html .= '<p><strong>วันที่สิ้นสุด:</strong> ' . thai_date_time($end_date) . '</p>';
-}
-$html .= '<table border="1" cellpadding="5">
-            <thead>
-                <tr>
-                    <th>รหัสผู้ใช้</th>
-                    <th>ชื่อ</th>
-                    <th>ชื่อสินค้า</th>
-                    <th>วันที่ยืม</th>
-                    <th>วันที่คืน</th>
-                </tr>
-            </thead>
-            <tbody>';
+// อ่านไฟล์ HTML
+ob_start();
+include('report_template.html');
+$html = ob_get_clean();
 
-if (count($data) > 0) {
-    foreach ($data as $row) {
-        $html .= '<tr>';
-        $html .= '<td>' . htmlspecialchars($row["user_id"]) . '</td>';
-        $html .= '<td>' . htmlspecialchars($row["firstname"]) . '</td>';
-
-        $items = explode(',', $row['list_name']);
-        $html .= '<td>';
-        foreach ($items as $item) {
-            $item_parts = explode('(', $item);
-            $product_name = trim($item_parts[0]);
-            $quantity = str_replace(')', '', $item_parts[1]);
-            $html .= $product_name . ' ' . $quantity . ' ชิ้น<br>';
-        }
-        $html .= '</td>';
-
-        $html .= '<td>' . thai_date_time(($row["reservation_date"])) . '</td>';
-        $html .= '<td>' . thai_date_time(($row["end_date"])) . '</td>';
-        $html .= '</tr>';
-    }
-} else {
-    $html .= '<tr><td colspan="5">ไม่พบข้อมูลในฐานข้อมูล</td></tr>';
-}
-
-$html .= '</tbody></table>';
-
+// เพิ่มเนื้อหา HTML ลงใน PDF
 $pdf->writeHTML($html, true, false, true, false, '');
 
 // แสดง PDF

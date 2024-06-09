@@ -44,50 +44,12 @@ $pdf->AddPage();
 // ตั้งค่า font
 $pdf->SetFont('thsarabunnew', '', 16); // ใช้ฟอนต์ THSarabunNew ที่ติดตั้ง
 
-// เพิ่มเนื้อหา
-$html = '<h1>รายงานการขอใช้</h1>';
-if (!empty($start_date) && !empty($end_date)) {
-    $html .= '<p><strong>วันที่เริ่มต้น:</strong> ' . thai_date_time($start_date) . '</p>';
-    $html .= '<p><strong>วันที่สิ้นสุด:</strong> ' . thai_date_time($end_date) . '</p>';
-}
-$html .= '<table border="1" cellpadding="5">
-            <thead>
-                <tr>
-                    <th>รหัสผู้ใช้</th>
-                    <th>ชื่อ</th>
-                    <th>ชื่อสินค้า</th>
-                    <th>วันที่ยืม</th>
-                    <th>วันที่คืน</th>
-                </tr>
-            </thead>
-            <tbody>';
+// อ่านไฟล์ HTML
+ob_start();
+include('report_template1.html');
+$html = ob_get_clean();
 
-if (count($data) > 0) {
-    foreach ($data as $row) {
-        $html .= '<tr>';
-        $html .= '<td>' . htmlspecialchars($row["udi"]) . '</td>';
-        $html .= '<td>' . htmlspecialchars($row["firstname"]) . '</td>';
-
-        $items = explode(',', $row['list_name']);
-        $html .= '<td>';
-        foreach ($items as $item) {
-            $item_parts = explode('(', $item);
-            $product_name = trim($item_parts[0]);
-            $quantity = str_replace(')', '', $item_parts[1]);
-            $html .= $product_name . ' ' . $quantity . ' ชิ้น<br>';
-        }
-        $html .= '</td>';
-
-        $html .= '<td>' . thai_date_time(($row["borrowdatetime"])) . '</td>';
-        $html .= '<td>' . thai_date_time(($row["returndate"])) . '</td>';
-        $html .= '</tr>';
-    }
-} else {
-    $html .= '<tr><td colspan="5">ไม่พบข้อมูลในฐานข้อมูล</td></tr>';
-}
-
-$html .= '</tbody></table>';
-
+// เพิ่มเนื้อหา HTML ลงใน PDF
 $pdf->writeHTML($html, true, false, true, false, '');
 
 // แสดง PDF
