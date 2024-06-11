@@ -12,7 +12,7 @@ if (!isset($_SESSION['staff_login'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['user_id'])) {
         $user_id = $_GET['user_id'];
-        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);

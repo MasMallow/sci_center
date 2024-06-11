@@ -12,13 +12,13 @@ if (!isset($_SESSION['staff_login'])) {
 // ดึงข้อมูลผู้ใช้หากเข้าสู่ระบบ
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $user_id = $_SESSION['user_login'] ?? $_SESSION['staff_login'];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 try {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' ");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = 'wait_approved' ");
     $stmt->execute();
     $num = $stmt->rowCount();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = $_POST['user_id'];
         $staff_id = $_SESSION['staff_login'];
 
-        $user_query = $conn->prepare("SELECT pre, surname, lastname FROM users WHERE user_id = :staff_id");
+        $user_query = $conn->prepare("SELECT pre, surname, lastname FROM users_db WHERE user_id = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $staff_name = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php foreach ($users as $user) : ?>
                                 <tr>
                                     <td class="UID"><?php echo $user['user_id']; ?></td>
-                                    <td><?php echo $user['pre'] . $user['surname'] . " " . $user['lastname']; ?></td>
+                                    <td><?php echo $user['pre'] . $user['firstname'] . " " . $user['lastname']; ?></td>
                                     <td><?php echo $user['role']; ?></td>
                                     <td><?php echo $user['agency']; ?></td>
                                     <td><?php echo format_phone_number($user['phone_number']); ?></td>

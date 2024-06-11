@@ -92,7 +92,7 @@ if (isset($_POST['signup'])) {
         exit;
     } else {
         try {
-            $check_lineid = $conn->prepare("SELECT lineid FROM users WHERE lineid  = :line_id");
+            $check_lineid = $conn->prepare("SELECT lineid FROM users_db WHERE lineid  = :line_id");
             $check_lineid->bindParam(":email", $email);
             $check_lineid->execute();
             $row = $check_lineid->fetch(PDO::FETCH_ASSOC);

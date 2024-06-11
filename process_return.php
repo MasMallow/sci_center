@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $staff_id = $_SESSION['staff_login'];
 
         // Fetch the approver details
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :staff_id");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $approvaldatetime = date('Y-m-d H:i:s');
 
         // Fetch user details
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_query->execute();
 
         $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
-        $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+        $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่ขอยืม : " . date('d/m/Y H:i:s', strtotime($data['borrowdatetime'])) . "\n";
         $sMessage .= "วันที่นำมาคืน : " . date('d/m/Y H:i:s', strtotime($data['returndate'])) . "\n";
@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $update_query->execute();
 
             // Fetch user details
-            $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
+            $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :userId");
             $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
             $user_query->execute();
             $user = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach ($data as $row) {
                 $items = explode(',', $row['list_name']);
 
-                $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+                $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
                 $sMessage .= "SN : " . $row['serial_number'] . "\n"; // SN
                 $sMessage .= "วันที่ขอยืม : " . date('d/m/Y H:i:s', strtotime($row['borrowdatetime'])) . "\n"; // Date of borrowing
                 $sMessage .= "วันที่นำมาคืน : " . date('d/m/Y H:i:s', strtotime($row['returndate'])) . "\n"; // Return date

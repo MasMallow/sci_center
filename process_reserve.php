@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $staff_id = $_SESSION['staff_login'];
 
         // Select surname of the approver from the database
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :staff_id");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -57,14 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_query->execute();
 
         // Select user details
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
 
         // Create message for Line Notify
         $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
-        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่กดจอง : " . date('d/m/Y H:i:s', strtotime($data['created_at'])) . "\n";
         $sMessage .= "วันที่จองใช้ : " . date('d/m/Y H:i:s', strtotime($data['reservation_date'])) . "\n";
@@ -131,14 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_query->execute();
 
         // Select user details
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
 
         // Create message for Line Notify
         $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
-        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่กดจอง : " . date('d/m/Y H:i:s', strtotime($data['created_at'])) . "\n";
         $sMessage .= "วันที่จองใช้ : " . date('d/m/Y H:i:s', strtotime($data['reservation_date'])) . "\n";

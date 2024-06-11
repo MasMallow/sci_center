@@ -7,7 +7,7 @@ try {
     // ตรวจสอบการล็อกอินของผู้ใช้
     if (isset($_SESSION['user_login'])) {
         $user_id = $_SESSION['user_login'];
-        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,7 +24,7 @@ try {
     // ตรวจสอบการล็อกอินของเจ้าหน้าที่
     if (isset($_SESSION['staff_login'])) {
         $user_id = $_SESSION['staff_login'];
-        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);

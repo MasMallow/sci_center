@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_login'])) {
 }
 
 $user_id = $_SESSION['user_login'];
-$stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+$stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -164,9 +164,11 @@ if (isset($_GET['action'])) {
                                 <th class="th_categories"><span id="B">ประเภท</span></th>
                                 <th class="th_amount"><span id="B">จำนวน</span></th>
                             </tr>
+                            <?php
+                            ?>
                             <?php foreach ($_SESSION['cart'] as $item) : ?>
                                 <?php
-                                $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
+                                $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :item");
                                 $query->bindParam(':item', $item, PDO::PARAM_STR);
                                 $query->execute();
                                 $product = $query->fetch(PDO::FETCH_ASSOC);
@@ -174,12 +176,12 @@ if (isset($_GET['action'])) {
                                 if ($product) {
                                     $categories = $product['categories'];
                                     $productName = $product['sci_name'];
-                                    $imageURL = 'assets/uploads/' . $product['img'];
+                                    $imageURL = 'assets/uploads/' . $product['img_name'];
                                 ?>
                                     <tbody>
                                         <tr>
                                             <td><img src="<?php echo $imageURL; ?>" alt="<?php echo $productName; ?>"></td>
-                                            <td><?php echo $productName . $product['s_number']; ?></td>
+                                            <td><?php echo $productName . $product['serial_number']; ?></td>
                                             <td><span><?php echo $categories; ?></span></td>
                                             <td>
                                                 <div class="amount_delete">

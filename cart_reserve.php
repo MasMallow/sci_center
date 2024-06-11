@@ -5,7 +5,7 @@ include_once 'includes/thai_date_time.php';
 
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -174,7 +174,7 @@ if (isset($_GET['action'])) {
                                 <?php foreach ($_SESSION['reserve_cart'] as $item) : ?>
                                     <?php
                                     // Retrieve product details from the database based on the item
-                                    $query = $conn->prepare("SELECT * FROM crud WHERE img = :itemToAdd");
+                                    $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :itemToAdd");
                                     $query->bindParam(':itemToAdd', $item, PDO::PARAM_STR);
                                     $query->execute();
                                     $product = $query->fetch(PDO::FETCH_ASSOC);

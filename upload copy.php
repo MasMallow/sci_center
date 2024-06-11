@@ -76,7 +76,7 @@ if (isset($_POST['submit'])) {
     if (in_array($thumbnail_extension, $allow)) {
         if ($img['size'] > 0 && $img['error'] == 0) {
             // ตรวจสอบว่าชื่อไฟล์รูปภาพมีอยู่ในฐานข้อมูลแล้วหรือไม่
-            $stmt = $conn->prepare("SELECT 1 FROM crud WHERE img = :img");
+            $stmt = $conn->prepare("SELECT 1 FROM crud WHERE img_name = :img");
             $stmt->bindParam(":img", $img['name']);
             $stmt->execute();
             if ($stmt->fetchColumn()) {

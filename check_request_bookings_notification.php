@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Bangkok');
 
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -43,12 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
     $update_query->execute();
     $update_data = $update_query->fetch(PDO::FETCH_ASSOC);
 
-    $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
     $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $user_query->execute();
     $user = $user_query->fetch(PDO::FETCH_ASSOC);
 
-    $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+    $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
 
     if ($update_data) {
         $items = explode(',', $update_data['list_name']);

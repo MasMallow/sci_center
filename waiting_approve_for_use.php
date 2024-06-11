@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_login'])) {
 }
 
 $user_id = $_SESSION['user_login'];
-$stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id AND status = 'approved'");
+$stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id AND status = 'approved'");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,7 +23,8 @@ if (!$userData) {
 }
 
 // ฟังก์ชันสำหรับการสร้างสตริงสุ่ม
-function generateRandomString($length = 7) {
+function generateRandomString($length = 7)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     return substr(str_shuffle($characters), 0, $length);
 }
@@ -36,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $items = $_POST['amount'];
 
         // ดึงข้อมูลผู้ใช้
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
-        $name_user = htmlspecialchars($user['pre'] . $user['surname'] . ' ' . $user['lastname']);
+        $name_user = htmlspecialchars($user['pre'] . $user['firstname'] . ' ' . $user['lastname']);
 
         // ตรวจสอบว่าตะกร้ามีสินค้าหรือไม่
         if (!is_array($_SESSION['cart'])) {
@@ -52,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errorMessages = [];
 
         foreach ($_SESSION['cart'] as $item) {
-            $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
+            $query = $conn->prepare("SELECT * FROM crud WHERE img_name = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);

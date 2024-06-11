@@ -15,7 +15,7 @@ if (isset($_GET['search'])) {
 // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่ และดึงข้อมูลผู้ใช้
 if (isset($_SESSION['staff_login'])) {
     $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -27,7 +27,7 @@ if (isset($_SESSION['staff_login'])) {
 
 // ฟังก์ชันในการดึงข้อมูลผู้ใช้ตามเงื่อนไข
 try {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' ");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = 'wait_approved' ");
     $stmt->execute();
     $num = $stmt->rowCount();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -41,10 +41,10 @@ function fetchUsers($conn, $status, $role, $search = null)
 {
     if ($search) {
         $search = "%" . $search . "%";
-        $stmt = $conn->prepare("SELECT * FROM users WHERE (user_id LIKE :search OR pre LIKE :search OR surname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE (user_id LIKE :search OR pre LIKE :search OR surname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
         $stmt->bindParam(':search', $search, PDO::PARAM_STR);
     } else {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE status = :status AND urole = :role");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = :status AND urole = :role");
     }
 
     $stmt->bindParam(':status', $status, PDO::PARAM_STR);
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // อนุมัติผู้ใช้
     if (isset($_POST['approval_user'])) {
         $staff_id = $_SESSION['staff_login'];
-        $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $staff_id, PDO::PARAM_INT);
         $stmt->execute();
         $staff_data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     // ลบผู้ใช้
     elseif (isset($_POST['delete_user'])) {
-        $stmt = $conn->prepare("DELETE FROM users WHERE user_id = :user_id");
+        $stmt = $conn->prepare("DELETE FROM users_db WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
     }
@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php foreach ($users as $user) : ?>
                                 <tr>
                                     <td class="UID"><?php echo $user['user_id']; ?></td>
-                                    <td><?php echo $user['pre'] . $user['surname'] . " " . $user['lastname']; ?></td>
+                                    <td><?php echo $user['pre'] . $user['firstname'] . " " . $user['lastname']; ?></td>
                                     <td><?php echo $user['role']; ?></td>
                                     <td><?php echo $user['agency']; ?></td>
                                     <td><?php echo format_phone_number($user['phone_number']); ?></td>
@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php foreach ($users as $user) : ?>
                             <tr>
                                 <td class="UID"><?= $user['user_id']; ?></td>
-                                <td><?= $user['pre'] . $user['surname'] . " " . $user['lastname']; ?></td>
+                                <td><?= $user['pre'] . $user['firstname'] . " " . $user['lastname']; ?></td>
                                 <td><?= $user['role']; ?></td>
                                 <td><?= $user['agency']; ?></td>
                                 <td><?= format_phone_number($user['phone_number']); ?></td>

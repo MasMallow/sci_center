@@ -299,7 +299,7 @@ try {
                                                 <div class="details_content_footer">
                                                     <div class="content_btn">
                                                         <?php if ($data['amount'] >= 1) : ?>
-                                                            <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="used_it">
+                                                            <a href="cart_use?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
                                                                 <i class="icon fa-solid fa-arrow-up"></i>
                                                                 <span>ขอใช้อุปกรณ์</span>
                                                             </a>
@@ -313,7 +313,7 @@ try {
                                                         <?php endif; ?>
                                                         <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
                                                             <?php if ($data['amount'] >= 1) : ?>
-                                                                <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="reserved_it">
+                                                                <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="reserved_it">
                                                                     <i class="fa-solid fa-address-book"></i>
                                                                     <span>จองอุปกรณ์</span>
                                                                 </a>
@@ -343,7 +343,7 @@ try {
                                     <div class="grid_content_footer">
                                         <div class="content_btn">
                                             <?php if ($data['amount'] >= 1) : ?>
-                                                <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="used_it">
+                                                <a href="cart_use?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
                                                     <i class="icon fa-solid fa-arrow-up"></i>
                                                     <span>ขอใช้อุปกรณ์</span>
                                                 </a>
@@ -357,7 +357,7 @@ try {
                                             <?php endif; ?>
                                             <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
                                                 <?php if ($data['amount'] >= 1) : ?>
-                                                    <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="reserved_it">
+                                                    <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="reserved_it">
                                                         <i class="fa-solid fa-address-book"></i>
                                                         <span>จองอุปกรณ์</span>
                                                     </a>

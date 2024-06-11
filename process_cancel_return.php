@@ -21,7 +21,7 @@ if (isset($_POST['cancel'])) {
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->execute();
 
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_id = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -37,7 +37,7 @@ if (isset($_POST['cancel'])) {
             $items = explode(',', $row['list_name']);
             $productNames = [];
 
-            $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+            $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
             $sMessage .= "SN : " . $row['serial_number'] . "\n"; // SN
             $sMessage .= "วันที่ขอยืม : " . date('d/m/Y H:i:s', strtotime($row['borrowdatetime'])) . "\n"; // Date of borrowing
             $sMessage .= "วันที่นำมาคืน : " . date('d/m/Y H:i:s', strtotime($row['returndate'])) . "\n"; // Return date

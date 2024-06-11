@@ -6,7 +6,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
 
     // สร้างคำสั่ง SQL
-    $sql = "SELECT * FROM users WHERE user_id = :user_id";
+    $sql = "SELECT * FROM users_db WHERE user_id = :user_id";
 
     // เตรียมและ execute คำสั่ง SQL
     $stmt = $conn->prepare($sql);
