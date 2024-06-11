@@ -87,7 +87,7 @@ if (isset($_POST['cancel'])) {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /project/approve_for_use.php');
+        header('Location: /sci_center/approve_for_use.php');
         exit;
     }
 }

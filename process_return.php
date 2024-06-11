@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
-        $approvername = $approver['surname'];
+        $approvername = $approver['firstname'];
 
         // Get the current date and time
         date_default_timezone_set('Asia/Bangkok');
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtUpdate->execute();
         }
 
-        $sMessage .= "ผู้อนุมัติการยืม : " . $approver['pre'] . ' ' . $approver['surname'] . ' ' . $approver['lastname'] . "\n";
+        $sMessage .= "ผู้อนุมัติการยืม : " . $approver['pre'] . ' ' . $approver['firstname'] . ' ' . $approver['lastname'] . "\n";
         $sMessage .= "-------------------------------";
 
         $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /project/approve_for_use.php');
+        header('Location: /sci_center/approve_for_use.php');
         exit;
     }
 
@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </script>";
             }
             curl_close($chOne);
-            header('Location: /project/approve_for_use.php');
+            header('Location: /sci_center/approve_for_use.php');
             exit;
         }
     }

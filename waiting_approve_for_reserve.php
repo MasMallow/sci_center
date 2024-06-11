@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errorMessages = [];
 
         foreach ($_SESSION['reserve_cart'] as $item) {
-            $query = $conn->prepare("SELECT * FROM crud WHERE img_name = :item");
+            $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);

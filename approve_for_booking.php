@@ -112,17 +112,25 @@ $previousFirstname = '';
                                     <td><?php echo $row['name_user']; ?></td>
                                     <td>
                                         <?php
-                                        // แยกข้อมูล Item Borrowed
-                                        $items = explode(',', $row['list_name']);
+                                        // Check if $row['list_name'] is set and not null
+                                        if (isset($row['list_name'])) {
+                                            // Define the pattern to extract the product name and quantity
+                                            $pattern = "/\((\d+)\)$/"; // Matches the quantity at the end of the string within parentheses
 
-                                        // แสดงข้อมูลรายการที่ยืม
-                                        foreach ($items as $item) {
-                                            $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
-                                            $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
-                                            $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                            echo $product_name . ' <span id="B"> ( ' . $quantity . ' รายการ )</span><br>';
+                                            // Match the pattern against the list name
+                                            if (preg_match($pattern, $row['list_name'], $matches)) {
+                                                // Extract the product name (excluding the quantity)
+                                                $product_name = trim(preg_replace($pattern, '', $row['list_name']));
+
+                                                // Extract the quantity
+                                                $quantity = $matches[1];
+
+                                                // Display the product name and quantity
+                                                echo $product_name . ' <span id="B"> ( ' . $quantity . ' รายการ )</span><br>';
+                                            }
                                         }
                                         ?>
+
                                     </td>
                                     <td><?php echo thai_date_time($row['created_at']); ?></td>
                                     <td><?php echo thai_date_time($row['reservation_date']); ?></td>

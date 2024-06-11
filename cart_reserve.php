@@ -183,7 +183,7 @@ if (isset($_GET['action'])) {
                                     if ($product) {
                                         $categories = $product['categories'];
                                         $productName = $product['sci_name'];
-                                        $imageURL = 'assets/uploads/' . $product['img'];
+                                        $imageURL = 'assets/uploads/' . $product['img_name'];
                                     ?>
                                         <tbody>
                                             <tr>

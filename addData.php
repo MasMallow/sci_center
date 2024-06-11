@@ -64,7 +64,7 @@ if (isset($_SESSION['staff_login'])) {
                 </div>
                 <div class="add_MET_section_form">
                     <div class="input_box">
-                        <span>ชื่อ</span>
+                        <span>ชื่อ **ห้ามมีใส่วงเล็บ()**</span>
                         <input type="text" name="sci_name" required placeholder="ระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">
                     </div>
                     <div class="col">

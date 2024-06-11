@@ -6,6 +6,11 @@ date_default_timezone_set('Asia/Bangkok'); // ตั้งค่าโซนเ�
 if (isset($_POST['submit'])) {
     // รับข้อมูลจากฟอร์ม
     $sci_name = trim($_POST['sci_name']);
+    if (strpos($sci_name, '(') !== false || strpos($sci_name, ')') !== false) {
+        $_SESSION['error'] = "ชื่อไม่สามารถมีเครื่องหมายวงเล็บได้";
+        header('location: ' . $base_url . '/addData');
+        exit();
+    }
     $serial_number = trim($_POST['serial_number']);
     $amount = trim($_POST['amount']);
     $categories = trim($_POST['categories']);
