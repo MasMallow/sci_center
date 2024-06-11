@@ -37,10 +37,9 @@
 }
 .header_nav_banner {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 100%;
-  gap: 1rem;
 }
 .header_navbanner_img {
   height: 50px;
@@ -49,6 +48,16 @@
 .header_navbanner_img img {
   height: 100%;
   width: 100%;
+}
+.header_navbanner_name{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #FFF;
+}
+.header_navbanner_name_00{
+  display: flex;
+  flex-direction: column;
 }
 .header_navbanner_name .header_navbanner_name-1 {
   font-size: 1.25rem;

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+require_once 'assets/database/connect.php';
 date_default_timezone_set('Asia/Bangkok');
 
 if (isset($_SESSION['user_login'])) {
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
             </script>";
     }
     curl_close($chOne);
-    header('Location: /project/check_request_bookings.php');
+    header('Location: returned_system');
     exit();
 }
 ?>

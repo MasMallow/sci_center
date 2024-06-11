@@ -18,46 +18,47 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
 
     <body>
         <main class="sign_in_box">
-            <?php if (isset($_SESSION['errorLogin'])) { ?>
-                <div class="toast">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?php echo $_SESSION['errorLogin'] ?></span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
+            <div class="toast">
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-xmark check"></i>
+                    <div class="toast_content_message">
+                        <span class="text text_2">รหัสผ่านผิด</span>
                     </div>
+                    <i class="fa-solid fa-xmark close"></i>
+                    <div class="progress"></div>
                 </div>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        const toast = document.querySelector(".toast");
-                        const closeIcon = document.querySelector(".close");
-                        const progress = document.querySelector(".progress");
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const toast = document.querySelector(".toast");
+                    const closeIcon = document.querySelector(".close");
+                    const progress = document.querySelector(".progress");
 
-                        // Add active class to trigger the animation
-                        setTimeout(() => {
-                            toast.classList.add("active");
-                            progress.classList.add("active");
-                        }); // Delay slightly to ensure the DOM is ready
+                    // Add active class to trigger the animation
+                    setTimeout(() => {
+                        toast.classList.add("active");
+                        progress.classList.add("active");
+                    }); // Delay slightly to ensure the DOM is ready
 
-                        // Remove active class after a timeout
-                        setTimeout(() => {
-                            toast.classList.remove("active");
-                        }, 5100); // 5s + 100ms delay
+                    // Remove active class after a timeout
+                    setTimeout(() => {
+                        toast.classList.remove("active");
+                    }, 5100); // 5s + 100ms delay
 
+                    setTimeout(() => {
+                        progress.classList.remove("active");
+                    }, 5400); // 5.3s + 100ms delay
+
+                    closeIcon.addEventListener("click", () => {
+                        toast.classList.remove("active");
                         setTimeout(() => {
                             progress.classList.remove("active");
-                        }, 5400); // 5.3s + 100ms delay
-
-                        closeIcon.addEventListener("click", () => {
-                            toast.classList.remove("active");
-                            setTimeout(() => {
-                                progress.classList.remove("active");
-                            }, 300);
-                        });
+                        }, 300);
                     });
-                </script>
+                });
+            </script>
+            <?php if (isset($_SESSION['errorLogin'])) { ?>
+
                 <?php unset($_SESSION['errorLogin']); ?>
             <?php } ?>
             <div class="box_content">

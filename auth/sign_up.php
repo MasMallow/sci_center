@@ -10,7 +10,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
     'surname' => '',
     'lastname' => '',
     'role' => '',
-    'line_id' => '',
+    'email' => '',
     'phone_number' => '',
     'agency' => '',
 );
@@ -24,7 +24,6 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สมัครบัญชีผู้ใช้</title>
-
     <!-- ส่วน Link -->
     <link href="../assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
@@ -32,36 +31,55 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
 </head>
 
 <body>
+        <div class="toast">
+            <div class="toast_content">
+                <i class="fas fa-solid fa-xmark check"></i>
+                <div class="toast_content_message">
+                    <span class="text text_2"><?php echo $_SESSION['errorSign_up'] ?></span>
+                </div>
+                <i class="fa-solid fa-xmark close"></i>
+                <div class="progress"></div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const toast = document.querySelector(".toast");
+                const closeIcon = document.querySelector(".close");
+                const progress = document.querySelector(".progress");
+
+                // Add active class to trigger the animation
+                setTimeout(() => {
+                    toast.classList.add("active");
+                    progress.classList.add("active");
+                }); // Delay slightly to ensure the DOM is ready
+
+                // Remove active class after a timeout
+                setTimeout(() => {
+                    toast.classList.remove("active");
+                }, 5100); // 5s + 100ms delay
+
+                setTimeout(() => {
+                    progress.classList.remove("active");
+                }, 5400); // 5.3s + 100ms delay
+
+                closeIcon.addEventListener("click", () => {
+                    toast.classList.remove("active");
+                    setTimeout(() => {
+                        progress.classList.remove("active");
+                    }, 300);
+                });
+            });
+        </script>
+    <?php if (isset($_SESSION['errorSign_up'])) { ?>
+        <?php unset($_SESSION['errorSign_up']); ?>
+    <?php } ?>
     <form action="../authProcess/sign_upDB.php" method="post">
         <div class="register">
             <div class="register_page">
                 <div class="register_page_head">
+                    <a href="../../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
                     <span id="B">สมัครบัญชีผู้ใช้</span>
                 </div>
-                <?php if (isset($_SESSION['error1'])) { ?>
-                    <div class="error">
-                        <?php
-                        echo $_SESSION['error1'];
-                        unset($_SESSION['error1']);
-                        ?>
-                    </div>
-                <?php } ?>
-                <?php if (isset($_SESSION['success'])) { ?>
-                    <div class="success">
-                        <?php
-                        echo $_SESSION['success'];
-                        unset($_SESSION['success']);
-                        ?>
-                    </div>
-                <?php } ?>
-                <?php if (isset($_SESSION['warning'])) { ?>
-                    <div class="warning">
-                        <?php
-                        echo $_SESSION['warning'];
-                        unset($_SESSION['warning']);
-                        ?>
-                    </div>
-                <?php } ?>
                 <div class="register_page_body">
                     <div class="pagination">
                         <div class="number active">1</div>
@@ -78,8 +96,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                         <div class="form_body">
                             <div class="input_box_1">
                                 <span>ชื่อผู้ใช้</span>
-                                <input type="text" placeholder="กรุณากรอกชื่อผู้ใช้ (Username)" name="username" 
-                                value="<?php echo htmlspecialchars($form_values['username']); ?>" required autofocus>
+                                <input type="text" placeholder="กรุณากรอกชื่อผู้ใช้ (Username)" name="username" value="<?php echo htmlspecialchars($form_values['username']); ?>" required autofocus>
                                 <span class="description"><b>Note : </b>Username ต้องมีความยาวระหว่าง 6 ถึง 12 ตัวอักษร</span>
                             </div>
                             <div class="input_box_1">
@@ -152,11 +169,11 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                             <div class="col">
                                 <div class="input_box_2">
                                     <span>เบอร์โทรศัพท์</span>
-                                    <input type="text" placeholder="เช่น 0999999999" name="phone_number" value="<?php echo htmlspecialchars($form_values['phone_number']); ?>" required>
+                                    <input type="text" placeholder="000-000-0000" name="phone_number" value="<?php echo htmlspecialchars($form_values['phone_number']); ?>" required>
                                 </div>
                                 <div class="input_box_2">
-                                    <span>Line ID</span>
-                                    <input type="text" placeholder="เช่นเบอร์โทรศัพท์" name="line_id" value="<?php echo htmlspecialchars($form_values['line_id']); ?>" required>
+                                    <span>E-Mail</span>
+                                    <input type="text" placeholder="example@example.com" name="email" value="<?php echo htmlspecialchars($form_values['email']); ?>" required>
                                 </div>
                             </div>
                             <div class="register_page_footer_2">
@@ -197,6 +214,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                 </div>
             </div>
     </form>
+    <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/sign_up.js"></script>
 </body>
 

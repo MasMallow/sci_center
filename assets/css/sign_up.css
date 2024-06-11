@@ -21,12 +21,107 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Sarabun;
+  overflow: hidden;
   text-decoration: none;
-  list-style: none;
 }
 #B {
   font-family: Sarabun-bold;
 }
+.toast {
+  min-width: 300px;
+  min-height: 60px;
+  position: absolute;
+  top: 40px;
+  right: 35px;
+  padding: 0.4rem 1.2rem;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #e74c3c; /* เปลี่ยนสีเส้นขอบเป็นสีแดง */
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+}
+
+.toast .toast_content {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.toast .check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  background-color: #e74c3c; /* เปลี่ยนสีพื้นหลังเป็นสีแดง */
+  color: #fff;
+  border-radius: 50%;
+}
+
+.toast .toast_content_message {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.toast .toast_content_message .text {
+  font-size: ๅrem;
+}
+
+.toast .toast_content_message .text-2 {
+  font-size: 0.9rem;
+}
+
+.toast .close {
+  font-size: 0.75rem;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.toast .close:hover {
+  opacity: 1;
+}
+
+.toast .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #ddd;
+}
+
+.toast .progress:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #e74c3c; /* เปลี่ยนสีพื้นหลังเป็นสีแดง */
+}
+
+.toast.active {
+  transform: translateX(0%);
+}
+
+.toast .progress.active:before {
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  100% {
+    right: 100%;
+  }
+}
+
 .register {
   height: 100vh;
   display: flex;
@@ -42,9 +137,28 @@
   animation: movingY 0.5s ease;
 }
 .register_page .register_page_head {
-  padding: 1rem 1rem;
+  padding: 0.7rem 1rem;
   border-bottom: 1px solid #dbdbdb;
-  font-size: 1.35rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  & a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8f8f8f;
+    background-color: #fff;
+    text-decoration: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    transition: all 0.25s;
+    &:hover {
+      background-color: #f1efef;
+      color: #000000;
+    }
+  }
 }
 .register_page .register_page_body {
   display: grid;
@@ -214,6 +328,6 @@ select:focus {
   font-size: 0.875rem;
 
   &:hover {
-  background-color: rgb(167, 6, 6);
+    background-color: rgb(167, 6, 6);
   }
 }

@@ -14,14 +14,27 @@
   text-decoration: none;
   list-style: none;
 }
+body{
+  overflow: hidden;
+}
+html{
+  scroll-behavior: smooth;
+}
+html::-webkit-scrollbar {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 #B {
   font-family: Sarabun-bold;
 }
 .content {
   position: relative;
   display: flex;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 1rem;
 }
 
 .content_sidebar {
@@ -331,7 +344,7 @@ input.search {
   display: flex;
   gap: 1rem;
   width: 100%;
-  padding: .5rem 1.25rem;
+  padding: 0.5rem 1.25rem;
   padding-bottom: 0.7rem;
   color: #000;
 }
@@ -361,7 +374,7 @@ input.search {
   width: 100%;
   border-collapse: collapse;
 
-  & .td_01{
+  & .td_01 {
     width: 30%;
   }
 }
