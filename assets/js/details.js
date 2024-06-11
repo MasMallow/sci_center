@@ -18,8 +18,8 @@ modalOpenButtons.forEach(function (button) {
         modal.style.display = "flex";
 
         // เพิ่ม overflow: hidden และ padding-right: 15px ให้กับ <body>
-        document.body.style.overflow = "hidden";
-        document.body.style.paddingRight = "15px";
+        // document.body.style.overflow = "hidden";
+        // document.body.style.paddingRight = "15px";
     });
 });
 

@@ -1,18 +1,18 @@
 <?php
 session_start();
-require_once '../assets/database/connect.php';
+require_once 'assets/database/dbConfig.php';
 
 // ดึงข้อมูลผู้ใช้เพียงครั้งเดียว
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: auth/sign_in.php');
+    header('Location: ' . $base_url . ' auth/sign_in.php');
     exit;
 }
 ?>
@@ -67,19 +67,20 @@ try {
     <title><?= $searchTitle; ?>จัดการวัสดุ อุปกรณ์ และเครื่องมือ</title>
 
     <!-- ส่วนของ Link -->
-    <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="../assets/css/navigator.css">
-    <link rel="stylesheet" href="../assets/css/management_systems.css">
-    <link rel="stylesheet" href="../assets/css/edit.css">
+    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/management_systems.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/edit.css">
 </head>
 
 <body>
     <!-- Header -->
-    <header><?php include('header.php'); ?></header>
+    <header><?php include('includes/header.php'); ?></header>
     <div class="header_management">
         <div class="header_management_section">
             <div class="header_name_section">
-                <a href="../"><i class="fa-solid fa-arrow-left-long"></i></a>
+                <a href="<?php echo $base_url; ?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
                 <span id="B">จัดการระบบ</span>
             </div>
             <div class="header_num_section">
@@ -99,35 +100,10 @@ try {
                 </span>
             </div>
             <div class="header_btn_section">
-                <button class="choose_categories_btn management_popup_btn">
+                <a href="<?php echo $base_url; ?>/addData" class="choose_categories_btn">
                     <i class="icon fa-solid fa-plus"></i>
                     <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
-                </button>
-                <!-- POPUP  -->
-                <div class="management_popup">
-                    <div class="management_content_popup">
-                        <div class="management_popup_header">
-                            <span id="B">เลือกประเภทที่จะเพิ่มข้อมูล</span>
-                            <div class="modalClose" id="closeDetails">
-                                <i class="fa-solid fa-xmark"></i>
-                            </div>
-                        </div>
-                        <div class="management_popup_content">
-                            <ul>
-                                <li>
-                                    <a href="add?add=material"><i class="fa-solid fa-flask-vial"></i><span>เพิ่มวัสดุ</span></a>
-                                </li>
-                                <li>
-                                    <a href="add?add=equipment"><i class="fa-solid fa-toolbox"></i><span>เพิ่มอุปกรณ์</span></a>
-                                </li>
-                                <li>
-                                    <a href="add?add=tools"><i class="fa-solid fa-microscope"></i><span>เพิ่มเครื่องมือ</span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- End POPUP -->
+                </a>
             </div>
         </div>
     </div>
@@ -155,7 +131,7 @@ try {
                 <div class="management_grid_content">
                     <div class="management_grid_header">
                         <div class="content_img">
-                            <img src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>" loading="lazy">
+                            <img src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
                         </div>
                     </div>
                     <div class="content_status_details">
@@ -176,11 +152,11 @@ try {
                             </div>
                         <?php } ?>
                         <div class="content_details">
-                            <button class="details_btn" data-modal="<?php echo htmlspecialchars($results['id']); ?>">
+                            <button class="details_btn" data-modal="<?php echo htmlspecialchars($results['ID']); ?>">
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
                         </div>
-                        <div class="content_details_popup" id="<?php echo htmlspecialchars($results['id']); ?>">
+                        <div class="content_details_popup" id="<?php echo htmlspecialchars($results['ID']); ?>">
                             <div class="details">
                                 <div class="details_header">
                                     <span id="B">แก้ไขข้อมูล</span>
@@ -188,25 +164,25 @@ try {
                                         <i class="fa-solid fa-xmark"></i>
                                     </div>
                                 </div>
-                                <form class="details_content_edit" action="update.php" method="post" enctype="multipart/form-data">
+                                <form class="details_content_edit" action="update" method="post" enctype="multipart/form-data">
                                     <div class="details_content_left">
                                         <div class="img_details">
                                             <div class="img">
                                                 <div class="imgInput">
-                                                    <img class="previewImg" id="previewImg_<?php echo htmlspecialchars($results['id']); ?>" src="../assets/uploads/<?php echo htmlspecialchars($results['img']); ?>" loading="lazy">
+                                                    <img class="previewImg" id="previewImg_<?php echo htmlspecialchars($results['ID']); ?>" src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
                                                 </div>
                                             </div>
                                             <span class="upload-tip"><b>Note: </b>Only JPG, JPEG, PNG & GIF files allowed to upload.</span>
                                             <div class="btn_img">
-                                                <input type="file" class="input-img" id="imgInput_<?php echo htmlspecialchars($results['id']); ?>" name="img" accept="image/jpeg, image/png, image/gif" data-default-img="<?php echo htmlspecialchars($results['img']); ?>" hidden>
-                                                <label for="imgInput_<?php echo htmlspecialchars($results['id']); ?>">เลือกรูปภาพที่จะอัพโหลด</label>
-                                                <input type="hidden" value="<?php echo htmlspecialchars($results['img']); ?>" required name="img2">
-                                                <span class="file_chosen_img" id="file-chosen-img_<?php echo htmlspecialchars($results['id']); ?>"><?php echo htmlspecialchars($results['img']); ?></span>
+                                                <input type="file" class="input-img" id="imgInput_<?php echo htmlspecialchars($results['ID']); ?>" name="img" accept="image/jpeg, image/png, image/gif" data-default-img="<?php echo htmlspecialchars($results['img_name']); ?>" hidden>
+                                                <label for="imgInput_<?php echo htmlspecialchars($results['ID']); ?>">เลือกรูปภาพที่จะอัพโหลด</label>
+                                                <input type="hidden" value="<?php echo htmlspecialchars($results['img_name']); ?>" required name="img2">
+                                                <span class="file_chosen_img" id="file-chosen-img_<?php echo htmlspecialchars($results['ID']); ?>"><?php echo htmlspecialchars($results['img_name']); ?></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="details_content_right">
-                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['id']); ?>">
+                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['ID']); ?>">
                                         <ul class="details_content_li">
                                             <li>
                                                 <div class="details_content_1"><span id="B">ชื่อ</span></div>
@@ -257,15 +233,15 @@ try {
                         <div class="content_amount"><span id="B">คงเหลือ </span><?php echo htmlspecialchars($results['amount']); ?></div>
                     </div>
                     <div class="management_grid_content_footer">
-                        <button class="edit_crud_btn details_btn" data-modal="<?php echo $results['id']; ?>">
+                        <button class="edit_crud_btn details_btn" data-modal="<?php echo $results['ID']; ?>">
                             <i class="fa-solid fa-circle-info"></i>
                             <span>แก้ไขข้อมูล</span>
                         </button>
-                        <button class="delete_btn delete_popup" data-modal="delete_<?php echo $results['id']; ?>">
+                        <button class="delete_btn delete_popup" data-modal="delete_<?php echo $results['ID']; ?>">
                             <i class="icon fa-solid fa-trash"></i>
                             <span>ลบข้อมูล</span>
                         </button>
-                        <div class="delete_content_popup" id="delete_<?php echo $results['id']; ?>">
+                        <div class="delete_content_popup" id="delete_<?php echo $results['ID']; ?>">
                             <div class="delete_content">
                                 <div class="delete_content_header">
                                     <span id="B">ยืนยันการลบ</span>
@@ -274,14 +250,14 @@ try {
                                     </div>
                                 </div>
                                 <div class="delete_content_body">
-                                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['id']); ?>">
+                                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($results['ID']); ?>">
                                     <table class="delete_content_table">
                                         <tr>
                                             <td>
                                                 <span id="B">Serial Number</span>
                                             </td>
                                             <td>
-                                                <?php echo htmlspecialchars($results['s_number']); ?>
+                                                <?php echo htmlspecialchars($results['serial_number']); ?>
                                             </td>
                                         </tr>
                                         <tr>
@@ -319,7 +295,7 @@ try {
                                     </table>
                                 </div>
                                 <div class="delete_content_footer">
-                                    <a href="delete.php?id=<?php echo htmlspecialchars($results['id']); ?>" class="Delete">
+                                    <a href="delete.php?id=<?php echo htmlspecialchars($results['ID']); ?>" class="Delete">
                                         <i class="icon fa-solid fa-trash"></i><span>ลบข้อมูล</span>
                                     </a>
                                     <button class="close_popup_delete">ปิดหน้าต่าง</button>
@@ -331,8 +307,10 @@ try {
         <?php }
         } ?>
     </div>
-    <script src="../assets/js/choose_categories.js"></script>
-    <script src="../assets/js/pop_upEdit.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/choose_categories.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/choose_categories.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/pop_upEdit.js"></script>
 </body>
 
 </html>

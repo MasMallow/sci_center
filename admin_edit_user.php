@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/connect.php';
+require_once 'assets/database/dbConfig.php';
 
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['staff_login'])) {

@@ -1,7 +1,7 @@
 <div class="header">
     <div class="header_nav">
         <div class="header_nav_banner">
-            <a href="../project/" class="header_navbanner_name">
+            <a href="<?php echo $base_url; ?>/" class="header_navbanner_name">
                 <div class="header_navbanner_img">
                     <img src="assets/logo/scicenter_logo.png">
                 </div>
@@ -20,14 +20,14 @@
                 <button class="header_userinfo_btn">
                     <i class="fa-solid fa-user"></i>
                     <span>
-                        <?= $userData['pre'] . $userData['surname'] . '&nbsp;' . $userData['lastname'] ?>
+                        <?= $userData['pre'] . $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
                     </span>
                 </button>
             <?php elseif (isset($_SESSION['staff_login'])) : ?>
                 <button class="header_userinfo_btn">
                     <i class="fa-solid fa-user"></i>
                     <span>
-                        <?= $userData['pre'] . $userData['surname'] . '&nbsp;' . $userData['lastname'] ?>
+                        <?= $userData['pre'] . $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
                     </span>
                 </button>
             <?php else : ?>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="user-info-content">
                         <div class="userid_status">
-                            <span class="user_id"><?= $userData['user_id'] ?></span>
+                            <span class="user_id"><?= $userData['user_ID'] ?></span>
                             <?php
                             if ($userData['status'] == 'wait_approved') {
                                 echo '<span class="wait_approved" id="B">รอการอนุมัติบัญชี</span>';
@@ -54,11 +54,11 @@
                             }
                             ?>
                         </div>
-                        <div><span><?= $userData['pre'] . $userData['surname'] . '&nbsp;' . $userData['lastname'] ?> </span></div>
+                        <div><span><?= $userData['pre'] . $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?> </span></div>
                         <div><span><?= $userData['role'] . '&nbsp;' . $userData['agency'] ?> </span></div>
                         <div class="phone_line">
                             <div class="phone_number"><span>เบอร์โทร <?= $userData['phone_number'] ?></span></div>
-                            <div class="lineid"><span>Line ID <?= $userData['lineid'] ?></span></div>
+                            <div class="lineid"><span>E-Mail <?= $userData['email'] ?></span></div>
                         </div>
                     </div>
                     <div class="user_info_footer">

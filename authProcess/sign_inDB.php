@@ -1,6 +1,19 @@
 <?php
 session_start();
-require_once '../assets/database/connect.php';
+require_once '../assets/database/dbConfig.php';
+
+function getIP()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // In case there are multiple IPs, take the first one
+        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        return trim($ips[0]);
+    } else {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+}
 
 if (isset($_POST['sign_in'])) {
     sleep(2);
@@ -29,10 +42,24 @@ if (isset($_POST['sign_in'])) {
             if ($check_data->rowCount() > 0) {
                 if (password_verify($password, $row['password'])) {
                     if ($row['urole'] == 'staff') {
-                        $_SESSION['staff_login'] = $row['user_id'];
+                        $_SESSION['staff_login'] = $row['user_ID'];
                     } else {
-                        $_SESSION['user_login'] = $row['user_id'];
+                        $_SESSION['user_login'] = $row['user_ID'];
                     }
+
+                    // Log the login attempt
+                    $authID = $row['user_ID'];
+                    $log_Name = $row['pre']  . $row['firstname'] . ' ' . $row['lastname'];
+                    $log_Date = date('Y-m-d H:i:s');
+                    $log_IP = getIP();
+
+                    $log_query = $conn->prepare("INSERT INTO logs_user (authID, log_Name, log_Date, log_IP) VALUES (:authID, :log_Name, :log_Date, :log_IP)");
+                    $log_query->bindParam(':authID', $authID);
+                    $log_query->bindParam(':log_Name', $log_Name);
+                    $log_query->bindParam(':log_Date', $log_Date);
+                    $log_query->bindParam(':log_IP', $log_IP);
+                    $log_query->execute();
+
                     header("location: ../");
                     exit();
                 } else {
@@ -50,4 +77,3 @@ if (isset($_POST['sign_in'])) {
         }
     }
 }
-?>

@@ -13,17 +13,10 @@
   font-family: Sarabun;
   text-decoration: none;
   list-style: none;
+  scrollbar-width: none;
 }
-body{
-  overflow: hidden;
-}
-html{
-  scroll-behavior: smooth;
-}
-html::-webkit-scrollbar {
-  position: absolute;
-  right: 0;
-  top: 0;
+*::-webkit-scrollbar{
+  display: none;
 }
 #B {
   font-family: Sarabun-bold;

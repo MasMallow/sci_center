@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/connect.php';
+require_once 'assets/database/dbConfig.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_ids'])) {
     $booking_ids = $_POST['booking_ids'];

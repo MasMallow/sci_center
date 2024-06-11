@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/connect.php';
+require_once 'assets/database/dbConfig.php';
 include_once 'includes/thai_date_time.php';
 
 $searchTitle = "";
@@ -68,10 +68,10 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>การบำรุงรักษา</title>
-    <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="assets/css/navigator.css">
-    <link rel="stylesheet" href="assets/css/maintenance.css">
+    <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/maintenance.css">
 </head>
 
 <body>
@@ -80,7 +80,7 @@ try {
     </header>
     <div class="maintenance">
         <div class="header_maintenance_section">
-            <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="<?php echo $base_url ?>/project/"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">การบำรุงรักษา</span>
         </div>
     </div>
@@ -97,7 +97,7 @@ try {
     </div>
     <?php if ($action === 'start_maintenance') : ?>
         <?php if (!empty($maintenance)) : ?>
-            <form action="maintenance_notification" method="post">
+            <form action="<?php echo $base_url ?>/maintenance_notification" method="post">
                 <div class="maintenance_section">
                     <table class="table_maintenace">
                         <thead>
@@ -164,7 +164,7 @@ try {
         <?php endif; ?>
     <?php elseif ($action === 'end_maintenance') : ?>
         <?php if (!empty($maintenance_success)) : ?>
-            <form action="maintenance_complete" method="POST">
+            <form action="<?php echo $base_url ?>/maintenance_complete" method="POST">
                 <div class="maintenance_section">
                     <table class="table_maintenace">
                         <thead>
@@ -205,7 +205,7 @@ try {
             </div>
         <?php endif; ?>
     <?php endif; ?>
-    <script src="assets/js/maintenance.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/maintenance.js"></script>
 </body>
 
 </html>

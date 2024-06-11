@@ -322,9 +322,28 @@ button.search {
   border: 1px solid #ddd;
 }
 .add_MET_section_header {
-  font-size: 1.5rem;
-  padding: 0.7rem 1.2rem;
+  font-size: 1.25rem;
+  padding: 0.5rem 1.2rem;
   border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  & a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8f8f8f;
+    background-color: #fff;
+    text-decoration: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    transition: all 0.25s;
+    &:hover {
+      background-color: #f1efef;
+      color: #000000;
+    }
+  }
 }
 .add_MET_section_form {
   padding: 0rem 1.2rem;

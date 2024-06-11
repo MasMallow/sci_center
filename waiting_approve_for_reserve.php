@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/connect.php';
+require_once 'assets/database/dbConfig.php';
 
 // ตรวจสอบการเชื่อมต่อฐานข้อมูล
 if (!isset($conn)) {

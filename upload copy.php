@@ -1,5 +1,5 @@
 <?php
-include_once '../assets/database/connect.php';
+include_once '../assets/database/dbConfig.php';
 
 // ฟังก์ชันลดขนาดรูปภาพ
 function reduceImageSize($source_path, $destination_path, $extension)

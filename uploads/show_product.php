@@ -1,5 +1,5 @@
 <?php
-include 'conassets/database/connect.php'
+include 'conassets/database/dbConfig.php'
     ?>
 <!doctype html>
 <html lang="en">

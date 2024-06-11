@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-require_once '../assets/database/connect.php';
+require_once '../assets/database/dbConfig.php';
 
 // Check if product ID is provided
 if (isset($_GET['id'])) {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+include_once 'assets/database/dbConfig.php';
 
 if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';

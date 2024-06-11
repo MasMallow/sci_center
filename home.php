@@ -1,11 +1,12 @@
 <?php
 session_start();
-require_once 'assets/database/connect.php';
+// ส่วนการเชื่อมต่อฐานข้อมูล
+require_once 'assets/database/dbConfig.php'; // ไฟล์ที่ใช้สำหรับเชื่อมต่อฐานข้อมูล
 ?>
 <?php
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -20,15 +21,13 @@ if (isset($_SESSION['user_login'])) {
 }
 if (isset($_SESSION['staff_login'])) {
     $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE user_id =$user_id");
+    $stmt = $conn->query("SELECT * FROM users_db WHERE user_ID =$user_id");
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 ?>
 
 <?php
-// ส่วนการเชื่อมต่อฐานข้อมูล
-require_once 'assets/database/connect.php'; // ไฟล์ที่ใช้สำหรับเชื่อมต่อฐานข้อมูล
 
 // ประกาศตัวแปรเริ่มต้น
 $searchValue = '';
@@ -98,14 +97,14 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCICENTER Management</title>
     <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="assets/css/navigator.css">
-    <link rel="stylesheet" href="assets/css/index.css">
-    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
 </head>
 
 <body>
-    <header> <?php include_once('includes/header.php'); ?> </header>
+    <header><?php include_once('includes/header.php'); ?></header>
     <?php if (isset($userData['urole']) && $userData['urole'] == 'user' || empty($userData['urole'])) : ?>
         <main class="content">
             <div class="content_sidebar">
@@ -117,7 +116,7 @@ try {
                 <div class="menu">
                     <ul class="sb-ul">
                         <li>
-                            <a class="link <?php echo !isset($_GET['page']) && empty($_GET['page']) ? 'active ' : '' ?>" href="../project/">
+                            <a class="link <?php echo !isset($_GET['page']) && empty($_GET['page']) ? 'active ' : '' ?>" href="<?php echo $base_url; ?>">
                                 <i class="icon fa-solid fa-house"></i>
                                 <span class="text">หน้าหลัก</span>
                             </a>
@@ -217,7 +216,7 @@ try {
                                 <div class="grid_content">
                                     <div class="grid_content_header">
                                         <div class="content_img">
-                                            <img src="assets/uploads/<?= htmlspecialchars($data['img']) ?>" alt="Image">
+                                            <img src="<?php echo $base_url;?>/assets/uploads/<?= htmlspecialchars($data['img_name']) ?>" alt="Image">
                                         </div>
                                     </div>
                                     <div class="content_status_details">
@@ -238,11 +237,11 @@ try {
                                             </div>
                                         <?php endif; ?>
                                         <div class="content_details">
-                                            <button class="details_btn" data-modal="<?= htmlspecialchars($data['id']) ?>">
+                                            <button class="details_btn" data-modal="<?= htmlspecialchars($data['ID']) ?>">
                                                 <i class="fa-solid fa-circle-info"></i>
                                             </button>
                                         </div>
-                                        <div class="content_details_popup" id="<?= htmlspecialchars($data['id']) ?>">
+                                        <div class="content_details_popup" id="<?= htmlspecialchars($data['ID']) ?>">
                                             <div class="details">
                                                 <div class="details_header">
                                                     <span id="B">รายละเอียด</span>
@@ -255,7 +254,7 @@ try {
                                                         <div class="img_details">
                                                             <div class="img">
                                                                 <div class="imgInput">
-                                                                    <img class="previewImg" src="assets/uploads/<?= htmlspecialchars($data['img']); ?>" loading="lazy">
+                                                                    <img class="previewImg" src="assets/uploads/<?= htmlspecialchars($data['img_name']); ?>" loading="lazy">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -264,7 +263,7 @@ try {
                                                         <table class="details_content_table">
                                                             <tr>
                                                                 <td class="td_01"><span id="B">Serial Number</span></td>
-                                                                <td><?= htmlspecialchars($data['s_number']); ?></td>
+                                                                <td><?= htmlspecialchars($data['serial_number']); ?></td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="td_01"><span id="B">ชื่อ</span></td>
@@ -300,7 +299,7 @@ try {
                                                 <div class="details_content_footer">
                                                     <div class="content_btn">
                                                         <?php if ($data['amount'] >= 1) : ?>
-                                                            <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="used_it">
+                                                            <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="used_it">
                                                                 <i class="icon fa-solid fa-arrow-up"></i>
                                                                 <span>ขอใช้อุปกรณ์</span>
                                                             </a>
@@ -314,7 +313,7 @@ try {
                                                         <?php endif; ?>
                                                         <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
                                                             <?php if ($data['amount'] >= 1) : ?>
-                                                                <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="reserved_it">
+                                                                <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="reserved_it">
                                                                     <i class="fa-solid fa-address-book"></i>
                                                                     <span>จองอุปกรณ์</span>
                                                                 </a>
@@ -332,7 +331,7 @@ try {
                                     </div>
                                     <div class="grid_content_body">
                                         <div class="content_name">
-                                            <?= htmlspecialchars($data['sci_name']) ?> (<?= htmlspecialchars($data['s_number']) ?>)
+                                            <?= htmlspecialchars($data['sci_name']) ?> (<?= htmlspecialchars($data['serial_number']) ?>)
                                         </div>
                                         <div class="content_categories">
                                             <span id="B">ประเภท </span><?= htmlspecialchars($data['categories']) ?>
@@ -344,7 +343,7 @@ try {
                                     <div class="grid_content_footer">
                                         <div class="content_btn">
                                             <?php if ($data['amount'] >= 1) : ?>
-                                                <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="used_it">
+                                                <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="used_it">
                                                     <i class="icon fa-solid fa-arrow-up"></i>
                                                     <span>ขอใช้อุปกรณ์</span>
                                                 </a>
@@ -358,7 +357,7 @@ try {
                                             <?php endif; ?>
                                             <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
                                                 <?php if ($data['amount'] >= 1) : ?>
-                                                    <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img']) ?>" class="reserved_it">
+                                                    <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="reserved_it">
                                                         <i class="fa-solid fa-address-book"></i>
                                                         <span>จองอุปกรณ์</span>
                                                     </a>
@@ -382,7 +381,7 @@ try {
 
     <?php
     if (isset($userData['urole']) && $userData['urole'] == 'staff') {
-        include('staff/index.php');
+        include('staff/home.php');
     }
     ?>
     <?php

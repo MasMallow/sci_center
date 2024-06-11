@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/connect.php';
+require_once 'assets/database/dbConfig.php';
 include 'includes/thai_date_time.php';
 
 // กำหนดค่าเริ่มต้น

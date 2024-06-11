@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../assets/database/connect.php';
+require_once '../assets/database/dbConfig.php';
 
 if (isset($_POST['signup'])) {
     $user_id = rand(10000, 99999);

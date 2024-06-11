@@ -1,33 +1,3 @@
-function loadReport() {
-  $.ajax({
-    url: "toplist.php",
-    dataType: "html",
-    success: function (data) {
-      $(".product").empty().append(data);
-    },
-    error: function () {
-      alert("การโหลดรายงานผิดพลาด");
-    },
-  });
-}
-function clearChangeContent() {
-  $(".product").empty();
-}
-
-
-function AdminMode() {
-  $.ajax({
-    url: "AdminMode.php",
-    dataType: "html",
-    success: function (data) {
-      $(".product").empty().append(data);
-    },
-    error: function () {
-      alert("การโหลดรายงานผิดพลาด");
-    },
-  });
-}
-
 // เลือกปุ่ม "User Info" และ Modal
 const userInfoButton = document.querySelector('.header_userinfo_btn');
 const userInfoModal = document.querySelector('.header_userinfo_modal');

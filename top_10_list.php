@@ -3,7 +3,7 @@
 session_start();
 
 // รวมการเชื่อมต่อฐานข้อมูล (ถ้ายังไม่ได้รวม)
-require_once 'assets/database/connect.php';
+require_once 'assets/database/dbConfig.php';
 include_once 'includes/thai_date_time.php';
 
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้

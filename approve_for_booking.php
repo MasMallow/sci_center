@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+include_once 'assets/database/dbConfig.php';
 
 // ตรวจสอบว่าพนักงานเข้าสู่ระบบหรือไม่
 if (!isset($_SESSION['staff_login'])) {

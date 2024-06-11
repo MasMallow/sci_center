@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../assets/database/connect.php';
+require_once '../assets/database/dbConfig.php';
 if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isset($_SESSION['staff_login'])) {
 ?>
     <!DOCTYPE html>
@@ -18,16 +18,6 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
 
     <body>
         <main class="sign_in_box">
-            <div class="toast">
-                <div class="toast_content">
-                    <i class="fas fa-solid fa-xmark check"></i>
-                    <div class="toast_content_message">
-                        <span class="text text_2">รหัสผ่านผิด</span>
-                    </div>
-                    <i class="fa-solid fa-xmark close"></i>
-                    <div class="progress"></div>
-                </div>
-            </div>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
                     const toast = document.querySelector(".toast");
@@ -58,7 +48,16 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                 });
             </script>
             <?php if (isset($_SESSION['errorLogin'])) { ?>
-
+                <div class="toast">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2"><?php echo $_SESSION['errorLogin']; ?></span>
+                        </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                        <div class="progress"></div>
+                    </div>
+                </div>
                 <?php unset($_SESSION['errorLogin']); ?>
             <?php } ?>
             <div class="box_content">
@@ -76,7 +75,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                             <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
                         </div>
                         <div class="box_content_btn">
-                            <input class="sign-in" type="submit" value="เข้าสู่ระบบ" value-after="กำลังเข้าสู่ระบบ" name="sign_in">
+                            <input class="sign-in" type="submit" value="เข้าสู่ระบบ" value-after="กำลังเข้าสู่ระบบ..." name="sign_in">
                         </div>
                         <script>
                             document.getElementById('sign-in-form').addEventListener('submit', function(event) {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../assets/database/connect.php';
+require_once '<?php echo $base_url ?>/assets/database/dbConfig.php';
 
 $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : array(
     'username' => '',
@@ -25,9 +25,9 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สมัครบัญชีผู้ใช้</title>
     <!-- ส่วน Link -->
-    <link href="../assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="../assets/css/sign_up.css">
+    <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/sign_up.css">
 </head>
 
 <body>
@@ -173,7 +173,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                                 </div>
                                 <div class="input_box_2">
                                     <span>E-Mail</span>
-                                    <input type="text" placeholder="example@example.com" name="email" value="<?php echo htmlspecialchars($form_values['email']); ?>" required>
+                                    <input type="email" placeholder="example@example.com" name="email" value="<?php echo htmlspecialchars($form_values['email']); ?>" required>
                                 </div>
                             </div>
                             <div class="register_page_footer_2">
@@ -214,8 +214,8 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                 </div>
             </div>
     </form>
-    <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/sign_up.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/sign_up.js"></script>
 </body>
 
 </html>

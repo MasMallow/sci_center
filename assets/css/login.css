@@ -33,21 +33,32 @@
   align-items: center;
   overflow: hidden;
 }
+/* USER INFO */
+@keyframes Alert {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
 .toast {
-  min-width: 300px;
-  min-height: 60px;
+  min-width: 500px;
+  min-height: 50px;
   position: absolute;
-  top: 15%;
+  top: 10%;
   display: none;
   align-items: center;
   padding: 0.4rem 1.2rem;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   border-left: 5px solid #e74c3c; /* เปลี่ยนสีเส้นขอบเป็นสีแดง */
   overflow: hidden;
   z-index: 9999;
-  transition: all 0.5s;
+  animation: Alert 0.3s;
 }
 .toast.active {
   display: flex;

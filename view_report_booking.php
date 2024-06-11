@@ -2,7 +2,7 @@
 // เริ่มต้นเซสชั่น
 session_start();
 // เชื่อมต่อกับฐานข้อมูล
-require_once 'assets/database/connect.php';
+require_once 'assets/database/dbConfig.php';
 include_once 'includes/thai_date_time.php';
 
 if (!isset($_SESSION['staff_login'])) {

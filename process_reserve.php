@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'assets/database/connect.php';
+include_once 'assets/database/dbConfig.php';
 
 // Current date and time
 date_default_timezone_set('Asia/Bangkok');

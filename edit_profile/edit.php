@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../assets/database/connect.php';
+require_once '../assets/database/dbConfig.php';
 
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];

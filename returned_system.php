@@ -1,11 +1,11 @@
 <?php
 session_start();
-require_once 'assets/database/connect.php'; // เรียกใช้งานไฟล์ที่เกี่ยวข้องกับการเชื่อมต่อฐานข้อมูล
+require_once 'assets/database/dbConfig.php'; // เรียกใช้งานไฟล์ที่เกี่ยวข้องกับการเชื่อมต่อฐานข้อมูล
 include 'includes/thai_date_time.php'; // เรียกใช้งานไฟล์ที่เกี่ยวข้องกับการแสดงวันที่และเวลาเป็นภาษาไทย
 
 try {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
