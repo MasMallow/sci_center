@@ -16,7 +16,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     // ถ้าผู้ใช้เข้าสู่ระบบด้วย user_login หรือ staff_login
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
     // เตรียมคำสั่ง SQL เพื่อดึงข้อมูลผู้ใช้
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
     // ผูกค่า user_id เข้ากับคำสั่ง SQL
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     // ดำเนินการคำสั่ง SQL

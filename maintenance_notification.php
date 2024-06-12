@@ -81,6 +81,6 @@
                 </script>";
         }
         curl_close($chOne);
-        header('Location: /sci_center/maintenance.php');
+        header('Location: /project/maintenance.php');
         exit;
     }

@@ -5,7 +5,7 @@ include 'includes/thai_date_time.php'; // เรียกใช้งานไ�
 
 try {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -25,9 +25,9 @@ try {
 
     // ตรวจสอบและเลือกคำสั่ง SQL ตามค่า 'returned' ที่รับมา
     if ($returned === 'used') {
-        $stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE user_id = :user_id AND situation = 1 AND date_return IS NULL");
+        $stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE user_ID = :user_id AND situation = 1 AND date_return IS NULL");
     } else {
-        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_id = :user_id AND situation = 1 AND date_return IS NULL");
+        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_ID = :user_id AND situation = 1 AND date_return IS NULL");
     }
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();

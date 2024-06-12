@@ -4,7 +4,7 @@ require_once 'assets/database/dbConfig.php';
 
 if (isset($_SESSION['staff_login'])) {
     $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->query("SELECT * FROM users_db WHERE user_id =$user_id");
+    $stmt = $conn->query("SELECT * FROM users_db WHERE user_ID =$user_id");
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -64,7 +64,7 @@ if (isset($_SESSION['staff_login'])) {
                 </div>
                 <div class="add_MET_section_form">
                     <div class="input_box">
-                        <span>ชื่อ **ห้ามมีใส่วงเล็บ()**</span>
+                        <span>ชื่อ</span>
                         <input type="text" name="sci_name" required placeholder="ระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">
                     </div>
                     <div class="col">

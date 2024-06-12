@@ -28,6 +28,7 @@
 }
 
 .header_nav {
+  position: relative;
   max-width: 1400px;
   margin: 0 auto;
   height: 100%;
@@ -49,13 +50,13 @@
   height: 100%;
   width: 100%;
 }
-.header_navbanner_name{
+.header_navbanner_name {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: #FFF;
+  color: #fff;
 }
-.header_navbanner_name_00{
+.header_navbanner_name_00 {
   display: flex;
   flex-direction: column;
 }
@@ -66,94 +67,70 @@
   font-size: 0.85rem;
 }
 .header_nav_userinfo .header_userinfo_btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
   gap: 0.8rem;
-  outline: none;
-  border: none;
   border-radius: 5px;
-  padding: 0.7rem 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  color: #000;
+  font-size: 0.9rem;
 
-  & .userinfo_01 {
-    font-size: 0.85rem;
-  }
-  & i {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 23px;
-    height: 23px;
-    border-radius: 50%;
-    background-color: #000;
+  & .select {
+    background-color: #2d794b;
     color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px #2d794b solid;
+    border-radius: 5px;
   }
-}
 
-/* USER INFO */
-@keyframes movingY {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
+  & .select-clicked {
+    border: 2px #b6fdd4 solid;
+    box-shadow: 0 0 0.8em #d22b2b;
   }
-  to {
-    transform: translateY(0px);
+
+  & .select:hover {
+    border: 2px #22b961 solid;
+    box-shadow: 0 0 0.8em #d22b2b;
+  }
+
+  & .arrow {
+    transform: rotate(180deg);
+  }
+
+  & .menu {
+    list-style: none;
+    padding: 0.5rem 1rem;
+    background-color: antiquewhite;
+    border: 1px #2d794b solid;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 3em;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
+    opacity: 0;
+    display: none;
+    transition: 0.2s;
+    z-index: 1;
+
+    & li {
+      padding: 0.7rem 0.5rem;
+      margin: 0.3rem 0;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+      }
+    }
+  }
+  & .menu-open {
+    display: block;
     opacity: 1;
   }
 }
-.header_userinfo_modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* เพิ่ม z-index ให้มีค่าสูงกว่าลิเรียนท์อื่น */
-}
-.user-info {
-  display: block;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 100%;
-  animation: movingY 0.3s;
-  z-index: 10000; /* เพิ่ม z-index*/
-}
-.user-info-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.7rem 1.1rem;
-  margin-bottom: 1rem;
-  border-bottom: 1.2px solid gray;
-  font-size: 1.25rem;
-  color: #000;
-  font-family: Sarabun-bold;
-}
-.user-info-header .modalClose {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #e6e6e6;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.user-info-header .modalClose i {
-  font-size: 12px;
-  color: #525151;
 
-  &:hover {
-    background-color: #d1d1d1;
-  }
-}
 .user-info-content {
   padding: 0rem 2.75rem;
   color: #000;
@@ -211,52 +188,6 @@
       width: 100%;
     }
   }
-}
-
-.user_info_footer {
-  margin: 1rem 0;
-  margin-top: 4rem;
-  padding: 0 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-}
-
-.user_info_footer .edit_users {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 0.5rem;
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  color: #fff;
-  background-color: rgb(30, 124, 248);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.25s;
-
-  &:hover {
-    background-color: rgb(0, 86, 199);
-  }
-}
-.user_info_footer .sign_out_confirm {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 0.5rem;
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  background-color: #ff0c0c;
-  color: #fff;
-  font-size: 0.8rem;
 }
 
 /* Not LogIn */

@@ -9,7 +9,7 @@ include_once 'includes/thai_date_time.php';
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้
 if (isset($_SESSION['staff_login'])) {
     $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);

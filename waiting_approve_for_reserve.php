@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_login'])) {
 }
 
 $user_id = $_SESSION['user_login'];
-$stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
+$stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -36,17 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $items = $_POST['amount'];
         $enddate = $_POST['end_date'];
 
-        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
-        $firstname = htmlspecialchars($user['pre'] . $user['firstname'] . ' ' . $user['lastname']);
+        $firstname = htmlspecialchars($user['pre'] . $user['surname'] . ' ' . $user['lastname']);
 
         $itemList = [];
         $errorMessages = [];
 
         foreach ($_SESSION['reserve_cart'] as $item) {
-            $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :item");
+            $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);

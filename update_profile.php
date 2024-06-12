@@ -41,7 +41,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     }
 
     // อัปเดตข้อมูลในฐานข้อมูล
-    $sql = "UPDATE users SET pre=:pre, surname=:surname, lastname=:lastname, phone_number=:phone_number, role=:role, agency=:agency $passwordUpdateQuery WHERE user_id=:user_id";
+    $sql = "UPDATE users SET pre=:pre, surname=:surname, lastname=:lastname, phone_number=:phone_number, role=:role, agency=:agency $passwordUpdateQuery WHERE user_ID=:user_id";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute($params);

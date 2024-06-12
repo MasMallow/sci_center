@@ -1,13 +1,14 @@
 <?php
 session_start();
-require_once '<?php echo $base_url ?>/assets/database/dbConfig.php';
+require_once '../assets/database/dbConfig.php';
 
+// Set form values from the session if available, otherwise use default values
 $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : array(
     'username' => '',
     'password' => '',
     'confirmpassword' => '',
     'pre' => '',
-    'surname' => '',
+    'firstname' => '',
     'lastname' => '',
     'role' => '',
     'email' => '',
@@ -31,14 +32,15 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
 </head>
 
 <body>
-        <div class="toast">
+    <?php if (isset($_SESSION['errorSign_up'])) { ?>
+        <div class="toast active">
             <div class="toast_content">
                 <i class="fas fa-solid fa-xmark check"></i>
                 <div class="toast_content_message">
-                    <span class="text text_2"><?php echo $_SESSION['errorSign_up'] ?></span>
+                    <span class="text text_2"><?php echo $_SESSION['errorSign_up']; ?></span>
                 </div>
                 <i class="fa-solid fa-xmark close"></i>
-                <div class="progress"></div>
+                <div class="progress active"></div>
             </div>
         </div>
         <script>
@@ -47,20 +49,18 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                 const closeIcon = document.querySelector(".close");
                 const progress = document.querySelector(".progress");
 
-                // Add active class to trigger the animation
                 setTimeout(() => {
                     toast.classList.add("active");
                     progress.classList.add("active");
-                }); // Delay slightly to ensure the DOM is ready
+                });
 
-                // Remove active class after a timeout
                 setTimeout(() => {
                     toast.classList.remove("active");
-                }, 5100); // 5s + 100ms delay
+                }, 5100);
 
                 setTimeout(() => {
                     progress.classList.remove("active");
-                }, 5400); // 5.3s + 100ms delay
+                }, 5400);
 
                 closeIcon.addEventListener("click", () => {
                     toast.classList.remove("active");
@@ -70,14 +70,14 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                 });
             });
         </script>
-    <?php if (isset($_SESSION['errorSign_up'])) { ?>
         <?php unset($_SESSION['errorSign_up']); ?>
     <?php } ?>
+
     <form action="../authProcess/sign_upDB.php" method="post">
         <div class="register">
             <div class="register_page">
                 <div class="register_page_head">
-                    <a href="../../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+                    <a href="<?php echo $base_url; ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
                     <span id="B">สมัครบัญชีผู้ใช้</span>
                 </div>
                 <div class="register_page_body">
@@ -101,7 +101,10 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                             </div>
                             <div class="input_box_1">
                                 <span>รหัสผ่าน</span>
-                                <input type="password" placeholder="กรุณากรอกรหัสผ่าน (Password)" name="password" value="<?php echo htmlspecialchars($form_values['password']); ?>" required>
+                                <div class="show_password">
+                                    <input type="password" id="password" name="password" placeholder="กรุณากรอกรหัสผ่าน (Password)">
+                                    <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
+                                </div>
                                 <span class="description">
                                     <b>Note : </b>รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 12 ตัวอักษร<br>
                                     <b>Note : </b>รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว
@@ -109,7 +112,10 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                             </div>
                             <div class="input_box_1">
                                 <span>ยืนยันรหัสผ่านอีกครั้ง</span>
-                                <input type="password" placeholder="กรุณายืนยันรหัสผ่าน" name="confirmpassword" value="<?php echo htmlspecialchars($form_values['confirmpassword']); ?>" required>
+                                <div class="show_password">
+                                    <input type="password" id="confirm_password" name="confirm_password" placeholder="กรุณากรอกรหัสผ่านอีกครั้ง (confirmPassword)">
+                                    <i class="icon_password fas fa-eye-slash" onclick="togglecPassword()"></i>
+                                </div>
                             </div>
                             <div class="register_page_footer_1">
                                 <a href="#2" class="btn_next">
@@ -142,7 +148,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                                 </div>
                                 <div class="input_box_2">
                                     <span>ชื่อ</span>
-                                    <input type="text" placeholder="ชื่อภาษาไทย" name="surname" value="<?php echo htmlspecialchars($form_values['surname']); ?>" required>
+                                    <input type="text" placeholder="ชื่อภาษาไทย" name="firstname" value="<?php echo htmlspecialchars($form_values['firstname']); ?>" required>
                                 </div>
                                 <div class="input_box_2">
                                     <span>นามสกุล</span>
@@ -181,7 +187,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                                     <i class="fa-solid fa-angle-left"></i>
                                     <span>ก่อนหน้า</span>
                                 </a>
-                                <a href="#2" class="btn_next">
+                                <a href="#3" class="btn_next">
                                     <span>ถัดไป</span>
                                     <i class="fa-solid fa-angle-right"></i>
                                 </a>
@@ -194,7 +200,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                         </div>
                         <div class="btn_section_sign_up">
                             <div class="register_page_footer_2">
-                                <a href="#1" class="btn_prev">
+                                <a href="#2" class="btn_prev">
                                     <i class="fa-solid fa-angle-left"></i>
                                     <span>ก่อนหน้า</span>
                                 </a>
@@ -216,6 +222,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
     </form>
     <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/sign_up.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/show_password.js"></script>
 </body>
 
 </html>

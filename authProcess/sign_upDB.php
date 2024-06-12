@@ -6,12 +6,12 @@ if (isset($_POST['signup'])) {
     $user_id = rand(10000, 99999);
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $confirmpassword = $_POST['confirmpassword'];
+    $confirm_password = $_POST['confirm_password'];
     $pre = $_POST['pre'];
-    $surname = $_POST['surname'];
+    $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $role = $_POST['role'];
-    $line_id = $_POST['line_id'];
+    $email = $_POST['email'];
     $phone_number = $_POST['phone_number'];
     $agency = $_POST['agency'];
     $urole = 'user';
@@ -26,9 +26,9 @@ if (isset($_POST['signup'])) {
         header("location:../auth/sign_up");
         $_SESSION['form_values'] = array(
             'password' => $password,
-            'confirmpassword' => $confirmpassword,
+            'confirm_password' => $confirm_password,
             'pre' => $pre,
-            'surname' => $surname,
+            'firstname' => $firstname,
             'lastname' => $lastname,
             'role' => $role,
             'line_id' => $line_id,
@@ -54,11 +54,11 @@ if (isset($_POST['signup'])) {
         $_SESSION['errorSign_up'] = 'รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว';
         header("location:../auth/sign_up");
         exit;
-    } elseif (empty($confirmpassword)) {
+    } elseif (empty($confirm_password)) {
         $_SESSION['errorSign_up'] = 'กรุณายืนยันรหัสผ่าน';
         header("location:../auth/sign_up");
         exit;
-    } elseif ($password != $confirmpassword) {
+    } elseif ($password != $confirm_password) {
         $_SESSION['errorSign_up'] = 'รหัสผ่านไม่ตรงกัน';
         header("location:../auth/sign_up");
         exit;
@@ -66,7 +66,7 @@ if (isset($_POST['signup'])) {
         $_SESSION['errorSign_up'] = 'กรุณาเลือกตำแหน่งของคุณ';
         header("location:../auth/sign_up");
         exit;
-    } elseif (empty($surname)) {
+    } elseif (empty($firstname)) {
         $_SESSION['errorSign_up'] = 'กรุณากรอกชื่อ';
         header("location:../auth/sign_up");
         exit;
@@ -92,24 +92,24 @@ if (isset($_POST['signup'])) {
         exit;
     } else {
         try {
-            $check_lineid = $conn->prepare("SELECT lineid FROM users_db WHERE lineid  = :line_id");
-            $check_lineid->bindParam(":email", $email);
-            $check_lineid->execute();
-            $row = $check_lineid->fetch(PDO::FETCH_ASSOC);
+            $check_email = $conn->prepare("SELECT email FROM users_db WHERE email  = :email");
+            $check_email->bindParam(":email", $email);
+            $check_email->execute();
+            $row = $check_email->fetch(PDO::FETCH_ASSOC);
 
             if (isset($row['email']) && $row['email'] == $email) {
-                $_SESSION['warning'] = "E-Mail มีในระบบ";
+                $_SESSION['errorSign_up'] = "E-Mail มีในระบบ";
                 header("location:../auth/sign_up");
                 exit;
             } else {
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("INSERT INTO users (user_id, username, password, pre, surname, lastname, phone_number, email, role, agency, urole, status)
-                    VALUES (:user_id, :username,:password, :pre, :surname, :lastname, :phone_number, :email, :role, :agency,:urole,:status)");
+                $stmt = $conn->prepare("INSERT INTO users_db (user_id, username, password, pre, firstname, lastname, phone_number, email, role, agency, urole, status)
+                    VALUES (:user_id, :username,:password, :pre, :firstname, :lastname, :phone_number, :email, :role, :agency,:urole,:status)");
                 $stmt->bindParam(":user_id", $user_id);
                 $stmt->bindParam(":username", $username);
                 $stmt->bindParam(":password", $passwordHash);
                 $stmt->bindParam(":pre", $pre);
-                $stmt->bindParam(":surname", $surname);
+                $stmt->bindParam(":firstname", $firstname);
                 $stmt->bindParam(":lastname", $lastname);
                 $stmt->bindParam(":phone_number", $phone_number);
                 $stmt->bindParam(":email", $email);

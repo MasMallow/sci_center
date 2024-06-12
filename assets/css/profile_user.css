@@ -1,23 +1,9 @@
-@font-face {
-  src: url("../fonts/Sarabun-Regular.ttf");
-  font-family: Sarabun;
-}
-@font-face {
-  src: url("../fonts/Sarabun-Bold.ttf");
-  font-family: Sarabun-bold;
-}
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Sarabun;
-  text-decoration: none;
-  list-style: none;
+  scrollbar-width: none;
 }
-#B {
-  font-family: Sarabun-bold;
+*::-webkit-scrollbar {
+  display: none;
 }
-
 .show_password {
   position: relative;
 }
@@ -30,21 +16,23 @@
   /* ปรับตำแหน่งไอคอนตามต้องการ */
   cursor: pointer;
 }
-.edit_profile {
-  max-width: 750px;
-  margin: 10rem auto;
+.profile_user {
+  width: 100%;
+  max-width: 1300px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 2rem auto;
+  gap: 1rem;
+}
+.profile_user_header {
+  font-size: 1.2rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 5px;
   border: 1px solid #ddd;
-}
-
-.edit_profile_header {
-  font-size: 1.5rem;
-  padding: 0.5rem 1.2rem;
-  border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-size: 1.25rem;
   & a {
     display: flex;
     align-items: center;
@@ -62,23 +50,79 @@
     }
   }
 }
+.profile_user_00 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.profile_user_01 {
+  grid-column: 1 / 4;
+  height: 30vh;
+}
+.profile_user_02 {
+  grid-column: 1 / 5;
+}
+.edit_profile_header {
+  font-size: 1.2rem;
+  padding: 0.5rem 1.2rem;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+.profile_user_details {
+  height: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+.edit_profile_header,
 .edit_profile_body {
-  padding: 0.7rem 1.2rem;
-  margin-top: 1.25rem;
-}
-.input_edit {
-  margin: 0.5rem 0;
   width: 100%;
+  padding: 0.7rem 1.2rem;
 }
-.input_edit span {
+.user_info_row1 {
+  padding: 0.5rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.profile_user_notification {
+  grid-column: 4 / 5;
+  height: 30vh;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.profile_user_notification_body {
+  height: 80%;
+  overflow: scroll;
+  padding: 0.5rem 1rem;
+}
+.profile_user_notification_stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.profile_user_notification_body .profile_user_notification_data {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0.5rem 0.75rem;
+}
+
+.profile_edit_details {
+  height: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+/* .input_edit span {
   display: block;
   padding-left: 0.25rem;
   margin-bottom: 0.25rem;
-}
+} */
 .input_edit input,
 .input_edit select {
   position: relative;
-  height: 50px;
+  height: 40px;
   width: 100%;
   outline: none;
   border: 1px solid #ddd;
@@ -86,7 +130,9 @@
   padding: 0 1rem;
   color: #000;
 }
-.col_edit {
+.columnData {
+  width: 100%;
+  font-size: 1.025rem;
   display: flex;
   column-gap: 1rem;
 }
@@ -95,7 +141,6 @@ select:focus {
   border: 1px solid rgb(0, 119, 255);
 }
 .edit_profile_footer {
-  margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
   gap: 1rem;

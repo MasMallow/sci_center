@@ -5,7 +5,7 @@ require_once 'assets/database/dbConfig.php';
 // ดึงข้อมูลผู้ใช้เพียงครั้งเดียว
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);

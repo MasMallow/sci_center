@@ -12,7 +12,7 @@ if (!isset($_SESSION['staff_login'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['user_id'])) {
         $user_id = $_GET['user_id'];
-        $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $role = $_POST['role'];
 
         // Update the user's information in the database
-        $stmt = $conn->prepare("UPDATE users SET firstname = :firstname, lastname = :lastname, role = :role , phone = :phone WHERE user_id = :user_id");
+        $stmt = $conn->prepare("UPDATE users SET firstname = :firstname, lastname = :lastname, role = :role , phone = :phone WHERE user_ID = :user_id");
         $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
         $stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);

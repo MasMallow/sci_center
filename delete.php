@@ -1,13 +1,22 @@
 <?php
-// Include the database connection file
-require_once '../assets/database/dbConfig.php';
+session_start();
+require_once 'assets/database/dbConfig.php';
 
 // Check if product ID is provided
-if (isset($_GET['id'])) {
+if (!empty($_GET['id'])) {
     $id = $_GET['id'];
 
+    $folder = 'assets/uploads/';
+
+    $sql = $conn->prepare("SELECT * FROM crud WHERE ID = :id");
+    $sql->bindParam(":id", $id);
+    $sql->execute();
+    $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+    @unlink($folder . $result['img_name']);
+
     // Delete the product based on the ID
-    $delete = $conn->query("DELETE FROM crud WHERE id = $id");
+    $delete = $conn->query("DELETE FROM crud WHERE ID = $id");
 
     if ($delete) {
         echo "Product deleted successfully.";
@@ -18,4 +27,3 @@ if (isset($_GET['id'])) {
 } else {
     echo "Product ID not provided.";
 }
-?>

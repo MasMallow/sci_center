@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_login'])) {
 }
 
 $user_id = $_SESSION['user_login'];
-$stmt = $conn->prepare("SELECT * FROM users_db WHERE user_id = :user_id");
+$stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -78,7 +78,7 @@ if (isset($_GET['action'])) {
                 <div class="main_cart_content_non_select">
                     <div class="non_select_1">
                         <i class="fa-solid fa-cart-shopping"></i>
-               <span id="B">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</span>
+                        <span id="B">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</span>
                     </div>
                     <div class="non_select_2">
                         <a href="../project/"><span>กลับหน้าหลัก</span></a>
@@ -147,16 +147,16 @@ if (isset($_GET['action'])) {
                 <?php endif; ?>
             <?php else : ?>
                 <form method="post" action="waiting_approve_for_use">
-                <div class="main_cart_content">
-                    <div class="count_list">
-                        <div class="count_list_1">
-                            <span>รายการที่ขอใช้ทั้งหมด </span>
-                            <span id="B">(<?php echo count($_SESSION['cart']); ?>)</span><span> รายการ</span>
+                    <div class="main_cart_content">
+                        <div class="count_list">
+                            <div class="count_list_1">
+                                <span>รายการที่ขอใช้ทั้งหมด </span>
+                                <span id="B">(<?php echo count($_SESSION['cart']); ?>)</span><span> รายการ</span>
+                            </div>
+                            <div class="count_list_2">
+                                <a href="booking_log.php"><span id="B">ตรวจสอบการจอง</span></a>
+                            </div>
                         </div>
-                        <div class="count_list_2">
-                            <a href="booking_log.php"><span id="B">ตรวจสอบการจอง</span></a>
-                        </div>
-                    </div>
                         <table class="cart_data">
                             <tr>
                                 <th class="th_img"></th>
@@ -164,8 +164,6 @@ if (isset($_GET['action'])) {
                                 <th class="th_categories"><span id="B">ประเภท</span></th>
                                 <th class="th_amount"><span id="B">จำนวน</span></th>
                             </tr>
-                            <?php
-                            ?>
                             <?php foreach ($_SESSION['cart'] as $item) : ?>
                                 <?php
                                 $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :item");
@@ -176,7 +174,7 @@ if (isset($_GET['action'])) {
                                 if ($product) {
                                     $categories = $product['categories'];
                                     $productName = $product['sci_name'];
-                                    $imageURL = 'assets/uploads/' . $product['img_name'];
+                                    $imageURL =  $base_url  . 'assets/uploads/' . $product['img_name'];
                                 ?>
                                     <tbody>
                                         <tr>
@@ -224,13 +222,13 @@ if (isset($_GET['action'])) {
                                 </div>
                                 <a href="cart_use?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
                             </div>
-                    </form>
-                </div>
+                </form>
             </div>
-        <?php endif; ?>
     </div>
-    <script src="assets/js/cart.js"></script>
-    <script src="assets/js/ajax.js"></script>
+<?php endif; ?>
+</div>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/ajax.js"></script>
 </body>
 
 </html>

@@ -27,6 +27,17 @@
 #B {
   font-family: Sarabun-bold;
 }
+.show_password {
+  position: relative;
+}
+
+.icon_password {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  cursor: pointer;
+}
 .toast {
   min-width: 300px;
   min-height: 60px;
@@ -137,7 +148,7 @@
   animation: movingY 0.5s ease;
 }
 .register_page .register_page_head {
-  padding: 0.7rem 1rem;
+  padding: 0.5rem 1rem;
   border-bottom: 1px solid #dbdbdb;
   font-size: 1.2rem;
   display: flex;
@@ -229,7 +240,7 @@
 .input_box_2 input,
 .input_box_2 select {
   position: relative;
-  height: 45px;
+  height: 40px;
   width: 100%;
   outline: none;
   border: 1px solid #ddd;

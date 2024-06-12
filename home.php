@@ -216,7 +216,7 @@ try {
                                 <div class="grid_content">
                                     <div class="grid_content_header">
                                         <div class="content_img">
-                                            <img src="<?php echo $base_url;?>/assets/uploads/<?= htmlspecialchars($data['img_name']) ?>" alt="Image">
+                                            <img src="<?php echo $base_url; ?>/assets/uploads/<?= htmlspecialchars($data['img_name']) ?>" alt="Image">
                                         </div>
                                     </div>
                                     <div class="content_status_details">
@@ -299,7 +299,7 @@ try {
                                                 <div class="details_content_footer">
                                                     <div class="content_btn">
                                                         <?php if ($data['amount'] >= 1) : ?>
-                                                            <a href="cart_use?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
+                                                            <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="used_it">
                                                                 <i class="icon fa-solid fa-arrow-up"></i>
                                                                 <span>ขอใช้อุปกรณ์</span>
                                                             </a>
@@ -313,7 +313,7 @@ try {
                                                         <?php endif; ?>
                                                         <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
                                                             <?php if ($data['amount'] >= 1) : ?>
-                                                                <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="reserved_it">
+                                                                <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="reserved_it">
                                                                     <i class="fa-solid fa-address-book"></i>
                                                                     <span>จองอุปกรณ์</span>
                                                                 </a>
@@ -393,6 +393,46 @@ try {
 <script src="assets/js/ajax.js"></script>
 <script src="assets/js/details.js"></script>
 <script src="assets/js/datetime.js"></script>
+<script>
+    document.querySelectorAll('.header_userinfo_btn').forEach(dropdown => {
+        const select = dropdown.querySelector('.select');
+        const caret = dropdown.querySelector('.arrow');
+        const menu = dropdown.querySelector('.menu');
+        const options = dropdown.querySelectorAll('.menu li');
+        const selected = dropdown.querySelector('.selected'); // Assuming there's an element with class 'selected'
+
+        // Add a click event to the select element
+        select.addEventListener('click', () => {
+            // Add the clicked select styles to the select element
+            select.classList.toggle('select-clicked');
+            // Add the rotate styles to the caret element
+            caret.classList.toggle('arrow-rotate');
+            // Add the open styles to the menu element
+            menu.classList.toggle('menu-open');
+        });
+
+        // Loop through all option elements
+        options.forEach(option => {
+            // Add a click event to the option element
+            option.addEventListener('click', () => {
+                // Change selected inner text to clicked option inner text
+                selected.innerText = option.innerText;
+                // Add the clicked select styles to the select element
+                select.classList.remove('select-clicked');
+                // Add the rotate styles to the caret element
+                caret.classList.remove('caret-rotate');
+                // Add the open styles to the menu element
+                menu.classList.remove('menu-open');
+                // Remove active class from all option elements
+                options.forEach(option => {
+                    option.classList.remove('active');
+                });
+                // Add active class to clicked option element
+                option.classList.add('active');
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

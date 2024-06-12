@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Bangkok');
 require_once '../assets/database/dbConfig.php';
 
 function getIP()

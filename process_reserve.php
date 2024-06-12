@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $staff_id = $_SESSION['staff_login'];
 
         // Select surname of the approver from the database
-        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :staff_id");
+        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -52,19 +52,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // If no existing bookings, proceed with updating the booking
         $update_query = $conn->prepare("UPDATE approve_to_reserve SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 WHERE id = :id");
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
-        $update_query->bindParam(':approver', $approver['firstname'], PDO::PARAM_STR);
+        $update_query->bindParam(':approver', $approver['surname'], PDO::PARAM_STR);
         $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);
         $update_query->execute();
 
         // Select user details
-        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
 
         // Create message for Line Notify
         $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
-        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่กดจอง : " . date('d/m/Y H:i:s', strtotime($data['created_at'])) . "\n";
         $sMessage .= "วันที่จองใช้ : " . date('d/m/Y H:i:s', strtotime($data['reservation_date'])) . "\n";
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtUpdate->execute();
         }
 
-        $sMessage .= "ผู้อนุมัติการจอง : " . $approver['pre'] . ' ' . $approver['firstname'] . ' ' . $approver['lastname'] . "\n";
+        $sMessage .= "ผู้อนุมัติการจอง : " . $approver['pre'] . ' ' . $approver['surname'] . ' ' . $approver['lastname'] . "\n";
         $sMessage .= "-------------------------------";
 
         // Line Notify settings
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /sci_center/approve_for_booking.php');
+        header('Location: /project/approve_for_booking.php');
         exit;
     } elseif (isset($_POST['cancel'])) {
         $id = $_POST['id'];
@@ -131,14 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_query->execute();
 
         // Select user details
-        $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_id = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
 
         // Create message for Line Notify
         $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
-        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่กดจอง : " . date('d/m/Y H:i:s', strtotime($data['created_at'])) . "\n";
         $sMessage .= "วันที่จองใช้ : " . date('d/m/Y H:i:s', strtotime($data['reservation_date'])) . "\n";
@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /sci_center/approve_for_booking.php');
+        header('Location: /project/approve_for_booking.php');
         exit;
     }
 }
