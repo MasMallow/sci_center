@@ -15,7 +15,7 @@
   list-style: none;
   scrollbar-width: none;
 }
-*::-webkit-scrollbar{
+*::-webkit-scrollbar {
   display: none;
 }
 #B {
@@ -432,30 +432,10 @@ input.search {
       transition: all 0.3s;
       color: #fff;
       cursor: pointer;
-    }
-
-    & .used_it:hover {
-      background-color: rgb(0, 86, 199);
-    }
-
-    & .reserved_it {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      font-size: 0.8rem;
-      outline: none;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      background-color: #50c878;
-      transition: all 0.3s;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    & .reserved_it:hover {
-      background-color: #008000;
+      
+      &:hover {
+        background-color: rgb(0, 86, 199);
+      }
     }
   }
 }

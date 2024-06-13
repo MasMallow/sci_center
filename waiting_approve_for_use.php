@@ -22,13 +22,7 @@ if (!$userData) {
     exit();
 }
 
-// ฟังก์ชันสำหรับการสร้างสตริงสุ่ม
-function generateRandomString($length = 7) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    return substr(str_shuffle($characters), 0, $length);
-}
 
-$random_string = generateRandomString();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['use_it'])) {
@@ -40,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
-        $name_user = htmlspecialchars($user['pre'] . $user['surname'] . ' ' . $user['lastname']);
+        $name_user = htmlspecialchars($user['pre'] . $user['firstname'] . ' ' . $user['lastname']);
 
         // ตรวจสอบว่าตะกร้ามีสินค้าหรือไม่
         if (!is_array($_SESSION['cart'])) {

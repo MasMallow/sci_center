@@ -1,48 +1,50 @@
-// เลือกปุ่ม "User Info" และ Modal
-const userInfoButton = document.querySelector('.header_userinfo_btn');
-const userInfoModal = document.querySelector('.header_userinfo_modal');
+document.addEventListener('DOMContentLoaded', () => {
+  // ฟังก์ชันเพื่อตั้งค่า event listeners สำหรับ dropdown แต่ละตัว
+  document.querySelectorAll('.header_userinfo_btn').forEach(dropdown => {
+    const select = dropdown.querySelector('.select');
+    const caret = dropdown.querySelector('.arrow_rotate');
+    const menu = dropdown.querySelector('.menu');
+    const options = dropdown.querySelectorAll('.menu li');
+    const selected = dropdown.querySelector('.selected');
 
-// เลือกปุ่ม "Close" ใน Modal
-const closeButton = document.getElementById('close');
+    // เพิ่ม event listener เมื่อคลิกที่ select
+    select.addEventListener('click', (event) => {
+      // ป้องกันการปิด dropdown ทันทีเมื่อคลิกที่ select
+      event.stopPropagation();
 
-// เพิ่ม event listener เมื่อคลิกที่ปุ่ม "User Info" เพื่อเปิด Modal
-userInfoButton.addEventListener('click', function () {
-  userInfoModal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  document.body.style.paddingRight = '15px';
-});
+      // ปิด dropdown ทั้งหมดก่อนเปิดตัวที่คลิก
+      closeAllDropdowns();
 
-// เพิ่ม event listener เมื่อคลิกที่ปุ่ม "Close" เพื่อปิด Modal
-closeButton.addEventListener('click', function () {
-  userInfoModal.style.display = 'none';
-  document.body.style.overflow = '';
-  document.body.style.paddingRight = '';
-});
+      // Add a click event to the select element
+      select.addEventListener('click', () => {
+        // Add the clicked select styles to the select element
+        select.classList.toggle('select-clicked');
+        // Add the rotate styles to the caret element
+        caret.classList.toggle('arrow_rotated');
+        // Add the open styles to the menu element
+        menu.classList.toggle('menu-open');
+      });
+      // สลับสถานะ dropdown
+      select.classList.toggle('select-clicked');
+      caret.classList.toggle('arrow_rotated');
+      menu.classList.toggle('menu-open');
+    });
+  });
+  // ฟังก์ชันเพื่อปิด dropdown ทั้งหมด
+  const closeAllDropdowns = () => {
+    document.querySelectorAll('.header_userinfo_btn').forEach(dropdown => {
+      const select = dropdown.querySelector('.select');
+      const caret = dropdown.querySelector('.arrow_rotate');
+      const menu = dropdown.querySelector('.menu');
+      const options = dropdown.querySelectorAll('.menu li');
+      const selected = dropdown.querySelector('.selected');
 
-// เพิ่ม event listener เมื่อคลิกที่พื้นหลังของ Modal เพื่อปิด Modal
-window.addEventListener('click', function (event) {
-  if (event.target === userInfoModal) {
-    userInfoModal.style.display = 'none';
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
-  }
-});
+      select.classList.remove('select-clicked');
+      caret.classList.remove('arrow_rotated');
+      menu.classList.remove('menu-open');
+    });
+  };
 
-// เลือกปุ่ม "Confirm" ใน Modal
-const confirmButton = document.querySelector('.confirm');
-
-// เพิ่ม event listener เมื่อคลิกที่ปุ่ม "Confirm" เพื่อทำงานตามที่ต้องการ ในที่นี้คือการลงชื่อออก
-confirmButton.addEventListener('click', function () {
-  // เพิ่มโค้ดที่ต้องการให้ทำงานเมื่อคลิกปุ่ม "Confirm" ที่นี่
-  console.log('User confirmed sign out.');
-});
-
-// เลือกปุ่ม "Cancel" ใน Modal
-const cancelButton = document.querySelector('.cancel');
-
-// เพิ่ม event listener เมื่อคลิกที่ปุ่ม "Cancel" เพื่อปิด Modal
-cancelButton.addEventListener('click', function () {
-  userInfoModal.style.display = 'none';
-  document.body.style.overflow = '';
-  document.body.style.paddingRight = '';
+  // เพิ่ม event listener ที่ document เพื่อตรวจสอบการคลิกนอกกรอบ dropdown
+  document.addEventListener('click', closeAllDropdowns);
 });

@@ -13,7 +13,7 @@ if (isset($_SESSION['user_login'])) {
     if ($userData) {
         if ($userData['status'] !== 'approved') {
             unset($_SESSION['reserve_cart']);
-            header("Location: home.php");
+            header("Location: home");
             exit();
         }
     }
@@ -34,11 +34,11 @@ if (isset($_GET['action'])) {
         if (!in_array($itemToAdd, $_SESSION['reserve_cart'])) {
             $_SESSION['reserve_cart'][] = $itemToAdd;
         }
-        header('Location: cart_reserve');
+        header('Location: cart_systems');
         exit();
     } elseif ($action === 'clear') {
         $_SESSION['reserve_cart'] = [];
-        header('Location: cart_reserve');
+        header('Location: cart_systems');
         exit();
     } elseif ($action === 'remove' && isset($_GET['item'])) {
         $itemToRemove = $_GET['item'];
@@ -47,7 +47,7 @@ if (isset($_GET['action'])) {
         if ($key !== false) {
             unset($_SESSION['reserve_cart'][$key]);
         }
-        header('Location: cart_reserve');
+        header('Location: cart_systems');
         exit();
     }
 }
@@ -60,10 +60,10 @@ if (isset($_GET['action'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จองอุปกรณ์ และเครื่องมือ</title>
-    <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="assets/css/navigator.css">
-    <link rel="stylesheet" href="assets/css/cart.css">
+    <link href="<?php echo $base_url;?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/cart.css">
 </head>
 
 <body>
@@ -72,7 +72,7 @@ if (isset($_GET['action'])) {
     </header>
     <div class="sci_center_cart">
         <div class="sci_center_cart_header">
-            <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="<?php echo $base_url;?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">รายการที่เลือกทั้งหมด</span>
         </div>
         <?php if (empty($_SESSION['reserve_cart'])) : ?>
@@ -83,7 +83,7 @@ if (isset($_GET['action'])) {
                         <span id="B">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</span>
                     </div>
                     <div class="non_select_2">
-                        <a href="../project/"><span>กลับหน้าหลัก</span></a>
+                        <a href="<?php echo $base_url;?>/"><span>กลับหน้าหลัก</span></a>
                         <span class="warning">!! ถ้าต้องการเลือกวัสดุ อุปกรณ์และเครื่องมือเพิ่มให้กลับหน้าหลัก !!</span>
                     </div>
                 </div>
@@ -122,7 +122,7 @@ if (isset($_GET['action'])) {
                                 </div>
                             </div>
                             <div class="cart_alert_footer">
-                                <a class="back_to_home" href="../project/">กลับหน้าหลัก</a>
+                                <a class="back_to_home" href="<?php echo $base_url;?>/">กลับหน้าหลัก</a>
                                 <a class="go_to_notification" href="notification">หน้าแจ้งเตือน</a>
                             </div>
                         </div>
@@ -152,7 +152,7 @@ if (isset($_GET['action'])) {
                     ?>
                 <?php endif; ?>
             <?php else : ?>
-                <form method="post" action="waiting_approve_for_reserve">
+                <form method="post" action="waiting_approve_reserve">
                     <div class="main_cart_content">
                         <div class="table_section">
                             <div class="count_list">
@@ -174,7 +174,7 @@ if (isset($_GET['action'])) {
                                 <?php foreach ($_SESSION['reserve_cart'] as $item) : ?>
                                     <?php
                                     // Retrieve product details from the database based on the item
-                                    $query = $conn->prepare("SELECT * FROM crud WHERE img = :itemToAdd");
+                                    $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :itemToAdd");
                                     $query->bindParam(':itemToAdd', $item, PDO::PARAM_STR);
                                     $query->execute();
                                     $product = $query->fetch(PDO::FETCH_ASSOC);
@@ -183,7 +183,7 @@ if (isset($_GET['action'])) {
                                     if ($product) {
                                         $categories = $product['categories'];
                                         $productName = $product['sci_name'];
-                                        $imageURL = 'assets/uploads/' . $product['img'];
+                                        $imageURL = 'assets/uploads/' . $product['img_name'];
                                     ?>
                                         <tbody>
                                             <tr>
@@ -195,7 +195,7 @@ if (isset($_GET['action'])) {
                                                 <td>
                                                     <div class="amount_delete">
                                                         <input type="number" name="amount[<?php echo $item; ?>]" value="1" min="1">
-                                                        <a class="btn_delete" href="cart_use?action=remove&item=<?php echo $item; ?>">
+                                                        <a class="btn_delete" href="cart_systems?action=remove&item=<?php echo $item; ?>">
                                                             <i class="fa-solid fa-trash-can"></i>
                                                         </a>
                                                     </div>
@@ -208,7 +208,7 @@ if (isset($_GET['action'])) {
                         </div>
                         <div class="footer_section">
                             <div class="footer_section_btn_1">
-                                <a href="../project/" class="back_to_main">กลับหน้าหลัก</a>
+                                <a href="<?php echo $base_url;?>/" class="back_to_main">กลับหน้าหลัก</a>
                             </div>
                             <div class="footer_section_btn_2">
                                 <button class="submit cart_btn">ยืนยัน</button>
@@ -235,7 +235,7 @@ if (isset($_GET['action'])) {
                                         </div>
                                     </div>
                                 </div>
-                                <a href="cart_reserve?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
+                                <a href="cart_systems?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
                             </div>
                         </div>
                 </form>
@@ -244,7 +244,7 @@ if (isset($_GET['action'])) {
 
     </div>
     </div>
-    <script src="assets/js/cart.js"></script>
+    <script src="<?php echo $base_url;?>/assets/js/cart.js"></script>
 </body>
 
 </html>

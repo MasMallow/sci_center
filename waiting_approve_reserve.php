@@ -2,11 +2,6 @@
 session_start();
 require_once 'assets/database/dbConfig.php';
 
-// ตรวจสอบการเชื่อมต่อฐานข้อมูล
-if (!isset($conn)) {
-    die('Database connection failed.');
-}
-
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้
 if (!isset($_SESSION['user_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
@@ -22,13 +17,18 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // ตรวจสอบสถานะของผู้ใช้
 if (!$userData || $userData['status'] !== 'approved') {
-    header("Location: home.php");
+    header("Location: home");
     exit();
 }
 
-// สร้างสตริงสุ่มสำหรับ serial number
-$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-$random_string = substr(str_shuffle($characters), 0, 7);
+// ฟังก์ชันสำหรับการสร้างสตริงสุ่ม
+function generateRandomString($length = 7)
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return substr(str_shuffle($characters), 0, $length);
+}
+
+$random_string = generateRandomString();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reserve'])) {
@@ -40,13 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
-        $firstname = htmlspecialchars($user['pre'] . $user['surname'] . ' ' . $user['lastname']);
+        $e_mail = ($user['email']);
+        $firstname = htmlspecialchars($user['pre'] . $user['firstname'] . ' ' . $user['lastname']);
 
         $itemList = [];
         $errorMessages = [];
 
         foreach ($_SESSION['reserve_cart'] as $item) {
-            $query = $conn->prepare("SELECT * FROM crud WHERE img = :item");
+            $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);
@@ -91,6 +92,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert_query->bindParam(':random_string', $random_string, PDO::PARAM_STR);
             $insert_query->execute();
 
+            $insert_logs = $conn->prepare(
+                "INSERT INTO logs_usage (authID, authName, log_orDers, log_Data, created_at, reservation_date, end_date) 
+                VALUES (:authID, :authName, :random_string, :list_name, NOW(), :reservationdate, :enddate)"
+            );
+            $insert_logs->bindParam(':authID', $user_id, PDO::PARAM_INT);
+            $insert_logs->bindParam(':authName', $firstname, PDO::PARAM_STR);
+            $insert_logs->bindParam(':random_string', $random_string, PDO::PARAM_STR);
+            $insert_logs->bindParam(':list_name', $itemBorrowed, PDO::PARAM_STR);
+            $insert_logs->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
+            $insert_logs->bindParam(':enddate', $enddate, PDO::PARAM_STR);
+            $insert_logs->execute();
+
             // ล้างตะกร้าหลังจากการจองเสร็จสิ้น
             unset($_SESSION['reserve_cart']);
 
@@ -99,9 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['reserve_2'] = $itemBorrowed;
             $_SESSION['reserve_3'] = $reservationdate;
 
-            header("Location: cart_reserve");
+            header("Location: cart_systems");
             exit();
         }
     }
 }
-?>

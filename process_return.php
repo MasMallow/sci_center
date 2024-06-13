@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
-        $approvername = $approver['surname'];
+        $approvername = $approver['firstname'];
 
         // Get the current date and time
         date_default_timezone_set('Asia/Bangkok');
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_query->execute();
 
         $sMessage = "รายการยืมวัสดุอุปกรณ์และเครื่องมือ\n";
-        $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+        $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่ขอยืม : " . date('d/m/Y H:i:s', strtotime($data['borrowdatetime'])) . "\n";
         $sMessage .= "วันที่นำมาคืน : " . date('d/m/Y H:i:s', strtotime($data['returndate'])) . "\n";
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtUpdate->execute();
         }
 
-        $sMessage .= "ผู้อนุมัติการยืม : " . $approver['pre'] . ' ' . $approver['surname'] . ' ' . $approver['lastname'] . "\n";
+        $sMessage .= "ผู้อนุมัติการยืม : " . $approver['pre'] . ' ' . $approver['firstname'] . ' ' . $approver['lastname'] . "\n";
         $sMessage .= "-------------------------------";
 
         $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach ($data as $row) {
                 $items = explode(',', $row['list_name']);
 
-                $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['surname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+                $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
                 $sMessage .= "SN : " . $row['serial_number'] . "\n"; // SN
                 $sMessage .= "วันที่ขอยืม : " . date('d/m/Y H:i:s', strtotime($row['borrowdatetime'])) . "\n"; // Date of borrowing
                 $sMessage .= "วันที่นำมาคืน : " . date('d/m/Y H:i:s', strtotime($row['returndate'])) . "\n"; // Return date

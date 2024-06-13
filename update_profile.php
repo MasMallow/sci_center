@@ -9,7 +9,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $pre = $_POST['pre'];
-    $surname = $_POST['surname'];
+    $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $phone_number = $_POST['phone_number'];
     $role = $_POST['role'];
@@ -25,7 +25,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $passwordUpdateQuery = '';
     $params = [
         'pre' => $pre,
-        'surname' => $surname,
+        'firstname' => $firstname,
         'lastname' => $lastname,
         'phone_number' => $phone_number,
         'role' => $role,
@@ -41,7 +41,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     }
 
     // อัปเดตข้อมูลในฐานข้อมูล
-    $sql = "UPDATE users SET pre=:pre, surname=:surname, lastname=:lastname, phone_number=:phone_number, role=:role, agency=:agency $passwordUpdateQuery WHERE user_ID=:user_id";
+    $sql = "UPDATE users SET pre=:pre, firstname=:firstname, lastname=:lastname, phone_number=:phone_number, role=:role, agency=:agency $passwordUpdateQuery WHERE user_ID=:user_id";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute($params);

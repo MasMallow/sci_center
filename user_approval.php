@@ -32,11 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = $_POST['user_id'];
         $staff_id = $_SESSION['staff_login'];
 
-        $user_query = $conn->prepare("SELECT pre, surname, lastname FROM users WHERE user_ID = :staff_id");
+        $user_query = $conn->prepare("SELECT pre, firstname, lastname FROM users WHERE user_ID = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $staff_name = $user_query->fetch(PDO::FETCH_ASSOC);
-        $approver = $staff_name['pre'] . $staff_name['surname'] . ' ' . $staff_name['lastname'];
+        $approver = $staff_name['pre'] . $staff_name['firstname'] . ' ' . $staff_name['lastname'];
 
         $status = 'approved';
         date_default_timezone_set('Asia/Bangkok');
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php foreach ($users as $user) : ?>
                                 <tr>
                                     <td class="UID"><?php echo $user['user_id']; ?></td>
-                                    <td><?php echo $user['pre'] . $user['surname'] . " " . $user['lastname']; ?></td>
+                                    <td><?php echo $user['pre'] . $user['firstname'] . " " . $user['lastname']; ?></td>
                                     <td><?php echo $user['role']; ?></td>
                                     <td><?php echo $user['agency']; ?></td>
                                     <td><?php echo format_phone_number($user['phone_number']); ?></td>

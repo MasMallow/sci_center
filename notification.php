@@ -27,14 +27,8 @@ if ($userData['status'] !== 'approved') {
     exit();
 }
 
-$notification = $_GET['notification'] ?? 'used';
-$firstname = $userData['pre'] . $userData['surname'] . ' ' . $userData['lastname'];
-
-if ($notification === 'used') {
-    $stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE name_user = :firstname ORDER BY created_at DESC");
-} else {
-    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE name_user = :firstname ORDER BY created_at DESC");
-}
+$firstname = $userData['pre'] . $userData['firstname'] . ' ' . $userData['lastname'];
+$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE name_user = :firstname ORDER BY created_at DESC");
 $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -46,11 +40,11 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แจ้งเตือน</title>
-    <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="assets/css/index.css">
-    <link rel="stylesheet" href="assets/css/navigator.css">
-    <link rel="stylesheet" href="assets/css/nofitication.css">
+    <link href="<?php echo $base_url;?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/index.css">
+    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/nofitication.css">
 </head>
 
 <body>
@@ -60,14 +54,10 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="notification_page">
         <div class="maintenance">
             <div class="header_maintenance_section">
-                <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+                <a href="<?php echo $base_url;?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
                 <span id="B">แจ้งเตือนการขอใช้</span>
             </div>
         </div>
-        <form class="notification_btn" method="get" action="notification">
-            <button type="submit" class="<?= ($notification === 'used') ? 'active' : ''; ?> notification_btn_01" name="notification" value="used">แจ้งเตือนการขอใช้</button>
-            <button type="submit" class="<?= ($notification === 'reserve') ? 'active' : ''; ?> notification_btn_02" name="notification" value="reserve">แจ้งเตือนการจอง</button>
-        </form>
         <div class="notification_section">
             <?php if (!empty($data)) : ?>
                 <table class="table_notification">

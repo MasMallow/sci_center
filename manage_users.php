@@ -41,7 +41,7 @@ function fetchUsers($conn, $status, $role, $search = null)
 {
     if ($search) {
         $search = "%" . $search . "%";
-        $stmt = $conn->prepare("SELECT * FROM users WHERE (user_id LIKE :search OR pre LIKE :search OR surname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE (user_id LIKE :search OR pre LIKE :search OR firstname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
         $stmt->bindParam(':search', $search, PDO::PARAM_STR);
     } else {
         $stmt = $conn->prepare("SELECT * FROM users WHERE status = :status AND urole = :role");
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $staff_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $approver = $staff_data['pre'] . $staff_data['surname'] . ' ' . $staff_data['lastname'];
+        $approver = $staff_data['pre'] . $staff_data['firstname'] . ' ' . $staff_data['lastname'];
         date_default_timezone_set('Asia/Bangkok');
         $approvalDateTime = date('Y-m-d H:i:s');
 
@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php foreach ($users as $user) : ?>
                                 <tr>
                                     <td class="UID"><?php echo $user['user_id']; ?></td>
-                                    <td><?php echo $user['pre'] . $user['surname'] . " " . $user['lastname']; ?></td>
+                                    <td><?php echo $user['pre'] . $user['firstname'] . " " . $user['lastname']; ?></td>
                                     <td><?php echo $user['role']; ?></td>
                                     <td><?php echo $user['agency']; ?></td>
                                     <td><?php echo format_phone_number($user['phone_number']); ?></td>
@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php foreach ($users as $user) : ?>
                             <tr>
                                 <td class="UID"><?= $user['user_id']; ?></td>
-                                <td><?= $user['pre'] . $user['surname'] . " " . $user['lastname']; ?></td>
+                                <td><?= $user['pre'] . $user['firstname'] . " " . $user['lastname']; ?></td>
                                 <td><?= $user['role']; ?></td>
                                 <td><?= $user['agency']; ?></td>
                                 <td><?= format_phone_number($user['phone_number']); ?></td>
@@ -268,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php foreach ($users_approved as $approved_user) : ?>
                             <tr>
                                 <td class="UID"><?= $approved_user['user_id']; ?></td>
-                                <td><?= $approved_user['pre'] . $approved_user['surname'] . " " . $approved_user['lastname']; ?></td>
+                                <td><?= $approved_user['pre'] . $approved_user['firstname'] . " " . $approved_user['lastname']; ?></td>
                                 <td><?= $approved_user['role']; ?></td>
                                 <td><?= $approved_user['agency']; ?></td>
                                 <td><?= format_phone_number($approved_user['phone_number']); ?></td>
@@ -323,7 +323,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php foreach ($users_approved as $approved_user) : ?>
                             <tr>
                                 <td class="UID"><?= $approved_user['user_id']; ?></td>
-                                <td><?= $approved_user['pre'] . $approved_user['surname'] . " " . $approved_user['lastname']; ?></td>
+                                <td><?= $approved_user['pre'] . $approved_user['firstname'] . " " . $approved_user['lastname']; ?></td>
                                 <td><?= $approved_user['role']; ?></td>
                                 <td><?= $approved_user['agency']; ?></td>
                                 <td><?= format_phone_number($approved_user['phone_number']); ?></td>
@@ -377,7 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php foreach ($users_banned as $banned_user) : ?>
                             <tr>
                                 <td class="UID"><?= $banned_user['user_id']; ?></td>
-                                <td><?= $banned_user['pre'] . $banned_user['surname'] . " " . $banned_user['lastname']; ?></td>
+                                <td><?= $banned_user['pre'] . $banned_user['firstname'] . " " . $banned_user['lastname']; ?></td>
                                 <td><?= $banned_user['role']; ?></td>
                                 <td><?= $banned_user['agency']; ?></td>
                                 <td><?= format_phone_number($banned_user['phone_number']); ?></td>

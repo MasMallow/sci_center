@@ -68,60 +68,67 @@
 }
 .header_nav_userinfo .header_userinfo_btn {
   position: relative;
-  gap: 0.8rem;
-  border-radius: 5px;
-  padding: 0.75rem 1rem;
-  background-color: #fff;
   color: #000;
   font-size: 0.9rem;
 
   & .select {
-    background-color: #2d794b;
-    color: #fff;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border: 2px #2d794b solid;
+    gap: 0.75rem;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 0.75rem 1.25rem;
     border-radius: 5px;
+    transition: all 0.3s;
+    cursor: pointer;
   }
 
   & .select-clicked {
-    border: 2px #b6fdd4 solid;
-    box-shadow: 0 0 0.8em #d22b2b;
+    background-color: #f3f3f3;
   }
 
   & .select:hover {
-    border: 2px #22b961 solid;
-    box-shadow: 0 0 0.8em #d22b2b;
+    background-color: #f3f3f3;
   }
 
-  & .arrow {
+  & .arrow_rotate {
+    transition: all 0.3s ease-in-out;
+  }
+  & .arrow_rotated {
     transform: rotate(180deg);
   }
 
   & .menu {
     list-style: none;
-    padding: 0.5rem 1rem;
-    background-color: antiquewhite;
-    border: 1px #2d794b solid;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    padding: 0.2rem 1rem;
+    background-color: rgb(255, 255, 255);
+    border: 1px #dbdbdb solid;
+    border-radius: 5px;
     position: absolute;
-    top: 3em;
+    top: 3rem;
     left: 50%;
-    width: 100%;
     transform: translateX(-50%);
+    width: 100%;
     opacity: 0;
     display: none;
-    transition: 0.2s;
+    transition: 0.3s;
     z-index: 1;
 
-    & li {
-      padding: 0.7rem 0.5rem;
-      margin: 0.3rem 0;
-      border-radius: 5px;
+    & .menu_li {
+      padding: 0.4rem 1rem;
+      margin: 0.25rem 0;
       cursor: pointer;
+      transition: all 0.3s;
+      border: 1px transparent solid;
+
+      & a {
+        color: #000;
+        font-size: 0.9rem;
+      }
 
       &:hover {
+        border: 1px #dbdbdb solid;
+        border-radius: 5px;
       }
     }
   }

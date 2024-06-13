@@ -184,12 +184,8 @@ try {
             <div class="content_area">
                 <div class="content_area_nav">
                     <div class="section_1">
-                        <a href="cart_use" class="section_1_btn_1">
+                        <a class="section_1_btn_2" href="cart_systems">
                             <i class="fa-solid fa-cart-shopping"></i>
-                            <span>รายการที่เลือกทั้งหมด</span>
-                        </a>
-                        <a class="section_1_btn_2" href="cart_reserve">
-                            <i class="fa-solid fa-thumbtack"></i>
                             <span>รายการที่จอง</span>
                         </a>
                     </div>
@@ -298,29 +294,16 @@ try {
                                                 </div>
                                                 <div class="details_content_footer">
                                                     <div class="content_btn">
-                                                        <?php if ($data['amount'] >= 1) : ?>
-                                                            <a href="cart_use?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="used_it">
-                                                                <i class="icon fa-solid fa-arrow-up"></i>
-                                                                <span>ขอใช้อุปกรณ์</span>
-                                                            </a>
-                                                        <?php else : ?>
-                                                            <div class="button">
-                                                                <button class="out-of">
-                                                                    <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
-                                                                    <span>ไม่สามารถขอใช้ได้</span>
-                                                                </button>
-                                                            </div>
-                                                        <?php endif; ?>
                                                         <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
                                                             <?php if ($data['amount'] >= 1) : ?>
-                                                                <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['img_name']) ?>" class="reserved_it">
+                                                                <a href="cart_systems?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
                                                                     <i class="fa-solid fa-address-book"></i>
-                                                                    <span>จองอุปกรณ์</span>
+                                                                    <span>ทำการขอใช้</span>
                                                                 </a>
                                                             <?php else : ?>
                                                                 <div class="not_available">
                                                                     <i class="fa-solid fa-check"></i>
-                                                                    <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
+                                                                    <span>"ไม่พร้อมใช้งาน"</span>
                                                                 </div>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
@@ -343,30 +326,15 @@ try {
                                     <div class="grid_content_footer">
                                         <div class="content_btn">
                                             <?php if ($data['amount'] >= 1) : ?>
-                                                <a href="cart_use?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
-                                                    <i class="icon fa-solid fa-arrow-up"></i>
-                                                    <span>ขอใช้อุปกรณ์</span>
+                                                <a href="cart_systems?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
+                                                    <i class="fa-solid fa-address-book"></i>
+                                                    <span>ทำการขอใช้</span>
                                                 </a>
                                             <?php else : ?>
-                                                <div class="button">
-                                                    <button class="out-of">
-                                                        <div class="icon"><i class="icon fa-solid fa-ban"></i></div>
-                                                        <span>ไม่สามารถขอใช้ได้</span>
-                                                    </button>
+                                                <div class="not_available">
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <span>"ไม่พร้อมใช้งาน"</span>
                                                 </div>
-                                            <?php endif; ?>
-                                            <?php if ($data['categories'] == 'อุปกรณ์' || $data['categories'] == 'เครื่องมือ') : ?>
-                                                <?php if ($data['amount'] >= 1) : ?>
-                                                    <a href="cart_reserve?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="reserved_it">
-                                                        <i class="fa-solid fa-address-book"></i>
-                                                        <span>จองอุปกรณ์</span>
-                                                    </a>
-                                                <?php else : ?>
-                                                    <div class="not_available">
-                                                        <i class="fa-solid fa-check"></i>
-                                                        <span>อุปกรณ์ "ไม่พร้อมใช้งาน"</span>
-                                                    </div>
-                                                <?php endif; ?>
                                             <?php endif; ?>
                                         </div>
                                     </div>
@@ -384,55 +352,12 @@ try {
         include('staff/home.php');
     }
     ?>
-    <?php
-    include_once('includes/footer.php');
-    ?>
 </body>
 
 <!-- JavaScript -->
-<script src="assets/js/ajax.js"></script>
-<script src="assets/js/details.js"></script>
-<script src="assets/js/datetime.js"></script>
-<script>
-    document.querySelectorAll('.header_userinfo_btn').forEach(dropdown => {
-        const select = dropdown.querySelector('.select');
-        const caret = dropdown.querySelector('.arrow');
-        const menu = dropdown.querySelector('.menu');
-        const options = dropdown.querySelectorAll('.menu li');
-        const selected = dropdown.querySelector('.selected'); // Assuming there's an element with class 'selected'
-
-        // Add a click event to the select element
-        select.addEventListener('click', () => {
-            // Add the clicked select styles to the select element
-            select.classList.toggle('select-clicked');
-            // Add the rotate styles to the caret element
-            caret.classList.toggle('arrow-rotate');
-            // Add the open styles to the menu element
-            menu.classList.toggle('menu-open');
-        });
-
-        // Loop through all option elements
-        options.forEach(option => {
-            // Add a click event to the option element
-            option.addEventListener('click', () => {
-                // Change selected inner text to clicked option inner text
-                selected.innerText = option.innerText;
-                // Add the clicked select styles to the select element
-                select.classList.remove('select-clicked');
-                // Add the rotate styles to the caret element
-                caret.classList.remove('caret-rotate');
-                // Add the open styles to the menu element
-                menu.classList.remove('menu-open');
-                // Remove active class from all option elements
-                options.forEach(option => {
-                    option.classList.remove('active');
-                });
-                // Add active class to clicked option element
-                option.classList.add('active');
-            });
-        });
-    });
-</script>
+<script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+<script src="<?php echo $base_url; ?>/assets/js/details.js"></script>
+<script src="<?php echo $base_url; ?>/assets/js/datetime.js"></script>
 </body>
 
 </html>

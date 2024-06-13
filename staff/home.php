@@ -1,11 +1,6 @@
 <?php
 require_once 'assets/database/dbConfig.php';
 
-$stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL OR situation = 0 ORDER BY serial_number");
-$stmt->execute();
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$num = count($data); // นับจำนวนรายการ
-
 $bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL OR situation = 0 ORDER BY serial_number");
 $bookings->execute();
 $data = $bookings->fetchAll(PDO::FETCH_ASSOC);
@@ -78,19 +73,6 @@ $numuser = count($datauser); // นับจำนวนรายการ
                 <ul class="staff_content_ul">
                     <li>
                         <div class="staff_menu">
-                            <a href="approve_for_use" class="<?php if ($num == 0) {
-                                                                    echo 'user_approval_btn';
-                                                                } elseif ($num > 0) {
-                                                                    echo 'user_approval_have';
-                                                                } ?>">
-                                <i class="icon fa-solid fa-square-check"></i>
-                                <span class="text">การอนุมัติการยืม</span>
-                                <span id="B"><?php echo "(" . $num . ")"; ?></span>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="staff_menu">
                             <a href="approve_for_booking" class="<?php if ($numbookings == 0) {
                                                                         echo 'user_approval_btn';
                                                                     } elseif ($numbookings > 0) {
@@ -99,14 +81,6 @@ $numuser = count($datauser); // นับจำนวนรายการ
                                 <i class="icon fa-solid fa-square-check"></i>
                                 <span class="text">การอนุมัติการจอง</span>
                                 <span id="B"><?php echo "(" . $numbookings . ")"; ?></span>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="staff_menu">
-                            <a href="view_report" class="user_approval_btn">
-                                <i class="fa-solid fa-clock-rotate-left"></i>
-                                <span class="text">ประวัติการขอใช้</span>
                             </a>
                         </div>
                     </li>
