@@ -17,7 +17,7 @@ function getIP()
 }
 
 if (isset($_POST['sign_in'])) {
-    sleep(2);
+    // sleep(2);
     $username = $_POST['username'];
     $password = $_POST['password'];
 

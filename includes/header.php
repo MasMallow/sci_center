@@ -31,12 +31,19 @@
                     </ul>
                 </div>
             <?php elseif (isset($_SESSION['staff_login'])) : ?>
-                <button class="header_userinfo_btn">
-                    <i class="fa-solid fa-user"></i>
-                    <span>
-                        <?= $userData['pre'] . $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
-                    </span>
-                </button>
+                <div class="header_userinfo_btn">
+                    <div class="select">
+                        <i class="fa-solid fa-user"></i>
+                        <span>
+                            <?= $userData['pre'] . $userData['firstname'] . '&nbsp;' . $userData['lastname'] ?>
+                        </span>
+                        <i class="arrow_rotate fa-solid fa-chevron-up"></i>
+                    </div>
+                    <ul class="menu">
+                        <li class="menu_li"><a href="<?php echo $base_url; ?>/pages/profile_user">รายละเอียดผู้ใช้งาน</a></li>
+                        <li class="menu_li"><a href="<?php echo $base_url; ?>/auth/sign_out.php">ออกจากระบบ</a></li>
+                    </ul>
+                </div>
             <?php else : ?>
                 <a href="<?php echo $base_url; ?>/auth/sign_in.php" class="not-login">
                     <i class="ilogion fa-solid fa-right-to-bracket"></i>
