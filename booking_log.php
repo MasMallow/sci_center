@@ -7,7 +7,7 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
-include_once 'includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 try {
     $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date >= CURDATE() AND situation = 1";

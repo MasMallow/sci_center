@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once '../assets/database/dbConfig.php';
 
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้
 if (!isset($_SESSION['user_login'])) {
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['reserve_2'] = $itemBorrowed;
             $_SESSION['reserve_3'] = $reservationdate;
 
-            header("Location: cart_systems");
+            header("Location: $base_url/cart_systems");
             exit();
         }
     }

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
-include 'includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 try {
     // ตรวจสอบการล็อกอินของผู้ใช้
@@ -60,7 +60,7 @@ try {
 
 <body>
     <header>
-        <?php include 'includes/header.php'; ?>
+        <?php include 'assets/includes/header.php'; ?>
     </header>
     <div class="maintenance">
         <div class="header_maintenance_section">

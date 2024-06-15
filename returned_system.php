@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php'; // เรียกใช้งานไฟล์ที่เกี่ยวข้องกับการเชื่อมต่อฐานข้อมูล
-include 'includes/thai_date_time.php'; // เรียกใช้งานไฟล์ที่เกี่ยวข้องกับการแสดงวันที่และเวลาเป็นภาษาไทย
+require_once 'assets/database/dbConfig.php';
+include_once 'assets/includes/thai_date_time.php';
 
 try {
     $user_id = $_SESSION['user_login'];
@@ -17,18 +17,14 @@ try {
 
     if ($userData['status'] !== 'approved') {
         unset($_SESSION['cart']);
-        header("Location: ../projects/");
+        header("Location: . $base_url; .");
         exit();
     }
 
     $returned = $_GET['returned'] ?? 'used'; // ตรวจสอบค่าที่ถูกส่งมาจาก query parameter 'returned'
 
-    // ตรวจสอบและเลือกคำสั่ง SQL ตามค่า 'returned' ที่รับมา
-    if ($returned === 'used') {
-        $stmt = $conn->prepare("SELECT * FROM approve_to_use WHERE user_ID = :user_id AND situation = 1 AND date_return IS NULL");
-    } else {
-        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_ID = :user_id AND situation = 1 AND date_return IS NULL");
-    }
+    // ตรวจสอบและเลือกคำสั่ง SQL ตามค่า 'returned' ที่รับมาelse {
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_ID = :user_id AND situation = 1 AND date_return IS NULL");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC); // เก็บข้อมูลที่ได้จากการ query ลงในตัวแปร $dataList
@@ -47,10 +43,10 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>คืนอุปกรณ์ และเครื่องมือ</title>
-    <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="assets/css/navigator.css">
-    <link rel="stylesheet" href="assets/css/return_for_used_bookings.css">
+    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/return_for_used_bookings.css">
     <script>
         // เพิ่มความยืดหยุ่นในการจัดการกับ JavaScript
         function confirmReturn(event) {
@@ -105,18 +101,13 @@ try {
 
 <body>
     <header>
-        <?php include 'includes/header.php'; ?>
+        <?php include 'assets/includes/header.php'; ?>
     </header>
     <div class="return_page">
         <div class="return_content_header_section">
-            <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="<?php echo $base_url; ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">คืนอุปกรณ์ และเครื่องมือ<?= ($returned === 'used') ? 'จากการขอใช้' : 'จากการจอง'; ?></span>
         </div>
-        <form class="returned_btn" method="get">
-            <!-- ปรับปรุงการเพิ่ม class active ตามค่า returned -->
-            <button type="submit" class="<?= ($returned === 'used') ? 'active' : ''; ?> returned_btn_01" name="returned" value="used">คืนอุปกรณ์ และเครื่องมือจากการขอใช้</button>
-            <button type="submit" class="<?= ($returned === 'reserve') ? 'active' : ''; ?> returned_btn_02" name="returned" value="reserve">คืนอุปกรณ์ และเครื่องมือจากการจอง</button>
-        </form>
         <?php if (empty($dataList)) : ?>
             <div class="return_content_not_found_section">
                 <i class="fa-solid fa-hourglass-end"></i>
@@ -131,10 +122,10 @@ try {
                     <thead>
                         <tr>
                             <th class="return_serial_number"><span id="B">หมายเลขรายการ</span></th>
-                            <th class="return_list"><span id="B"><?= ($returned === 'used') ? 'รายการที่ขอใช้งาน' : 'รายการที่ขอจอง'; ?></span></th>
-                            <th class="return_borrowdatetime"><span id="B"><?= ($returned === 'used') ? 'วันเวลาที่ขอใช้งาน' : 'วันเวลาที่ขอจอง'; ?></span></th>
-                            <th class="return_returndate"><span id="B"><?= ($returned === 'used') ? 'วันเวลาที่สิ้นสุดขอใช้งาน' : 'วันเวลาที่เกินกำหนด'; ?></span></th>
-                            <th class="return_return_list"><span id="B"><?= ($returned === 'used') ? 'คืนรายการที่ขอใช้งาน' : 'คืนรายการที่ขอจอง'; ?></span></th>
+                            <th class="return_list"><span id="B">รายการที่ขอใช้งาน</span></th>
+                            <th class="return_borrowdatetime"><span id="B">วันเวลาที่ขอใช้งาน</span></th>
+                            <th class="return_returndate"><span id="B">วันเวลาที่สิ้นสุดขอใช้งาน</span></th>
+                            <th class="return_return_list"><span id="B">คืนรายการที่ขอใช้งาน</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -158,31 +149,18 @@ try {
                                 <td><?php echo thai_date_time($data['borrowdatetime'] ?? $data['reservation_date']); ?></td>
                                 <td><?php echo thai_date_time($data['returndate'] ?? $data['end_date']); ?></td>
                                 <td>
-                                    <?php if ($returned === 'used') : ?>
-                                        <form method="POST" action="check_request_notification">
-                                            <input type="hidden" name="return_id" value="<?= htmlspecialchars($data['user_id']); ?>">
-                                            <input type="hidden" name="user_id" value="<?= htmlspecialchars($data['user_id']); ?>">
-                                            <div class="confirm_btn">
-                                                <span class="btn_text">คืนรายการที่ขอใช้งาน</span>
-                                            </div>
-                                            <div class="list_item">
-                                                <button class="submit_returned" type="submit">ยืนยัน</button>
-                                                <span class="close_confirm_btn">ยกเลิก</span>
-                                            </div>
-                                        </form>
-                                    <?php else : ?>
-                                        <form method="POST" action="check_request_bookings_notification">
-                                            <input type="hidden" name="return_id" value="<?= htmlspecialchars($data['id']); ?>">
-                                            <input type="hidden" name="user_id" value="<?= htmlspecialchars($data['user_id']); ?>">
-                                            <div class="confirm_btn">
-                                                <span class="btn_text">คืนรายการที่ขอใช้งาน</span>
-                                            </div>
-                                            <div class="list_item">
-                                                <button class="submit_returned" type="submit">ยืนยัน</button>
-                                                <span class="close_confirm_btn">ยกเลิก</span>
-                                            </div>
-                                        </form>
-                                    <?php endif; ?>
+
+                                    <form method="POST" action="check_request_bookings_notification">
+                                        <input type="hidden" name="return_id" value="<?= htmlspecialchars($data['id']); ?>">
+                                        <input type="hidden" name="user_id" value="<?= htmlspecialchars($data['user_id']); ?>">
+                                        <div class="confirm_btn">
+                                            <span class="btn_text">คืนรายการที่ขอใช้งาน</span>
+                                        </div>
+                                        <div class="list_item">
+                                            <button class="submit_returned" type="submit">ยืนยัน</button>
+                                            <span class="close_confirm_btn">ยกเลิก</span>
+                                        </div>
+                                    </form>
                                 </td>
                             </tr>
                             <tr class="expand_row">

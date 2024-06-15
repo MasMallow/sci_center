@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
-include_once 'includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
@@ -68,7 +68,7 @@ if (isset($_GET['action'])) {
 
 <body>
     <header>
-        <?php include('includes/header.php'); ?>
+        <?php include('assets/includes/header.php'); ?>
     </header>
     <div class="sci_center_cart">
         <div class="sci_center_cart_header">
@@ -152,7 +152,7 @@ if (isset($_GET['action'])) {
                     ?>
                 <?php endif; ?>
             <?php else : ?>
-                <form method="post" action="waiting_approve_reserve">
+                <form method="post" action="<?php echo $base_url;?>/systems/waiting_approve_reserve">
                     <div class="main_cart_content">
                         <div class="table_section">
                             <div class="count_list">

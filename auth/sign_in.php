@@ -11,9 +11,9 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>เข้าสู่ระบบ</title>
-        <link href="../assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-        <link rel="stylesheet" href="../assets/font-awesome/css/all.css">
-        <link rel="stylesheet" href="../assets/css/login.css">
+        <link href="<?php echo $base_url;?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+        <link rel="stylesheet" href="<?php echo $base_url;?>/assets/font-awesome/css/all.css">
+        <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/login.css">
     </head>
 
     <body>
@@ -61,12 +61,12 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                 <?php unset($_SESSION['errorLogin']); ?>
             <?php } ?>
             <div class="box_content">
-                <form action="../authProcess/sign_inDB.php" id="sign-in-form" method="POST">
+                <form action="<?php echo $base_url;?>/auth/backend/sign_inDB.php" id="sign-in-form" method="POST">
                     <div class="box_content_header">
                         <span id="B">เข้าสู่ระบบ</span>
                     </div>
                     <div class="box_content_logo">
-                        <img src="../assets/logo/scicenter_logo.png">
+                        <img src="<?php echo $base_url;?>/assets/logo/scicenter_logo.png">
                     </div>
                     <div class="box_content_content">
                         <input type="text" class="input" placeholder="ชื่อผู้ใช้" name="username" autofocus>
@@ -106,12 +106,12 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
             </div>
         </main>
     </body>
-    <script src="../assets/js/show_password.js"></script>
-    <script src="../assets/js/noti_toast.js"></script>
+    <script src="<?php echo $base_url;?>/assets/js/show_password.js"></script>
+    <script src="<?php echo $base_url;?>/assets/js/noti_toast.js"></script>
 
     </html>
 <?php
 } else {
-    header('location:../home');
+    header('location: $base_url');
 }
 ?>

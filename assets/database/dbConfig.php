@@ -1,6 +1,6 @@
 <?php
 // var URL
-$base_url = 'http://localhost/sci_center';
+$base_url = 'http://localhost:8000';
 
 // var database
 $servername = "localhost";

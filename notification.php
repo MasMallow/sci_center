@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
-include_once 'includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่
 if (!isset($_SESSION['user_login'])) {
@@ -40,21 +40,21 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แจ้งเตือน</title>
-    <link href="<?php echo $base_url;?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/index.css">
-    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/navigator.css">
-    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/nofitication.css">
+    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/nofitication.css">
 </head>
 
 <body>
     <header>
-        <?php include 'includes/header.php'; ?>
+        <?php include_once 'assets/includes/header.php'; ?>
     </header>
     <div class="notification_page">
         <div class="maintenance">
             <div class="header_maintenance_section">
-                <a href="<?php echo $base_url;?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
+                <a href="<?php echo $base_url; ?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
                 <span id="B">แจ้งเตือนการขอใช้</span>
             </div>
         </div>
@@ -64,9 +64,9 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <thead>
                         <tr>
                             <th class="serial_number"><span id="B">หมายเลขรายการ</span></th>
-                            <th><span id="B"><?= ($notification === 'used') ? 'รายการที่ขอใช้งาน' : 'รายการที่ขอจอง'; ?></span></th>
-                            <th><span id="B"><?= ($notification === 'used') ? 'วันเวลาที่ขอใช้งาน' : 'วันเวลาที่ทำรายการ'; ?></span></th>
-                            <th><span id="B"><?= ($notification === 'used') ? 'วันเวลาที่สิ้นสุดขอใช้งาน' : 'วันเวลาที่ขอจอง'; ?></span></th>
+                            <th><span id="B">รายการที่ขอใช้งาน</span></th>
+                            <th><span id="B">วันเวลาที่ขอใช้งาน</span></th>
+                            <th><span id="B">วันเวลาที่สิ้นสุดขอใช้งาน</span></th>
                             <th><span id="B">สถานะ</span></th>
                         </tr>
                     </thead>
@@ -97,7 +97,6 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     } elseif ($notification === 'reserve') {
                                         $checkBookingsDate = strtotime($row['reservation_date']);
                                         $currentDate = time();
-
                                         if (date('Y-m-d', $checkBookingsDate) == date('Y-m-d', $currentDate) && $situation == 1) {
                                             echo '<button type="button" onclick="location.href=\'process_booking.php?action=add&item=' . $row['id'] . '\'" class="use-it"><i class="icon fa-solid fa-arrow-up"></i><span>ขอใช้</span></button>';
                                         } elseif ($situation == 1) {
@@ -114,12 +113,16 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </table>
             <?php else : ?>
                 <div class="user_approve_not_found">
-                    <i class="icon fa-solid <?= ($notification === 'noti_use') ? 'fa-arrow-up' : 'fa-address-book'; ?>"></i>
-                    <span id="B"><?= ($notification === 'noti_use') ? 'ไม่มีแจ้งเตือนการขอใช้' : 'ไม่มีแจ้งเตือนการจอง'; ?></span>
+                    <i class="icon fa-solid fa-address-book"></i>
+                    <span id="B">ไม่มีแจ้งเตือนการขอใช้งาน</span>
                 </div>
             <?php endif; ?>
         </div>
     </div>
+    <!-- JavaScript -->
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/details.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/datetime.js"></script>
 </body>
 
 </html>

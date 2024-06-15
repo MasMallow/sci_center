@@ -1,9 +1,6 @@
 <?php
 session_start();
-// ส่วนการเชื่อมต่อฐานข้อมูล
-require_once 'assets/database/dbConfig.php'; // ไฟล์ที่ใช้สำหรับเชื่อมต่อฐานข้อมูล
-?>
-<?php
+require_once 'assets/database/dbConfig.php';
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
     $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
@@ -25,10 +22,6 @@ if (isset($_SESSION['staff_login'])) {
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-?>
-
-<?php
-
 // ประกาศตัวแปรเริ่มต้น
 $searchValue = '';
 $results = [];
@@ -96,7 +89,7 @@ try {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCICENTER Management</title>
-    <link href="assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
@@ -104,102 +97,73 @@ try {
 </head>
 
 <body>
-    <header><?php include_once('includes/header.php'); ?></header>
+    <header><?php include_once('assets/includes/header.php'); ?></header>
     <?php if (isset($userData['urole']) && $userData['urole'] == 'user' || empty($userData['urole'])) : ?>
         <main class="content">
-            <div class="content_sidebar">
-                <div class="content_sidebar_header">
-                    <div class="content_sidebar_header_details">
-                        <span></span>
-                    </div>
-                </div>
-                <div class="menu">
-                    <ul class="sb-ul">
-                        <li>
-                            <a class="link <?php echo !isset($_GET['page']) && empty($_GET['page']) ? 'active ' : '' ?>" href="<?php echo $base_url; ?>">
-                                <i class="icon fa-solid fa-house"></i>
-                                <span class="text">หน้าหลัก</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="link">
-                                <i class="icon fa-solid fa-bars"></i>
-                                <span class="text">ประเภท</span>
-                                <i class="ardata fa-solid fa-chevron-down"></i>
-                            </a>
-                            <ul class="sb-sub-ul">
-                                <li>
-                                    <a class="link <?php echo isset($_GET['page']) && ($_GET['page'] == 'material') ? 'active ' : '' ?>" href="?page=material">
-                                        <span class="text">ประเภทวัสดุ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="link <?php echo isset($_GET['page']) && ($_GET['page'] == 'equipment') ? 'active ' : '' ?>" href="?page=equipment">
-                                        <span class="text">ประเภทอุปกรณ์</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="link <?php echo isset($_GET['page']) && ($_GET['page'] == 'tools') ? 'active ' : '' ?>" href="?page=tools">
-                                        <span class="text">ประเภทเครื่องมือ</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="link">
-                                <i class="fa-solid fa-check-to-slot"></i>
-                                <span class="text">รายการตรวจสอบ</span>
-                                <i class="ardata fa-solid fa-chevron-down"></i>
-                            </a>
-                            <ul class="sb-sub-ul">
-                                <li>
-                                    <a href="returned_system">
-                                        <i class="fa-solid fa-hourglass-end"></i>
-                                        <span class="text">สิ้นสุดการใช้งาน</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="booking_log">
-                                        <i class="fa-solid fa-calendar-check"></i>
-                                        <span class="text">ติดตามการจอง</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="bookings_list">
-                                        <i class="fa-solid fa-calendar-xmark"></i>
-                                        <span class="text">ยกเลิกการจอง</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="link" href="notification">
-                                <i class="fa-solid fa-envelope"></i>
-                                <span class="text">แจ้งเตือน</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="content_area">
-                <div class="content_area_nav">
-                    <div class="section_1">
-                        <a class="section_1_btn_2" href="cart_systems">
+            <div class="menu_navigator">
+                <ul class="sb_ul">
+                    <li>
+                        <a class="link <?php echo !isset($_GET['page']) && empty($_GET['page']) ? 'active ' : '' ?>" href="<?php echo $base_url; ?>">
+                            <i class="icon fa-solid fa-house"></i>
+                            <span class="text">หน้าหลัก</span>
+                        </a>
+                    </li>
+                    <li class="group_li">
+                        <a class="group_li_01 <?php echo isset($_GET['page']) && ($_GET['page'] == 'material') ? 'active ' : '' ?>" href="?page=material">
+                            <span class="text">ประเภทวัสดุ</span>
+                        </a>
+                        <a class="group_li_02 <?php echo isset($_GET['page']) && ($_GET['page'] == 'equipment') ? 'active ' : '' ?>" href="?page=equipment">
+                            <span class="text">ประเภทอุปกรณ์</span>
+                        </a>
+                        <a class="group_li_03 <?php echo isset($_GET['page']) && ($_GET['page'] == 'tools') ? 'active ' : '' ?>" href="?page=tools">
+                            <span class="text">ประเภทเครื่องมือ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link" href="<?php echo $base_url; ?>/returned_system">
+                            <i class="fa-solid fa-hourglass-end"></i>
+                            <span class="text">สิ้นสุดการใช้งาน</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link" href="<?php echo $base_url; ?>/booking_log">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span class="text">ติดตามการจอง</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link" href="<?php echo $base_url; ?>/bookings_list">
+                            <i class="fa-solid fa-calendar-xmark"></i>
+                            <span class="text">ยกเลิกการจอง</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link" href="<?php echo $base_url; ?>/notification">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span class="text">แจ้งเตือน</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link" href="<?php echo $base_url; ?>/cart_systems">
                             <i class="fa-solid fa-cart-shopping"></i>
                             <span>รายการที่จอง</span>
                         </a>
-                    </div>
-                    <div class="section_2">
-                        <div class="date" id="date"></div>
-                        <div class="time" id="time"></div>
-                    </div>
-                </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content_area">
                 <div class="content_area_header">
                     <form method="get">
                         <input type="hidden" name="page" value="<?= htmlspecialchars($page); ?>">
                         <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
                         <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
+                    <div class="content_area_nav">
+                        <div class="section_2">
+                            <div class="date" id="date"></div>
+                            <div class="time" id="time"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="content_area_all">
                     <?php if (empty($results)) : ?>
