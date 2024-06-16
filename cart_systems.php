@@ -152,7 +152,7 @@ if (isset($_GET['action'])) {
                     ?>
                 <?php endif; ?>
             <?php else : ?>
-                <form method="post" action="<?php echo $base_url;?>/systems/waiting_approve_reserve">
+                <form method="post" action="<?php echo $base_url;?>/SystemsUser/waiting_approve_reserve.php">
                     <div class="main_cart_content">
                         <div class="table_section">
                             <div class="count_list">

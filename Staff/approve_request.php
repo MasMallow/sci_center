@@ -1,6 +1,7 @@
 <?php
 session_start();
-include_once 'assets/database/dbConfig.php';
+require_once 'assets/database/dbConfig.php';
+include_once 'assets/includes/thai_date_time.php';
 
 // ตรวจสอบว่าพนักงานเข้าสู่ระบบหรือไม่
 if (!isset($_SESSION['staff_login'])) {
@@ -22,35 +23,6 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
-// ฟังก์ชันแปลงวันที่และเวลาเป็นรูปแบบภาษาไทย
-function thai_date_time($datetime)
-{
-    $thai_month_arr = array(
-        "0" => "",
-        "1" => "ม.ค.",
-        "2" => "ก.พ.",
-        "3" => "มี.ค.",
-        "4" => "เม.ย.",
-        "5" => "พ.ค.",
-        "6" => "มิ.ย.",
-        "7" => "ก.ค.",
-        "8" => "ส.ค.",
-        "9" => "ก.ย.",
-        "10" => "ต.ค.",
-        "11" => "พ.ย.",
-        "12" => "ธ.ค."
-    );
-
-    $day = date("w", strtotime($datetime)); // วันในสัปดาห์ (0-6)
-    $date = date("j", strtotime($datetime)); // วันที่
-    $month = date("n", strtotime($datetime)); // เดือน (1-12)
-    $year = date("Y", strtotime($datetime)) + 543; // ปี พ.ศ.
-    $time = date("H:i น.", strtotime($datetime)); // เวลา
-
-    return "วัน" . "ที่ " . $date . " " . $thai_month_arr[$month] . " พ.ศ." . $year . " <br> เวลา " . $time;
-}
-
 // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ
 $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
 $stmt->execute();
@@ -73,10 +45,10 @@ $previousFirstname = '';
 </head>
 
 <body>
-    <?php include('includes/header.php') ?>
+    <?php include('assets/includes/header.php') ?>
     <div class="header_approve">
         <div class="header_approve_section">
-            <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="<?php echo $base_url;?>"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">อนุมัติการขอจอง</span>
         </div>
     </div>

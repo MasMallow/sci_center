@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
-include_once 'includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 $searchTitle = "";
 $searchValue = "";
@@ -76,7 +76,7 @@ try {
 
 <body>
     <header>
-        <?php include 'includes/header.php'; ?>
+        <?php include 'assets/includes/header.php'; ?>
     </header>
     <div class="maintenance">
         <div class="header_maintenance_section">
@@ -128,7 +128,7 @@ try {
                         <tbody>
                             <?php foreach ($maintenance as $row) : ?>
                                 <tr>
-                                    <td class="serial_number"><?= htmlspecialchars($row['s_number'], ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td class="serial_number"><?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td>
@@ -146,7 +146,7 @@ try {
                                         ?>
                                     </td>
                                     <td class="checkbox"><label>
-                                            <input type="checkbox" name="selected_ids[]" value="<?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <input type="checkbox" name="selected_ids[]" value="<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
                                             <span class="custom-checkbox"></span>
                                         </label>
                                     </td>
@@ -183,7 +183,7 @@ try {
                         <tbody>
                             <?php foreach ($maintenance_success as $row) : ?>
                                 <tr>
-                                    <td class="serial_number"><?= htmlspecialchars($row['s_number'], ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td class="serial_number"><?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars($row['amount'], ENT_QUOTES, 'UTF-8') ?></td>

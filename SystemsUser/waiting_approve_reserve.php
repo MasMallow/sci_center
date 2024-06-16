@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['reserve_2'] = $itemBorrowed;
             $_SESSION['reserve_3'] = $reservationdate;
 
-            header("Location: $base_url/cart_systems");
+            header("Location: $base_url/cart_systems.php");
             exit();
         }
     }

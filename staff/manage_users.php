@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
-include 'includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 // กำหนดค่าเริ่มต้น
 $manage = isset($_GET['manage']) ? $_GET['manage'] : 'approval_user';
@@ -27,7 +27,7 @@ if (isset($_SESSION['staff_login'])) {
 
 // ฟังก์ชันในการดึงข้อมูลผู้ใช้ตามเงื่อนไข
 try {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE status = 'wait_approved' ");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = 'wait_approved' ");
     $stmt->execute();
     $num = $stmt->rowCount();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -41,10 +41,10 @@ function fetchUsers($conn, $status, $role, $search = null)
 {
     if ($search) {
         $search = "%" . $search . "%";
-        $stmt = $conn->prepare("SELECT * FROM users WHERE (user_id LIKE :search OR pre LIKE :search OR firstname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE (user_id LIKE :search OR pre LIKE :search OR firstname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
         $stmt->bindParam(':search', $search, PDO::PARAM_STR);
     } else {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE status = :status AND urole = :role");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = :status AND urole = :role");
     }
 
     $stmt->bindParam(':status', $status, PDO::PARAM_STR);
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <header>
-        <?php include 'includes/header.php'; ?>
+        <?php include 'assets/includes/header.php'; ?>
     </header>
     <div class="user_manage_header_section">
         <div class="header_u_manage_section">

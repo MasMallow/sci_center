@@ -1,9 +1,7 @@
 <?php
-// เริ่มต้นเซสชั่น
 session_start();
-// เชื่อมต่อกับฐานข้อมูล
 require_once 'assets/database/dbConfig.php';
-include_once 'includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
@@ -12,9 +10,9 @@ if (!isset($_SESSION['staff_login'])) {
 }
 
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้
-if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
+if (isset($_SESSION['staff_login'])) {
     // ถ้าผู้ใช้เข้าสู่ระบบด้วย user_login หรือ staff_login
-    $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
+    $user_id = $_SESSION['staff_login'];
     // เตรียมคำสั่ง SQL เพื่อดึงข้อมูลผู้ใช้
     $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
     // ผูกค่า user_id เข้ากับคำสั่ง SQL
@@ -23,14 +21,8 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $stmt->execute();
     // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (isset($_SESSION['user_login'])) {
-        if ($userData['status'] !== 'approved') {
-            header("Location: home");
-            exit();
-        }
-    }
 }
+
 // สร้างคำสั่ง SQL ตามตัวกรอง user_id และช่วงเวลา
 $sql = "SELECT * FROM approve_to_reserve WHERE situation = 1  OR situation = 3";
 
@@ -40,7 +32,7 @@ $params = [];
 // ตรวจสอบและกำหนดค่า user_id
 if (isset($_GET['user_id']) && $_GET['user_id'] !== '') {
     $user_id = $_GET['user_id'];
-    $sql .= " AND user_id LIKE :user_id";
+    $sql .= " AND user_ID LIKE :user_id";
     $params[':user_id'] = "%" . $user_id . "%";
 }
 
@@ -81,11 +73,11 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <header>
-        <?php include 'includes/header.php'; ?>
+        <?php include 'assets/includes/header.php'; ?>
     </header>
     <div class="header_view_report">
         <div class="header_view_report_section">
-            <a href="../project/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="<?php echo $base_url; ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">รายงานการยืมอุปกรณ์</span>
         </div>
     </div>
@@ -119,16 +111,13 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </span>
                     <!-- ปุ่มสำหรับสร้างรายงาน PDF -->
                     <form id="pdfForm" action="generate_pdf_bookings" method="GET">
-                        <?php
-                        if (isset($_GET["user_id"]) && $_GET["user_id"] != "NULL") : ?>
+                        <?php if (isset($_GET["user_id"]) && $_GET["user_id"] != "") : ?>
                             <input type="hidden" name="user_id" value="<?= htmlspecialchars($_GET["user_id"]) ?>">
-                        <?php
-                        endif;
-                        if (isset($_GET["start_date"]) && $_GET["start_date"] != "empty" && isset($_GET["end_date"]) && $_GET["end_date"] != "empty") : ?>
+                        <?php endif; ?>
+                        <?php if (isset($_GET["start_date"]) && $_GET["start_date"] != "" && isset($_GET["end_date"]) && $_GET["end_date"] != "") : ?>
                             <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($_GET["start_date"]) ?>">
                             <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($_GET["end_date"]) ?>">
-                        <?php
-                        endif; ?>
+                        <?php endif; ?>
                         <button type="submit" class="create_pdf">สร้างรายงาน</button>
                     </form>
                 </div>
@@ -152,7 +141,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     if (count($data) > 0) {
                         foreach ($data as $row) { ?>
                             <tr>
-                                <td class="UID"><?php echo htmlspecialchars($row["user_id"]); ?></td>
+                                <td class="UID"><?php echo htmlspecialchars($row["user_ID"]); ?></td>
                                 <td><?php echo htmlspecialchars($row["name_user"]); ?></td>
                                 <td>
                                     <?php
@@ -177,7 +166,6 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </tbody>
             </table>
         </div>
-
 </body>
 
 </html>

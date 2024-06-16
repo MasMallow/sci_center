@@ -15,8 +15,6 @@ if (!isset($_SESSION['staff_login'])) {
     header('Location: ' . $base_url . ' auth/sign_in.php');
     exit;
 }
-?>
-<?php
 $searchTitle = "";
 $searchValue = "";
 $result = [];
@@ -76,7 +74,7 @@ try {
 
 <body>
     <!-- Header -->
-    <header><?php include('includes/header.php'); ?></header>
+    <header><?php include('assets/includes/header.php'); ?></header>
     <div class="header_management">
         <div class="header_management_section">
             <div class="header_name_section">

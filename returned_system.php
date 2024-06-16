@@ -11,7 +11,7 @@ try {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$userData) {
-        header("Location: auth/sign_in");
+        header("Location: auth/sign_in.php");
         exit();
     }
 

@@ -18,81 +18,332 @@
   font-family: Sarabun-bold;
 }
 .staff {
-  position: relative;
-  min-height: 100vh;
-  width: 1300px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1300px;
   margin: 3rem auto;
+  gap: 1rem;
+}
+.staff_page {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+}
+.staff_section_approve {
+  width: 100%;
+  height: 45vh;
+  border: 1px solid #bbb;
+  border-radius: 5px;
 }
 .staff_section {
+  width: 100%;
+  height: 30vh;
   border: 1px solid #bbb;
   border-radius: 5px;
 }
-
-.staff_header {
+.staff_notification {
+  width: 55%;
+  height: 30vh;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+.staff_header,
+.staff_notification_header {
+  width: 100%;
+  height: 20%;
+  font-size: 1.2rem;
+  padding: 0.7rem 1.2rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
-  font-size: 1.25rem;
-  padding: 0.7rem 1.2rem;
   border-bottom: 1px solid #bbb;
+
+  & .section_1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  & .section_2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+.staff_approved_header {
+  width: 100%;
+  height: 13.5%;
+  font-size: 1.2rem;
+  padding: 0.7rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #bbb;
+
+  & .section_1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  & .section_2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+.staff_approved_content{
+  width: 100%;
+  height: 86.5%;
 }
 .staff_content {
-  padding: 1rem 1.2rem;
+  width: 100%;
+  height: 80%;
 }
-.staff_content_ul {
+.staff_notification_body {
+  width: 100%;
+  height: 80%;
+}
+.staff_content_div {
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem 1rem;
   display: flex;
-  list-style: none;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   gap: 1rem;
-  padding: 1rem;
+}
+.staff_content_table {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 1rem;
+  overflow: hidden;
+  overflow: scroll;
 }
 
-.staff_content_ul li {
+.staff_item {
+  width: 100%;
+  height: 100%;
+  flex: 1 1 30%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  width: 20%;
+  row-gap: 1rem;
+}
+
+.staff_item .staff_item_btn {
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #000000;
+  border-radius: 7.5px;
+  border: 1px solid #dbdbdb;
+  background-color: #f4f4f4;
+  transition: background-color 0.3s;
 
   & i {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
-}
-.user_approval_btn  {
-  width: 175px;
-  height: 150px;
-  padding: 0.75rem;
-  border-radius: 5px;
-  border: 1px solid #bbb;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  text-decoration: none;
-  color: #444444;
-  transition: all 0.25s;
+
   &:hover {
-    border: 1.5px solid #777777;
     background-color: #e0e0e0;
   }
 }
-.user_approval_have {
-  width: 175px;
-  height: 150px;
-  padding: 0.75rem;
-  border-radius: 5px;
-  border: 1px solid #e90f0f;
+.staff_item .staff_item_request {
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
   text-decoration: none;
-  color: #e90f0f;
-  transition: all 0.25s;
+  gap: 1rem;
+  border-radius: 7.5px;
+  color: #ffffff; /* ปรับเป็นสีขาวเพื่อให้ตัดกับพื้นหลังสีแดง */
+  background-color: #dc3545; /* ใช้สี danger ของ Bootstrap 5 */
+  transition: background-color 0.3s;
+
+  & i {
+    font-size: 1.2rem;
+  }
+
   &:hover {
-    border: 1.5px solid #777777;
-    background-color: #e0e0e0;
+    background-color: #c82333; /* ใช้สีแดงเข้มเมื่อ hover */
+  }
+}
+
+.staff_notification_body {
+  overflow: scroll;
+  padding: 0.5rem 1rem;
+}
+.staff_notification_stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.staff_notification_body .staff_notification_data {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-left: 4px solid #c82333;
+  border-radius: 5px;
+  padding: 0.6rem 0.75rem;
+}
+.non_notification_stack {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.non_notification_stack_1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.non_notification_stack_1 i {
+  font-size: 4rem;
+  color: #bdbdbd;
+  margin: 1rem 0;
+}
+
+.approve_not_found_section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.approve_not_found_section i {
+  font-size: 4rem;
+  color: #bdbdbd;
+}
+
+.approve_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.approve_row {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 7.5px;
+  padding: 0.75rem 1rem;
+}
+.defualt_row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.serial_number,
+.approve_actions {
+  width: 15%;
+}
+
+.reservation_date {
+  width: 25%;
+}
+.items {
+  width: 40%;
+}
+
+.serial_number .open_expand_row {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.expand_row {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+  gap: 1rem;
+}
+
+.expand_row > div {
+  margin-bottom: 5px;
+}
+
+.approve_form {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm_approve,
+.cancel_approve {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.approve_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+
+  & .confirm_approve {
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #c1f2b0;
+    border: 1px solid green;
+    color: green;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #aeff94;
+    }
+  }
+
+  & .cancel_approve {
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: red;
+    color: #ffffff;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #a30000;
+      color: #ffffff;
+    }
+  }
+  & i {
+    font-size: 1rem;
+  }
+}
+.submit {
+  border: 1px solid #dbdbdb;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.3s;
+  &:hover {
+    background-color: #f1efef;
+    border: 1.5px solid #bbbbbb;
   }
 }
