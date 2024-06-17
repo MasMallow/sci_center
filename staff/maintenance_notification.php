@@ -1,13 +1,7 @@
     <?php
     session_start();
-    include_once 'assets/database/dbConfig.php';
+    require_once '../assets/database/dbConfig.php';
     date_default_timezone_set('Asia/Bangkok');
-
-    if (!isset($_SESSION['staff_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('Location: auth/sign_in.php');
-        exit;
-    }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         $selectedIds = $_POST['selected_ids'];
@@ -46,7 +40,7 @@
             }
         }
         $sMessage .= "วันที่บำรุงรักษา : " . date('d/m/Y') . "\n";
-        $sMessage .= "บำรุงรักษาสำเร็จ : " . date('d/m/Y',strtotime($end_date)) . "\n";
+        $sMessage .= "บำรุงรักษาสำเร็จ : " . date('d/m/Y', strtotime($end_date)) . "\n";
         $sMessage .=  "หมายเหตุ: " . $note . "\n";
         $sMessage .= "-------------------------------";
 
@@ -81,6 +75,6 @@
                 </script>";
         }
         curl_close($chOne);
-        header('Location: /project/maintenance.php');
+        header('Location: /maintenance');
         exit;
     }

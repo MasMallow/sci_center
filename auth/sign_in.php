@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../assets/database/dbConfig.php';
+require_once 'assets/database/dbConfig.php';
 if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isset($_SESSION['staff_login'])) {
 ?>
     <!DOCTYPE html>

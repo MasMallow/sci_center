@@ -23,132 +23,98 @@ if (isset($_SESSION['staff_login'])) {
 </head>
 
 <body>
-    <?php include('includes/header.php') ?>
-    <!-- Modal Popup -->
+    <?php include('assets/includes/header.php') ?>
     <main class="add_MET">
         <div class="add_MET_section">
             <div class="add_MET_section_header">
                 <a href="<?php echo $base_url; ?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
-                <span id="B">เพิ่มรายการศูนย์วิทยาศาสตร์</span>
+                <label id="B">เพิ่มรายการศูนย์วิทยาศาสตร์</label>
             </div>
-            <form action="<?php echo $base_url; ?>/upload" method="POST" enctype="multipart/form-data">
-                <div class="pagination">
-                    <div class="number active">1</div>
-                    <div class="bar"></div>
-                    <div class="number">2</div>
-                    <div class="bar"></div>
-                    <div class="number">3</div>
-                    <div class="bar"></div>
-                    <div class="number">4</div>
-                </div>
-                <div class="add_MET_section_form active">
+            <form action="<?php echo $base_url; ?>/Staff/upload.php" method="POST" enctype="multipart/form-data">
+                <div class="add_MET_section_form">
                     <div class="img">
                         <div class="imgInput">
+                            <i class="upload fa-solid fa-upload"></i>
                             <label for="imgInput">
-                                <i class="upload fa-solid fa-upload"></i>
-                                <span class="img">เลือกรูปภาพที่จะอัพโหลด</span>
+                                <label class="img" id="B">เลือกรูปภาพที่จะอัพโหลด</label>
                                 <img loading="lazy" class="previewImg" id="previewImg" alt="">
                             </label>
                             <input type="file" required class="input-img" id="imgInput" name="img" accept="image/jpeg, image/png" hidden>
                         </div>
                     </div>
-                    <span class="upload-tip"><b>Note: </b>Only JPG, JPEG, PNG & GIF files allowed to upload.</span>
+                    <label class="upload-tip"><b>Note : </b> Only JPG, JPEG & PNG files allowed to upload.</label>
                     <div class="btn_img">
                         <label class="choose-file" for="imgInput">เลือกรูปภาพที่จะอัพโหลด</label>
-                        <span class="file_chosen_img" id="file-chosen-img">ยังไม่ได้เลือกไฟล์</span>
+                        <label class="file_chosen_img" id="file-chosen-img">ยังไม่ได้เลือกไฟล์</label>
                     </div>
-
-                    <div class="add_MET_footer_1">
-                        <a href="#2" class="btn_next"><span>ถัดไป</span><i class="fa-solid fa-angle-right"></i></a>
-                    </div>
-                </div>
-                <div class="add_MET_section_form">
-                    <div class="input_box">
-                        <span>ชื่อ</span>
+                    <div class="input_Data">
+                        <label>ชื่อ</label>
                         <input type="text" name="sci_name" required placeholder="ระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">
                     </div>
+                    <div class="input_Data">
+                        <label>Serial Number</label>
+                        <input type="text" name="serial_number" required placeholder="ระบุ Serial Number">
+                    </div>
                     <div class="col">
-                        <div class="input_box">
-                            <span>Serial Number</span>
-                            <input type="text" name="s_number" required placeholder="ระบุ Serial Number">
+                        <div class="input_Data">
+                            <label>ประเภท</label>
+                            <select name="categories" required>
+                                <option value="" selected disabled>ระบุประเภท</option>
+                                <option value="วัสดุ">วัสดุ</option>
+                                <option value="อุปกรณ์">อุปกรณ์</option>
+                                <option value="เครื่องมือ">เครื่องมือ</option>
+                            </select>
                         </div>
-                        <div class="input_box">
-                            <span>จำนวน</span>
+                        <div class="input_Data">
+                            <label>จำนวน</label>
                             <input type="number" name="amount" min="1" required placeholder="กรุณาระบุจำนวน">
-                            <input type="hidden" name="categories" value="<?php
-                                                                            $category = '';
-                                                                            if (isset($_GET['add'])) {
-                                                                                $type = $_GET['add'];
-                                                                                if ($type == 'material') {
-                                                                                    $category = 'วัสดุ';
-                                                                                } elseif ($type == 'equipment') {
-                                                                                    $category = 'อุปกรณ์';
-                                                                                } elseif ($type == 'tools') {
-                                                                                    $category = 'เครื่องมือ';
-                                                                                }
-                                                                            }
-                                                                            echo $category;
-                                                                            ?>">
-                        </div>
-                    </div>
-                    <div class="add_MET_footer_1">
-                        <a href="#2" class="btn_next"><span>ถัดไป</span><i class="fa-solid fa-angle-right"></i></a>
-                    </div>
-                </div>
-                <div class="add_MET_section_form">
-                    <div class="col">
-                        <div class="input_box">
-                            <span>วันที่ติดตั้ง</span>
-                            <input type="datetime-local" name="installation_date" required>
-                        </div>
-                        <div class="input_box">
-                            <span>บริษัท</span>
-                            <input type="text" name="company" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
                         </div>
                     </div>
                     <div class="col">
-                        <div class="input_box">
-                            <span>เบอร์โทร บริษัท</span>
-                            <input type="text" name="contact_number" required placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                        <div class="input_Data">
+                            <label>วันที่ติดตั้ง</label>
+                            <input type="datetime-local" name="installation_date">
                         </div>
-                        <div class="input_box">
-                            <span>คนติดต่อ</span>
-                            <input type="text" name="contact" placeholder="ระบุ Serial Number ของวัสดุ อุปกรณ์ และเครื่องมือ">
+                        <div class="input_Data">
+                            <label>บริษัท</label>
+                            <input type="text" name="company" placeholder="ระบุบริษัทของวัสดุ อุปกรณ์ และเครื่องมือ">
                         </div>
                     </div>
                     <div class="col">
-                        <div class="input_box">
-                            <span>ยี่ห้อ</span>
-                            <input type="text" name="brand" required placeholder="กรุณาระบุจำนวน">
+                        <div class="input_Data">
+                            <label>เบอร์โทรศัพท์บริษัท</label>
+                            <input type="text" name="contact_number" placeholder="ระบุเบอร์โทรศัพท์บริษัทของวัสดุ อุปกรณ์ และเครื่องมือ">
                         </div>
-                        <div class="input_box">
-                            <span>รุ่น</span>
-                            <input type="text" name="model" required placeholder="กรุณาระบุจำนวน">
+                        <div class="input_Data">
+                            <label>คนติดต่อ</label>
+                            <input type="text" name="contact" placeholder="ระบคนติดต่อของวัสดุ อุปกรณ์ และเครื่องมือ">
                         </div>
                     </div>
-                    <div class="add_MET_footer_2">
-                        <a href="#1" class="btn_prev"><i class="fa-solid fa-angle-left"></i><span>ก่อนหน้า</span></a>
-                        <a href="#3" class="btn_next"><i class="fa-solid fa-angle-rigth"></i><span>ถัดไป</span></a>
-                    </div>
-                </div>
-                <div class="add_MET_section_form">
                     <div class="col">
-                        <div class="input_box">
+                        <div class="input_Data">
+                            <label>ยี่ห้อ</label>
+                            <input type="text" name="brand" placeholder="ระบุยี่ห้อ">
+                        </div>
+                        <div class="input_Data">
+                            <label>รุ่น</label>
+                            <input type="text" name="model" placeholder="ระบุรุ่น">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input_Data">
                             <label for="details">รายละเอียด</label>
-                            <textarea id="details" name="details" required placeholder="กรุณาระบุรายละเอียด"></textarea>
+                            <textarea id="details" name="details" placeholder="ระบุรายละเอียด"></textarea>
                         </div>
                     </div>
-                    <div class="add_MET_footer_2">
-                        <a href="#1" class="btn_prev"><i class="fa-solid fa-angle-left"></i><span>ก่อนหน้า</span></a>
-                    </div>
-                    <div class="btn">
-                        <button type="submit" name="submit" value="Upload" class="">ยืนยัน</button>
-                        <button type="reset" class="reset">ล้างข้อมูล</button>
-                    </div>
+                </div>
+                <div class="btn_footer">
+                    <button type="submit" name="submit" class="submitADD">ยืนยัน</button>
+                    <button type="reset" class="resetADD">ล้างข้อมูล</button>
                 </div>
             </form>
         </div>
     </main>
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url; ?>/assets/js/add.js"></script>
 </body>
 

@@ -16,6 +16,9 @@ switch ($request) {
     case '':
         require 'home.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
+    case '/sign_in':
+        require 'auth/sign_in.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
     case '/cart_systems':
         require 'cart_systems.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
@@ -42,9 +45,19 @@ switch ($request) {
         require 'Staff/manage_users.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/management':
+    case '/management/material':
+    case '/management/equipment':
+    case '/management/tools':
         require 'Staff/management.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
+    case '/management/addData':
+        require 'Staff/addData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
+    case '/management/editData':
+        require 'Staff/editData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
     case '/maintenance':
+    case '/maintenance/end_maintenance':
         require 'Staff/maintenance.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/view_report':

@@ -88,8 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
         }
         curl_close($chOne);
 
-        header('Location: /project/maintenance?action=end_maintenance');
+        header('Location: /maintenance/end_maintenance');
         exit;
     }
 }
-?>

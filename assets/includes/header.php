@@ -40,12 +40,11 @@
                         <i class="arrow_rotate fa-solid fa-chevron-up"></i>
                     </div>
                     <ul class="menu">
-                        <li class="menu_li"><a href="<?php echo $base_url; ?>/profile_user">รายละเอียดผู้ใช้งาน</a></li>
                         <li class="menu_li"><a href="<?php echo $base_url; ?>/auth/sign_out.php">ออกจากระบบ</a></li>
                     </ul>
                 </div>
             <?php else : ?>
-                <a href="<?php echo $base_url; ?>/auth/sign_in.php" class="not-login">
+                <a href="<?php echo $base_url; ?>/sign_in" class="not-login">
                     <i class="ilogion fa-solid fa-right-to-bracket"></i>
                     <span class="text">เข้าสู่ระบบ</span>
                 </a>

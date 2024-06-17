@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once '../assets/database/dbConfig.php';
 date_default_timezone_set('Asia/Bangkok'); // ตั้งค่าโซนเวลาเป็น Asia/Bangkok
 
 if (isset($_POST['submit'])) {
@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
     // Upload Thumbnail
     $img = $_FILES['img'];
     $thumbnail_extension = strtolower(pathinfo($img['name'], PATHINFO_EXTENSION));
-    $folder = 'assets/uploads/';
+    $folder = '../assets/uploads/';
     $thumbnail_path = $folder . uniqid() . '.' . $thumbnail_extension;
 
     // ตรวจสอบประเภทของไฟล์ภาพ
@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
 
             if ($Insert_curd || $Insert_info) {
                 $_SESSION['errorUpload'] = "ชื่อไฟล์ภาพหรือชื่อวิทยาศาสตร์นี้ถูกใช้ไปแล้ว";
-                header('location: ' . $base_url . '/addData');
+                header('location: ' . $base_url . '/management/addData');
                 exit();
             } else {
                 // อัปโหลดไฟล์ภาพ
@@ -81,34 +81,34 @@ if (isset($_POST['submit'])) {
                         $conn->commit();
 
                         $_SESSION['success'] = "เพิ่มข้อมูลสำเร็จ <a href='dashboard.php'><span id='B'>กลับหน้า Dashboard</span></a>";
-                        header('location: ' . $base_url . '/addData');
+                        header('location: ' . $base_url . '/management/addData');
                         exit();
                     } catch (Exception $e) {
                         // ยกเลิกการทำธุรกรรม
                         $conn->rollBack();
                         $_SESSION['error'] = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
-                        header('location: ' . $base_url . '/addData');
+                        header('location: ' . $base_url . '/management/addData');
                         exit();
                     }
                 } else {
                     $_SESSION['error'] = "เกิดข้อผิดพลาดในการอัปโหลดไฟล์ภาพ";
-                    header('location: ' . $base_url . '/addData');
+                    header('location: ' . $base_url . '/management/addData');
                     exit();
                 }
             }
         } else {
             $_SESSION['error'] = "ขนาดของไฟล์ภาพหรือข้อผิดพลาดในการอัปโหลด";
-            header('location: ' . $base_url . '/addData');
+            header('location: ' . $base_url . '/management/addData');
             exit();
         }
     } else {
         $_SESSION['error'] = "ประเภทของไฟล์ภาพไม่ถูกต้อง (รูปภาพ: jpg, jpeg, png)";
-        header('location: ' . $base_url . '/addData');
+        header('location: ' . $base_url . '/management/addData');
         exit();
     }
 } else {
     $_SESSION['error'] = "คุณไม่ได้ส่งคำขอเพิ่มข้อมูล";
-    header('location: ' . $base_url . '/addData');
+    header('location: ' . $base_url . '/management/addData');
     exit();
 }
 ?>

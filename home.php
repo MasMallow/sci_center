@@ -11,7 +11,7 @@ if (isset($_SESSION['user_login'])) {
     if ($userData) {
         if ($userData['status'] == 'not_approved') {
             unset($_SESSION['user_login']);
-            header('Location: auth/sign_in.php');
+            header('Location: auth/sign_in');
             exit();
         }
     }
@@ -213,9 +213,15 @@ try {
                                                     <div class="details_content_li_left">
                                                         <div class="img_details">
                                                             <div class="img">
-                                                                <div class="imgInput">
-                                                                    <img class="previewImg" src="assets/uploads/<?= htmlspecialchars($data['img_name']); ?>" loading="lazy">
-                                                                </div>
+                                                                <?php if (!empty($data['img_name'])) : ?>
+                                                                    <div class="imgInput">
+                                                                        <img class="previewImg" src="assets/uploads/<?= htmlspecialchars($data['img_name']); ?>" loading="lazy">
+                                                                    </div>
+                                                                <?php else : ?>
+                                                                    <div class="imgInput">
+                                                                        <i class="fa-solid fa-image"></i>
+                                                                    </div>
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </div>

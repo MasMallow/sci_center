@@ -41,6 +41,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  gap: .75rem;
 }
 .header_navbanner_img {
   height: 50px;
@@ -50,21 +51,17 @@
   height: 100%;
   width: 100%;
 }
-.header_navbanner_name {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  color: #fff;
-}
 .header_navbanner_name_00 {
   display: flex;
   flex-direction: column;
-}
-.header_navbanner_name .header_navbanner_name-1 {
-  font-size: 1.25rem;
-}
-.header_navbanner_name .header_navbanner_name-2 {
-  font-size: 0.85rem;
+
+  & .header_navbanner_name-1 {
+    font-size: 1.25rem;
+  }
+
+  & .header_navbanner_name-2 {
+    font-size: 0.85rem;
+  }
 }
 .header_nav_userinfo .header_userinfo_btn {
   position: relative;

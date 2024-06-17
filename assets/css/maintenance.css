@@ -7,19 +7,27 @@
   display: flex;
 
   & .btn_maintenance_01 {
+    display: flex;
+    align-items: center;
+    color: #000000;
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
     border-radius: 6px 0 0 6px;
     transition: all 0.3s;
     border: transparent;
+    background-color: #f2f2f2;
   }
 
   & .btn_maintenance_02 {
+    display: flex;
+    align-items: center;
+    color: #000000;
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
     border-radius: 0 6px 6px 0;
     border: transparent;
     transition: all 0.3s;
+    background-color: #f2f2f2;
   }
 
   & .active {

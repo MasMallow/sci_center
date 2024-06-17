@@ -30,9 +30,7 @@ try {
         }
     }
 
-    $action = $_GET['action'] ?? 'start_maintenance';
-
-    if ($action === 'start_maintenance') {
+    if ($request_uri == '/maintenance') {
         $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
         $stmt = $conn->prepare($searchQuery ? "SELECT * FROM crud WHERE availability = 0 AND sci_name LIKE :search ORDER BY id ASC" : "SELECT * FROM crud WHERE availability = 0 ORDER BY id ASC");
 
@@ -44,7 +42,7 @@ try {
         $maintenance = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    if ($action === 'end_maintenance') {
+    if ($request_uri == '/maintenance/end_maintenance') {
         $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
         $stmt = $conn->prepare($searchQuery ? "SELECT * FROM crud WHERE availability != 0 AND sci_name LIKE :search ORDER BY id ASC" : "SELECT * FROM crud WHERE availability != 0 ORDER BY id ASC");
 
@@ -85,19 +83,21 @@ try {
         </div>
     </div>
     <div class="maintenance_section_btn">
-        <form class="btn_maintenance_all" method="get">
-            <button type="submit" class="<?= ($action === 'start_maintenance') ? 'active' : ''; ?> btn_maintenance_01" name="action" value="start_maintenance">เริ่มการบำรุงรักษา</button>
-            <button type="submit" class="<?= ($action === 'end_maintenance') ? 'active' : ''; ?> btn_maintenance_02" name="action" value="end_maintenance">สิ้นสุดการบำรุงรักษา</button>
-        </form>
+        <div class="btn_maintenance_all">
+            <a href="/maintenance" class="<?= ($request_uri == '/maintenance') ? 'active' : ''; ?> btn_maintenance_01">เริ่มการบำรุงรักษา</a>
+            <a href="/maintenance/end_maintenance" class="<?= ($request_uri == '/maintenance/end_maintenance') ? 'active' : ''; ?> btn_maintenance_02" >สิ้นสุดการบำรุงรักษา</a>
+        </div>
         <form class="maintenance_search_header" method="get">
             <input type="hidden" name="action" value="<?= htmlspecialchars($action); ?>">
             <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
             <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
-    <?php if ($action === 'start_maintenance') : ?>
+    <?php
+    $request_uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+    if ($request_uri == '/maintenance') : ?>
         <?php if (!empty($maintenance)) : ?>
-            <form action="<?php echo $base_url ?>/maintenance_notification" method="post">
+            <form action="<?php echo $base_url ?>/Staff/maintenance_notification.php" method="post">
                 <div class="maintenance_section">
                     <table class="table_maintenace">
                         <thead>
@@ -162,49 +162,48 @@ try {
                 <span id="B">ไม่มีอุปกรณ์ หรือเครื่องมือที่ทำการบำรุงรักษา</span>
             </div>
         <?php endif; ?>
-    <?php elseif ($action === 'end_maintenance') : ?>
-        <?php if (!empty($maintenance_success)) : ?>
-            <form action="<?php echo $base_url ?>/maintenance_complete" method="POST">
-                <div class="maintenance_section">
-                    <table class="table_maintenace">
-                        <thead>
+    <?php elseif ($request_uri == '/maintenance/end_maintenance') : ?>
+        <form action="<?php echo $base_url ?>/Staff/maintenance_complete.php" method="POST">
+            <div class="maintenance_section">
+                <table class="table_maintenace">
+                    <thead>
+                        <tr>
+                            <th class="serial_number"><span id="B">Serial Number</span></th>
+                            <th class="sci_name"><span id="B">ชื่อ</span></th>
+                            <th class="categories"><span id="B">ประเภท</span></th>
+                            <th class="amount"><span id="B">จำนวน</span></th>
+                            <th class="installation_date"><span id="B">เริ่มบำรุงรักษา</span></th>
+                            <th>
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+                                <button type="submit" class="maintenance_button" name="complete_maintenance"><span id="B">การบำรุงรักษาเสร็จสิ้น</span></button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($maintenance_success as $row) : ?>
                             <tr>
-                                <th class="serial_number"><span id="B">Serial Number</span></th>
-                                <th class="sci_name"><span id="B">ชื่อ</span></th>
-                                <th class="categories"><span id="B">ประเภท</span></th>
-                                <th class="amount"><span id="B">จำนวน</span></th>
-                                <th class="installation_date"><span id="B">เริ่มบำรุงรักษา</span></th>
-                                <th>
-                                    <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
-                                    <button type="submit" class="maintenance_button" name="complete_maintenance"><span id="B">การบำรุงรักษาเสร็จสิ้น</span></button>
-                                </th>
+                                <td class="serial_number"><?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($row['amount'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?></td>
+                                <td class="checkbox"><label>
+                                        <input type="checkbox" name="id[]" value="<?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <span class="custom-checkbox"></span>
+                                    </label></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($maintenance_success as $row) : ?>
-                                <tr>
-                                    <td class="serial_number"><?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?></td>
-                                    <td><?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?></td>
-                                    <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
-                                    <td><?= htmlspecialchars($row['amount'], ENT_QUOTES, 'UTF-8') ?></td>
-                                    <td><?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?></td>
-                                    <td class="checkbox"><label>
-                                            <input type="checkbox" name="id[]" value="<?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <span class="custom-checkbox"></span>
-                                        </label></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
-        <?php else : ?>
-            <div class="user_approve_not_found">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-                <span id="B">ไม่มีอุปกรณ์ หรือเครื่องมือที่ทำการบำรุงรักษา</span>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
-        <?php endif; ?>
+        </form>
+    <?php else : ?>
+        <div class="user_approve_not_found">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span id="B">ไม่มีอุปกรณ์ หรือเครื่องมือที่ทำการบำรุงรักษา</span>
+        </div>
     <?php endif; ?>
+    <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/maintenance.js"></script>
 </body>
 
