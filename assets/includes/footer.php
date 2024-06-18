@@ -14,3 +14,12 @@
 <div class="copyright">
     <p>Copyright ©2023 Puwadech and Phisitphong. All Rights Reserved</p>
 </div>
+</body>
+
+<!-- JavaScript -->
+<script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+<script src="<?php echo $base_url; ?>/assets/js/details.js"></script>
+<script src="<?php echo $base_url; ?>/assets/js/datetime.js"></script>
+</body>
+
+</html>

@@ -23,11 +23,11 @@ if (isset($_SESSION['staff_login'])) {
 </head>
 
 <body>
-    <?php include('assets/includes/header.php') ?>
+    <?php include('assets/includes/navigator.php') ?>
     <main class="add_MET">
         <div class="add_MET_section">
             <div class="add_MET_section_header">
-                <a href="<?php echo $base_url; ?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
+                <a href="<?php echo $base_url; ?>/management"><i class="fa-solid fa-arrow-left-long"></i></a>
                 <label id="B">เพิ่มรายการศูนย์วิทยาศาสตร์</label>
             </div>
             <form action="<?php echo $base_url; ?>/Staff/upload.php" method="POST" enctype="multipart/form-data">
@@ -109,7 +109,7 @@ if (isset($_SESSION['staff_login'])) {
                 </div>
                 <div class="btn_footer">
                     <button type="submit" name="submit" class="submitADD">ยืนยัน</button>
-                    <button type="reset" class="resetADD">ล้างข้อมูล</button>
+                    <a href="<?php echo $base_url; ?>/management" class="resetADD">ยกเลิก</a>
                 </div>
             </form>
         </div>

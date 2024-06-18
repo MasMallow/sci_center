@@ -1,7 +1,44 @@
+@keyframes movingY {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
 .maintenance {
-  display: flex;
   width: 1400px;
   margin: 3rem auto 1rem auto;
+}
+.header_maintenance_section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+
+  & a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8f8f8f;
+    background-color: #fff;
+    text-decoration: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    transition: all 0.25s;
+
+    &:hover {
+      background-color: #f1efef;
+      color: #000000;
+    }
+  }
 }
 .btn_maintenance_all {
   display: flex;
@@ -35,34 +72,7 @@
     background-color: #dffffd81;
   }
 }
-.header_maintenance_section {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
-  gap: 0.75rem;
-  font-size: 1.25rem;
 
-  & a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #8f8f8f;
-    background-color: #fff;
-    text-decoration: none;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    transition: all 0.25s;
-
-    &:hover {
-      background-color: #f1efef;
-      color: #000000;
-    }
-  }
-}
 .maintenance_section_btn {
   width: 1400px;
   display: flex;
@@ -109,9 +119,9 @@ button.search:active {
   transform: scale(0.9);
 }
 .maintenance_section {
-  width: 1400px;
+  width: 100%;
   margin: 0 auto;
-  margin-top: 2rem;
+  margin: 1rem 0;
 }
 .table_maintenace {
   border-collapse: collapse;
@@ -175,10 +185,10 @@ tbody tr {
     padding: 1rem 0;
   }
 }
-.serial_number {
+.sci_name {
   padding-left: 1rem;
 }
-.choose_categories_popup {
+.maintenance_popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -190,7 +200,7 @@ tbody tr {
   align-items: center;
   z-index: 9999;
 }
-.choose_categories {
+.maintenance_popup_content {
   width: 25rem;
   min-height: 10rem;
   display: block;
@@ -198,10 +208,10 @@ tbody tr {
   align-items: center;
   background-color: #fff;
   border-radius: 12px;
-  animation: movingY 0.3s;
   z-index: 10000;
+  animation: movingY 0.3s;
 }
-.choose_categories_header {
+.maintenance_section_header {
   position: relative;
   display: flex;
   align-items: center;
@@ -212,7 +222,7 @@ tbody tr {
   color: #000;
   font-family: Sarabun-bold;
 }
-.choose_categories_header .modalClose {
+.maintenance_section_header .modalClose {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,20 +232,26 @@ tbody tr {
   background-color: #e6e6e6;
   cursor: pointer;
   transition: all 0.3s ease;
-}
-.choose_categories_header .modalClose i {
-  font-size: 12px;
-  color: #525151;
-}
-.choose_categories_header .modalClose:hover {
-  background-color: #d1d1d1;
+
+  &:hover {
+    background-color: #d1d1d1;
+  }
+  & i {
+    font-size: 12px;
+    color: #525151;
+  }
 }
 .maintenace_popup {
   width: 100%;
   padding: 1rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.75rem;
+}
+.maintenace_popup label {
+  display: block;
+  padding-left: 0.5rem;
+  padding-bottom: 0.25rem;
 }
 .maintenace_popup input[type="date"] {
   width: 100%;
@@ -253,6 +269,23 @@ tbody tr {
   border: 1px solid #ccc;
   border-radius: 15px 0 0 15px;
 }
+.details_maintenance {
+  width: 100%;
+  font-size: 0.85rem;
+  position: relative;
+  height: 80px;
+  width: 100%;
+  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 15px;
+  color: #353535;
+
+  &:focus {
+    border: 1px solid rgb(0, 119, 255);
+  }
+}
+
 .maintenace_popup .confirm_maintenance {
   width: 100%;
   padding: 0.45rem 1rem;
@@ -338,4 +371,137 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 .user_approve_not_found span {
   font-size: 1.5rem;
   margin-top: 1rem;
+}
+
+@keyframes Alert {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes AlertEnd {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+}
+
+.toast {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.toast_section {
+  min-width: 500px;
+  min-height: 50px;
+  position: absolute;
+  top: 10%;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1.2rem;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #198754; /* Green color of Bootstrap 5 */
+  overflow: hidden;
+  z-index: 9999;
+  animation: Alert 0.3s;
+}
+
+.toast.active {
+  display: flex;
+}
+
+.toast.hide {
+  animation: AlertEnd 0.3s forwards; /* Ending animation */
+}
+
+.toast_section .toast_content {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.toast_section .check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  background-color: #198754; /* Green background color */
+  color: #fff;
+  border-radius: 50%;
+}
+
+.toast_section .toast_content_message {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.toast_section .toast_content_message .text {
+  font-size: 1rem;
+}
+
+.toast_section .toast_content_message .text-2 {
+  font-size: 0.9rem;
+}
+
+.toast_section .close {
+  font-size: 0.75rem;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.toast_section .close:hover {
+  opacity: 1;
+}
+
+.toast_section .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #ddd;
+}
+
+.toast_section .progress:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #198754; /* Green background color */
+}
+
+.toast .progress.active:before {
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  100% {
+    right: 100%;
+  }
 }

@@ -76,18 +76,18 @@ try {
 
 <body>
     <!-- Header -->
-    <header><?php include_once('assets/includes/header.php'); ?></header>
+    <header><?php include_once('assets/includes/navigator.php'); ?></header>
     <?php
-        if (isset($_SESSION['success'])) {
-            echo $_SESSION['success'];
-            unset($_SESSION['success']); // ลบ session หลังจากแสดงแล้วเพื่อไม่ให้แสดงซ้ำ
-        }
+    if (isset($_SESSION['success'])) {
+        echo $_SESSION['success'];
+        unset($_SESSION['success']); // ลบ session หลังจากแสดงแล้วเพื่อไม่ให้แสดงซ้ำ
+    }
 
-        if (isset($_SESSION['error'])) {
-            echo $_SESSION['error'];
-            unset($_SESSION['error']); // ลบ session หลังจากแสดงแล้วเพื่อไม่ให้แสดงซ้ำ
-        }
-        ?>
+    if (isset($_SESSION['error'])) {
+        echo $_SESSION['error'];
+        unset($_SESSION['error']); // ลบ session หลังจากแสดงแล้วเพื่อไม่ให้แสดงซ้ำ
+    }
+    ?>
     <div class="Dashboard_Management">
         <div class="header_management_section">
             <div class="header_name_section">
@@ -110,8 +110,8 @@ try {
                     ?>
                 </span>
             </div>
-            <div class="header_btn_section">
-                <a href="<?php echo $base_url; ?>/management/addData" class="choose_categories_btn">
+            <div class="choose_categories_btn">
+                <a href="<?php echo $base_url; ?>/management/addData">
                     <i class="icon fa-solid fa-plus"></i>
                     <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
                 </a>
@@ -126,7 +126,7 @@ try {
                 <a href="/management" class="<?= (strpos($request_uri, '/management') !== false && $request_uri === '/management') ? 'active' : ''; ?> btn_management_01">ทั้งหมด</a>
                 <a href="/management/material" class="<?= (strpos($request_uri, '/management/material') !== false) ? 'active' : ''; ?> btn_management_02">วัสดุ</a>
                 <a href="/management/equipment" class="<?= (strpos($request_uri, '/management/equipment') !== false) ? 'active' : ''; ?> btn_management_02">อุปกรณ์</a>
-                <a href="/management/tools" class="<?= (strpos($request_uri, '/management/tools') !== false) ? 'active' : ''; ?> btn_management_02">เครื่องมือ</a>
+                <a href="/management/tools" class="<?= (strpos($request_uri, '/management/tools') !== false) ? 'active' : ''; ?> btn_management_03">เครื่องมือ</a>
             </form>
         </div>
         <?php if (empty($result)) : ?>
@@ -215,7 +215,6 @@ try {
                                                 <label for="amount" id="B">จำนวน</label>
                                                 <input type="text" name="amount" value="<?php echo htmlspecialchars($results['installation_date']); ?>" required>
                                             </div>
-
                                         </div>
                                     </form>
                                 </div>
@@ -261,7 +260,6 @@ try {
                 <?php endif; ?>
             </div>
             <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-            <script src="<?php echo $base_url; ?>/assets/js/choose_categories.js"></script>
             <script src="<?php echo $base_url; ?>/assets/js/pop_upEdit.js"></script>
 </body>
 

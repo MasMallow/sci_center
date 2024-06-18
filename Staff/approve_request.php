@@ -45,7 +45,7 @@ $previousFirstname = '';
 </head>
 
 <body>
-    <?php include('assets/includes/header.php') ?>
+    <?php include('assets/includes/navigator.php') ?>
     <div class="header_approve">
         <div class="header_approve_section">
             <a href="<?php echo $base_url;?>"><i class="fa-solid fa-arrow-left-long"></i></a>

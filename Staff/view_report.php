@@ -73,7 +73,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <header>
-        <?php include 'assets/includes/header.php'; ?>
+    <?php include 'assets/includes/navigator.php'; ?>
     </header>
     <div class="header_view_report">
         <div class="header_view_report_section">

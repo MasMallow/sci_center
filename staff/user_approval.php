@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = $_POST['user_id'];
         $staff_id = $_SESSION['staff_login'];
 
-        $user_query = $conn->prepare("SELECT pre, firstname, lastname FROM users WHERE user_ID = :staff_id");
+        $user_query = $conn->prepare("SELECT pre, firstname, lastname FROM users_db WHERE user_ID = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $staff_name = $user_query->fetch(PDO::FETCH_ASSOC);

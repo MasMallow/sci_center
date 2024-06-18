@@ -23,7 +23,7 @@ if (isset($_POST['sign_in'])) {
     // Validate input
     if (empty($username) || empty($password)) {
         $_SESSION['errorLogin'] = '<span id="B">กรุณากรอก Username และ Password</span>';
-        header("location: ../auth/sign_in");
+        header("location: /sign_in");
         exit();
     }
 
@@ -67,7 +67,7 @@ if (isset($_POST['sign_in'])) {
         $_SESSION['errorLogin'] = '<span id="B">Database error: ' . $e->getMessage() . '</span>';
     }
 
-    header("location: ../auth/sign_in");
+    header("location: /sign_in");
     exit();
 }
 ?>
