@@ -10,50 +10,73 @@ if (!isset($_SESSION['staff_login'])) {
     exit;
 }
 
+// ดึงข้อมูลผู้ใช้
+if (isset($_SESSION['staff_login'])) {
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 // ตรวจสอบการส่งข้อมูลแบบ POST และการกดปุ่ม complete_maintenance
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'])) {
     $ids = $_POST['selected_ids'];
     $end_maintenance = $_POST['end_maintenance'];
-    $details_maintenance = $_POST['details_maintenance'] ?? '' ;
+    $details_maintenance = $_POST['details_maintenance'] ?? '';
 
-    $sMessage = "แจ้งเตือนการบำรุงรักษา\n";
+    // ดึงข้อมูลผู้ใช้สำหรับ log
+    $staff_id = $_SESSION['staff_login'];
+    $user_query = $conn->prepare("
+        SELECT userID, pre, firstname, lastname 
+        FROM users_info_db 
+        WHERE userID = :staff_id
+    ");
+    $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
+    $user_query->execute();
+    $users_LOG = $user_query->fetch(PDO::FETCH_ASSOC);
 
-    // วนลูปเพื่ออัพเดทข้อมูลการบำรุงรักษาในฐานข้อมูล
     foreach ($ids as $id) {
         try {
+            $authID = $users_LOG['userID'];
+            $log_Name = $users_LOG['pre'] . $users_LOG['firstname'] . ' ' . $users_LOG['lastname'];
+            $log_Status = 'สิ้นสุดการบำรุงรักษา';
+
             // อัพเดทสถานะ availability ในตาราง crud
-            $update_query = $conn->prepare("UPDATE crud SET availability = 0 WHERE ID = :id");
-            $update_query->bindParam(':id', $id, PDO::PARAM_INT);
-            $update_query_01 = $update_query->execute();
+            $update_query_01 = $conn->prepare("UPDATE crud SET availability = 0 WHERE ID = :id");
+            $update_query_01->bindParam(':id', $id, PDO::PARAM_INT);
+            $update_query_01->execute();
 
             // อัพเดทวันที่บำรุงรักษาในตาราง info_sciname
-            $update_query = $conn->prepare("UPDATE info_sciname SET last_maintenance_date = :end_maintenance WHERE ID = :id");
-            $update_query->bindParam(':end_maintenance', $end_maintenance, PDO::PARAM_STR);
-            $update_query->bindParam(':id', $id, PDO::PARAM_INT);
-            $update_query_02 = $update_query->execute();
+            $update_query_02 = $conn->prepare("UPDATE info_sciname SET last_maintenance_date = :end_maintenance WHERE ID = :id");
+            $update_query_02->bindParam(':end_maintenance', $end_maintenance, PDO::PARAM_STR);
+            $update_query_02->bindParam(':id', $id, PDO::PARAM_INT);
+            $update_query_02->execute();
 
             // อัพเดทรายละเอียดการบำรุงรักษาในตาราง logs_maintenance
-            $update_query = $conn->prepare("UPDATE logs_maintenance SET end_maintenance = :end_maintenance, details_maintenance = :details_maintenance WHERE ID = :id");
-            $update_query->bindParam(':end_maintenance', $end_maintenance, PDO::PARAM_STR);
-            $update_query->bindParam(':details_maintenance', $details_maintenance, PDO::PARAM_STR);
-            $update_query->bindParam(':id', $id, PDO::PARAM_INT);
-            $update_query_03 = $update_query->execute();
+            $update_query_03 = $conn->prepare("UPDATE logs_maintenance SET end_maintenance = :end_maintenance, details_maintenance = :details_maintenance WHERE ID = :id");
+            $update_query_03->bindParam(':end_maintenance', $end_maintenance, PDO::PARAM_STR);
+            $update_query_03->bindParam(':details_maintenance', $details_maintenance, PDO::PARAM_STR);
+            $update_query_03->bindParam(':id', $id, PDO::PARAM_INT);
+            $update_query_03->execute();
 
-            // ดึงข้อมูลรายละเอียดของรายการเพื่อใช้ในการแจ้งเตือน
-            $stmt = $conn->prepare("SELECT * FROM crud WHERE ID = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+            // เพิ่มข้อมูลการบำรุงรักษาเข้าสู่ฐานข้อมูล logs_maintenance_2
+            $insert_query_02 = $conn->prepare("INSERT INTO logs_maintenance_2 (authID, log_Name, log_Date, log_Status) VALUES (:authID, :log_name, NOW(), :log_status)");
+            $insert_query_02->bindParam(':authID', $authID, PDO::PARAM_STR);
+            $insert_query_02->bindParam(':log_name', $log_Name, PDO::PARAM_STR);
+            $insert_query_02->bindParam(':log_status', $log_Status, PDO::PARAM_STR);
+            $insert_query_02->execute();
 
-            if ($item) {
-                $sMessage .= "รายการ: " . htmlspecialchars($item['sci_name'], ENT_QUOTES, 'UTF-8') . "\n";
-                $sMessage .= "ประเภท: " . htmlspecialchars($item['categories'], ENT_QUOTES, 'UTF-8') . "\n";
-            }
-
-            if ($update_query_01 && $update_query_02 && $update_query_03) {
-                $_SESSION['maintenanceSuccess'] = "เริ่มต้นกระบวนการการบำรุงรักษา";
+            if ($update_query_01 && $update_query_02 && $update_query_03 && $insert_query_02) {
+                $_SESSION['end_maintenanceSuccess'] = "สิ้นสุดกระบวนการการบำรุงรักษา";
             } else {
-                $_SESSION['error'] = "Data has not been updated successfully";
+                $_SESSION['end_maintenanceError'] = "Data has not been updated successfully";
             }
 
             header("Location: /maintenance/end_maintenance");
@@ -64,44 +87,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
             exit;
         }
     }
-
-    // เพิ่มวันที่สิ้นสุดการบำรุงรักษาในข้อความ
-    $sMessage .= "วันที่บำรุงรักษาสำเร็จ : " . date('d/m/Y H:i:s') . "\n";
-    $sMessage .= "-------------------------------";
-
-    // Line Notify settings
-    $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
-    $chOne = curl_init();
-    curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
-    curl_setopt($chOne, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($chOne, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_setopt($chOne, CURLOPT_POST, 1);
-    curl_setopt($chOne, CURLOPT_POSTFIELDS, "message=" . urlencode($sMessage));
-    $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer ' . $sToken);
-    curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($chOne, CURLOPT_RETURNTRANSFER, 1);
-    $result = curl_exec($chOne);
-
-    // ตรวจสอบผลการส่งแจ้งเตือน
-    if (curl_error($chOne)) {
-        echo 'error:' . curl_error($chOne);
-    } else {
-        $result_ = json_decode($result, true);
-        if ($result_['status'] == 200) {
-            echo "<script>
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: 'การบำรุงรักษาเสร็จสิ้น',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(function() {
-                            window.location.href = 'home.php';
-                        });
-                      </script>";
-        } else {
-            echo "<script>alert('Notification failed: " . htmlspecialchars($result_['message'], ENT_QUOTES, 'UTF-8') . "');</script>";
-        }
-    }
-    curl_close($chOne);
 }
+?>

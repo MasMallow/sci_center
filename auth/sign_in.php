@@ -91,7 +91,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                             </div>
                             <div class="sign_up">
                                 <span>ไม่มีบัญชี ?</span>
-                                <a href="sign_up.php"><span>สมัครสมาชิก</span>
+                                <a href="/sign_up"><span>สมัครสมาชิก</span>
                                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                 </a>
                             </div>

@@ -3,6 +3,20 @@ session_start();
 require_once 'assets/database/dbConfig.php';
 include_once 'assets/includes/thai_date_time.php';
 
+if (isset($_SESSION['staff_login'])) {
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 $searchTitle = "";
 $searchValue = "";
 
@@ -17,18 +31,6 @@ if (!isset($_SESSION['staff_login'])) {
 }
 
 try {
-    if (isset($_SESSION['staff_login']) || isset($_SESSION['user_login'])) {
-        $user_id = $_SESSION['user_login'] ?? $_SESSION['staff_login'];
-        $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (isset($_SESSION['user_login']) && $userData['status'] !== 'approved') {
-            header("Location: home");
-            exit();
-        }
-    }
 
     if ($request_uri == '/maintenance') {
         // ตรวจสอบและสร้าง search query
@@ -211,19 +213,21 @@ try {
                             <tbody>
                                 <?php foreach ($maintenance as $row) : ?>
                                     <tr>
-                                        <td class="sci_name"><?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?><?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?></td>
+                                        <td class="sci_name">
+                                            <a href="<?php echo $base_url;?>/maintenance/maintenanceDetails?id=<?= $row['ID'] ?>">
+                                                <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?> (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
+                                            </a>
+                                        </td>
                                         <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
                                         <td>
-                                            <?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?><br>
-                                            <?= htmlspecialchars(thai_time($row['installation_date']), ENT_QUOTES, 'UTF-8') ?>
+                                            <?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?>
                                         </td>
                                         <td>
                                             <?php
                                             if ($row['last_maintenance_date'] == NULL) {
                                                 echo '-';
                                             } else {
-                                                echo htmlspecialchars(thai_date($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8') . '<br>' .
-                                                    htmlspecialchars(thai_time($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8');
+                                                echo htmlspecialchars(thai_date($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8');
                                             }
                                             ?>
                                         </td>
@@ -246,13 +250,13 @@ try {
             <?php endif; ?>
         <?php elseif ($request_uri == '/maintenance/end_maintenance') : ?>
             <?php if (!empty($maintenance_success)) : ?>
-                <?php if (isset($_SESSION['end_maintenanceSuccess'])) { ?>
+                <?php if (isset($_SESSION['end_maintenanceSuccess']) || isset($_SESSION['end_maintenanceError'])) { ?>
                     <div class="toast">
                         <div class="toast_section">
                             <div class="toast_content">
                                 <i class="fas fa-solid fa-xmark check"></i>
                                 <div class="toast_content_message">
-                                    <span class="text text_2"><?php echo $_SESSION['maintenanceSuccess']; ?></span>
+                                    <span class="text text_2"><?php echo ($_SESSION['end_maintenanceSuccess']) || ($_SESSION['end_maintenanceError']); ?></span>
                                 </div>
                                 <i class="fa-solid fa-xmark close"></i>
                                 <div class="progress"></div>
@@ -288,7 +292,8 @@ try {
                             });
                         });
                     </script>
-                    <?php unset($_SESSION['maintenanceSuccess']); ?>
+                    <?php unset($_SESSION['end_maintenanceSuccess']); ?>
+                    <?php unset($_SESSION['end_maintenanceError']); ?>
                 <?php } ?>
                 <form action="<?php echo $base_url ?>/Staff/maintenanceEndprocess.php" method="POST">
                     <div class="maintenance_section">

@@ -29,7 +29,6 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
     <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/sign_up.css">
-    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
 </head>
 
 <body>
@@ -74,10 +73,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
         <?php unset($_SESSION['errorSign_up']); ?>
     <?php } ?>
 
-    <header>
-        <?php include_once 'assets/includes/navigator.php'; ?>
-    </header>
-    <form action="<?php echo $base_url; ?>/auth/backend/sign_upDB.php" method="post">
+    <form action="<?php echo $base_url;?>/auth/backend/sign_upDB.php" method="post">
         <div class="register">
             <div class="register_page">
                 <div class="register_page_head">
@@ -85,18 +81,25 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                     <span id="B">สมัครบัญชีผู้ใช้</span>
                 </div>
                 <div class="register_page_body">
-                    <div class="form">
+                    <div class="pagination">
+                        <div class="number active">1</div>
+                        <div class="bar"></div>
+                        <div class="number">2</div>
+                        <div class="bar"></div>
+                        <div class="number">3</div>
+                    </div>
+                    <div class="form active">
                         <div class="form_header">
                             <span id="B">ส่วนที่ 1</span>
                             <span>กรอก USERNAME และ PASSWORD</span>
                         </div>
                         <div class="form_body">
-                            <div class="input_box">
+                            <div class="input_box_1">
                                 <span>ชื่อผู้ใช้</span>
                                 <input type="text" placeholder="กรุณากรอกชื่อผู้ใช้ (Username)" name="username" value="<?php echo htmlspecialchars($form_values['username']); ?>" required autofocus>
                                 <span class="description"><b>Note : </b>Username ต้องมีความยาวระหว่าง 6 ถึง 12 ตัวอักษร</span>
                             </div>
-                            <div class="input_box">
+                            <div class="input_box_1">
                                 <span>รหัสผ่าน</span>
                                 <div class="show_password">
                                     <input type="password" id="password" name="password" placeholder="กรุณากรอกรหัสผ่าน (Password)">
@@ -107,16 +110,21 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                                     <b>Note : </b>รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว
                                 </span>
                             </div>
-                            <div class="input_box">
+                            <div class="input_box_1">
                                 <span>ยืนยันรหัสผ่านอีกครั้ง</span>
                                 <div class="show_password">
                                     <input type="password" id="confirm_password" name="confirm_password" placeholder="กรุณากรอกรหัสผ่านอีกครั้ง (confirmPassword)">
                                     <i class="icon_password fas fa-eye-slash" onclick="togglecPassword()"></i>
                                 </div>
                             </div>
+                            <div class="register_page_footer_1">
+                                <a href="#2" class="btn_next">
+                                    <span>ถัดไป</span>
+                                    <i class="fa-solid fa-angle-right"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <hr>
                     <div class="form">
                         <div class="form_header">
                             <span id="B">ส่วนที่ 2</span>
@@ -124,7 +132,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                         </div>
                         <div class="form_body">
                             <div class="col">
-                                <div class="input_box">
+                                <div class="input_box_2">
                                     <span>คำนำหน้า</span>
                                     <div class="select">
                                         <select name="pre" required>
@@ -138,17 +146,17 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                                         </select>
                                     </div>
                                 </div>
-                                <div class="input_box">
+                                <div class="input_box_2">
                                     <span>ชื่อ</span>
                                     <input type="text" placeholder="ชื่อภาษาไทย" name="firstname" value="<?php echo htmlspecialchars($form_values['firstname']); ?>" required>
                                 </div>
-                                <div class="input_box">
+                                <div class="input_box_2">
                                     <span>นามสกุล</span>
                                     <input type="text" placeholder="นามสกุลภาษาไทย" name="lastname" value="<?php echo htmlspecialchars($form_values['lastname']); ?>" required>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="input_box">
+                                <div class="input_box_2">
                                     <span>ตำแหน่ง</span>
                                     <div class="select">
                                         <select name="role" required>
@@ -159,27 +167,50 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                                         </select>
                                     </div>
                                 </div>
-                                <div class="input_box">
+                                <div class="input_box_2">
                                     <span>หน่วยงาน</span>
                                     <input type="text" placeholder="หน่วยงาน" name="agency" value="<?php echo htmlspecialchars($form_values['agency']); ?>" required>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="input_box">
+                                <div class="input_box_2">
                                     <span>เบอร์โทรศัพท์</span>
                                     <input type="text" placeholder="000-000-0000" name="phone_number" value="<?php echo htmlspecialchars($form_values['phone_number']); ?>" required>
                                 </div>
-                                <div class="input_box">
+                                <div class="input_box_2">
                                     <span>E-Mail</span>
                                     <input type="email" placeholder="example@example.com" name="email" value="<?php echo htmlspecialchars($form_values['email']); ?>" required>
                                 </div>
                             </div>
-                            <div class="btn_section_sign_up">
+                            <div class="register_page_footer_2">
+                                <a href="#1" class="btn_prev">
+                                    <i class="fa-solid fa-angle-left"></i>
+                                    <span>ก่อนหน้า</span>
+                                </a>
+                                <a href="#3" class="btn_next">
+                                    <span>ถัดไป</span>
+                                    <i class="fa-solid fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form">
+                        <div class="form_header_3">
+                            <span id="B">กรุณาตรวจสอบข้อมูลการสมัครก่อนกดปุ่มยืนยัน</span>
+                        </div>
+                        <div class="btn_section_sign_up">
+                            <div class="register_page_footer_2">
+                                <a href="#2" class="btn_prev">
+                                    <i class="fa-solid fa-angle-left"></i>
+                                    <span>ก่อนหน้า</span>
+                                </a>
+                            </div>
+                            <div class="btn_sign_up">
                                 <button type="submit" class="submit" name="signup">
                                     <i class="fa-solid fa-circle-check"></i>
                                     <span>ยืนยัน</span>
                                 </button>
-                                <a href="/sign_in" class="cancel">
+                                <a href="sign_in.php" class="cancel">
                                     <i class="fa-solid fa-circle-xmark"></i>
                                     <span>ยกเลิก</span>
                                 </a>

@@ -1,27 +1,23 @@
 <?php
 // เริ่ม session
 session_start();
-
 // รวมการเชื่อมต่อฐานข้อมูล (ถ้ายังไม่ได้รวม)
 require_once 'assets/database/dbConfig.php';
-include_once 'includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้
 if (isset($_SESSION['staff_login'])) {
-    $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // ตรวจสอบสถานะของผู้ใช้
-    if ($userData) {
-        if ($userData['status'] == 'not_approved') {
-            unset($_SESSION['staff_login']);
-            header('Location: auth/sign_in.php');
-            exit();
-        }
-    }
 }
 // ถ้าไม่มีการเข้าสู่ระบบ ให้กลับไปที่หน้าเข้าสู่ระบบ
 if (!isset($_SESSION['staff_login'])) {
@@ -83,7 +79,7 @@ try {
 
 <body>
     <header>
-        <?php include 'includes/header.php'; ?>
+        <?php include_once 'assets/includes/navigator.php'; ?>
     </header>
     <div class="header_management">
         <div class="header_management_section">

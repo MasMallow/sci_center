@@ -3,20 +3,18 @@ session_start();
 require_once 'assets/database/dbConfig.php';
 
 if (isset($_SESSION['staff_login'])) {
-    $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-// Check if user is logged in
-if (!isset($_SESSION['staff_login'])) {
-    header("Location: /login.php"); // Redirect to login page if not logged in
-    exit;
-}
-
-// Fetch user ID from session
-$user_id = $_SESSION['staff_login'];
 
 try {
     if (isset($_GET['id'])) {
@@ -141,9 +139,9 @@ try {
                         <div class="input_Data">
                             <label for="categories">ประเภท</label>
                             <select name="categories" required>
-                                <option value="Material" <?php if ($editData['categories'] === 'Material') echo 'selected'; ?>>วัสดุ</option>
-                                <option value="Equipment" <?php if ($editData['categories'] === 'Equipment') echo 'selected'; ?>>อุปกรณ์</option>
-                                <option value="Tool" <?php if ($editData['categories'] === 'Tool') echo 'selected'; ?>>เครื่องมือ</option>
+                                <option value="Material" <?php if ($editData['categories'] === 'วัสดุ') echo 'selected'; ?>>วัสดุ</option>
+                                <option value="Equipment" <?php if ($editData['categories'] === 'อุปกรณ์') echo 'selected'; ?>>อุปกรณ์</option>
+                                <option value="Tool" <?php if ($editData['categories'] === 'เครื่องมือ') echo 'selected'; ?>>เครื่องมือ</option>
                             </select>
                         </div>
                         <div class="input_Data">

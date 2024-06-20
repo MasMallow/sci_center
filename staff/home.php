@@ -19,6 +19,27 @@ $num = count($data); // นับจำนวนรายการ
 $previousSn = '';
 $previousFirstname = '';
 
+$stmt = $conn->prepare("
+    SELECT * 
+    FROM crud 
+    LEFT JOIN info_sciname ON crud.ID = info_sciname.ID
+    WHERE last_maintenance_date IS NULL 
+    OR last_maintenance_date < DATE_ADD(CURDATE(), INTERVAL 10 DAY) 
+    ORDER BY crud.ID ASC");
+$stmt->execute();
+$maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $conn->prepare("
+    SELECT * 
+    FROM crud 
+    LEFT JOIN logs_maintenance ON crud.ID = logs_maintenance.ID
+    WHERE availability = 1 
+    AND end_maintenance > DATE_ADD(CURDATE(), INTERVAL 2 DAY) 
+    ORDER BY crud.ID ASC");
+$stmt->execute();
+$end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -218,7 +239,7 @@ $previousFirstname = '';
             </div>
         </div>
         <div class="staff_page">
-            <div class="staff_section">
+            <div class="staff_section_2">
                 <div class="staff_header">
                     <div class="section_1">
                         <i class="fa-solid fa-user-tie"></i>
@@ -232,16 +253,16 @@ $previousFirstname = '';
                 </div>
                 <div class="staff_content">
                     <div class="staff_content_table">
-                        <?php if (empty($maintenance)) { ?>
+                        <?php if (empty($maintenance_notify)) { ?>
                             <div class="approve_not_found_section">
                                 <i class="fa-solid fa-xmark"></i>
                                 <span id="B">ไม่พบข้อมูลอุปกรณ์ และเครื่องมือ</span>
                             </div>
                         <?php } ?>
-                        <?php if (!empty($maintenance)) { ?>
+                        <?php if (!empty($maintenance_notify)) { ?>
                             <div class="approve_container">
                                 <?php
-                                foreach ($maintenance as $row) : ?>
+                                foreach ($maintenance_notify as $row) : ?>
                                     <div class="approve_row">
                                         <div class="defualt_row">
                                             <div class="serial_number">
@@ -252,13 +273,7 @@ $previousFirstname = '';
                                                 <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                             </div>
                                             <div class="reservation_date">
-                                                <?php echo thai_date_time($row['installation_date']); ?>
-                                            </div>
-                                            <div class="approve_actions">
-                                                <form class="approve_form" method="POST" action="process_reserve.php">
-                                                    <input type="hidden" name="id" value="<?php echo $row['ID']; ?>">
-                                                    <button class="confirm_approve" type="submit" name="confirm"><i class="fa-solid fa-circle-check"></i></button>
-                                                </form>
+                                                ไม่ได้รับการบำรุงรักษามามากกว่า 10 วัน
                                             </div>
                                         </div>
                                         <div class="expand_row">
@@ -276,20 +291,20 @@ $previousFirstname = '';
                     </div>
                 </div>
             </div>
-            <div class="staff_notification">
+            <div class="staff_notification_2">
                 <div class="staff_notification_header">
                     <span id="B">แจ้งเตือนการบำรุงรักษา</span>
                 </div>
                 <div class="staff_notification_body">
-                    <?php if (!empty($data)) : ?>
+                    <?php if (!empty($end_maintenance_notify)) : ?>
                         <div class="staff_notification_stack">
-                            <?php foreach ($data as $datas) : ?>
+                            <?php foreach ($end_maintenance_notify as $datas) : ?>
                                 <div class="staff_notification_data">
                                     <span>
-                                        <?php echo htmlspecialchars($datas['serial_number']); ?>
+                                        <?php echo htmlspecialchars($datas['sci_name']); ?>
                                     </span>
-                                    <span>
-                                        <?php echo htmlspecialchars(thai_date_time_2($datas['reservation_date'])); ?>
+                                    <span>ใกล้ถึงวันสิ้นสุดการบำรุงรักษา
+                                        <?php echo htmlspecialchars(thai_date_time_3($datas['end_maintenance'])); ?>
                                     </span>
                                 </div>
                             <?php endforeach; ?>

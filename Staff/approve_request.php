@@ -11,16 +11,17 @@ if (!isset($_SESSION['staff_login'])) {
 }
 
 // ดึงข้อมูลผู้ใช้หากเข้าสู่ระบบ
-if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
-    // ตั้งค่า user_id ตาม session ที่มี
-    $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
-
-    // เตรียมคำสั่ง SQL เพื่อป้องกัน SQL Injection
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+if (isset($_SESSION['staff_login'])) {
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
-
-    // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ

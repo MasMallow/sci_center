@@ -92,6 +92,7 @@
   margin: 1rem auto;
 }
 .management_search_header {
+  
   display: flex;
   align-items: center;
 }

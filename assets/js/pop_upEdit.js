@@ -16,5 +16,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // เรียกใช้ฟังก์ชัน showForm เพื่อแสดงฟอร์มแรกเมื่อโหลดหน้า
-    showForm(currentFormIndex); 
+    showForm(currentFormIndex);
 });

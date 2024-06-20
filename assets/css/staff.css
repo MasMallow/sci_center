@@ -48,6 +48,18 @@
   border: 1px solid #bbb;
   border-radius: 5px;
 }
+.staff_section_2 {
+  width: 100%;
+  height: 50vh;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+.staff_notification_2 {
+  width: 55%;
+  height: 50vh;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
 .staff_header,
 .staff_notification_header {
   width: 100%;
@@ -192,8 +204,8 @@
 }
 .staff_notification_body .staff_notification_data {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.345rem;
   border: 1px solid #ddd;
   border-left: 4px solid #c82333;
   border-radius: 5px;

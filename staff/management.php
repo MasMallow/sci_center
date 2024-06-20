@@ -1,12 +1,41 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
+include_once 'assets/includes/thai_date_time.php';
 
 // ดึงข้อมูลผู้ใช้เพียงครั้งเดียว
+if (isset($_SESSION['user_login'])) {
+    $userID = $_SESSION['user_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($userData) {
+        if ($userData['status'] == 'not_approved') {
+            unset($_SESSION['user_login']);
+            header('Location: auth/sign_in');
+            exit();
+        }
+    }
+}
+
 if (isset($_SESSION['staff_login'])) {
-    $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -25,7 +54,7 @@ try {
     $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
 
     // สร้างคำสั่ง SQL สำหรับ JOIN ตาราง
-    $query = "SELECT * FROM crud INNER JOIN info_sciname ON crud.serial_number = info_sciname.serial_number";
+    $query = "SELECT * FROM crud LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number";
 
     // เพิ่มเงื่อนไข categories
     if ($request_uri === '/maintenance/material') {
@@ -91,7 +120,7 @@ try {
     <div class="Dashboard_Management">
         <div class="header_management_section">
             <div class="header_name_section">
-                <a href="<?php echo $base_url; ?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
+                <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
                 <span id="B">จัดการระบบ</span>
             </div>
             <div class="header_num_section">
@@ -119,8 +148,8 @@ try {
         </div>
         <div class="management_section_btn">
             <form class="management_search_header" method="get">
-                <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
-                <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input class="search_input" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
+                <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
             <form class="btn_management_all">
                 <a href="/management" class="<?= (strpos($request_uri, '/management') !== false && $request_uri === '/management') ? 'active' : ''; ?> btn_management_01">ทั้งหมด</a>
@@ -161,63 +190,9 @@ try {
                                 </div>
                             <?php } ?>
                             <div class="content_details">
-                                <button class="details_btn" data-modal="<?php echo htmlspecialchars($results['ID']); ?>">
+                                <a href="management/detailsData?id=<?= $results['ID'] ?>" class="details_btn">
                                     <i class="fa-solid fa-circle-info"></i>
-                                </button>
-                            </div>
-                            <div class="content_details_popup" id="<?php echo htmlspecialchars($results['ID']); ?>">
-                                <div class="details">
-                                    <div class="details_header">
-                                        <span id="B">แก้ไขข้อมูล</span>
-                                        <div class="modalClose" id="closeDetails">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </div>
-                                    </div>
-                                    <form class="details_content_edit" action="update" method="post" enctype="multipart/form-data">
-                                        <div class="details_content_left">
-                                            <div class="img_details">
-                                                <div class="img">
-                                                    <div class="imgInput">
-                                                        <img class="previewImg" id="previewImg_<?php echo htmlspecialchars($results['ID']); ?>" src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
-                                                    </div>
-                                                </div>
-                                                <span class="upload-tip"><b>Note: </b>Only JPG, JPEG, PNG & GIF files allowed to upload.</span>
-                                                <div class="btn_img">
-                                                    <input type="file" class="input-img" id="imgInput_<?php echo htmlspecialchars($results['ID']); ?>" name="img" accept="image/jpeg, image/png, image/gif" data-default-img="<?php echo htmlspecialchars($results['img_name']); ?>" hidden>
-                                                    <label for="imgInput_<?php echo htmlspecialchars($results['ID']); ?>">เลือกรูปภาพ</label>
-                                                    <input type="hidden" name="default-img" value="<?php echo htmlspecialchars($results['img_name']); ?>">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="details_content_right">
-                                            <div class="input_Data">
-                                                <label for="id" id="B">รหัสวัสดุ อุปกรณ์ หรือเครื่องมือ</label>
-                                                <input type="text" name="id" value="<?php echo htmlspecialchars($results['serial_number']); ?>" readonly>
-                                            </div>
-                                            <div class="input_Data">
-                                                <label for="sci_name" id="B">ชื่อวิทยาศาสตร์</label>
-                                                <input type="text" name="sci_name" value="<?php echo htmlspecialchars($results['sci_name']); ?>" required>
-                                            </div>
-                                            <div class="input_Data">
-                                                <label for="amount" id="B">จำนวน</label>
-                                                <input type="number" name="amount" value="<?php echo htmlspecialchars($results['amount']); ?>" required>
-                                            </div>
-                                            <div class="input_Data">
-                                                <label for="categories" id="B">ประเภท</label>
-                                                <select name="categories" required>
-                                                    <option value="วัสดุ" <?php if ($results['categories'] === 'วัสดุ') echo 'selected'; ?>>วัสดุ</option>
-                                                    <option value="อุปกรณ์" <?php if ($results['categories'] === 'อุปกรณ์') echo 'selected'; ?>>อุปกรณ์</option>
-                                                    <option value="เครื่องมือ" <?php if ($results['categories'] === 'เครื่องมือ') echo 'selected'; ?>>เครื่องมือ
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="input_Data">
-                                                <label for="amount" id="B">จำนวน</label>
-                                                <input type="text" name="amount" value="<?php echo htmlspecialchars($results['installation_date']); ?>" required>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                </a>
                             </div>
                         </div>
                         <div class="management_grid_content_body">
@@ -230,37 +205,18 @@ try {
                                 <i class="fa-solid fa-circle-info"></i>
                                 <span>แก้ไขข้อมูล</span>
                             </a>
-                            <button class="delete_btn delete_popup" data-modal="delete_<?php echo $results['ID']; ?>">
+                            <a href="management/detailsData?id=<?= $results['ID'] ?>" class="delete_btn">
                                 <i class="icon fa-solid fa-trash"></i>
                                 <span>ลบข้อมูล</span>
-                            </button>
-                            <div class="content_details_popup" id="delete_<?php echo htmlspecialchars($results['ID']); ?>">
-                                <div class="details">
-                                    <div class="details_header">
-                                        <span id="B">ยืนยันการลบ</span>
-                                        <div class="modalClose" id="closeDetails">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </div>
-                                    </div>
-                                    <form class="details_content_edit" action="delete" method="post">
-                                        <div class="details_content">
-                                            <span id="B">คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?</span>
-                                            <input type="hidden" name="crud_id" value="<?php echo htmlspecialchars($results['ID']); ?>">
-                                            <div class="btn-group">
-                                                <button type="submit" id="B">ลบ</button>
-                                                <button type="button" class="modalClose" id="B">ยกเลิก</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                            </a>
                         </div>
-                    <?php endforeach; ?>
                     </div>
-                <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
             </div>
-            <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-            <script src="<?php echo $base_url; ?>/assets/js/pop_upEdit.js"></script>
+    </div>
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/pop_upEdit.js"></script>
 </body>
 
 </html>

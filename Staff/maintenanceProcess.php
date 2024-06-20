@@ -22,20 +22,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
 
         // ดึงข้อมูลผู้ใช้
         if (isset($_SESSION['staff_login'])) {
-            $user_id = $_SESSION['staff_login'];
-            $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
-            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $userID = $_SESSION['staff_login'];
+            $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :userID");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             $userData = $stmt->fetch(PDO::FETCH_ASSOC);
         }
         $staff_id = $_SESSION['staff_login'];
-        $user_query = $conn->prepare("SELECT user_ID, pre, firstname, lastname FROM users_db WHERE user_ID = :staff_id");
+        $user_query = $conn->prepare("
+                            SELECT userID, pre, firstname, lastname 
+                            FROM users_db LEFT JOIN users_info_db 
+                            ON users_db.userID = users_info_db.userID
+                            WHERE users_db.userID = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $users_LOG = $user_query->fetch(PDO::FETCH_ASSOC);
-        $authID = $users_LOG['user_ID'];
+        $authID = $users_LOG['userID'];
         $log_Name = $users_LOG['pre'] . $users_LOG['firstname'] . ' ' . $users_LOG['lastname'];
-        $log_Status = 'เริ่มต้นกาบำรุงรักษา';
+        $log_Status = 'เริ่มต้นการบำรุงรักษา';
 
         // ดึงข้อมูลอุปกรณ์
         $stmt = $conn->prepare("SELECT serial_number, sci_name, categories FROM crud WHERE id = :id");

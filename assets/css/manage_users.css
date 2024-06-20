@@ -1,13 +1,10 @@
 .manage_user {
   width: 1400px;
   margin: 0 auto;
+  margin: 2rem auto 1rem auto;
 }
-.user_manage_header_section {
-  display: flex;
-  width: 1400px;
-  margin: 3rem auto 1rem auto;
-}
-.header_u_manage_section {
+
+.header_user_manage_section {
   width: 100%;
   display: flex;
   align-items: center;
@@ -33,11 +30,10 @@
     }
   }
 }
-.user_manage_section {
-  width: 1400px;
+.user_manage_btn_section {
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 3rem;
   margin: 0 auto;
   margin-top: 1.5rem;
 }
@@ -48,10 +44,12 @@
   .btn_user_manage_01,
   .btn_user_manage_02,
   .btn_user_manage_03 {
+    color: #000;
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
     border: transparent;
     transition: all 0.3s;
+    background-color: #f2f2f2;
   }
 
   .btn_user_manage_01 {
@@ -64,12 +62,6 @@
 
   .btn_user_manage_03 {
     border-radius: 0 6px 6px 0;
-  }
-
-  .btn_user_manage_01:hover,
-  .btn_user_manage_02:hover,
-  .btn_user_manage_03:hover {
-    background-color: #ccc;
   }
   .active {
     border: 1px solid #01bdb6;
@@ -116,6 +108,9 @@ button.search {
   &:active {
     transform: scale(0.9);
   }
+}
+.manage_user_table_section{
+  margin-top: 1rem;
 }
 .user_manage_section_body {
   margin-top: 2rem;

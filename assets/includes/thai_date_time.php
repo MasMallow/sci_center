@@ -50,6 +50,30 @@ function thai_date_time_2($datetime)
 
     return "วันที่ $date {$thai_month_arr[$month]} พ.ศ. $year  เวลา $time";
 }
+function thai_date_time_3($datetime)
+{
+    $thai_month_arr = array(
+        1 => "ม.ค.",
+        2 => "ก.พ.",
+        3 => "มี.ค.",
+        4 => "เม.ย.",
+        5 => "พ.ค.",
+        6 => "มิ.ย.",
+        7 => "ก.ค.",
+        8 => "ส.ค.",
+        9 => "ก.ย.",
+        10 => "ต.ค.",
+        11 => "พ.ย.",
+        12 => "ธ.ค."
+    );
+
+    $dt = new DateTime($datetime);
+    $date = $dt->format('j'); // วันที่
+    $month = (int)$dt->format('n'); // เดือน (1-12)
+    $year = $dt->format('Y') + 543; // ปี พ.ศ.
+
+    return "วันที่ $date {$thai_month_arr[$month]} พ.ศ. $year";
+}
 function thai_date($datetime)
 {
     $thai_month_arr = array(

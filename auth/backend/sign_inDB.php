@@ -23,12 +23,12 @@ if (isset($_POST['sign_in'])) {
     // Validate input
     if (empty($username) || empty($password)) {
         $_SESSION['errorLogin'] = '<span id="B">กรุณากรอก Username และ Password</span>';
-        header("location: /sign_in");
+        header("Location: /sign_in");
         exit();
     }
 
     try {
-        $check_data = $conn->prepare("SELECT * FROM users_db WHERE username = :username");
+        $check_data = $conn->prepare("SELECT * FROM users_db LEFT JOIN users_info_db ON users_db.userID = users_info_db.userID WHERE username = :username");
         $check_data->bindParam(":username", $username);
         $check_data->execute();
         $row = $check_data->fetch(PDO::FETCH_ASSOC);
@@ -36,7 +36,7 @@ if (isset($_POST['sign_in'])) {
         if ($check_data->rowCount() > 0) {
             if (password_verify($password, $row['password'])) {
                 // Log the login attempt
-                $authID = $row['user_ID'];
+                $authID = $row['userID'];
                 $log_Name = $row['pre'] . $row['firstname'] . ' ' . $row['lastname'];
                 $log_Date = date('Y-m-d H:i:s');
                 $log_IP = getIP();
@@ -50,11 +50,11 @@ if (isset($_POST['sign_in'])) {
 
                 // Set session and redirect based on user role
                 if ($row['urole'] == 'staff') {
-                    $_SESSION['staff_login'] = $row['user_ID'];
-                    header("location: $base_url");
+                    $_SESSION['staff_login'] = $row['userID'];
+                    header("Location: $base_url");
                 } else {
-                    $_SESSION['user_login'] = $row['user_ID'];
-                    header("location: $base_url");
+                    $_SESSION['user_login'] = $row['userID'];
+                    header("Location: $base_url");
                 }
                 exit(); // Exit after redirection
             } else {
@@ -67,7 +67,7 @@ if (isset($_POST['sign_in'])) {
         $_SESSION['errorLogin'] = '<span id="B">Database error: ' . $e->getMessage() . '</span>';
     }
 
-    header("location: /sign_in");
+    header("Location: /sign_in");
     exit();
 }
 ?>

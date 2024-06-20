@@ -1,22 +1,3 @@
-@font-face {
-  src: url("../fonts/Sarabun-Regular.ttf");
-  font-family: Sarabun;
-}
-@font-face {
-  src: url("../fonts/Sarabun-Bold.ttf");
-  font-family: Sarabun-bold;
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Sarabun;
-  text-decoration: none;
-  list-style: none;
-}
-#B {
-  font-family: Sarabun-bold;
-}
 /* USER INFO */
 @keyframes movingY {
   from {
@@ -41,6 +22,7 @@
   z-index: 9999; /* เพิ่ม z-index ให้มีค่าสูงกว่าลิเรียนท์อื่น */
 
   & .details {
+    min-width: 900px;
     display: block;
     justify-content: center;
     align-items: center;
@@ -77,33 +59,34 @@
 .details_header .modalClose:hover {
   background-color: #d1d1d1;
 }
-.details_content_edit {
-  display: flex;
-  padding: 0rem 1.1rem;
-  padding-bottom: 0.7rem;
-  color: #000;
-}
-.details_content_li {
-  list-style: none;
+.details_content_popup {
   width: 100%;
-  padding: 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-.details_content_li li {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  padding: 1rem 1.1rem;
+  background-color: #525151;
+  color: #000;
+
+  & .details_content_left {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  & .details_content_right {
+    width: 60%;
+  }
 }
-.details_content_li .details_content_1 {
+.DataDisplay {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: end;
-  width: 30%;
+  gap: 1rem;
+  border-bottom: 1px solid #ddd;
+  padding: 0.75rem 1rem;
 }
-.details_content_li .details_content_2 {
+.Col_DataDisplay {
+  width: 100%;
   display: flex;
   align-items: center;
-  width: 70%;
 }

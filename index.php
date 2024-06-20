@@ -19,6 +19,9 @@ switch ($request) {
     case '/sign_in':
         require 'auth/sign_in.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
+    case '/sign_up':
+        require 'auth/sign_up.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
     case '/cart_systems':
         require 'cart_systems.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
@@ -42,6 +45,8 @@ switch ($request) {
         require 'Staff/approve_request.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/manage_users':
+    case '/manage_users/management_user':
+    case '/manage_users/undisapprove_user':
         require 'Staff/manage_users.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/management':
@@ -55,6 +60,9 @@ switch ($request) {
         break;
     case '/management/editData':
         require 'Staff/editData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
+    case '/management/detailsData':
+        require 'Staff/detailsData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/maintenance':
     case '/maintenance/end_maintenance':
