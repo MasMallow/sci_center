@@ -31,9 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         $staff_id = $_SESSION['staff_login'];
         $user_query = $conn->prepare("
                             SELECT userID, pre, firstname, lastname 
-                            FROM users_db LEFT JOIN users_info_db 
-                            ON users_db.userID = users_info_db.userID
-                            WHERE users_db.userID = :staff_id");
+                            FROM users_db
+                            WHERE userID = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $users_LOG = $user_query->fetch(PDO::FETCH_ASSOC);

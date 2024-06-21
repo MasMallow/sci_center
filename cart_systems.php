@@ -7,17 +7,15 @@ if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];
     $stmt = $conn->prepare("
         SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
-    ");
+        FROM users_db
+        WHERE userID = :userID    
+        ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($userData) {
-        if ($userData['status'] == 'not_approved') {
+        if ($userData['status'] == '0') {
             unset($_SESSION['user_login']);
             header('Location: auth/sign_in');
             exit();
@@ -66,19 +64,19 @@ if (isset($_GET['action'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จองอุปกรณ์ และเครื่องมือ</title>
-    <link href="<?php echo $base_url;?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/navigator.css">
-    <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/cart.css">
+    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/cart.css">
 </head>
 
 <body>
     <header>
-        <?php include('assets/includes/header.php'); ?>
+        <?php include('assets/includes/navigator.php'); ?>
     </header>
     <div class="sci_center_cart">
         <div class="sci_center_cart_header">
-            <a href="<?php echo $base_url;?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="<?php echo $base_url; ?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">รายการที่เลือกทั้งหมด</span>
         </div>
         <?php if (empty($_SESSION['reserve_cart'])) : ?>
@@ -89,7 +87,7 @@ if (isset($_GET['action'])) {
                         <span id="B">ไม่มีวัสดุ อุปกรณ์และเครื่องมือถูกเลือกอยู่</span>
                     </div>
                     <div class="non_select_2">
-                        <a href="<?php echo $base_url;?>/"><span>กลับหน้าหลัก</span></a>
+                        <a href="<?php echo $base_url; ?>/"><span>กลับหน้าหลัก</span></a>
                         <span class="warning">!! ถ้าต้องการเลือกวัสดุ อุปกรณ์และเครื่องมือเพิ่มให้กลับหน้าหลัก !!</span>
                     </div>
                 </div>
@@ -128,7 +126,7 @@ if (isset($_GET['action'])) {
                                 </div>
                             </div>
                             <div class="cart_alert_footer">
-                                <a class="back_to_home" href="<?php echo $base_url;?>/">กลับหน้าหลัก</a>
+                                <a class="back_to_home" href="<?php echo $base_url; ?>/">กลับหน้าหลัก</a>
                                 <a class="go_to_notification" href="notification">หน้าแจ้งเตือน</a>
                             </div>
                         </div>
@@ -158,7 +156,7 @@ if (isset($_GET['action'])) {
                     ?>
                 <?php endif; ?>
             <?php else : ?>
-                <form method="post" action="<?php echo $base_url;?>/SystemsUser/waiting_approve_reserve.php">
+                <form method="post" action="<?php echo $base_url; ?>/SystemsUser/waiting_approve_reserve.php">
                     <div class="main_cart_content">
                         <div class="table_section">
                             <div class="count_list">
@@ -214,7 +212,7 @@ if (isset($_GET['action'])) {
                         </div>
                         <div class="footer_section">
                             <div class="footer_section_btn_1">
-                                <a href="<?php echo $base_url;?>/" class="back_to_main">กลับหน้าหลัก</a>
+                                <a href="<?php echo $base_url; ?>/" class="back_to_main">กลับหน้าหลัก</a>
                             </div>
                             <div class="footer_section_btn_2">
                                 <button class="submit cart_btn">ยืนยัน</button>
@@ -250,7 +248,7 @@ if (isset($_GET['action'])) {
 
     </div>
     </div>
-    <script src="<?php echo $base_url;?>/assets/js/cart.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/cart.js"></script>
 </body>
 
 </html>

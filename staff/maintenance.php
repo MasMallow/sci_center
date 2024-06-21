@@ -7,10 +7,8 @@ if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
     $stmt = $conn->prepare("
         SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
+        FROM users_db
+        WHERE userID = :userID
     ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
@@ -231,7 +229,8 @@ try {
                                             }
                                             ?>
                                         </td>
-                                        <td class="checkbox"><label>
+                                        <td class="checkbox">
+                                            <label>
                                                 <input type="checkbox" name="selected_ids[]" value="<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
                                                 <span class="custom-checkbox"></span>
                                             </label>

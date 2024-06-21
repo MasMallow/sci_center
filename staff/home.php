@@ -20,7 +20,8 @@ $previousSn = '';
 $previousFirstname = '';
 
 $stmt = $conn->prepare("
-    SELECT * 
+    SELECT crud.*, info_sciname.*, 
+    DATEDIFF(CURDATE(), IFNULL(last_maintenance_date, CURDATE())) AS days_since_last_maintenance
     FROM crud 
     LEFT JOIN info_sciname ON crud.ID = info_sciname.ID
     WHERE last_maintenance_date IS NULL 
@@ -28,6 +29,7 @@ $stmt = $conn->prepare("
     ORDER BY crud.ID ASC");
 $stmt->execute();
 $maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 $stmt = $conn->prepare("
     SELECT * 
@@ -262,30 +264,55 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php if (!empty($maintenance_notify)) { ?>
                             <div class="approve_container">
                                 <?php
+                                function calculateDaysSinceLastMaintenance($lastMaintenanceDate)
+                                {
+                                    $currentDate = new DateTime();
+                                    if ($lastMaintenanceDate === null) {
+                                        return "ไม่เคยได้รับการบำรุงรักษา";
+                                    } else {
+                                        $lastMaintenanceDate = new DateTime($lastMaintenanceDate);
+                                        $interval = $currentDate->diff($lastMaintenanceDate);
+                                        return $interval->days;
+                                    }
+                                }
                                 foreach ($maintenance_notify as $row) : ?>
                                     <div class="approve_row">
                                         <div class="defualt_row">
                                             <div class="serial_number">
                                                 <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
-                                                <?php echo $row['serial_number']; ?>
+                                                <?php echo htmlspecialchars($row['serial_number']); ?>
                                             </div>
                                             <div class="items">
                                                 <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                             </div>
                                             <div class="reservation_date">
-                                                ไม่ได้รับการบำรุงรักษามามากกว่า 10 วัน
+                                                <?php
+                                                $daysSinceMaintenance = calculateDaysSinceLastMaintenance($row['last_maintenance_date']);
+                                                if ($daysSinceMaintenance === "ไม่เคยได้รับการบำรุงรักษา") {
+                                                    echo $daysSinceMaintenance;
+                                                } else {
+                                                    echo "ไม่ได้รับการบำรุงรักษามามากกว่า " . $daysSinceMaintenance . " วัน";
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                         <div class="expand_row">
                                             <div>
-                                                <?php echo thai_date_time_2(htmlspecialchars($row['last_maintenance_date'])); ?>
+                                                <?php
+                                                if ($row['last_maintenance_date'] === null) {
+                                                    echo "ไม่เคยมีประวัติการบำรุงรักษา";
+                                                } else {
+                                                    echo thai_date_time_2(htmlspecialchars($row['last_maintenance_date']));
+                                                }
+                                                ?>
                                             </div>
                                             <div>
-                                                <?php echo (htmlspecialchars($row['categories'])); ?>
+                                                <?php echo htmlspecialchars($row['categories']); ?>
                                             </div>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
+
                             </div>
                         <?php } ?>
                     </div>

@@ -68,6 +68,9 @@ switch ($request) {
     case '/maintenance/end_maintenance':
         require 'Staff/maintenance.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
+    case '/maintenance/maintenanceDetails':
+        require 'Staff/maintenanceDetails.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
     case '/view_report':
         require 'Staff/view_report.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;

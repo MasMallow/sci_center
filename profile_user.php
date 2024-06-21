@@ -4,17 +4,17 @@ require_once 'assets/database/dbConfig.php';
 include_once 'assets/includes/thai_date_time.php';
 
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
-    $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
+    $userID = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
 
-    $sql = "SELECT * FROM users_db WHERE user_ID = :user_id";
+    $sql = "SELECT * FROM users_db WHERE userID = :userID";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $sql = "SELECT * FROM logs_user WHERE authID = :user_id ORDER BY log_Date DESC";
+    $sql = "SELECT * FROM logs_user WHERE authID = :userID ORDER BY log_Date DESC";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData_log = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -46,7 +46,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'profile';
 </head>
 
 <body>
-    <?php include 'assets/includes/header.php'; ?>
+    <?php include 'assets/includes/navigator.php'; ?>
     <div class="profile_user">
         <div class="profile_user_header">
             <a href="<?php echo htmlspecialchars($base_url); ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
@@ -183,7 +183,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'profile';
                         </div>
                         <div class="edit_profile_body">
                             <div class="user_info_row1">
-                                <span id="B">ID <span><?php echo htmlspecialchars($userData['user_ID']); ?></span></span>
+                                <span id="B">ID <span><?php echo htmlspecialchars($userData['userID']); ?></span></span>
                                 <span id="B">ชื่อ <span><?php echo htmlspecialchars($userData['pre']) . htmlspecialchars($userData['firstname']) . ' ' . htmlspecialchars($userData['lastname']); ?></span></span>
                                 <span id="B">เบอร์โทร <span><?php echo htmlspecialchars($userData['phone_number']); ?></span></span>
                                 <span id="B">อีเมล <span><?php echo htmlspecialchars($userData['email']); ?></span></span>
@@ -192,9 +192,9 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'profile';
                                 <span id="B"><span><?php echo htmlspecialchars($userData['role']) . ' ' . htmlspecialchars($userData['agency']); ?></span></span>
                                 <span id="B">สร้างบัญชีเมื่อ <span><?php echo htmlspecialchars(thai_date_time_2($userData['created_at'])); ?></span></span>
                                 <span id="B">Status <span>
-                                        <?php if ($userData['status'] === 'wait_approved') : ?>
+                                        <?php if ($userData['status'] === '0') : ?>
                                             <span class="wait_approved" id="B">รอการอนุมัติบัญชี</span>
-                                        <?php elseif ($userData['status'] === 'approved') : ?>
+                                        <?php elseif ($userData['status'] === '1') : ?>
                                             <span class="approved" id="B">บัญชีผ่านการอนุมัติ</span>
                                         <?php endif; ?>
                                     </span></span>

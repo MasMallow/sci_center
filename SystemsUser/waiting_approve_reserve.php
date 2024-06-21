@@ -13,17 +13,15 @@ if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];
     $stmt = $conn->prepare("
         SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
-    ");
+        FROM users_db
+        WHERE userID = :userID    
+        ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($userData) {
-        if ($userData['status'] == 'not_approved') {
+        if ($userData['status'] == '0') {
             unset($_SESSION['user_login']);
             header('Location: auth/sign_in');
             exit();
@@ -48,10 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $user_query = $conn->prepare("
                 SELECT * FROM users_db 
-                LEFT JOIN users_info_db 
-                ON users_db.userID 
-                = users_info_db.userID
-                WHERE users_db.userID = :userID");
+                WHERE userID = :userID");
         $user_query->bindParam(':userID', $userID, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);

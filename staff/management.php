@@ -4,36 +4,12 @@ require_once 'assets/database/dbConfig.php';
 include_once 'assets/includes/thai_date_time.php';
 
 // ดึงข้อมูลผู้ใช้เพียงครั้งเดียว
-if (isset($_SESSION['user_login'])) {
-    $userID = $_SESSION['user_login'];
-    $stmt = $conn->prepare("
-        SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
-    ");
-    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($userData) {
-        if ($userData['status'] == 'not_approved') {
-            unset($_SESSION['user_login']);
-            header('Location: auth/sign_in');
-            exit();
-        }
-    }
-}
-
 if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
     $stmt = $conn->prepare("
         SELECT * 
         FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
+        WHERE userID = :userID
     ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();

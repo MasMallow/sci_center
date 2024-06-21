@@ -6,7 +6,7 @@ date_default_timezone_set('Asia/Bangkok');
 // ตรวจสอบการเข้าสู่ระบบ
 if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: auth/sign_in.php');
+    header('Location: /sign_in');
     exit;
 }
 
@@ -15,10 +15,8 @@ if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
     $stmt = $conn->prepare("
         SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
+        FROM users_db  
+        WHERE userID = :userID
     ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
@@ -35,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
     $staff_id = $_SESSION['staff_login'];
     $user_query = $conn->prepare("
         SELECT userID, pre, firstname, lastname 
-        FROM users_info_db 
+        FROM users_db 
         WHERE userID = :staff_id
     ");
     $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);

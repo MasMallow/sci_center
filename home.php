@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
+
 if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];
     $stmt = $conn->prepare("
@@ -11,14 +12,6 @@ if (isset($_SESSION['user_login'])) {
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($userData) {
-        if ($userData['status'] == 'not_approved') {
-            unset($_SESSION['user_login']);
-            header('Location: auth/sign_in');
-            exit();
-        }
-    }
 }
 
 if (isset($_SESSION['staff_login'])) {
