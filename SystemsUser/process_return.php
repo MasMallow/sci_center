@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $staff_id = $_SESSION['staff_login'];
 
         // Fetch the approver details
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :staff_id");
+        $user_query = $conn->prepare("SELECT * FROM users WHERE userID = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $approvaldatetime = date('Y-m-d H:i:s');
 
         // Fetch user details
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users WHERE userID = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $update_query->execute();
 
             // Fetch user details
-            $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :userId");
+            $user_query = $conn->prepare("SELECT * FROM users WHERE userID = :userId");
             $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
             $user_query->execute();
             $user = $user_query->fetch(PDO::FETCH_ASSOC);

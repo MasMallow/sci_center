@@ -209,7 +209,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <?php echo thai_date_time_2($row['reservation_date']); ?>
                                                 </div>
                                                 <div class="approve_actions">
-                                                    <form class="approve_form" method="POST" action="process_reserve.php">
+                                                    <form class="approve_form" method="POST" action="../SystemsUser/process_reserve.php">
                                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                                         <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
                                                         <button class="confirm_approve" type="submit" name="confirm"><i class="fa-solid fa-circle-check"></i></button>

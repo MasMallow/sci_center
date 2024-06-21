@@ -8,10 +8,8 @@ if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];
     $stmt = $conn->prepare("
         SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
+        FROM users_db
+        WHERE userID = :userID
     ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
@@ -30,10 +28,8 @@ if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
     $stmt = $conn->prepare("
         SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
+        FROM users_db
+        WHERE userID = :userID
     ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();

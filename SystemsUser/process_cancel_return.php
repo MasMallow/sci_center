@@ -21,7 +21,7 @@ if (isset($_POST['cancel'])) {
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->execute();
 
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE userID = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -87,7 +87,7 @@ if (isset($_POST['cancel'])) {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /project/approve_for_use.php');
+        header('Location: /home.php');
         exit;
     }
 }

@@ -14,11 +14,10 @@ if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
     $stmt = $conn->prepare("
         SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
-    ");    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        FROM users_db
+        WHERE userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -73,7 +72,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <header>
-    <?php include 'assets/includes/navigator.php'; ?>
+        <?php include 'assets/includes/navigator.php'; ?>
     </header>
     <div class="header_view_report">
         <div class="header_view_report_section">

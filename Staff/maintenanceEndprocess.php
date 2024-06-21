@@ -15,10 +15,8 @@ if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
     $stmt = $conn->prepare("
         SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
+        FROM users_db
+        WHERE userID = :userID
     ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
@@ -33,11 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
 
     // ดึงข้อมูลผู้ใช้สำหรับ log
     $staff_id = $_SESSION['staff_login'];
-    $user_query = $conn->prepare("
-        SELECT userID, pre, firstname, lastname 
-        FROM users_info_db 
-        WHERE userID = :staff_id
-    ");
+    $user_query = $conn->prepare("SELECT * FROM users_db WHERE userID = :staff_id");
     $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
     $user_query->execute();
     $users_LOG = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -88,4 +82,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
         }
     }
 }
-?>

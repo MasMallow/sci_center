@@ -17,7 +17,7 @@ if (isset($_GET['item'])) {
         $list_name = $data['list_name'];
         $items = explode(',', $list_name);
 
-        $Updatesituation = $conn->prepare("UPDATE approve_to_bookings SET situation = 3 WHERE id = :item");
+        $Updatesituation = $conn->prepare("UPDATE approve_to_reserve SET situation = 3 WHERE id = :item");
         $Updatesituation->bindParam(':item', $item, PDO::PARAM_INT);
         $Updatesituation->execute();
 

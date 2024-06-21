@@ -7,13 +7,7 @@ $request_uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่ และดึงข้อมูลผู้ใช้
 if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
-    $stmt = $conn->prepare("
-        SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
-    ");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :userID");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -33,12 +27,7 @@ if (isset($_GET['search'])) {
 
 // ฟังก์ชันในการดึงข้อมูลผู้ใช้ตามเงื่อนไข
 try {
-    $stmt = $conn->prepare("
-            SELECT * 
-            FROM users_db 
-            LEFT JOIN users_info_db 
-            ON users_db.userID = users_info_db.userID 
-            WHERE users_db.status = '0' ");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = 'wait_approved' ");
     $stmt->execute();
     $num = $stmt->rowCount();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -52,18 +41,10 @@ function fetchUsers($conn, $status, $role, $search = null)
 {
     if ($search) {
         $search = "%" . $search . "%";
-        $stmt = $conn->prepare("
-                        SELECT * FROM users_db 
-                        LEFT JOIN users_info_db 
-                        ON users_db.userID = users_info_db.users_db 
-                        WHERE (userID LIKE :search OR pre LIKE :search OR firstname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE (userID LIKE :search OR pre LIKE :search OR firstname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
         $stmt->bindParam(':search', $search, PDO::PARAM_STR);
     } else {
-        $stmt = $conn->prepare("
-                        SELECT * FROM users_db 
-                        LEFT JOIN users_info_db 
-                        ON users_db.userID = users_info_db.userID
-                        WHERE users_db.status = :status AND users_db.urole = :role");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = :status AND urole = :role");
     }
 
     $stmt->bindParam(':status', $status, PDO::PARAM_STR);
@@ -76,9 +57,9 @@ function fetchUsers($conn, $status, $role, $search = null)
 $role = 'user';
 $search = isset($_GET["search"]) ? $_GET["search"] : null;
 if ($request_uri === '/manage_users/management_user') {
-    $users_approved = fetchUsers($conn, '1', $role, $search);
+    $users_approved = fetchUsers($conn, 'approved', $role, $search);
 } elseif ($request_uri === '/manage_users/undisapprove_user') {
-    $users_banned = fetchUsers($conn, '2', $role, $search);
+    $users_banned = fetchUsers($conn, 'not_approved', $role, $search);
 }
 
 // การจัดการคำขอ POST
@@ -88,16 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // อนุมัติผู้ใช้
     if (isset($_POST['approval_user'])) {
         $staff_id = $_SESSION['staff_login'];
-        $stmt = $conn->prepare("
-            SELECT * 
-            FROM users_db 
-            LEFT JOIN users_info_db 
-            ON users_db.userID = users_info_db.userID 
-            WHERE users_db.userID = :userID
-        ");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :userID");
         $stmt->bindParam(':userID', $staff_id, PDO::PARAM_INT);
         $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
         $staff_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $approver = $staff_data['pre'] . $staff_data['firstname'] . ' ' . $staff_data['lastname'];
@@ -220,8 +194,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <td><?= $user['agency']; ?></td>
                                     <td><?= format_phone_number($user['phone_number']); ?></td>
                                     <td><?= thai_date_time($user['created_at']); ?></td>
-                                    <td><?= $user['urole'] === 'user' ? 'ผู้ใช้งานทั่วไป' : 'เจ้าหน้าที่ '; ?></td>
-                                    <td class="<?= $user['status'] === '1' ? 'green_text' : 'red_text'; ?>"><?= $user['status'] === '1' ? 'อนุมัติแล้ว' : 'ไม่ได้รับอนุมัติ'; ?></td>
+                                    <td><?= $user['urole'] === 'user' ? 'ผู้ใช้งานทั่วไป' : 'อื่น ๆ'; ?></td>
+                                    <td class="<?= $user['status'] === 'approved' ? 'green_text' : 'red_text'; ?>"><?= $user['status'] === 'approved' ? 'อนุมัติแล้ว' : 'ไม่ได้รับอนุมัติ'; ?></td>
                                     <td class="operation">
                                         <form method="post">
                                             <div class="btn_user_manage_section">

@@ -29,11 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
             $userData = $stmt->fetch(PDO::FETCH_ASSOC);
         }
         $staff_id = $_SESSION['staff_login'];
-        $user_query = $conn->prepare("
-                            SELECT userID, pre, firstname, lastname 
-                            FROM users_db LEFT JOIN users_info_db 
-                            ON users_db.userID = users_info_db.userID
-                            WHERE users_db.userID = :staff_id");
+        $user_query = $conn->prepare("SELECT userID, pre, firstname, lastname FROM users_db WHERE userID = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $users_LOG = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -73,9 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         } else {
             $_SESSION['error'] = "Data has not been updated successfully";
         }
-
-        header("Location: /maintenance");
-        exit;
 
         // เพิ่มรายละเอียดในข้อความ
         if ($item) {
@@ -121,6 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
             </script>";
     }
     curl_close($chOne);
+
+    // Move header redirect after sending Line Notify message
     header('Location: /maintenance');
     exit;
 }
+?>

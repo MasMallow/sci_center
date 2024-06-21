@@ -6,7 +6,7 @@ include_once 'assets/includes/thai_date_time.php';
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
 
-    $sql = "SELECT * FROM users_db WHERE user_ID = :user_id";
+    $sql = "SELECT * FROM users_db WHERE userID = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();

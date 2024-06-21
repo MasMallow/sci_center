@@ -9,26 +9,16 @@ if (!isset($_SESSION['user_login'])) {
     exit();
 }
 
-if (isset($_SESSION['user_login'])) {
-    $userID = $_SESSION['user_login'];
-    $stmt = $conn->prepare("
-        SELECT * 
-        FROM users_db 
-        LEFT JOIN users_info_db 
-        ON users_db.userID = users_info_db.userID 
-        WHERE users_db.userID = :userID
-    ");
-    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+$user_id = $_SESSION['user_login'];
+$stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
+$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->execute();
+$userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($userData) {
-        if ($userData['status'] == 'not_approved') {
-            unset($_SESSION['user_login']);
-            header('Location: auth/sign_in');
-            exit();
-        }
-    }
+// ตรวจสอบสถานะของผู้ใช้
+if (!$userData || $userData['status'] !== 'approved') {
+    header("Location: home");
+    exit();
 }
 
 // ฟังก์ชันสำหรับการสร้างสตริงสุ่ม
@@ -43,16 +33,13 @@ $random_string = generateRandomString();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reserve'])) {
         $reservationdate = $_POST['reservation_date'];
-        $items = $_POST['amount'];
+        $amount = $_POST['amount'];
         $enddate = $_POST['end_date'];
+        echo 'อันนี้ amount ' . print_r($amount);
 
-        $user_query = $conn->prepare("
-                SELECT * FROM users_db 
-                LEFT JOIN users_info_db 
-                ON users_db.userID 
-                = users_info_db.userID
-                WHERE users_db.userID = :userID");
-        $user_query->bindParam(':userID', $userID, PDO::PARAM_INT);
+
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
+        $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
         $e_mail = ($user['email']);
@@ -69,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($product) {
                 $productName = htmlspecialchars($product['sci_name']);
-                $quantity = isset($items[$item]) ? (int)$items[$item] : 0;
+                $quantity = isset($amount[$item]) ? (int)$amount[$item] : 0;
 
                 // ตรวจสอบการจองล่วงหน้า
                 if ($product['check_bookings'] != NULL) {
@@ -85,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
+
         // แสดงข้อความข้อผิดพลาดหากมี
         if (!empty($errorMessages)) {
             foreach ($errorMessages as $message) {
@@ -99,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "INSERT INTO approve_to_reserve (serial_number, user_id, name_user, list_name, reservation_date, end_date, created_at) 
                 VALUES (:random_string, :user_id, :name_user, :list_name, :reservationdate, :enddate, NOW())"
             );
-            $insert_query->bindParam(':user_id', $userID, PDO::PARAM_INT);
+            $insert_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $insert_query->bindParam(':name_user', $firstname, PDO::PARAM_STR);
             $insert_query->bindParam(':list_name', $itemBorrowed, PDO::PARAM_STR);
             $insert_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
@@ -111,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "INSERT INTO logs_usage (authID, authName, log_orDers, log_Data, created_at, reservation_date, end_date) 
                 VALUES (:authID, :authName, :random_string, :list_name, NOW(), :reservationdate, :enddate)"
             );
-            $insert_logs->bindParam(':authID', $userID, PDO::PARAM_INT);
+            $insert_logs->bindParam(':authID', $user_id, PDO::PARAM_INT);
             $insert_logs->bindParam(':authName', $firstname, PDO::PARAM_STR);
             $insert_logs->bindParam(':random_string', $random_string, PDO::PARAM_STR);
             $insert_logs->bindParam(':list_name', $itemBorrowed, PDO::PARAM_STR);
@@ -127,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['reserve_2'] = $itemBorrowed;
             $_SESSION['reserve_3'] = $reservationdate;
 
-            header("Location: $base_url/cart_systems");
+            header("Location: $base_url/cart_systems.php");
             exit();
         }
     }
