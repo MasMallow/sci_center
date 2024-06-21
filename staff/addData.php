@@ -3,8 +3,15 @@ session_start();
 require_once 'assets/database/dbConfig.php';
 
 if (isset($_SESSION['staff_login'])) {
-    $user_id = $_SESSION['staff_login'];
-    $stmt = $conn->query("SELECT * FROM users_db WHERE user_ID =$user_id");
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -27,7 +34,7 @@ if (isset($_SESSION['staff_login'])) {
     <main class="add_MET">
         <div class="add_MET_section">
             <div class="add_MET_section_header">
-                <a href="<?php echo $base_url; ?>/management"><i class="fa-solid fa-arrow-left-long"></i></a>
+                <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
                 <label id="B">เพิ่มรายการศูนย์วิทยาศาสตร์</label>
             </div>
             <form action="<?php echo $base_url; ?>/Staff/upload.php" method="POST" enctype="multipart/form-data">

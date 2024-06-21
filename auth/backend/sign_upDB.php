@@ -59,7 +59,7 @@ if (isset($_POST['signup'])) {
     } else {
         try {
             // ตรวจสอบ email ซ้ำ
-            $check_email = $conn->prepare("SELECT email FROM users_info_db WHERE email = :email");
+            $check_email = $conn->prepare("SELECT email FROM users_db WHERE email = :email");
             $check_email->bindParam(":email", $email);
             $check_email->execute();
             $row = $check_email->fetch(PDO::FETCH_ASSOC);
@@ -71,24 +71,13 @@ if (isset($_POST['signup'])) {
             } else {
                 // แฮชรหัสผ่าน
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                
-                // เริ่ม transaction
-                $conn->beginTransaction();
-
-                // เพิ่มข้อมูลใน users_db
-                $stmt = $conn->prepare("INSERT INTO users_db (userID, username, password, urole, created_at, status)
-                    VALUES (:userID, :username, :password, :urole, NOW(), :status)");
+    
+                // เพิ่มข้อมูลใน users_info_db
+                $stmt = $conn->prepare("INSERT INTO users_db (userID, username, password, created_at, pre, firstname, lastname, phone_number, email, role, agency, status)
+                    VALUES (:userID, :username, :password, NOW(), :pre, :firstname, :lastname, :phone_number, :email, :role, :agency, :status)");
                 $stmt->bindParam(":userID", $userID);
                 $stmt->bindParam(":username", $username);
                 $stmt->bindParam(":password", $passwordHash);
-                $stmt->bindParam(":urole", $urole);
-                $stmt->bindParam(":status", $status);
-                $stmt->execute();
-
-                // เพิ่มข้อมูลใน users_info_db
-                $stmt = $conn->prepare("INSERT INTO users_info_db (userID, pre, firstname, lastname, phone_number, email, role, agency, status)
-                    VALUES (:userID, :pre, :firstname, :lastname, :phone_number, :email, :role, :agency, :status)");
-                $stmt->bindParam(":userID", $userID);
                 $stmt->bindParam(":pre", $pre);
                 $stmt->bindParam(":firstname", $firstname);
                 $stmt->bindParam(":lastname", $lastname);
@@ -99,16 +88,11 @@ if (isset($_POST['signup'])) {
                 $stmt->bindParam(":status", $status);
                 $stmt->execute();
 
-                // คอมมิต transaction
-                $conn->commit();
-
                 $_SESSION['successSign_up'] = "สมัครสมาชิกเรียบร้อยแล้ว";
                 header("location:/sign_in");
                 exit;
             }
         } catch (PDOException $e) {
-            // โรลแบ็ค transaction ถ้ามีข้อผิดพลาด
-            $conn->rollBack();
             $_SESSION['errorSign_up'] = "เกิดข้อผิดพลาด: " . $e->getMessage();
             header("location: /sign_up");
             exit;

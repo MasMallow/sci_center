@@ -28,7 +28,7 @@ if (isset($_POST['sign_in'])) {
     }
 
     try {
-        $check_data = $conn->prepare("SELECT * FROM users_db LEFT JOIN users_info_db ON users_db.userID = users_info_db.userID WHERE username = :username");
+        $check_data = $conn->prepare("SELECT * FROM users_db WHERE username = :username");
         $check_data->bindParam(":username", $username);
         $check_data->execute();
         $row = $check_data->fetch(PDO::FETCH_ASSOC);

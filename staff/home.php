@@ -6,7 +6,7 @@ $bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatet
 $bookings->execute();
 $data = $bookings->fetchAll(PDO::FETCH_ASSOC);
 $numbookings = count($data); // นับจำนวนรายการ
-$user = $conn->prepare("SELECT * FROM users_db WHERE status = 'wait_approved' AND urole = 'user'");;
+$user = $conn->prepare("SELECT * FROM users_db WHERE status = '0' AND urole = 'user'");;
 $user->execute();
 $datauser = $user->fetchAll(PDO::FETCH_ASSOC);
 $numuser = count($datauser); // นับจำนวนรายการ

@@ -4,16 +4,22 @@ require_once 'assets/database/dbConfig.php';
 include_once 'assets/includes/thai_date_time.php';
 
 if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $userID = $_SESSION['user_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($userData) {
-        if ($userData['status'] !== 'approved') {
-            unset($_SESSION['reserve_cart']);
-            header("Location: home");
+        if ($userData['status'] == 'not_approved') {
+            unset($_SESSION['user_login']);
+            header('Location: auth/sign_in');
             exit();
         }
     }
@@ -173,7 +179,7 @@ if (isset($_GET['action'])) {
                                 </tr>
                                 <?php foreach ($_SESSION['reserve_cart'] as $item) : ?>
                                     <?php
-                                    // Retrieve product details from the database based on the item
+                                    // Retrieve product details from the database based oapn the item
                                     $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :itemToAdd");
                                     $query->bindParam(':itemToAdd', $item, PDO::PARAM_STR);
                                     $query->execute();

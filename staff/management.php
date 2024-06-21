@@ -201,11 +201,11 @@ try {
                             <div class="content_amount"><span id="B">คงเหลือ </span><?php echo htmlspecialchars($results['amount']); ?></div>
                         </div>
                         <div class="management_grid_content_footer">
-                            <a href="management/editData?id=<?= $results['ID'] ?>" class="edit_crud_btn">
+                            <a href="<?php echo $base_url;?>/management/editData?id=<?= $results['ID'] ?>" class="edit_crud_btn">
                                 <i class="fa-solid fa-circle-info"></i>
                                 <span>แก้ไขข้อมูล</span>
                             </a>
-                            <a href="management/detailsData?id=<?= $results['ID'] ?>" class="delete_btn">
+                            <a href="<?php echo $base_url;?>/management/detailsData?id=<?= $results['ID'] ?>" class="delete_btn">
                                 <i class="icon fa-solid fa-trash"></i>
                                 <span>ลบข้อมูล</span>
                             </a>

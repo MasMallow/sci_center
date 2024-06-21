@@ -11,29 +11,29 @@ if (!isset($_SESSION['staff_login'])) {
 
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้
 if (isset($_SESSION['staff_login'])) {
-    // ถ้าผู้ใช้เข้าสู่ระบบด้วย user_login หรือ staff_login
-    $user_id = $_SESSION['staff_login'];
-    // เตรียมคำสั่ง SQL เพื่อดึงข้อมูลผู้ใช้
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
-    // ผูกค่า user_id เข้ากับคำสั่ง SQL
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    // ดำเนินการคำสั่ง SQL
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db 
+        LEFT JOIN users_info_db 
+        ON users_db.userID = users_info_db.userID 
+        WHERE users_db.userID = :userID
+    ");    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
-    // ดึงข้อมูลผู้ใช้
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// สร้างคำสั่ง SQL ตามตัวกรอง user_id และช่วงเวลา
+// สร้างคำสั่ง SQL ตามตัวกรอง userID และช่วงเวลา
 $sql = "SELECT * FROM approve_to_reserve WHERE situation = 1  OR situation = 3";
 
 // สร้างอาร์เรย์เพื่อเก็บพารามิเตอร์
 $params = [];
 
-// ตรวจสอบและกำหนดค่า user_id
-if (isset($_GET['user_id']) && $_GET['user_id'] !== '') {
-    $user_id = $_GET['user_id'];
-    $sql .= " AND user_ID LIKE :user_id";
-    $params[':user_id'] = "%" . $user_id . "%";
+// ตรวจสอบและกำหนดค่า userID
+if (isset($_GET['userID']) && $_GET['userID'] !== '') {
+    $userID = $_GET['userID'];
+    $sql .= " AND userID LIKE :userID";
+    $params[':userID'] = "%" . $userID . "%";
 }
 
 // ตรวจสอบและกำหนดค่า start_date และ end_date
@@ -87,7 +87,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="view_report_column">
                     <div class="view_report_input">
                         <label id="B" for="userID">UID</label>
-                        <input type="text" id="userID" name="user_id" placeholder="กรอไอดีผู้ใช้">
+                        <input type="text" id="userID" name="userID" placeholder="กรอไอดีผู้ใช้">
                     </div>
                     <div class="view_report_input">
                         <label id="B" for="startDate">ช่วงเวลาเริ่มต้น</label>
@@ -111,8 +111,8 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </span>
                     <!-- ปุ่มสำหรับสร้างรายงาน PDF -->
                     <form id="pdfForm" action="generate_pdf_bookings" method="GET">
-                        <?php if (isset($_GET["user_id"]) && $_GET["user_id"] != "") : ?>
-                            <input type="hidden" name="user_id" value="<?= htmlspecialchars($_GET["user_id"]) ?>">
+                        <?php if (isset($_GET["userID"]) && $_GET["userID"] != "") : ?>
+                            <input type="hidden" name="userID" value="<?= htmlspecialchars($_GET["userID"]) ?>">
                         <?php endif; ?>
                         <?php if (isset($_GET["start_date"]) && $_GET["start_date"] != "" && isset($_GET["end_date"]) && $_GET["end_date"] != "") : ?>
                             <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($_GET["start_date"]) ?>">
@@ -141,7 +141,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     if (count($data) > 0) {
                         foreach ($data as $row) { ?>
                             <tr>
-                                <td class="UID"><?php echo htmlspecialchars($row["user_ID"]); ?></td>
+                                <td class="UID"><?php echo htmlspecialchars($row["userID"]); ?></td>
                                 <td><?php echo htmlspecialchars($row["name_user"]); ?></td>
                                 <td>
                                     <?php
