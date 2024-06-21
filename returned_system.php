@@ -5,7 +5,7 @@ include_once 'assets/includes/thai_date_time.php';
 
 try {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,7 +24,7 @@ try {
     $returned = $_GET['returned'] ?? 'used'; // ตรวจสอบค่าที่ถูกส่งมาจาก query parameter 'returned'
 
     // ตรวจสอบและเลือกคำสั่ง SQL ตามค่า 'returned' ที่รับมาelse {
-    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_ID = :user_id AND situation = 1 AND date_return IS NULL");
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND situation = 1 AND date_return IS NULL");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC); // เก็บข้อมูลที่ได้จากการ query ลงในตัวแปร $dataList

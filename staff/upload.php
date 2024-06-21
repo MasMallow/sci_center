@@ -1,10 +1,20 @@
 <?php
 session_start();
 require_once '../assets/database/dbConfig.php';
-date_default_timezone_set('Asia/Bangkok'); // ตั้งค่าโซนเวลาเป็น Asia/Bangkok
+date_default_timezone_set('Asia/Bangkok'); // Set timezone to Asia/Bangkok
 
+// Check if the user is logged in
+if (isset($_SESSION['staff_login'])) {
+    $userID = $_SESSION['staff_login'];
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :userID");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Process form submission
 if (isset($_POST['submit'])) {
-    // รับข้อมูลจากฟอร์ม
+    // Get form data
     $sci_name = trim($_POST['sci_name']);
     $serial_number = trim($_POST['serial_number']);
     $amount = trim($_POST['amount']);
@@ -17,44 +27,49 @@ if (isset($_POST['submit'])) {
     $brand = trim($_POST['brand']);
     $model = trim($_POST['model']);
 
-    // Upload Thumbnail
+    // Check if $sci_name contains [] or ()
+    if (strpos($sci_name, '[') !== false || strpos($sci_name, ']') !== false || strpos($sci_name, '(') !== false || strpos($sci_name, ')') !== false) {
+        $_SESSION['error'] = "ห้ามใส่ [] หรือ () ในชื่อวิทยาศาสตร์";
+        header('location: ' . $base_url . '/management/addData');
+        exit();
+    }
+
+    // Handle thumbnail upload
     $img = $_FILES['img'];
     $thumbnail_extension = strtolower(pathinfo($img['name'], PATHINFO_EXTENSION));
     $folder = '../assets/uploads/';
     $thumbnail_path = $folder . uniqid() . '.' . $thumbnail_extension;
 
-    // ตรวจสอบประเภทของไฟล์ภาพ
-    $allow = array('jpg', 'jpeg', 'png');
-    if (in_array($thumbnail_extension, $allow)) {
+    // Allowed image types
+    $allowed = array('jpg', 'jpeg', 'png');
+    if (in_array($thumbnail_extension, $allowed)) {
         if ($img['size'] > 0 && $img['error'] == 0) {
-
-            // ตรวจสอบว่ามีชื่อไฟล์ภาพอยู่ในฐานข้อมูลหรือไม่
+            // Check if image name already exists in database
             $stmt = $conn->prepare("SELECT * FROM crud WHERE img_name = :img_name");
             $stmt->bindParam(":img_name", $img['name']);
             $stmt->execute();
-            $Insert_curd = $stmt->fetch(PDO::FETCH_ASSOC);
+            $insert_curd = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // ตรวจสอบว่ามีชื่อวิทยาศาสตร์อยู่ในฐานข้อมูลหรือไม่
+            // Check if scientific name already exists in database
             $stmt = $conn->prepare("SELECT * FROM info_sciname WHERE sci_name = :sci_name");
             $stmt->bindParam(":sci_name", $sci_name);
             $stmt->execute();
-            $Insert_info = $stmt->fetch(PDO::FETCH_ASSOC);
+            $insert_info = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($Insert_curd || $Insert_info) {
+            if ($insert_curd || $insert_info) {
                 $_SESSION['errorUpload'] = "ชื่อไฟล์ภาพหรือชื่อวิทยาศาสตร์นี้ถูกใช้ไปแล้ว";
                 header('location: ' . $base_url . '/management/addData');
                 exit();
             } else {
-                // อัปโหลดไฟล์ภาพ
+                // Upload the image
                 if (move_uploaded_file($img['tmp_name'], $thumbnail_path)) {
-                    $conn->beginTransaction(); // เริ่มการทำธุรกรรม
+                    $conn->beginTransaction(); // Start transaction
 
                     try {
-                        // เพิ่มข้อมูลลงในฐานข้อมูล crud
-                        $sql = $conn->prepare("INSERT INTO crud (img_name, sci_name, serial_number, amount, categories, uploaded_on) 
-                        VALUES(:img_name, :sci_name, :serial_number, :amount, :categories, :uploaded)");
+                        // Insert data into crud table
+                        $sql = $conn->prepare("INSERT INTO crud (img_name, sci_name, serial_number, amount, categories, uploaded_on) VALUES (:img_name, :sci_name, :serial_number, :amount, :categories, :uploaded)");
                         $thumbnail_new_name = basename($thumbnail_path);
-                        $uploaded = date("Y-m-d H:i:s"); // ใส่วันที่และเวลาปัจจุบัน
+                        $uploaded = date("Y-m-d H:i:s"); // Current date and time
                         $sql->bindParam(":img_name", $thumbnail_new_name);
                         $sql->bindParam(":sci_name", $sci_name);
                         $sql->bindParam(":serial_number", $serial_number);
@@ -63,9 +78,8 @@ if (isset($_POST['submit'])) {
                         $sql->bindParam(":uploaded", $uploaded);
                         $sql->execute();
 
-                        // เพิ่มข้อมูลลงในฐานข้อมูล info_sciname
-                        $sql = $conn->prepare("INSERT INTO info_sciname (sci_name, serial_number, installation_date, details, brand, model, company, contact_number, contact) 
-                        VALUES(:sci_name, :serial_number, :installation_date, :details, :brand, :model, :company, :contact_number, :contact)");
+                        // Insert data into info_sciname table
+                        $sql = $conn->prepare("INSERT INTO info_sciname (sci_name, serial_number, installation_date, details, brand, model, company, contact_number, contact) VALUES (:sci_name, :serial_number, :installation_date, :details, :brand, :model, :company, :contact_number, :contact)");
                         $sql->bindParam(":sci_name", $sci_name);
                         $sql->bindParam(":serial_number", $serial_number);
                         $sql->bindParam(":installation_date", $installation_date);
@@ -77,14 +91,14 @@ if (isset($_POST['submit'])) {
                         $sql->bindParam(":contact", $contact);
                         $sql->execute();
 
-                        // ยืนยันการทำธุรกรรม
+                        // Commit transaction
                         $conn->commit();
 
                         $_SESSION['success'] = "เพิ่มข้อมูลสำเร็จ <a href='dashboard.php'><span id='B'>กลับหน้า Dashboard</span></a>";
                         header('location: ' . $base_url . '/management/addData');
                         exit();
                     } catch (Exception $e) {
-                        // ยกเลิกการทำธุรกรรม
+                        // Rollback transaction
                         $conn->rollBack();
                         $_SESSION['error'] = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
                         header('location: ' . $base_url . '/management/addData');

@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Bangkok');
 
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
     $currentDateTime = date('Y-m-d H:i:s');
 
     // Update the date_return in approve_to_use table
-    $stmt = $conn->prepare("UPDATE approve_to_bookings SET date_return = :currentDateTime WHERE id = :return_id");
+    $stmt = $conn->prepare("UPDATE approve_to_reserve SET date_return = :currentDateTime WHERE id = :return_id");
     $stmt->bindParam(':currentDateTime', $currentDateTime, PDO::PARAM_STR);
     $stmt->bindParam(':return_id', $return_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
     $update_query->execute();
     $update_data = $update_query->fetch(PDO::FETCH_ASSOC);
 
-    $user_query = $conn->prepare("SELECT * FROM users_db WHERE user_ID = :user_id");
+    $user_query = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
     $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $user_query->execute();
     $user = $user_query->fetch(PDO::FETCH_ASSOC);

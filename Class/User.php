@@ -17,9 +17,7 @@ class User
         $stmt = $this->conn->prepare("
             SELECT * 
             FROM users_db 
-            LEFT JOIN users_info_db 
-            ON users_db.userID = users_info_db.userID 
-            WHERE users_db.userID = :userID
+            WHERE userID = :userID
         ");
         $stmt->bindParam(':userID', $this->userID, PDO::PARAM_INT);
         $stmt->execute();

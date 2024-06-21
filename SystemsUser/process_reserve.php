@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'assets/database/dbConfig.php';
+include_once '../assets/database/dbConfig.php';
 
 // Current date and time
 date_default_timezone_set('Asia/Bangkok');
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $staff_id = $_SESSION['staff_login'];
 
         // Select firstname of the approver from the database
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :staff_id");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE userID = :staff_id");
         $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
         $user_query->execute();
         $approver = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_query->execute();
 
         // Select user details
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :userId");
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE userID = :userId");
         $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $user_query->execute();
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
@@ -118,27 +118,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /project/approve_for_booking.php');
+        header('Location: /home.php');
         exit;
     } elseif (isset($_POST['cancel'])) {
         $id = $_POST['id'];
         $userId = $_POST['userId'];
 
         // Update booking in the database
-        $update_query = $conn->prepare("UPDATE approve_to_bookings SET situation = 2 WHERE id = :id AND user_id = :udi");
+        $update_query = $conn->prepare("UPDATE approve_to_reserve SET situation = 2 WHERE id = :id AND user_id = :udi");
         $update_query->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query->bindParam(':udi', $userId, PDO::PARAM_INT);
         $update_query->execute();
 
+        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
+
         // Select user details
-        $user_query = $conn->prepare("SELECT * FROM users WHERE user_ID = :userId");
-        $user_query->bindParam(':userId', $userId, PDO::PARAM_INT);
-        $user_query->execute();
+        $user_query = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
+        $user_query->bindParam(':user_id', $user_id, PDO::PARAM_INT); // Bind the user_id parameter
+        $user_query->execute(); // Execute the query
+
+        // Fetch the user data. This fetches a single row since userID is unique
         $user = $user_query->fetch(PDO::FETCH_ASSOC);
 
-        // Create message for Line Notify
-        $sMessage = "รายการจองวัสดุอุปกรณ์และเครื่องมือ\n";
-        $sMessage .= "ชื่อผู้จอง : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+        // Check if user data was fetched successfully
+        if ($user) {
+            // Concatenate user information into $sMessage
+            $sMessage .= "ชื่อผู้ยืม : " . $user['pre'] . ' ' . $user['firstname'] . ' ' . $user['lastname'] . ' ' . $user['role'] . ' ' . $user['agency'] . "\n";
+        } else {
+            // Handle the case where no user was found for the given userID
+            $sMessage .= "ไม่พบข้อมูลผู้ยืมสำหรับ userID: " . $user_id . "\n";
+        }
         $sMessage .= "SN : " . $data['serial_number'] . "\n";
         $sMessage .= "วันที่กดจอง : " . date('d/m/Y H:i:s', strtotime($data['created_at'])) . "\n";
         $sMessage .= "วันที่จองใช้ : " . date('d/m/Y H:i:s', strtotime($data['reservation_date'])) . "\n";
@@ -187,8 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>";
         }
         curl_close($chOne);
-        header('Location: /project/approve_for_booking.php');
+        header('Location: /home.php');
         exit;
     }
 }
-?>
