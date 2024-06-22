@@ -30,11 +30,6 @@ if (isset($_GET['item'])) {
             $stmtUpdate->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmtUpdate->bindParam(':product_name', $product_name, PDO::PARAM_STR);
             $stmtUpdate->execute();
-
-            $Update = $conn->prepare("UPDATE crud SET check_bookings = NULL WHERE sci_name = :product_name");
-            $Update->bindParam(':product_name', $product_name, PDO::PARAM_STR);
-            $Update->execute();
-            
         }
         echo 'ทำรายการเสร็จสิ้น';
         echo '<a href="home">กลับหน้าหลัก</a>';

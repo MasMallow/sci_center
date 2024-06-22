@@ -66,9 +66,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $productName = htmlspecialchars($product['sci_name']);
                 $quantity = isset($items[$item]) ? (int)$items[$item] : 0;
 
-                // ตรวจสอบการจองล่วงหน้า
-                if ($product['check_bookings'] != NULL) {
-                    $errorMessages[] = "อุปกรณ์ $productName ได้มีคนทำการจองไว้แล้ว";
+                // ตรวจสอบการจองซ้ำถ้าประเภทไม่ใช่ "วัสดุ"
+                if ($product['categories'] !== 'วัสดุ') {
+                    $reservation_check_query = $conn->prepare(
+                        "SELECT * FROM approve_to_reserve WHERE list_name LIKE :productName AND (
+                            (reservation_date <= :reservationdate AND end_date >= :reservationdate) OR
+                            (reservation_date <= :enddate AND end_date >= :enddate) OR
+                            (reservation_date >= :reservationdate AND end_date <= :enddate)
+                        )"
+                    );
+                    $reservation_check_query->bindValue(':productName', "%$productName%", PDO::PARAM_STR);
+                    $reservation_check_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
+                    $reservation_check_query->bindParam(':enddate', $enddate, PDO::PARAM_STR);
+                    $reservation_check_query->execute();
+
+                    if ($reservation_check_query->rowCount() > 0) {
+                        $errorMessages[] = "อุปกรณ์ $productName ได้มีคนทำการจองไว้แล้ว";
+                    }
                 }
 
                 // ตรวจสอบจำนวนสินค้าว่ามีเพียงพอหรือไม่
@@ -127,3 +141,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+?>
