@@ -308,7 +308,7 @@ try {
 
 <?php
 if (isset($userData['urole']) && $userData['urole'] == 'staff') {
-    include('staff/home.php');
+    include('staff/homeStaff.php');
 }
 ?>
 <?php include_once 'assets/includes/footer.php' ?>

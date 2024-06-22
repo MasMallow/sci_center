@@ -54,7 +54,7 @@ try {
             </div>
             <form action="<?php echo $base_url; ?>/Staff/updateData.php" method="POST" enctype="multipart/form-data">
                 <div class="add_MET_section_form">
-                    <div class="addForm_left">
+                    <div class="form_left">
                         <div class="img">
                             <div class="imgInput">
                                 <img src="../assets/uploads/<?php echo $editData['img_name']; ?>" class="previewImg" id="previewImg">
@@ -72,7 +72,7 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="addForm_right">
+                    <div class="form_right">
                         <script>
                             document.getElementById('imgInput').addEventListener('change', function(event) {
                                 const [file] = event.target.files;
@@ -94,9 +94,9 @@ try {
                             <div class="input_Data">
                                 <label for="categories">ประเภท</label>
                                 <select name="categories" required>
-                                    <option value="Material" <?php if ($editData['categories'] === 'วัสดุ') echo 'selected'; ?>>วัสดุ</option>
-                                    <option value="Equipment" <?php if ($editData['categories'] === 'อุปกรณ์') echo 'selected'; ?>>อุปกรณ์</option>
-                                    <option value="Tool" <?php if ($editData['categories'] === 'เครื่องมือ') echo 'selected'; ?>>เครื่องมือ</option>
+                                    <option value="วัสดุ" <?php if ($editData['categories'] === 'วัสดุ') echo 'selected'; ?>>วัสดุ</option>
+                                    <option value="อุปกรณ์" <?php if ($editData['categories'] === 'อุปกรณ์') echo 'selected'; ?>>อุปกรณ์</option>
+                                    <option value="เครื่องมือ" <?php if ($editData['categories'] === 'เครื่องมือ') echo 'selected'; ?>>เครื่องมือ</option>
                                 </select>
                             </div>
                             <div class="input_Data">

@@ -212,7 +212,7 @@ try {
                                 <?php foreach ($maintenance as $row) : ?>
                                     <tr>
                                         <td class="sci_name">
-                                            <a href="<?php echo $base_url;?>/maintenance/maintenanceDetails?id=<?= $row['ID'] ?>">
+                                            <a href="<?php echo $base_url;?>/maintenance/detailsData?id=<?= $row['ID'] ?>">
                                                 <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?> (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
                                             </a>
                                         </td>

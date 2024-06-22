@@ -62,17 +62,19 @@ switch ($request) {
         require 'Staff/editData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/management/detailsData':
+    case '/maintenance/detailsData':
         require 'Staff/detailsData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/maintenance':
     case '/maintenance/end_maintenance':
         require 'Staff/maintenance.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
-    case '/maintenance/maintenanceDetails':
-        require 'Staff/maintenanceDetails.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
-        break;
     case '/view_report':
+    case '/view_report/userID/startDate/endDate':
         require 'Staff/view_report.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
+    case '/view_report/generate_pdf':
+        require 'Staff/generate_pdf.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/top_10_list':
         require 'Staff/top_10_list.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด

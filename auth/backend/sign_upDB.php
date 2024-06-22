@@ -16,7 +16,7 @@ if (isset($_POST['signup'])) {
     $phone_number = $_POST['phone_number'];
     $agency = $_POST['agency'];
     $urole = 'user';
-    $status = '0';
+    $status = 'w_approved';
 
     // ตรวจสอบชื่อผู้ใช้ซ้ำ
     $check_username = $conn->prepare("SELECT username FROM users_db WHERE username = :username");
@@ -73,8 +73,9 @@ if (isset($_POST['signup'])) {
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
     
                 // เพิ่มข้อมูลใน users_info_db
-                $stmt = $conn->prepare("INSERT INTO users_db (userID, username, password, created_at, pre, firstname, lastname, phone_number, email, role, agency, status)
-                    VALUES (:userID, :username, :password, NOW(), :pre, :firstname, :lastname, :phone_number, :email, :role, :agency, :status)");
+                $stmt = $conn->prepare("
+                    INSERT INTO users_db (userID, username, password, created_at, pre, firstname, lastname, phone_number, email, role, urole, agency, status)
+                    VALUES (:userID, :username, :password, NOW(), :pre, :firstname, :lastname, :phone_number, :email, :role, :urole, :agency, :status)");
                 $stmt->bindParam(":userID", $userID);
                 $stmt->bindParam(":username", $username);
                 $stmt->bindParam(":password", $passwordHash);
@@ -84,6 +85,7 @@ if (isset($_POST['signup'])) {
                 $stmt->bindParam(":phone_number", $phone_number);
                 $stmt->bindParam(":email", $email);
                 $stmt->bindParam(":role", $role);
+                $stmt->bindParam(":urole", $urole);
                 $stmt->bindParam(":agency", $agency);
                 $stmt->bindParam(":status", $status);
                 $stmt->execute();

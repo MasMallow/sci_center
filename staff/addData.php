@@ -25,12 +25,43 @@ if (isset($_SESSION['staff_login'])) {
     <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/management_systems.css">
 </head>
 
 <body>
     <?php include('assets/includes/navigator.php') ?>
     <main class="add_MET">
+        <?php if (isset($_SESSION['Uploadsuccess'])) : ?>
+            <div class="toast">
+                <div class="toast_section">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-check check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2"><?php echo $_SESSION['Uploadsuccess']; ?></span>
+                        </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
+            <?php unset($_SESSION['Uploadsuccess']); ?>
+        <?php endif ?>
+        <?php if (isset($_SESSION['errorUpload'])) : ?>
+            <div class="toast">
+                <div class="toast_section">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2"><?php echo $_SESSION['errorUpload']; ?></span>
+                        </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
+            <?php unset($_SESSION['errorUpload']); ?>
+        <?php endif ?>
         <div class="add_MET_section">
             <div class="add_MET_section_header">
                 <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
@@ -38,7 +69,7 @@ if (isset($_SESSION['staff_login'])) {
             </div>
             <form action="<?php echo $base_url; ?>/Staff/upload.php" method="POST" enctype="multipart/form-data">
                 <div class="add_MET_section_form">
-                    <div class="addForm_left">
+                    <div class="form_left">
                         <div class="img">
                             <div class="imgInput">
                                 <i class="upload fa-solid fa-upload"></i>
@@ -55,7 +86,7 @@ if (isset($_SESSION['staff_login'])) {
                             <label class="file_chosen_img" id="file-chosen-img">ยังไม่ได้เลือกไฟล์</label>
                         </div>
                     </div>
-                    <div class="addForm_right">
+                    <div class="form_right">
                         <div class="input_Data">
                             <label>ชื่อ</label>
                             <input type="text" name="sci_name" required placeholder="ระบุชื่อของวัสดุ อุปกรณ์ และเครื่องมือ">

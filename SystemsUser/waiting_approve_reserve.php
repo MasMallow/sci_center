@@ -91,10 +91,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $itemBorrowed = implode(', ', $itemList);
 
             $insert_query = $conn->prepare(
-                "INSERT INTO approve_to_reserve (serial_number, user_id, name_user, list_name, reservation_date, end_date, created_at) 
-                VALUES (:random_string, :user_id, :name_user, :list_name, :reservationdate, :enddate, NOW())"
+                "INSERT INTO approve_to_reserve (serial_number, userID, name_user, list_name, reservation_date, end_date, created_at) 
+                VALUES (:random_string, :userID, :name_user, :list_name, :reservationdate, :enddate, NOW())"
             );
-            $insert_query->bindParam(':user_id', $userID, PDO::PARAM_INT);
+            $insert_query->bindParam(':userID', $userID, PDO::PARAM_INT);
             $insert_query->bindParam(':name_user', $firstname, PDO::PARAM_STR);
             $insert_query->bindParam(':list_name', $itemBorrowed, PDO::PARAM_STR);
             $insert_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);

@@ -6,7 +6,7 @@ require_once '../assets/database/dbConfig.php';
 if (!empty($_POST['ID_deleteData'])) {
     $id = $_POST['ID_deleteData'];
 
-    $folder = 'assets/uploads/';
+    $folder = '../assets/uploads/';
     
     try {
         // Fetch image name and delete image

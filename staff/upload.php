@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
 
     // Check if $sci_name contains [] or ()
     if (strpos($sci_name, '[') !== false || strpos($sci_name, ']') !== false || strpos($sci_name, '(') !== false || strpos($sci_name, ')') !== false) {
-        $_SESSION['error'] = "ห้ามใส่ [] หรือ () ในชื่อวิทยาศาสตร์";
+        $_SESSION['errorUpload'] = "ห้ามใส่ [] หรือ () ในชื่อวิทยาศาสตร์";
         header('location: ' . $base_url . '/management/addData');
         exit();
     }
@@ -94,34 +94,34 @@ if (isset($_POST['submit'])) {
                         // Commit transaction
                         $conn->commit();
 
-                        $_SESSION['success'] = "เพิ่มข้อมูลสำเร็จ <a href='dashboard.php'><span id='B'>กลับหน้า Dashboard</span></a>";
+                        $_SESSION['Uploadsuccess'] = "เพิ่มข้อมูลสำเร็จ";
                         header('location: ' . $base_url . '/management/addData');
                         exit();
                     } catch (Exception $e) {
                         // Rollback transaction
                         $conn->rollBack();
-                        $_SESSION['error'] = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
+                        $_SESSION['errorUpload'] = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
                         header('location: ' . $base_url . '/management/addData');
                         exit();
                     }
                 } else {
-                    $_SESSION['error'] = "เกิดข้อผิดพลาดในการอัปโหลดไฟล์ภาพ";
+                    $_SESSION['errorUpload'] = "เกิดข้อผิดพลาดในการอัปโหลดไฟล์ภาพ";
                     header('location: ' . $base_url . '/management/addData');
                     exit();
                 }
             }
         } else {
-            $_SESSION['error'] = "ขนาดของไฟล์ภาพหรือข้อผิดพลาดในการอัปโหลด";
+            $_SESSION['errorUpload'] = "ขนาดของไฟล์ภาพหรือข้อผิดพลาดในการอัปโหลด";
             header('location: ' . $base_url . '/management/addData');
             exit();
         }
     } else {
-        $_SESSION['error'] = "ประเภทของไฟล์ภาพไม่ถูกต้อง (รูปภาพ: jpg, jpeg, png)";
+        $_SESSION['errorUpload'] = "ประเภทของไฟล์ภาพไม่ถูกต้อง (รูปภาพ: jpg, jpeg, png)";
         header('location: ' . $base_url . '/management/addData');
         exit();
     }
 } else {
-    $_SESSION['error'] = "คุณไม่ได้ส่งคำขอเพิ่มข้อมูล";
+    $_SESSION['errorUpload'] = "คุณไม่ได้ส่งคำขอเพิ่มข้อมูล";
     header('location: ' . $base_url . '/management/addData');
     exit();
 }

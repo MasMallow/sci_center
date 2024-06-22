@@ -50,13 +50,13 @@
 }
 .staff_section_2 {
   width: 100%;
-  height: 50vh;
+  height: 45vh;
   border: 1px solid #bbb;
   border-radius: 5px;
 }
 .staff_notification_2 {
   width: 55%;
-  height: 50vh;
+  height: 45vh;
   border: 1px solid #bbb;
   border-radius: 5px;
 }
@@ -64,6 +64,31 @@
 .staff_notification_header {
   width: 100%;
   height: 20%;
+  font-size: 1.2rem;
+  padding: 0.7rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #bbb;
+
+  & .section_1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  & .section_2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+.staff_header_maintenance,
+.staff_notification_maintenance_header {
+  width: 100%;
+  height: 12.5%;
   font-size: 1.2rem;
   padding: 0.7rem 1.2rem;
   display: flex;
@@ -109,7 +134,7 @@
     font-size: 0.9rem;
   }
 }
-.staff_approved_content{
+.staff_approved_content {
   width: 100%;
   height: 86.5%;
 }

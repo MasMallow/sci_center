@@ -1,0 +1,144 @@
+@keyframes Alert {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.toast {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.toast_section {
+  min-width: 500px;
+  min-height: 50px;
+  position: absolute;
+  top: 10%;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1.2rem;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #198754; /* Green color of Bootstrap 5 */
+  overflow: hidden;
+  z-index: 9999;
+  animation: Alert 0.3s;
+
+  .error {
+    border-left: 5px solid red; /* Green color of Bootstrap 5 */
+  }
+}
+
+.toast.active {
+  display: flex;
+}
+
+.toast.hide {
+  animation: AlertEnd 0.3s forwards; /* Ending animation */
+}
+
+.toast_section .toast_content {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.toast_section .check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  background-color: #198754; /* Green background color */
+  color: #fff;
+  border-radius: 50%;
+}
+.toast_section .check_error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  background-color: red; /* Green background color */
+  color: #fff;
+  border-radius: 50%;
+}
+
+.toast_section .toast_content_message {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.toast_section .toast_content_message .text {
+  font-size: 1rem;
+}
+
+.toast_section .toast_content_message .text-2 {
+  font-size: 0.9rem;
+}
+
+.toast_section .close {
+  font-size: 0.75rem;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.toast_section .close:hover {
+  opacity: 1;
+}
+
+.toast_section .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #ddd;
+}
+
+.toast_section .progress:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #198754; /* Green background color */
+}
+.toast_section .progress_error:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: red; /* Green background color */
+}
+
+.toast .progress.active:before {
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  100% {
+    right: 100%;
+  }
+}

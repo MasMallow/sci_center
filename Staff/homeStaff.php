@@ -121,7 +121,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="staff_item">
                             <a href="view_report" class="staff_item_btn">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
-                                <span class="text">ประวัติการจอง</span>
+                                <span class="text">ประวัติการขอใช้</span>
                             </a>
                             <a href="top_10_list" class="staff_item_btn">
                                 <i class="fa-solid fa-user-gear"></i>
@@ -242,7 +242,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="staff_page">
             <div class="staff_section_2">
-                <div class="staff_header">
+                <div class="staff_header_maintenance">
                     <div class="section_1">
                         <i class="fa-solid fa-user-tie"></i>
                         <span id="B">การบำรุงรักษา</span>
@@ -319,7 +319,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <div class="staff_notification_2">
-                <div class="staff_notification_header">
+                <div class="staff_notification_maintenance_header">
                     <span id="B">แจ้งเตือนการบำรุงรักษา</span>
                 </div>
                 <div class="staff_notification_body">
