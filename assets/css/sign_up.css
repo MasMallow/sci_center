@@ -33,154 +33,63 @@
   right: 20px;
   cursor: pointer;
 }
-.toast {
-  min-width: 300px;
-  min-height: 60px;
-  position: absolute;
-  top: 40px;
-  right: 35px;
-  padding: 0.4rem 1.2rem;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #e74c3c; /* เปลี่ยนสีเส้นขอบเป็นสีแดง */
-  overflow: hidden;
-  top: 0;
-  left: 0;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
-}
-
-.toast .toast_content {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0;
-}
-
-.toast .check {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  width: 30px;
-  background-color: #e74c3c; /* เปลี่ยนสีพื้นหลังเป็นสีแดง */
-  color: #fff;
-  border-radius: 50%;
-}
-
-.toast .toast_content_message {
-  display: flex;
-  flex-direction: column;
-  margin: 0 20px;
-}
-
-.toast .toast_content_message .text {
-  font-size: ๅrem;
-}
-
-.toast .toast_content_message .text-2 {
-  font-size: 0.9rem;
-}
-
-.toast .close {
-  font-size: 0.75rem;
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  padding: 5px;
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-.toast .close:hover {
-  opacity: 1;
-}
-
-.toast .progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  width: 100%;
-  background-color: #ddd;
-}
-
-.toast .progress:before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #e74c3c; /* เปลี่ยนสีพื้นหลังเป็นสีแดง */
-}
-
-.toast.active {
-  transform: translateX(0%);
-}
-
-.toast .progress.active:before {
-  animation: progress 5s linear forwards;
-}
-
-@keyframes progress {
-  100% {
-    right: 100%;
-  }
-}
-
 .register {
   width: 100%;
-  max-width: 650px;
-  margin: 3rem auto;
+  max-width: 700px;
+  margin: 2rem auto;
 }
 .register_page {
   width: 100%;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
   animation: movingY 0.5s ease;
-}
-.register_page .register_page_head {
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid #dbdbdb;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  & a {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 14px;
+
+  .register_page_head {
+    padding: 0.4rem 1rem;
+    border-bottom: 1px solid #dbdbdb;
+    font-size: 1.15rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: #8f8f8f;
-    background-color: #fff;
-    text-decoration: none;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    transition: all 0.25s;
-    &:hover {
-      background-color: #f1efef;
-      color: #000000;
+    gap: 1rem;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8f8f8f;
+      background-color: #fff;
+      text-decoration: none;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      transition: all 0.25s;
+      &:hover {
+        background-color: #f1efef;
+        color: #000000;
+      }
     }
   }
 }
 .register_page .register_page_body {
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
 }
 hr {
   border: 1px solid #dbdbdb;
   margin: 1rem 0;
 }
 .form .form_header {
-  font-size: 1.05rem;
+  font-size: 1rem;
   padding-top: 0.75rem;
   padding-left: 0.5rem;
 }
 
 .form .input_box {
   width: 100%;
-  margin: 1.15rem 0;
+  margin: 0.545rem 0;
 }
 .form .input_box span {
+  font-size: 0.975rem;
   display: block;
   padding-left: 0.5rem;
   margin-bottom: 0.25rem;
@@ -188,7 +97,7 @@ hr {
 .input_box input,
 .input_box select {
   position: relative;
-  height: 40px;
+  height: 43.5px;
   width: 100%;
   outline: none;
   border: 1px solid #ddd;
@@ -198,7 +107,7 @@ hr {
 }
 .form .col {
   display: flex;
-  column-gap: .75rem;
+  column-gap: 0.75rem;
 }
 input:focus,
 select:focus {
@@ -207,8 +116,8 @@ select:focus {
 
 /* description */
 .description {
-  font-size: 14px;
-  color: red;
+  font-size: .4rem;
+  color: rgb(255, 0, 0);
   margin-top: 3px;
   padding-left: 5px;
 }
@@ -218,7 +127,7 @@ select:focus {
   display: flex;
   align-items: center;
   justify-content: end;
-  gap: .75rem;
+  gap: 0.75rem;
   margin-top: 1rem;
 }
 .btn_section_sign_up .submit {
@@ -228,8 +137,8 @@ select:focus {
   gap: 0.5rem;
   outline: none;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.45rem 1rem;
+  border-radius: 5px;
   color: white;
   background-color: rgb(30, 124, 248);
   transition: all 0.3s;
@@ -247,8 +156,8 @@ select:focus {
   gap: 0.5rem;
   outline: none;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.45rem 1rem;
+  border-radius: 5px;
   color: white;
   background-color: rgb(201, 53, 53);
   transition: all 0.3s;

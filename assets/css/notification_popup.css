@@ -36,10 +36,9 @@
   overflow: hidden;
   z-index: 9999;
   animation: Alert 0.3s;
-
-  .error {
-    border-left: 5px solid red; /* Green color of Bootstrap 5 */
-  }
+}
+.toast_section.error {
+  border-left: 5px solid #e74c3c; /* Green color of Bootstrap 5 */
 }
 
 .toast.active {
@@ -66,15 +65,8 @@
   color: #fff;
   border-radius: 50%;
 }
-.toast_section .check_error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  width: 30px;
-  background-color: red; /* Green background color */
-  color: #fff;
-  border-radius: 50%;
+.toast_section .check.error {
+  background-color: #e74c3c; /* Green background color */
 }
 
 .toast_section .toast_content_message {
@@ -123,13 +115,7 @@
   width: 100%;
   background-color: #198754; /* Green background color */
 }
-.toast_section .progress_error:before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
+.toast_section .progress.error:before {
   background-color: red; /* Green background color */
 }
 

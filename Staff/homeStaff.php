@@ -312,7 +312,6 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
-
                             </div>
                         <?php } ?>
                     </div>

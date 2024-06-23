@@ -18,3 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // เรียกใช้ฟังก์ชัน showForm เพื่อแสดงฟอร์มแรกเมื่อโหลดหน้า
     showForm(currentFormIndex);
 });
+document.getElementById('imgInput').addEventListener('change', function (event) {
+    const [file] = event.target.files;
+    if (file) {
+        document.getElementById('previewImg').src = URL.createObjectURL(file);
+        document.getElementById('imgNameInput').value = file.name;
+    }
+});

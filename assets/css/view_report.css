@@ -1,7 +1,7 @@
 .header_view_report {
-  display: flex;
-  width: 1400px;
-  margin: 3rem auto 1rem auto;
+  width: 100%;
+  max-width: 1300px;
+  margin: 2rem auto 1rem auto;
 }
 
 .header_view_report_section {
@@ -32,8 +32,7 @@
 }
 
 .view_report {
-  width: 1400px;
-  margin: 0 auto;
+ margin-top: 1rem;
 }
 .view_report_header {
   padding-left: 1rem;

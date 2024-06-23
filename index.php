@@ -39,6 +39,7 @@ switch ($request) {
         break;
     case '/profile_user':
     case '/profile_user/edit_profile':
+    case '/manage_users/management_user/edit_user':
         require 'profile_user.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/approve_request':
@@ -62,12 +63,14 @@ switch ($request) {
         require 'Staff/editData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/management/detailsData':
-    case '/maintenance/detailsData':
         require 'Staff/detailsData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/maintenance':
     case '/maintenance/end_maintenance':
         require 'Staff/maintenance.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
+    case '/maintenance/detailsMaintenance':
+        require 'Staff/detailsMaintenance.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/view_report':
     case '/view_report/userID/startDate/endDate':

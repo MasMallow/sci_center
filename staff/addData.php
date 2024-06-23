@@ -64,8 +64,10 @@ if (isset($_SESSION['staff_login'])) {
         <?php endif ?>
         <div class="add_MET_section">
             <div class="add_MET_section_header">
-                <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
-                <label id="B">เพิ่มรายการศูนย์วิทยาศาสตร์</label>
+                <div class="add_MET_section_header_1">
+                    <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
+                    <label id="B">เพิ่มรายการศูนย์วิทยาศาสตร์</label>
+                </div>
             </div>
             <form action="<?php echo $base_url; ?>/Staff/upload.php" method="POST" enctype="multipart/form-data">
                 <div class="add_MET_section_form">

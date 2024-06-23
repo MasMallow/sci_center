@@ -1,7 +1,7 @@
 <?php
-require_once '../assets/database/dbConfig.php';
-require_once '../assets/TCPDF-main/tcpdf.php'; // รวมไฟล์ TCPDF
-include '../assets/includes/thai_date_time.php';
+require_once 'assets/database/dbConfig.php';
+require_once 'assets/TCPDF-main/tcpdf.php'; // รวมไฟล์ TCPDF
+include 'assets/includes/thai_date_time.php';
 
 // รับค่า userID และวันเวลาจากพารามิเตอร์ GET และตรวจสอบว่ามีการส่งมาหรือไม่
 $userID = isset($_GET['userID']) ? $_GET['userID'] : '';

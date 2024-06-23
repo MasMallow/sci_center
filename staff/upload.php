@@ -50,14 +50,8 @@ if (isset($_POST['submit'])) {
             $stmt->execute();
             $insert_curd = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Check if scientific name already exists in database
-            $stmt = $conn->prepare("SELECT * FROM info_sciname WHERE sci_name = :sci_name");
-            $stmt->bindParam(":sci_name", $sci_name);
-            $stmt->execute();
-            $insert_info = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($insert_curd || $insert_info) {
-                $_SESSION['errorUpload'] = "ชื่อไฟล์ภาพหรือชื่อวิทยาศาสตร์นี้ถูกใช้ไปแล้ว";
+            if ($insert_curd) {
+                $_SESSION['errorUpload'] = "ชื่อไฟล์ภาพนี้ถูกใช้ไปแล้ว";
                 header('location: ' . $base_url . '/management/addData');
                 exit();
             } else {

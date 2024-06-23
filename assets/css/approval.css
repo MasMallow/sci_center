@@ -1,27 +1,7 @@
-@font-face {
-  src: url("../fonts/Sarabun-Regular.ttf");
-  font-family: Sarabun;
-}
-@font-face {
-  src: url("../fonts/Sarabun-Bold.ttf");
-  font-family: Sarabun-bold;
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Sarabun;
-  text-decoration: none;
-  list-style: none;
-}
-#B {
-  font-family: Sarabun-bold;
-}
-
 .header_approve {
-  display: flex;
-  width: 1400px;
-  margin: 3rem auto 1rem auto;
+  width: 100%;
+  max-width: 1300px;
+  margin: 2rem auto 1rem auto;
 }
 
 .header_approve_section {
@@ -30,9 +10,9 @@
   align-items: center;
   border-radius: 5px;
   border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 1rem;
   gap: 1rem;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   & a {
     display: flex;
     align-items: center;

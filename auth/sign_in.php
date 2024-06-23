@@ -11,62 +11,51 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>เข้าสู่ระบบ</title>
-        <link href="<?php echo $base_url;?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
-        <link rel="stylesheet" href="<?php echo $base_url;?>/assets/font-awesome/css/all.css">
-        <link rel="stylesheet" href="<?php echo $base_url;?>/assets/css/login.css">
+        <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+        <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+        <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/login.css">
+        <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     </head>
 
     <body>
         <main class="sign_in_box">
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const toast = document.querySelector(".toast");
-                    const closeIcon = document.querySelector(".close");
-                    const progress = document.querySelector(".progress");
-
-                    // Add active class to trigger the animation
-                    setTimeout(() => {
-                        toast.classList.add("active");
-                        progress.classList.add("active");
-                    }); // Delay slightly to ensure the DOM is ready
-
-                    // Remove active class after a timeout
-                    setTimeout(() => {
-                        toast.classList.remove("active");
-                    }, 5100); // 5s + 100ms delay
-
-                    setTimeout(() => {
-                        progress.classList.remove("active");
-                    }, 5400); // 5.3s + 100ms delay
-
-                    closeIcon.addEventListener("click", () => {
-                        toast.classList.remove("active");
-                        setTimeout(() => {
-                            progress.classList.remove("active");
-                        }, 300);
-                    });
-                });
-            </script>
-            <?php if (isset($_SESSION['errorLogin'])) { ?>
+            <?php if (isset($_SESSION['successSign_up'])) : ?>
                 <div class="toast">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?php echo $_SESSION['errorLogin']; ?></span>
+                    <div class="toast_section">
+                        <div class="toast_content">
+                            <i class="fas fa-solid fa-xmark check"></i>
+                            <div class="toast_content_message">
+                                <span class="text text_2"><?php echo $_SESSION['successSign_up']; ?></span>
+                            </div>
+                            <i class="fa-solid fa-xmark close"></i>
+                            <div class="progress"></div>
                         </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
+                    </div>
+                </div>
+                <?php unset($_SESSION['successSign_up']); ?>
+            <?php endif ?>
+            <?php if (isset($_SESSION['errorLogin'])) : ?>
+                <div class="toast">
+                    <div class="toast_section error">
+                        <div class="toast_content">
+                            <i class="fas fa-solid fa-xmark check error"></i>
+                            <div class="toast_content_message">
+                                <span class="text text_2"><?php echo $_SESSION['errorLogin']; ?></span>
+                            </div>
+                            <i class="fa-solid fa-xmark close"></i>
+                            <div class="progress error"></div>
+                        </div>
                     </div>
                 </div>
                 <?php unset($_SESSION['errorLogin']); ?>
-            <?php } ?>
+            <?php endif ?>
             <div class="box_content">
-                <form action="<?php echo $base_url;?>/auth/backend/sign_inDB.php" id="sign-in-form" method="POST">
+                <form action="<?php echo $base_url; ?>/auth/backend/sign_inDB.php" id="sign-in-form" method="POST">
                     <div class="box_content_header">
                         <span id="B">เข้าสู่ระบบ</span>
                     </div>
                     <div class="box_content_logo">
-                        <img src="<?php echo $base_url;?>/assets/logo/scicenter_logo.png">
+                        <img src="<?php echo $base_url; ?>/assets/logo/scicenter_logo.png">
                     </div>
                     <div class="box_content_content">
                         <input type="text" class="input" placeholder="ชื่อผู้ใช้" name="username" autofocus>
@@ -106,8 +95,8 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
             </div>
         </main>
     </body>
-    <script src="<?php echo $base_url;?>/assets/js/show_password.js"></script>
-    <script src="<?php echo $base_url;?>/assets/js/noti_toast.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/show_password.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/noti_toast.js"></script>
 
     </html>
 <?php

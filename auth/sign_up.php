@@ -1,20 +1,6 @@
 <?php
 session_start();
 require_once 'assets/database/dbConfig.php';
-
-// Set form values from the session if available, otherwise use default values
-$form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : array(
-    'username' => '',
-    'password' => '',
-    'confirmpassword' => '',
-    'pre' => '',
-    'firstname' => '',
-    'lastname' => '',
-    'role' => '',
-    'email' => '',
-    'phone_number' => '',
-    'agency' => '',
-);
 ?>
 
 <!DOCTYPE html>
@@ -25,55 +11,29 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สมัครบัญชีผู้ใช้</title>
-    <!-- ส่วน Link -->
     <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/sign_up.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/notification_popup.css">
 </head>
 
 <body>
     <?php if (isset($_SESSION['errorSign_up'])) { ?>
-        <div class="toast active">
-            <div class="toast_content">
-                <i class="fas fa-solid fa-xmark check"></i>
-                <div class="toast_content_message">
-                    <span class="text text_2"><?php echo $_SESSION['errorSign_up']; ?></span>
+        <div class="toast">
+            <div class="toast_section error">
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-xmark check error"></i>
+                    <div class="toast_content_message">
+                        <span class="text text_2"><?php echo $_SESSION['errorSign_up']; ?></span>
+                    </div>
+                    <i class="fa-solid fa-xmark close"></i>
+                    <div class="progress error"></div>
                 </div>
-                <i class="fa-solid fa-xmark close"></i>
-                <div class="progress active"></div>
             </div>
         </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const toast = document.querySelector(".toast");
-                const closeIcon = document.querySelector(".close");
-                const progress = document.querySelector(".progress");
-
-                setTimeout(() => {
-                    toast.classList.add("active");
-                    progress.classList.add("active");
-                });
-
-                setTimeout(() => {
-                    toast.classList.remove("active");
-                }, 5100);
-
-                setTimeout(() => {
-                    progress.classList.remove("active");
-                }, 5400);
-
-                closeIcon.addEventListener("click", () => {
-                    toast.classList.remove("active");
-                    setTimeout(() => {
-                        progress.classList.remove("active");
-                    }, 300);
-                });
-            });
-        </script>
         <?php unset($_SESSION['errorSign_up']); ?>
     <?php } ?>
-
     <header>
         <?php include_once 'assets/includes/navigator.php'; ?>
     </header>
@@ -88,29 +48,28 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                     <div class="form">
                         <div class="form_header">
                             <span id="B">ส่วนที่ 1</span>
-                            <span>กรอก USERNAME และ PASSWORD</span>
+                            <span>กรุณากรอกชื่อผู้ใช้และรหัสผ่าน</span>
                         </div>
                         <div class="form_body">
                             <div class="input_box">
                                 <span>ชื่อผู้ใช้</span>
-                                <input type="text" placeholder="กรุณากรอกชื่อผู้ใช้ (Username)" name="username" value="<?php echo htmlspecialchars($form_values['username']); ?>" required autofocus>
-                                <span class="description"><b>Note : </b>Username ต้องมีความยาวระหว่าง 6 ถึง 12 ตัวอักษร</span>
+                                <input type="text" placeholder="กรุณากรอกชื่อผู้ใช้ (Username)" name="username" required autofocus>
                             </div>
                             <div class="input_box">
                                 <span>รหัสผ่าน</span>
                                 <div class="show_password">
-                                    <input type="password" id="password" name="password" placeholder="กรุณากรอกรหัสผ่าน (Password)">
+                                    <input type="password" id="password" name="password" required placeholder="กรุณากรอกรหัสผ่าน (Password)">
                                     <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
                                 </div>
                                 <span class="description">
-                                    <b>Note : </b>รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 12 ตัวอักษร<br>
+                                    <b>Note : </b>รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร<br>
                                     <b>Note : </b>รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว
                                 </span>
                             </div>
                             <div class="input_box">
                                 <span>ยืนยันรหัสผ่านอีกครั้ง</span>
                                 <div class="show_password">
-                                    <input type="password" id="confirm_password" name="confirm_password" placeholder="กรุณากรอกรหัสผ่านอีกครั้ง (confirmPassword)">
+                                    <input type="password" id="confirm_password" name="confirm_password" required placeholder="กรุณากรอกรหัสผ่านอีกครั้ง (confirmPassword)">
                                     <i class="icon_password fas fa-eye-slash" onclick="togglecPassword()"></i>
                                 </div>
                             </div>
@@ -129,22 +88,22 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                                     <div class="select">
                                         <select name="pre" required>
                                             <option value="" disabled selected>เลือกคำนำหน้า</option>
-                                            <option value="นาย" <?php echo ($form_values['pre'] == 'นาย') ? 'selected' : ''; ?>>นาย</option>
-                                            <option value="นาง" <?php echo ($form_values['pre'] == 'นาง') ? 'selected' : ''; ?>>นาง</option>
-                                            <option value="นางสาว" <?php echo ($form_values['pre'] == 'นางสาว') ? 'selected' : ''; ?>>นางสาว</option>
-                                            <option value="ดร." <?php echo ($form_values['pre'] == 'ดร.') ? 'selected' : ''; ?>>ดร.</option>
-                                            <option value="ผศ.ดร." <?php echo ($form_values['pre'] == 'ผศ.ดร.') ? 'selected' : ''; ?>>ผศ.ดร.</option>
-                                            <option value="อ." <?php echo ($form_values['pre'] == 'อ.') ? 'selected' : ''; ?>>อ.</option>
+                                            <option value="นาย">นาย</option>
+                                            <option value="นาง">นาง</option>
+                                            <option value="นางสาว">นางสาว</option>
+                                            <option value="ดร.">ดร.</option>
+                                            <option value="ผศ.ดร.">ผศ.ดร.</option>
+                                            <option value="อ.">อ.</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="input_box">
                                     <span>ชื่อ</span>
-                                    <input type="text" placeholder="ชื่อภาษาไทย" name="firstname" value="<?php echo htmlspecialchars($form_values['firstname']); ?>" required>
+                                    <input type="text" placeholder="ชื่อภาษาไทย" name="firstname" required>
                                 </div>
                                 <div class="input_box">
                                     <span>นามสกุล</span>
-                                    <input type="text" placeholder="นามสกุลภาษาไทย" name="lastname" value="<?php echo htmlspecialchars($form_values['lastname']); ?>" required>
+                                    <input type="text" placeholder="นามสกุลภาษาไทย" name="lastname" required>
                                 </div>
                             </div>
                             <div class="col">
@@ -153,25 +112,25 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
                                     <div class="select">
                                         <select name="role" required>
                                             <option value="" disabled selected>เลือกตำแหน่ง</option>
-                                            <option value="อาจารย์" <?php echo ($form_values['role'] == 'อาจารย์') ? 'selected' : ''; ?>>อาจารย์</option>
-                                            <option value="บุคลากร" <?php echo ($form_values['role'] == 'บุคลากร') ? 'selected' : ''; ?>>บุคลากร</option>
-                                            <option value="เจ้าหน้าที่" <?php echo ($form_values['role'] == 'เจ้าหน้าที่') ? 'selected' : ''; ?>>เจ้าหน้าที่</option>
+                                            <option value="อาจารย์">อาจารย์</option>
+                                            <option value="บุคลากร">บุคลากร</option>
+                                            <option value="เจ้าหน้าที่">เจ้าหน้าที่</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="input_box">
                                     <span>หน่วยงาน</span>
-                                    <input type="text" placeholder="หน่วยงาน" name="agency" value="<?php echo htmlspecialchars($form_values['agency']); ?>" required>
+                                    <input type="text" placeholder="หน่วยงาน" name="agency" required>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="input_box">
                                     <span>เบอร์โทรศัพท์</span>
-                                    <input type="text" placeholder="000-000-0000" name="phone_number" value="<?php echo htmlspecialchars($form_values['phone_number']); ?>" required>
+                                    <input type="text" placeholder="000-000-0000" name="phone_number" required>
                                 </div>
                                 <div class="input_box">
                                     <span>E-Mail</span>
-                                    <input type="email" placeholder="example@example.com" name="email" value="<?php echo htmlspecialchars($form_values['email']); ?>" required>
+                                    <input type="email" placeholder="example@example.com" name="email" required>
                                 </div>
                             </div>
                             <div class="btn_section_sign_up">
@@ -190,7 +149,7 @@ $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : arra
             </div>
     </form>
     <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
-    <script src="<?php echo $base_url ?>/assets/js/sign_up.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/noti_toast.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/show_password.js"></script>
 </body>
 

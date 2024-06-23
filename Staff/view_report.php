@@ -68,95 +68,96 @@ $viewReport = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="header_view_report">
         <div class="header_view_report_section">
             <a href="<?php echo $base_url; ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
-            <span id="B">รายงานการยืมอุปกรณ์</span>
+            <span id="B">รายงานขอใช้งาน</span>
         </div>
-    </div>
-    <div class="view_report">
-        <div class="view_report_form">
-            <!-- ฟอร์มสำหรับกรองข้อมูล -->
-            <form class="form_1" action="<?php echo $base_url; ?>/view_report" method="GET">
-                <div class="view_report_column">
-                    <div class="view_report_input">
-                        <label id="B" for="userID">UID</label>
-                        <input type="text" id="userID" name="userID" placeholder="กรอไอดีผู้ใช้" value="<?= htmlspecialchars($searchValue); ?>">
-                    </div>
-                    <div class="view_report_input">
-                        <label id="B" for="startDate">ช่วงเวลาเริ่มต้น</label>
-                        <input type="date" id="startDate" name="start_date" value="<?= htmlspecialchars($searchValue); ?>">
-                    </div>
-                    <div class="view_report_input">
-                        <label id="B" for="endDate">ช่วงเวลาสิ้นสุด</label>
-                        <div class="view_report_btn">
-                            <input type="date" id="endDate" name="end_date" value="<?= htmlspecialchars($searchValue); ?>">
-                            <button type="submit" class="search">ค้นหา</button>
+        <div class="view_report">
+            <div class="view_report_form">
+                <!-- ฟอร์มสำหรับกรองข้อมูล -->
+                <form class="form_1" action="<?php echo $base_url; ?>/view_report" method="GET">
+                    <div class="view_report_column">
+                        <div class="view_report_input">
+                            <label id="B" for="userID">UID</label>
+                            <input type="text" id="userID" name="userID" placeholder="กรอไอดีผู้ใช้" value="<?= htmlspecialchars($searchValue); ?>">
+                        </div>
+                        <div class="view_report_input">
+                            <label id="B" for="startDate">ช่วงเวลาเริ่มต้น</label>
+                            <input type="date" id="startDate" name="start_date" value="<?= htmlspecialchars($searchValue); ?>">
+                        </div>
+                        <div class="view_report_input">
+                            <label id="B" for="endDate">ช่วงเวลาสิ้นสุด</label>
+                            <div class="view_report_btn">
+                                <input type="date" id="endDate" name="end_date" value="<?= htmlspecialchars($searchValue); ?>">
+                                <button type="submit" class="search">ค้นหา</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
-        <div class="view_report_table">
-            <!-- ส่วนของการสร้าง PDF -->
-            <div class="view_report_table_header">
-                <div class="view_report_table_header_pdf">
-                    <span id="B">ประวัติการขอใช้</span>
-                    <form id="pdfForm" action="<?php echo $base_url; ?>/view_report/generate_pdf" method="GET">
-                        <?php if (!empty($_GET["userID"])) : ?>
-                            <input type="hidden" name="userID" value="<?= htmlspecialchars($_GET["userID"]) ?>">
-                        <?php endif; ?>
-                        <?php if (!empty($_GET["start_date"]) && !empty($_GET["end_date"])) : ?>
-                            <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($_GET["start_date"]) ?>">
-                            <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($_GET["end_date"]) ?>">
-                        <?php endif; ?>
-                        <button type="submit" class="create_pdf">สร้างรายงาน</button>
-                    </form>
-                </div>
-                <!-- ปุ่มสำหรับรีเซ็ตการค้นหาและแสดงข้อมูลทั้งหมด -->
-                <form class="form_2" action="<?php echo $base_url; ?>/view_report" method="GET">
-                    <button type="submit" class="reset_data">แสดงข้อมูลทั้งหมด</button>
                 </form>
             </div>
-            <!-- ตารางแสดงข้อมูล -->
-            <table class="view_report_table_data">
-                <thead>
-                    <tr>
-                        <th class="UID" id="B">รหัสผู้ใช้</th>
-                        <th class="name" id="B">ชื่อ - นามสกุล</th>
-                        <th class="list" id="B">รายการการขอใช้</th>
-                        <th class="start_date" id="B">วันเวลาที่ขอใช้</th>
-                        <th class="end_date" id="B">วันเวลาสิ้นสุดการขอใช้</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // แสดงผลลัพธ์ที่ดึงมาได้
-                    if (count($viewReport) > 0) {
-                        foreach ($viewReport as $row) { ?>
-                            <tr>
-                                <td class="UID"><?php echo htmlspecialchars($row["userID"]); ?></td>
-                                <td><?php echo htmlspecialchars($row["name_user"]); ?></td>
-                                <td>
-                                    <?php
-                                    $items = explode(',', $row['list_name']);
-                                    foreach ($items as $item) {
-                                        $item_parts = explode('(', $item);
-                                        $product_name = trim($item_parts[0]);
-                                        $quantity = str_replace(')', '', $item_parts[1]);
-                                        echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
-                                    }
-                                    ?>
-                                </td>
-                                <td><?php echo thai_date_time($row["created_at"]); ?></td>
-                                <td><?php echo thai_date_time($row["reservation_date"]); ?></td>
-                            </tr>
-                        <?php }
-                    } else { ?>
+            <div class="view_report_table">
+                <!-- ส่วนของการสร้าง PDF -->
+                <div class="view_report_table_header">
+                    <div class="view_report_table_header_pdf">
+                        <span id="B">ประวัติการขอใช้</span>
+                        <form id="pdfForm" action="<?php echo $base_url; ?>/view_report/generate_pdf" method="GET">
+                            <?php if (!empty($_GET["userID"])) : ?>
+                                <input type="hidden" name="userID" value="<?= htmlspecialchars($_GET["userID"]) ?>">
+                            <?php endif; ?>
+                            <?php if (!empty($_GET["start_date"]) && !empty($_GET["end_date"])) : ?>
+                                <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($_GET["start_date"]) ?>">
+                                <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($_GET["end_date"]) ?>">
+                            <?php endif; ?>
+                            <button type="submit" class="create_pdf">สร้างรายงาน</button>
+                        </form>
+                    </div>
+                    <!-- ปุ่มสำหรับรีเซ็ตการค้นหาและแสดงข้อมูลทั้งหมด -->
+                    <form class="form_2" action="<?php echo $base_url; ?>/view_report" method="GET">
+                        <button type="submit" class="reset_data">แสดงข้อมูลทั้งหมด</button>
+                    </form>
+                </div>
+                <!-- ตารางแสดงข้อมูล -->
+                <table class="view_report_table_data">
+                    <thead>
                         <tr>
-                            <td colspan='5' class="date_not_found"><span id="B">ไม่พบข้อมูล</span></td>
+                            <th class="UID" id="B">รหัสผู้ใช้</th>
+                            <th class="name" id="B">ชื่อ - นามสกุล</th>
+                            <th class="list" id="B">รายการการขอใช้</th>
+                            <th class="start_date" id="B">วันเวลาที่ขอใช้</th>
+                            <th class="end_date" id="B">วันเวลาสิ้นสุดการขอใช้</th>
                         </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // แสดงผลลัพธ์ที่ดึงมาได้
+                        if (count($viewReport) > 0) {
+                            foreach ($viewReport as $row) { ?>
+                                <tr>
+                                    <td class="UID"><?php echo htmlspecialchars($row["userID"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["name_user"]); ?></td>
+                                    <td>
+                                        <?php
+                                        $items = explode(',', $row['list_name']);
+                                        foreach ($items as $item) {
+                                            $item_parts = explode('(', $item);
+                                            $product_name = trim($item_parts[0]);
+                                            $quantity = str_replace(')', '', $item_parts[1]);
+                                            echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
+                                        }
+                                        ?>
+                                    </td>
+                                    <td><?php echo thai_date_time($row["created_at"]); ?></td>
+                                    <td><?php echo thai_date_time($row["reservation_date"]); ?></td>
+                                </tr>
+                            <?php }
+                        } else { ?>
+                            <tr>
+                                <td colspan='5' class="date_not_found"><span id="B">ไม่พบข้อมูล</span></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </div>
 </body>
 
 </html>

@@ -35,7 +35,7 @@ if (isset($_POST['signup'])) {
     } elseif (empty($password)) {
         $_SESSION['errorSign_up'] = 'กรุณากรอกรหัสผ่าน';
     } elseif (strlen($password) < 8) {
-        $_SESSION['errorSign_up'] = 'รหัสผ่านต้องมีความยาวระหว่าง 8 ตัวอักษร';
+        $_SESSION['errorSign_up'] = 'รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร';
     } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/', $password)) {
         $_SESSION['errorSign_up'] = 'รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว';
     } elseif (empty($confirm_password)) {
@@ -71,7 +71,7 @@ if (isset($_POST['signup'])) {
             } else {
                 // แฮชรหัสผ่าน
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-    
+
                 // เพิ่มข้อมูลใน users_info_db
                 $stmt = $conn->prepare("
                     INSERT INTO users_db (userID, username, password, created_at, pre, firstname, lastname, phone_number, email, role, urole, agency, status)
@@ -90,8 +90,8 @@ if (isset($_POST['signup'])) {
                 $stmt->bindParam(":status", $status);
                 $stmt->execute();
 
-                $_SESSION['successSign_up'] = "สมัครสมาชิกเรียบร้อยแล้ว";
-                header("location:/sign_in");
+                $_SESSION['successSign_up'] = "สมัครสมาชิกเรียบร้อย";
+                header("location: /sign_in");
                 exit;
             }
         } catch (PDOException $e) {
@@ -100,10 +100,6 @@ if (isset($_POST['signup'])) {
             exit;
         }
     }
-    
-    // ถ้ามีข้อผิดพลาดให้เก็บค่า form เพื่อแสดงผลใหม่
-    $_SESSION['form_values'] = $_POST;
     header("location: /sign_up");
     exit;
 }
-?>

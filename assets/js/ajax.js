@@ -76,3 +76,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 300);
   });
 });
+document.addEventListener("DOMContentLoaded", function () {
+  const form1 = document.querySelector('.add_MET_section_form_1');
+  const form2 = document.querySelector('.add_MET_section_form_2');
+  const details = document.getElementById('details');
+  const maintenance_history = document.getElementById('maintenance_history');
+
+  details.addEventListener('click', function () {
+    form1.classList.add('active_1');
+    form2.classList.remove('active_2');
+  });
+
+  maintenance_history.addEventListener('click', function () {
+    form2.classList.add('active_2');
+    form1.classList.remove('active_1');
+  });
+});
+
+
+

@@ -58,7 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
             $update_query_02->execute();
 
             // อัพเดทรายละเอียดการบำรุงรักษาในตาราง logs_maintenance
-            $update_query_03 = $conn->prepare("UPDATE logs_maintenance SET end_maintenance = :end_maintenance, details_maintenance = :details_maintenance WHERE ID = :id");
+            $update_query_03 = $conn->prepare("
+                        UPDATE logs_maintenance 
+                        SET end_maintenance = :end_maintenance, 
+                        details_maintenance = :details_maintenance 
+                        WHERE ID = :id");
             $update_query_03->bindParam(':end_maintenance', $end_maintenance, PDO::PARAM_STR);
             $update_query_03->bindParam(':details_maintenance', $details_maintenance, PDO::PARAM_STR);
             $update_query_03->bindParam(':id', $id, PDO::PARAM_INT);

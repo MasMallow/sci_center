@@ -33,12 +33,12 @@ try {
     $query = "SELECT * FROM crud LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number";
 
     // เพิ่มเงื่อนไข categories
-    if ($request_uri === '/maintenance/material') {
-        $query .= " WHERE c.categories = 'วัสดุ'";
-    } elseif ($request_uri === '/maintenance/equipment') {
-        $query .= " WHERE c.categories = 'อุปกรณ์'";
-    } elseif ($request_uri === '/maintenance/tools') {
-        $query .= " WHERE c.categories = 'เครื่องมือ'";
+    if ($request_uri === '/management/material') {
+        $query .= " WHERE crud.categories = 'วัสดุ'";
+    } elseif ($request_uri === '/management/equipment') {
+        $query .= " WHERE crud.categories = 'อุปกรณ์'";
+    } elseif ($request_uri === '/management/tools') {
+        $query .= " WHERE crud.categories = 'เครื่องมือ'";
     } else {
         $query .= " WHERE 1=1"; // เพิ่มเงื่อนไขให้เป็นจริงเสมอเพื่อให้สามารถเพิ่ม AND ต่อไปได้
     }
@@ -70,8 +70,6 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $searchTitle; ?>จัดการวัสดุ อุปกรณ์ และเครื่องมือ</title>
-
-    <!-- ส่วนของ Link -->
     <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
@@ -82,17 +80,6 @@ try {
 <body>
     <!-- Header -->
     <header><?php include_once('assets/includes/navigator.php'); ?></header>
-    <?php
-    if (isset($_SESSION['success'])) {
-        echo $_SESSION['success'];
-        unset($_SESSION['success']); // ลบ session หลังจากแสดงแล้วเพื่อไม่ให้แสดงซ้ำ
-    }
-
-    if (isset($_SESSION['error'])) {
-        echo $_SESSION['error'];
-        unset($_SESSION['error']); // ลบ session หลังจากแสดงแล้วเพื่อไม่ให้แสดงซ้ำ
-    }
-    ?>
     <div class="Dashboard_Management">
         <div class="header_management_section">
             <div class="header_name_section">
@@ -100,7 +87,7 @@ try {
                 <span id="B">จัดการระบบ</span>
             </div>
             <div class="header_num_section">
-                <span id="B">
+                <span>
                     <?php
                     if ($request_uri === '/management') {
                         echo 'วัสดุ อุปกรณ์ และเครื่องมือทั้งหมด';
@@ -117,7 +104,6 @@ try {
             </div>
             <div class="choose_categories_btn">
                 <a href="<?php echo $base_url; ?>/management/addData">
-                    <i class="icon fa-solid fa-plus"></i>
                     <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
                 </a>
             </div>

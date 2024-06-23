@@ -27,7 +27,7 @@ if (isset($_GET['search'])) {
 
 // ฟังก์ชันในการดึงข้อมูลผู้ใช้ตามเงื่อนไข
 try {
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = 'wait_approved' ");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = 'w_approved' ");
     $stmt->execute();
     $num = $stmt->rowCount();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -59,7 +59,7 @@ $search = isset($_GET["search"]) ? $_GET["search"] : null;
 if ($request_uri === '/manage_users/management_user') {
     $users_approved = fetchUsers($conn, 'approved', $role, $search);
 } elseif ($request_uri === '/manage_users/undisapprove_user') {
-    $users_banned = fetchUsers($conn, 'not_approved', $role, $search);
+    $users_banned = fetchUsers($conn, 'n_approved', $role, $search);
 }
 
 // การจัดการคำขอ POST
@@ -78,23 +78,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         date_default_timezone_set('Asia/Bangkok');
         $approvalDateTime = date('Y-m-d H:i:s');
 
-        $stmt = $conn->prepare("UPDATE users_db SET status = 'approved', approved_by = :approved_by, approved_date = :approved_date WHERE userID = :userID");
+        $stmt = $conn->prepare("
+                UPDATE users_db 
+                SET status = 'approved', 
+                approved_by = :approved_by, 
+                approved_date = :approved_date
+                WHERE userID = :userID");
+
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->bindParam(':approved_by', $approver, PDO::PARAM_STR);
         $stmt->bindParam(':approved_date', $approvalDateTime, PDO::PARAM_STR);
         $stmt->execute();
 
         // รีเฟรชหน้าเว็บ
-        header('Location: /manage_users/undisapprove_user');
+        $_SESSION['approveSuccess'] = 'อนุมัติบัญชีผู้ใช้เรียบร้อย';
+        header('Location: /manage_users');
         exit;
     }
     // ระงับผู้ใช้
     elseif (isset($_POST['ban_user'])) {
-        $stmt = $conn->prepare("UPDATE users_db SET status = 'not_approved' WHERE userID = :userID");
+        $stmt = $conn->prepare("UPDATE users_db SET status = 'n_approved' WHERE userID = :userID");
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
 
         // รีเฟรชหน้าเว็บ
+        $_SESSION['bannedSuccess'] = 'ระงับบัญชีผู้ใช้เรียบร้อย';
         header('Location: /manage_users/management_user');
         exit;
     }
@@ -105,12 +113,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         // รีเฟรชหน้าเว็บ
-        header('Location: /manage_users');
+        $_SESSION['delUserSuccess'] = 'ลบบัญชีผู้ใช้เรียบร้อย';
+        header('Location: /manage_users/undisapprove_user');
         exit;
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -121,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/manage_users.css">
 </head>
 
@@ -129,8 +138,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php include 'assets/includes/navigator.php'; ?>
     </header>
     <div class="manage_user">
+        <?php
+        if (isset($_SESSION['approveSuccess'])) : ?>
+            <div class="toast">
+                <div class="toast_section">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2">
+                                <?php
+                                if (isset($_SESSION['approveSuccess'])) {
+                                    echo $_SESSION['approveSuccess'];
+                                    unset($_SESSION['approveSuccess']);
+                                } ?>
+                            </span>
+                        </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php
+        if (isset($_SESSION['bannedSuccess'])) : ?>
+            <div class="toast">
+                <div class="toast_section">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2">
+                                <?php
+                                if (isset($_SESSION['bannedSuccess'])) {
+                                    echo $_SESSION['bannedSuccess'];
+                                    unset($_SESSION['bannedSuccess']);
+                                }
+                                ?>
+                            </span>
+                        </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php
+        if (isset($_SESSION['delUserSuccess'])) : ?>
+            <div class="toast">
+                <div class="toast_section">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2">
+                                <?php
+                                if (isset($_SESSION['delUserSuccess'])) {
+                                    echo $_SESSION['delUserSuccess'];
+                                    unset($_SESSION['delUserSuccess']);
+                                }
+                                ?>
+                            </span>
+                        </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
         <div class="header_user_manage_section">
-            <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="javascript:history.back();"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">การจัดการบัญชีผู้ใช้</span>
         </div>
         <div class="user_manage_btn_section">
@@ -169,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if (!empty($user_list)) : ?>
                 <div class="manage_user_table_section">
                     <div class="user_manage_data_header">
-                        <span>จำนวนบัญชีทั้งหมด <span id="B">(<?= count($user_list); ?>)</span> บัญชี</span>
+                        <span>จำนวนบัญชีทั้งหมด <span id="B"><?= count($user_list); ?></span> บัญชี</span>
                     </div>
                     <table class="user_manage_data">
                         <thead>
@@ -178,9 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <th class="name"><span id="B">ชื่อ - นามสกุล</span></th>
                                 <th class="role"><span id="B">ตำแหน่ง</span></th>
                                 <th class="agency"><span id="B">สังกัด</span></th>
-                                <th class="phone_number"><span id="B">เบอร์โทรศัพท์</span></th>
                                 <th class="created_at"><span id="B">สมัครบัญชีเมื่อ</span></th>
-                                <th class="urole"><span id="B">ประเภท</span></th>
                                 <th class="status"><span id="B">สถานะ</span></th>
                                 <th class="operation"></th>
                             </tr>
@@ -188,13 +260,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <tbody>
                             <?php foreach ($user_list as $user) : ?>
                                 <tr>
-                                    <td class="UID"><?= $user['userID']; ?></td>
+                                    <td class="UID">
+                                        <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
+                                        <?= $user['userID']; ?>
+                                    </td>
                                     <td><?= $user['pre'] . $user['firstname'] . " " . $user['lastname']; ?></td>
                                     <td><?= $user['role']; ?></td>
                                     <td><?= $user['agency']; ?></td>
-                                    <td><?= format_phone_number($user['phone_number']); ?></td>
                                     <td><?= thai_date_time($user['created_at']); ?></td>
-                                    <td><?= $user['urole'] === 'user' ? 'ผู้ใช้งานทั่วไป' : 'อื่น ๆ'; ?></td>
                                     <td class="<?= $user['status'] === 'approved' ? 'green_text' : 'red_text'; ?>"><?= $user['status'] === 'approved' ? 'อนุมัติแล้ว' : 'ไม่ได้รับอนุมัติ'; ?></td>
                                     <td class="operation">
                                         <form method="post">
@@ -205,22 +278,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         <i class="fa-regular fa-circle-check"></i>
                                                     </button>
                                                 <?php elseif ($request_uri == '/manage_users/management_user') : ?>
-                                                    <button class="edit_user" type="submit" name="edit_user"><i class="fa-solid fa-pencil"></i></button>
-                                                    <button class="ban_user" type="submit" name="ban_user"><i class="fa-solid fa-user-slash"></i></button>
-                                                    <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                                    <a href="<?php echo $base_url; ?>/manage_users/management_user/edit_user" class="edit_user">
+                                                        <i class="fa-solid fa-pencil"></i>
+                                                    </a>
+                                                    <button class="ban_user" type="submit" name="ban_user">
+                                                        <i class="fa-solid fa-user-slash"></i>
+                                                    </button>
+                                                    <button class="delete_user" type="submit" name="delete_user">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
                                                 <?php elseif ($request_uri == '/manage_users/undisapprove_user') : ?>
                                                     <button type="submit" class="approval_user" name="approval_user">
                                                         <i class="fa-regular fa-circle-check"></i>
                                                     </button>
-                                                    <button class="delete_user" type="submit" name="delete_user"><i class="fa-solid fa-trash-can"></i></button>
+                                                    <span class="delete_user" data-modal="<?= $user['userID'] ?>">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </span>
+                                                    <div class="del_notification_alert" id="<?php echo htmlspecialchars($user['userID']); ?>">
+                                                        <div class="del_notification_content">
+                                                            <div class="del_notification_popup">
+                                                                <div class="del_notification_sec01">
+                                                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                                                    <span id="B">แจ้งเตือนการลบข้อมูล</span>
+                                                                </div>
+                                                                <div class="del_notification_sec02">
+                                                                    <button class="delete_user" type="submit" name="delete_user">
+                                                                        <i class="fa-solid fa-trash-can"></i></button>
+                                                                    <div class="cancel_del" id="closeDetails">
+                                                                        <span id="B">ปิดหน้าต่าง</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 <?php endif; ?>
                                             </div>
                                         </form>
                                     </td>
                                 </tr>
+                                <tr style="display: none;">
+                                    <td colspan="7">
+                                        <div class="expandable_row">
+                                            <div>
+                                                <span id="B">เบอร์โทรศัพท์</span> <?= format_phone_number($user['phone_number']); ?>
+                                            </div>
+                                            <div>
+                                                <span id="B">อีเมล</span> <?= $user['email']; ?>
+                                            </div>
+                                            <div>
+                                                <span id="B">ประเภทผู้ใช้</span> <?= $user['urole'] === 'user' ? 'ผู้ใช้งานทั่วไป' : 'เจ้าหน้าที่'; ?>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <script>
+                        function toggleExpandRow(element) {
+                            var row = element.closest('tr').nextElementSibling;
+                            if (row.style.display === 'none' || row.style.display === '') {
+                                row.style.display = 'table-row';
+                                element.classList.remove('fa-circle-arrow-right');
+                                element.classList.add('fa-circle-arrow-down');
+                            } else {
+                                row.style.display = 'none';
+                                element.classList.remove('fa-circle-arrow-down');
+                                element.classList.add('fa-circle-arrow-right');
+                            }
+                        }
+                    </script>
                 </div>
             <?php else : ?>
                 <div class="user_manage_not_found">

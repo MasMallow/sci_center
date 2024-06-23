@@ -97,6 +97,7 @@ try {
     <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/maintenance.css">
 </head>
 
@@ -212,7 +213,7 @@ try {
                                 <?php foreach ($maintenance as $row) : ?>
                                     <tr>
                                         <td class="sci_name">
-                                            <a href="<?php echo $base_url;?>/maintenance/detailsData?id=<?= $row['ID'] ?>">
+                                            <a href="<?php echo $base_url; ?>/maintenance/detailsMaintenance?id=<?= $row['ID'] ?>">
                                                 <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?> (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
                                             </a>
                                         </td>
@@ -248,51 +249,21 @@ try {
                 </div>
             <?php endif; ?>
         <?php elseif ($request_uri == '/maintenance/end_maintenance') : ?>
-            <?php if (!empty($maintenance_success)) : ?>
-                <?php if (isset($_SESSION['end_maintenanceSuccess']) || isset($_SESSION['end_maintenanceError'])) { ?>
+            <?php if (!empty($end_maintenanceSuccess)) : ?>
+                <?php if (isset($_SESSION['end_maintenanceSuccess'])) { ?>
                     <div class="toast">
                         <div class="toast_section">
                             <div class="toast_content">
                                 <i class="fas fa-solid fa-xmark check"></i>
                                 <div class="toast_content_message">
-                                    <span class="text text_2"><?php echo ($_SESSION['end_maintenanceSuccess']) || ($_SESSION['end_maintenanceError']); ?></span>
+                                    <span class="text text_2"><?php echo ($_SESSION['end_maintenanceSuccess']); ?></span>
                                 </div>
                                 <i class="fa-solid fa-xmark close"></i>
                                 <div class="progress"></div>
                             </div>
                         </div>
                     </div>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function() {
-                            const toast = document.querySelector(".toast");
-                            const closeIcon = document.querySelector(".close");
-                            const progress = document.querySelector(".progress");
-
-                            // Add active class to trigger the animation
-                            setTimeout(() => {
-                                toast.classList.add("active");
-                                progress.classList.add("active");
-                            }); // Delay slightly to ensure the DOM is ready
-
-                            // Remove active class after a timeout
-                            setTimeout(() => {
-                                toast.classList.remove("active");
-                            }, 5100); // 5s + 100ms delay
-
-                            setTimeout(() => {
-                                progress.classList.remove("active");
-                            }, 5400); // 5.3s + 100ms delay
-
-                            closeIcon.addEventListener("click", () => {
-                                toast.classList.remove("active");
-                                setTimeout(() => {
-                                    progress.classList.remove("active");
-                                }, 300);
-                            });
-                        });
-                    </script>
                     <?php unset($_SESSION['end_maintenanceSuccess']); ?>
-                    <?php unset($_SESSION['end_maintenanceError']); ?>
                 <?php } ?>
                 <form action="<?php echo $base_url ?>/Staff/maintenanceEndprocess.php" method="POST">
                     <div class="maintenance_section">
@@ -359,6 +330,7 @@ try {
         <?php endif; ?>
     </div>
     <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/noti_toast.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/maintenance.js"></script>
 </body>
 
