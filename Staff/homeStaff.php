@@ -6,7 +6,7 @@ $bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatet
 $bookings->execute();
 $data = $bookings->fetchAll(PDO::FETCH_ASSOC);
 $numbookings = count($data); // นับจำนวนรายการ
-$user = $conn->prepare("SELECT * FROM users_db WHERE status = '0' AND urole = 'user'");;
+$user = $conn->prepare("SELECT * FROM users_db WHERE status = 'w_approved' AND urole = 'user'");;
 $user->execute();
 $datauser = $user->fetchAll(PDO::FETCH_ASSOC);
 $numuser = count($datauser); // นับจำนวนรายการ
@@ -212,8 +212,8 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </div>
                                                 <div class="approve_actions">
                                                     <form class="approve_form" method="POST" action="process_reserve.php">
-                                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                                        <input type="hidden" name="userId" value="<?php echo $row['user_id']; ?>">
+                                                        <input type="hidden" name="id" value="<?php echo $row['ID']; ?>">
+                                                        <input type="hidden" name="userId" value="<?php echo $row['userID']; ?>">
                                                         <button class="confirm_approve" type="submit" name="confirm"><i class="fa-solid fa-circle-check"></i></button>
                                                         <button class="cancel_approve" type="submit" name="cancel"><i class="fa-solid fa-circle-xmark"></i></button>
                                                     </form>

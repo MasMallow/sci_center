@@ -3,14 +3,14 @@ require_once 'assets/database/dbConfig.php';
 require_once 'assets/TCPDF-main/tcpdf.php'; // รวมไฟล์ TCPDF
 include 'assets/includes/thai_date_time.php';
 
-// รับค่า userID และวันเวลาจากพารามิเตอร์ GET และตรวจสอบว่ามีการส่งมาหรือไม่
-$userID = isset($_GET['userID']) ? $_GET['userID'] : '';
+// รับค่า user_id และวันเวลาจากพารามิเตอร์ GET และตรวจสอบว่ามีการส่งมาหรือไม่
+$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
 $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
-// สร้าง SQL query เพื่อดึงข้อมูลจากตาราง approve_to_reserve โดยใช้เงื่อนไขของ userID และช่วงเวลาถ้ามีการระบุ
-$sql = "SELECT * FROM approve_to_reserve WHERE 1 AND (situation = 1 OR situation = 3)";
-if (!empty($userID) && $userID !== 'all') {
+// สร้าง SQL query เพื่อดึงข้อมูลจากตาราง approve_to_use โดยใช้เงื่อนไขของ user_id และช่วงเวลาถ้ามีการระบุ
+$sql = "SELECT * FROM approve_to_reserve WHERE 1 AND situation = 1";
+if (!empty($user_id) && $user_id !== 'all') {
     $sql .= " AND userID = :userID";
 }
 if (!empty($start_date) && !empty($end_date)) {
@@ -19,8 +19,8 @@ if (!empty($start_date) && !empty($end_date)) {
 
 // เตรียมและดำเนินการ SQL query
 $stmt = $conn->prepare($sql);
-if (!empty($userID) && $userID !== 'all') {
-    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+if (!empty($user_id) && $user_id !== 'all') {
+    $stmt->bindParam(':userID', $user_id, PDO::PARAM_INT);
 }
 if (!empty($start_date) && !empty($end_date)) {
     $stmt->bindParam(':start_date', $start_date, PDO::PARAM_STR);
@@ -34,79 +34,119 @@ $pdf = new TCPDF();
 
 // ตั้งค่าข้อมูลเอกสาร
 $pdf->SetCreator(PDF_CREATOR);
+$pdf->SetAuthor('Your Name');
+$pdf->SetTitle('รายงานการยืมอุปกรณ์');
+$pdf->SetSubject('รายงานการยืมอุปกรณ์');
 
-// เพิ่มหน้าใหม่
+// ตั้งค่ากระดาษและเพิ่มหน้าใหม่
 $pdf->AddPage();
 
+// เพิ่มฟอนต์ใหม่ลงใน TCPDF
+$font_path = 'assets/fonts/Sarabun-Regular.ttf';
+$font_bold_path = 'assets/fonts/Sarabun-Bold.ttf';
+
+// ตรวจสอบว่าไฟล์ฟอนต์มีอยู่จริง
+if (!file_exists($font_path)) {
+    die('Error: ฟอนต์ที่ระบุไม่พบในเส้นทาง ' . $font_path);
+}
+if (!file_exists($font_bold_path)) {
+    die('Error: ฟอนต์ที่ระบุไม่พบในเส้นทาง ' . $font_bold_path);
+}
+
+// เพิ่มฟอนต์ลงใน TCPDF
+$pdf->AddFont('THSarabunNew', '', 'Sarabun-Regular.ttf', true);
+$pdf->AddFont('THSarabunNew', 'B', 'Sarabun-Bold.ttf', true);
+
 // ตั้งค่า font
-$pdf->SetFont('thsarabunnew', '', 16); // ใช้ฟอนต์ THSarabunNew ที่ติดตั้ง
+$pdf->SetFont('THSarabunNew', '', 16); // ใช้ฟอนต์ THSarabunNew
+$pdf->SetFont('THSarabunNew', 'B', 16); // ใช้ฟอนต์ THSarabunNew Bold
 
-// สร้าง HTML content
-$html = '<style>
-            body, h1, h2, h3, h4, h5, h6, p, table {
-                margin: 0;
-                padding: 0;
-            }
-            table {
-                border-collapse: collapse;
-            }
-            table, th, td {
-                border: 1px solid black;
-            }
-            th:first-child, td:first-child {
-                border-top: none;
-            }
-        </style>';
+// สร้าง HTML เนื้อหาของ PDF
+ob_start();
+?>
 
-$html .= '<body>
-                <div class="details">';
-
-if (!empty($start_date) && !empty($end_date)) {
-    $html .= '<p><strong>วันที่เริ่มต้น:</strong> ' . thai_date_time($start_date) . '</p>';
-    $html .= '<p><strong>วันที่สิ้นสุด:</strong> ' . thai_date_time($end_date) . '</p>';
-}
-
-$html .= '</div>
-        <table>
-          <thead>
-            <tr>
-              <th>รหัสผู้ใช้</th>
-              <th>ชื่อ</th>
-              <th>ชื่อสินค้า</th>
-              <th>วันที่ยืม</th>
-              <th>วันที่คืน</th>
-            </tr>
-          </thead>
-          <tbody>';
-
-if (count($data) > 0) {
-    foreach ($data as $row) {
-        $html .= '<tr>
-              <td>' . htmlspecialchars($row["userID"]) . '</td>
-              <td>' . htmlspecialchars($row["name_user"]) . '</td>
-              <td>';
-        $items = explode(',', $row['list_name']);
-        foreach ($items as $item) {
-            $item_parts = explode('(', $item);
-            $product_name = trim($item_parts[0]);
-            $quantity = isset($item_parts[1]) ? str_replace(')', '', $item_parts[1]) : '0';
-            $html .= $product_name . ' ' . $quantity . ' ชิ้น<br>';
-        }
-        $html .= '</td>
-              <td>' . thai_date_time($row["reservation_date"]) . '</td>
-              <td>' . thai_date_time($row["end_date"]) . '</td>
-            </tr>';
+<style>
+    .header {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #fff;
     }
-} else {
-    $html .= '<tr>
-              <td colspan="5" style="text-align: center">ไม่พบข้อมูลในฐานข้อมูล</td>
-            </tr>';
-}
 
-$html .= '</tbody></table></body>';
+    .details_PDF {
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: .5px solid #000;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div class="header">
+    รายงานการขอใช้ศูนย์วิทยาศาสตร์
+</div>
+<?php if (!empty($start_date) && !empty($end_date)) : ?>
+    <div class="details_PDF">
+        ตั้งแต่ <?php echo thai_date_time_4($start_date); ?> ถึง <?php echo thai_date_time_4($end_date); ?>
+    </div>
+<?php endif; ?>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>ชื่อ</th>
+                <th>ชื่อรายการ</th>
+                <th>วันที่ทำการขอใช้</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (count($data) > 0) : ?>
+                <?php foreach ($data as $row) : ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($row["name_user"]); ?></td>
+                        <td>
+                            <?php
+                            $items = explode(',', $row['list_name']);
+                            foreach ($items as $item) {
+                                $item_parts = explode('(', $item);
+                                $product_name = trim($item_parts[0]);
+                                $quantity = isset($item_parts[1]) ? str_replace(')', '', $item_parts[1]) : '0';
+                                echo $product_name . ' ' . $quantity . ' รายการ<br>';
+                            }
+                            ?>
+                        </td>
+                        <td><?php echo thai_date_time($row["reservation_date"]); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <tr>
+                    <td colspan="3" style="text-align: center">ไม่พบข้อมูลในฐานข้อมูล</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>
+
+<?php
+$html = ob_get_clean();
 
 // เพิ่มเนื้อหา HTML ลงใน PDF
 $pdf->writeHTML($html, true, false, true, false, '');
 
 // แสดง PDF
 $pdf->Output('report.pdf', 'I');
+?>
