@@ -13,38 +13,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
 
     $sMessage = "แจ้งเตือนการบำรุงรักษา\n";
 
-    // เริ่มการทำงานในแต่ละ ID ที่เลือก
-    foreach ($selectedIds as $id) {
-        // อัพเดทสถานะของอุปกรณ์
-        $update_query = $conn->prepare("UPDATE crud SET availability = 1 WHERE id = :id");
-        $update_query->bindParam(':id', $id, PDO::PARAM_INT);
-        $update_query->execute();
+    // อัพเดทสถานะของอุปกรณ์
+    $update_query = $conn->prepare("UPDATE crud SET availability = 1 WHERE id IN ($selectedIds)");
+    $update_query->execute();
 
-        // ดึงข้อมูลผู้ใช้
-        if (isset($_SESSION['staff_login'])) {
-            $userID = $_SESSION['staff_login'];
-            $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :userID");
-            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-            $stmt->execute();
-            $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        $staff_id = $_SESSION['staff_login'];
-        $user_query = $conn->prepare("
-                            SELECT userID, pre, firstname, lastname 
-                            FROM users_db
-                            WHERE userID = :staff_id");
-        $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
-        $user_query->execute();
-        $users_LOG = $user_query->fetch(PDO::FETCH_ASSOC);
-        $authID = $users_LOG['userID'];
-        $log_Name = $users_LOG['pre'] . $users_LOG['firstname'] . ' ' . $users_LOG['lastname'];
-        $log_Status = 'เริ่มต้นการบำรุงรักษา';
-
-        // ดึงข้อมูลอุปกรณ์
-        $stmt = $conn->prepare("SELECT serial_number, sci_name, categories FROM crud WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    // ดึงข้อมูลผู้ใช้
+    if (isset($_SESSION['staff_login'])) {
+        $userID = $_SESSION['staff_login'];
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :userID");
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
-        $item = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    $staff_id = $_SESSION['staff_login'];
+    $user_query = $conn->prepare("
+                        SELECT userID, pre, firstname, lastname 
+                        FROM users_db
+                        WHERE userID = :staff_id");
+    $user_query->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
+    $user_query->execute();
+    $users_LOG = $user_query->fetch(PDO::FETCH_ASSOC);
+    $authID = $users_LOG['userID'];
+    $log_Name = $users_LOG['pre'] . $users_LOG['firstname'] . ' ' . $users_LOG['lastname'];
+    $log_Status = 'เริ่มต้นการบำรุงรักษา';
+
+    // ดึงข้อมูลอุปกรณ์
+    $stmt = $conn->prepare("SELECT serial_number, sci_name, categories FROM crud WHERE id IN ($selectedIds)");
+    $stmt->execute();
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($items as $item) {
         $serial_number = $item['serial_number'];
         $sci_name = $item['sci_name'];
         $categories = $item['categories'];
@@ -60,14 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         $insert_query_01->bindParam(':note', $note, PDO::PARAM_STR);
         $result_01 = $insert_query_01->execute();
 
-        if ($result_01) {
-            $_SESSION['maintenanceSuccess'] = "เริ่มต้นกระบวนการการบำรุงรักษา";
-        } else {
+        if (!$result_01) {
             $_SESSION['error'] = "Data has not been updated successfully";
+            header("Location: /maintenance");
+            exit;
         }
-
-        header("Location: /maintenance");
-        exit;
 
         // เพิ่มรายละเอียดในข้อความ
         if ($item) {
@@ -75,6 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
             $sMessage .= "ประเภท: " . $item['categories'] . "\n";
         }
     }
+
+    $_SESSION['maintenanceSuccess'] = "เริ่มต้นกระบวนการการบำรุงรักษา";
 
     // สรุปข้อความ
     $sMessage .= "วันที่บำรุงรักษา : " . date('d/m/Y') . "\n";
@@ -100,19 +97,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         echo 'error:' . curl_error($chOne);
     } else {
         $result_ = json_decode($result, true);
-        echo "<script>
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'การยืมเสร็จสิ้น',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(function() {
-                window.location.href = 'home.php';
-            });
-            </script>";
+        if ($result_['status'] !== 200) {
+            echo "Error sending message: " . $result_['message'];
+        } else {
+            echo "<script>
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'การบำรุงรักษาเสร็จสิ้น',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.location.href = 'home.php';
+                });
+                </script>";
+        }
     }
     curl_close($chOne);
     header('Location: /maintenance');
     exit;
 }
+?>

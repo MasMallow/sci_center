@@ -251,6 +251,7 @@ try {
                                         <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
                                         <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
                                     </div>
+                                    <input type="hidden" name="selected_ids" value="<?php echo $detailsData['ID']; ?>">
                                     <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                 </div>
                             </div>
