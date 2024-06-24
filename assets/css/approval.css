@@ -1,9 +1,8 @@
-.header_approve {
+.approve_section {
   width: 100%;
   max-width: 1300px;
   margin: 2rem auto 1rem auto;
 }
-
 .header_approve_section {
   width: 100%;
   display: flex;
@@ -29,11 +28,6 @@
       color: #000000;
     }
   }
-}
-
-.approve_section {
-  width: 1400px;
-  margin: 0 auto;
 }
 .approve_not_found_section {
   display: flex;
@@ -67,14 +61,23 @@ thead tr {
   border: 1px solid #bdbdbd;
 }
 thead th {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   text-align: start;
   border-left: none;
   border-right: none;
   border-top: 1.5px solid #bdbdbd;
   border-bottom: 1.5px solid #bdbdbd;
   background-color: #e7e7e7;
-  padding: 0.75rem 0;
+  padding: 0.6rem 0;
+}
+.open_expand_row {
+  padding-right: 0.5rem;
+}
+.expandable_row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-left: 0.7rem;
 }
 .approve_table_data .s_number {
   width: 15%;
@@ -97,6 +100,7 @@ thead th {
   width: 7.5%;
 }
 tbody tr {
+  font-size: 0.975rem;
   border: 1px solid #dbdbdb;
   border-bottom: 1.5px solid #bdbdbd;
   background-color: #ffffff;

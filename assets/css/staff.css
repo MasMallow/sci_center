@@ -53,6 +53,11 @@
   height: 45vh;
   border: 1px solid #bbb;
   border-radius: 5px;
+
+  a{
+    color: #000000;
+
+  }
 }
 .staff_notification_2 {
   width: 55%;
@@ -64,7 +69,7 @@
 .staff_notification_header {
   width: 100%;
   height: 20%;
-  font-size: 1.2rem;
+    font-size: 1.15rem;
   padding: 0.7rem 1.2rem;
   display: flex;
   align-items: center;
@@ -83,13 +88,14 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.9rem;
+    color: #000000;
   }
 }
 .staff_header_maintenance,
 .staff_notification_maintenance_header {
   width: 100%;
   height: 12.5%;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   padding: 0.7rem 1.2rem;
   display: flex;
   align-items: center;
@@ -113,7 +119,7 @@
 .staff_approved_header {
   width: 100%;
   height: 13.5%;
-  font-size: 1.2rem;
+    font-size: 1.15rem;
   padding: 0.7rem 1.2rem;
   display: flex;
   align-items: center;
@@ -189,7 +195,7 @@
   transition: background-color 0.3s;
 
   & i {
-    font-size: 1.2rem;
+      font-size: 1.15rem;
   }
 
   &:hover {
@@ -210,7 +216,7 @@
   transition: background-color 0.3s;
 
   & i {
-    font-size: 1.2rem;
+      font-size: 1.15rem;
   }
 
   &:hover {
@@ -291,7 +297,10 @@
 }
 .serial_number,
 .approve_actions {
-  width: 15%;
+  display: flex;
+  align-items: center;
+  word-break: normal;
+  width: 20%;
 }
 
 .reservation_date {

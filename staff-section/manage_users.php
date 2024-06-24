@@ -268,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <td><?= $user['role']; ?></td>
                                     <td><?= $user['agency']; ?></td>
                                     <td><?= thai_date_time($user['created_at']); ?></td>
-                                    <td class="<?= $user['status'] === 'approved' ? 'green_text' : 'red_text'; ?>"><?= $user['status'] === 'approved' ? 'อนุมัติแล้ว' : 'ไม่ได้รับอนุมัติ'; ?></td>
+                                    <td class="<?= $user['status'] === 'approved' ? 'green_text' : 'red_text'; ?>"><?= $user['status'] === 'approved' ? 'อนุมัติ' : 'ไม่ได้รับอนุมัติ'; ?></td>
                                     <td class="operation">
                                         <form method="post">
                                             <div class="btn_user_manage_section">

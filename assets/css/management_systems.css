@@ -346,7 +346,15 @@
   border-radius: 5px;
   border: 1px solid #ddd;
 }
+.add_MET_PAGE {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
 .add_MET_section_header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -377,6 +385,34 @@
       }
     }
   }
+
+  .add_MET_section_header_2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 20%;
+
+    .details,
+    .maintenance_history {
+      width: 100%;
+      border-radius: 6px;
+      color: #000;
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      border: transparent;
+      transition: all 0.3s;
+    }
+
+    .active {
+      border: 1px solid #01bdb6;
+      background-color: #dffffd81;
+    }
+  }
+}
+.add_MET_section_form {
+  width: 100%;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
 }
 .add_MET_section_form_1,
 .add_MET_section_form_2 {
@@ -388,7 +424,6 @@
   overflow: scroll;
   display: none;
   align-items: center;
-  padding: 0.45rem 1rem;
 
   .form_left {
     width: 100%;
@@ -406,7 +441,8 @@
   display: block;
 }
 /* input IMG */
-.img {
+.img,
+.Img {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -458,7 +494,7 @@
 
   .input input {
     font-size: 0.75rem;
-    height: 40px;
+    height: 35px;
     outline: none;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -566,14 +602,44 @@
     flex-direction: column;
   }
 }
+.maintenance_history {
+  width: 100%;
+  height: 100%;
+  padding: 0.45rem 1rem;
 
-/* Button */
+  .maintenance_history_header {
+    padding-top: 0.75rem;
+    padding-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+.maintenance_entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.maintenance_entry_non{
+  width: 100%;
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;  
+}
+
+/* <--------------- BUTTON section -------------------> */
 .btn_footer {
   display: flex;
   align-items: center;
   justify-content: end;
-  gap: 0.75rem;
-  padding: 1rem 1rem;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
   border-top: 1px solid #ddd;
 }
 
@@ -609,7 +675,6 @@
   }
 }
 .maintenance_button {
-  margin: 0;
   font-size: 0.9rem;
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -622,6 +687,8 @@
     background-color: #e0e0e086;
   }
 }
+
+/* <-------------------- MAINTENANCE POPUP ----------------> */
 .maintenance_popup {
   position: fixed;
   top: 0;

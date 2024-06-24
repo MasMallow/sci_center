@@ -63,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Remove active class after a timeout
   setTimeout(() => {
     toast.classList.remove("active");
-  }, 5100); // 5s + 100ms delay
+  }, 4100); // 5s + 100ms delay
 
   setTimeout(() => {
     progress.classList.remove("active");
-  }, 5400); // 5.3s + 100ms delay
+  }, 4400); // 5.3s + 100ms delay
 
   closeIcon.addEventListener("click", () => {
     toast.classList.remove("active");
@@ -76,20 +76,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 300);
   });
 });
+
 document.addEventListener("DOMContentLoaded", function () {
   const form1 = document.querySelector('.add_MET_section_form_1');
   const form2 = document.querySelector('.add_MET_section_form_2');
-  const details = document.getElementById('details');
-  const maintenance_history = document.getElementById('maintenance_history');
+  const details = document.querySelector('.details');
+  const maintenance_history = document.querySelector('.maintenance_history');
 
   details.addEventListener('click', function () {
     form1.classList.add('active_1');
     form2.classList.remove('active_2');
+    details.classList.add('active');
+    maintenance_history.classList.remove('active');
   });
 
   maintenance_history.addEventListener('click', function () {
     form2.classList.add('active_2');
     form1.classList.remove('active_1');
+    details.classList.remove('active');
+    maintenance_history.classList.add('active');
   });
 });
 

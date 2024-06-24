@@ -60,14 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         $insert_query_01->bindParam(':note', $note, PDO::PARAM_STR);
         $result_01 = $insert_query_01->execute();
 
-        // เพิ่มข้อมูลการบำรุงรักษาเข้าสู่ฐานข้อมูล
-        $insert_query_02 = $conn->prepare("INSERT INTO logs_maintenance_2 (authID, log_Name, log_Date, log_Status) VALUES (:authID, :log_name, NOW(), :log_status)");
-        $insert_query_02->bindParam(':authID', $authID, PDO::PARAM_STR);
-        $insert_query_02->bindParam(':log_name', $log_Name, PDO::PARAM_STR);
-        $insert_query_02->bindParam(':log_status', $log_Status, PDO::PARAM_STR);
-        $result_02 = $insert_query_02->execute();
-
-        if ($result_01 && $result_02) {
+        if ($result_01) {
             $_SESSION['maintenanceSuccess'] = "เริ่มต้นกระบวนการการบำรุงรักษา";
         } else {
             $_SESSION['error'] = "Data has not been updated successfully";

@@ -52,24 +52,6 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>SCICENTER Management || Staff</title>
     <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/staff.css">
-    <script>
-        function toggleExpandRow(element) {
-            const expandRow = element.closest('.approve_row').querySelector('.expand_row');
-            if (expandRow.style.display === 'none' || expandRow.style.display === '') {
-                expandRow.style.display = 'flex';
-            } else {
-                expandRow.style.display = 'none';
-            }
-        }
-
-        // ใช้การตั้งค่าเริ่มต้นในการซ่อนแถว expand_row
-        document.addEventListener('DOMContentLoaded', function() {
-            const expandRows = document.querySelectorAll('.expand_row');
-            expandRows.forEach(row => {
-                row.style.display = 'none';
-            });
-        });
-    </script>
 </head>
 
 <body>
@@ -175,13 +157,13 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 <div class="staff_approved_content">
                     <div class="staff_content_table">
-                        <?php if (empty($data)) { ?>
+                        <?php if (empty($data)) : ?>
                             <div class="approve_not_found_section">
                                 <i class="fa-solid fa-xmark"></i>
                                 <span id="B">ไม่พบข้อมูลการขอใช้</span>
                             </div>
-                        <?php } ?>
-                        <?php if (!empty($data)) { ?>
+                        <?php endif ?>
+                        <?php if (!empty($data)) : ?>
                             <div class="approve_container">
                                 <?php
                                 foreach ($data as $row) :
@@ -211,11 +193,10 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <?php echo thai_date_time_2($row['reservation_date']); ?>
                                                 </div>
                                                 <div class="approve_actions">
-                                                    <form class="approve_form" method="POST" action="process_reserve.php">
+                                                    <form class="approve_form" method="POST" action="<?php echo $base_url; ?>/staff-section/processRequest.php">
                                                         <input type="hidden" name="id" value="<?php echo $row['ID']; ?>">
-                                                        <input type="hidden" name="userId" value="<?php echo $row['userID']; ?>">
+                                                        <input type="hidden" name="userID" value="<?php echo $row['userID']; ?>">
                                                         <button class="confirm_approve" type="submit" name="confirm"><i class="fa-solid fa-circle-check"></i></button>
-                                                        <button class="cancel_approve" type="submit" name="cancel"><i class="fa-solid fa-circle-xmark"></i></button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -235,7 +216,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 endforeach;
                                 ?>
                             </div>
-                        <?php } ?>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>
@@ -248,9 +229,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <span id="B">การบำรุงรักษา</span>
                     </div>
                     <div class="section_2">
-                        <div class="approve_table_header">
-                            <a href="maintenance">ไปที่หน้าบำรุงการรักษา</a>
-                        </div>
+                        <a href="maintenance">ไปที่หน้าบำรุงการรักษา</a>
                     </div>
                 </div>
                 <div class="staff_content">
@@ -263,19 +242,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php } ?>
                         <?php if (!empty($maintenance_notify)) { ?>
                             <div class="approve_container">
-                                <?php
-                                function calculateDaysSinceLastMaintenance($lastMaintenanceDate)
-                                {
-                                    $currentDate = new DateTime();
-                                    if ($lastMaintenanceDate === null) {
-                                        return "ไม่เคยได้รับการบำรุงรักษา";
-                                    } else {
-                                        $lastMaintenanceDate = new DateTime($lastMaintenanceDate);
-                                        $interval = $currentDate->diff($lastMaintenanceDate);
-                                        return $interval->days;
-                                    }
-                                }
-                                foreach ($maintenance_notify as $row) : ?>
+                                <?php foreach ($maintenance_notify as $row) : ?>
                                     <div class="approve_row">
                                         <div class="defualt_row">
                                             <div class="serial_number">
@@ -283,7 +250,9 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <?php echo htmlspecialchars($row['serial_number']); ?>
                                             </div>
                                             <div class="items">
-                                                <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
+                                                <a href="<?php echo $base_url; ?>/maintenance/detailsMaintenance?id=<?= $row['ID'] ?>">
+                                                    <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
+                                                </a>
                                             </div>
                                             <div class="reservation_date">
                                                 <?php
@@ -302,11 +271,11 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 if ($row['last_maintenance_date'] === null) {
                                                     echo "ไม่เคยมีประวัติการบำรุงรักษา";
                                                 } else {
-                                                    echo thai_date_time_2(htmlspecialchars($row['last_maintenance_date']));
+                                                    echo thai_date_time_3(htmlspecialchars($row['last_maintenance_date']));
                                                 }
                                                 ?>
                                             </div>
-                                            <div>
+                                            <div><span id="B">ประเภท</span>
                                                 <?php echo htmlspecialchars($row['categories']); ?>
                                             </div>
                                         </div>
@@ -339,7 +308,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="non_notification_stack">
                             <div class="non_notification_stack_1">
                                 <i class="fa-solid fa-envelope"></i>
-                                <span id="B">ไม่มีแจ้งเตือนการขอใช้</span>
+                                <span id="B">ไม่มีแจ้งเตือนการบำรุงรักษาที่ใกล้กำหนดการ</span>
                             </div>
                         </div>
                     <?php endif ?>
@@ -347,6 +316,28 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+    <script>
+        function toggleExpandRow(element) {
+            const expandRow = element.closest('.approve_row').querySelector('.expand_row');
+            if (expandRow.style.display === 'none' || expandRow.style.display === '') {
+                expandRow.style.display = 'flex';
+                element.classList.remove('fa-circle-arrow-right');
+                element.classList.add('fa-circle-arrow-down');
+            } else {
+                expandRow.style.display = 'none';
+                element.classList.add('fa-circle-arrow-right');
+                element.classList.remove('fa-circle-arrow-down');
+            }
+        }
+
+        // ใช้การตั้งค่าเริ่มต้นในการซ่อนแถว expand_row
+        document.addEventListener('DOMContentLoaded', function() {
+            const expandRows = document.querySelectorAll('.expand_row');
+            expandRows.forEach(row => {
+                row.style.display = 'none';
+            });
+        });
+    </script>
 </body>
 
 </html>

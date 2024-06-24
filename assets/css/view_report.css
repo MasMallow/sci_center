@@ -1,3 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Sarabun;
+  text-decoration: none;
+  list-style: none;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
 .header_view_report {
   width: 100%;
   max-width: 1300px;
@@ -32,7 +45,7 @@
 }
 
 .view_report {
- margin-top: 1rem;
+  margin-top: 1rem;
 }
 .view_report_header {
   padding-left: 1rem;
@@ -101,8 +114,8 @@
   margin-top: 1.5rem;
 }
 .view_report_table_header {
-  padding-left: .5rem;
-  padding-bottom: .75rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.75rem;
   font-size: 1rem;
   display: flex;
   justify-content: space-between;
@@ -152,7 +165,7 @@ thead {
     border: 1px solid #bdbdbd;
 
     th {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       text-align: start;
       border-left: none;
       border-right: none;
@@ -185,7 +198,7 @@ thead {
 }
 
 tbody tr {
-  font-size: .95rem;
+  font-size: 0.975rem;
   border: 1px solid #dbdbdb;
   border-bottom: 1.5px solid #bdbdbd;
   background-color: #ffffff;

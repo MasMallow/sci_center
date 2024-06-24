@@ -3,6 +3,11 @@ session_start();
 require_once 'assets/database/dbConfig.php';
 include_once 'assets/includes/thai_date_time.php';
 
+if (!isset($_SESSION['staff_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: sign_in');
+    exit;
+}
 if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
     $stmt = $conn->prepare("
@@ -22,14 +27,10 @@ if (isset($_GET['search'])) {
     $searchValue = htmlspecialchars($_GET['search']);
     $searchTitle = "ค้นหา \"$searchValue\" | ";
 }
-if (!isset($_SESSION['staff_login'])) {
-    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: auth/sign_in.php');
-    exit;
-}
+
+$request_uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 try {
-
     if ($request_uri == '/maintenance') {
         // ตรวจสอบและสร้าง search query
         $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
@@ -56,7 +57,6 @@ try {
         $stmt->execute();
         $maintenance = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
     if ($request_uri == '/maintenance/end_maintenance') {
         $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
@@ -106,7 +106,7 @@ try {
         <?php include_once 'assets/includes/navigator.php'; ?>
     </header>
     <div class="maintenance">
-        <?php if (isset($_SESSION['maintenanceSuccess'])) { ?>
+        <?php if (isset($_SESSION['maintenanceSuccess'])) : ?>
             <div class="toast">
                 <div class="toast_section">
                     <div class="toast_content">
@@ -149,35 +149,64 @@ try {
                 });
             </script>
             <?php unset($_SESSION['maintenanceSuccess']); ?>
-        <?php } ?>
+        <?php endif ?>
         <div class="header_maintenance_section">
-            <a href="<?php echo $base_url ?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">การบำรุงรักษา</span>
         </div>
         <div class="maintenance_section_btn">
             <div class="btn_maintenance_all">
-                <a href="/maintenance" class="<?= ($request_uri == '/maintenance') ? 'active' : ''; ?> btn_maintenance_01">เริ่มการบำรุงรักษา</a>
-                <a href="/maintenance/end_maintenance" class="<?= ($request_uri == '/maintenance/end_maintenance') ? 'active' : ''; ?> btn_maintenance_02">สิ้นสุดการบำรุงรักษา</a>
+                <a href="/maintenance" class="<?= ($request_uri == '/maintenance') ? 'active' : ''; ?> btn_maintenance_01">
+                    เริ่มการบำรุงรักษา</a>
+                <a href="/maintenance/end_maintenance" class="<?= ($request_uri == '/maintenance/end_maintenance') ? 'active' : ''; ?> btn_maintenance_02">
+                    สิ้นสุดการบำรุงรักษา</a>
             </div>
             <form class="maintenance_search_header" method="get">
                 <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
                 <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-        <?php
-        $request_uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
-        if ($request_uri == '/maintenance') : ?>
+        <?php if ($request_uri == '/maintenance') : ?>
             <?php if (!empty($maintenance)) : ?>
-                <form action="<?php echo $base_url ?>/Staff/maintenanceProcess.php" method="post">
-                    <div class="maintenance_section">
-                        <table class="table_maintenace">
-                            <thead>
-                                <tr>
-                                    <th class="sci_name"><span id="B">ชื่อ</span></th>
-                                    <th class="categories"><span id="B">ประเภท</span></th>
-                                    <th class="installation_date"><span id="B">วันที่ติดตั้ง</span></th>
-                                    <th class="installation_date"><span id="B">วันที่บำรุงรักษาล่าสุด</span></th>
-                                    <th><span class="maintenance_button" id="B">บำรุงรักษา</span></th>
+                <table class="table_maintenace">
+                    <thead>
+                        <tr>
+                            <th class="sci_name"><span id="B">ชื่อ</span></th>
+                            <th class="categories"><span id="B">ประเภท</span></th>
+                            <th class="installation_date"><span id="B">วันที่ติดตั้ง</span></th>
+                            <th class="installation_date"><span id="B">วันที่บำรุงรักษาล่าสุด</span></th>
+                            <th><span id="B">บำรุงรักษา</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($maintenance as $row) : ?>
+                            <tr>
+                                <td class="sci_name">
+                                    <a href="<?php echo $base_url; ?>/maintenance/detailsData?id=<?= $row['ID'] ?>">
+                                        <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?> 
+                                        (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
+                                        <i class="fa-solid fa-square-arrow-up-right"></i>
+                                    </a>
+                                </td>
+                                <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td>
+                                    <?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ($row['last_maintenance_date'] == NULL) {
+                                        echo '-';
+                                    } else {
+                                        echo htmlspecialchars(thai_date($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8');
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <span class="maintenance_button">
+                                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                                    </span>
+                                </td>
+                                <form action="<?php echo $base_url ?>/staff-section/maintenanceProcess.php" method="post">
                                     <div class="maintenance_popup">
                                         <div class="maintenance_popup_content">
                                             <div class="maintenance_section_header">
@@ -203,82 +232,63 @@ try {
                                                     <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
                                                     <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
                                                 </div>
+                                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
                                                 <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                             </div>
                                         </div>
                                     </div>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($maintenance as $row) : ?>
-                                    <tr>
-                                        <td class="sci_name">
-                                            <a href="<?php echo $base_url; ?>/maintenance/detailsMaintenance?id=<?= $row['ID'] ?>">
-                                                <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?> (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
-                                            </a>
-                                        </td>
-                                        <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
-                                        <td>
-                                            <?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            if ($row['last_maintenance_date'] == NULL) {
-                                                echo '-';
-                                            } else {
-                                                echo htmlspecialchars(thai_date($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8');
-                                            }
-                                            ?>
-                                        </td>
-                                        <td class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="selected_ids[]" value="<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
-                                                <span class="custom-checkbox"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
+                                </form>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
             <?php else : ?>
-                <div class="user_approve_not_found">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <span id="B">ไม่มีอุปกรณ์ หรือเครื่องมือที่ทำการบำรุงรักษา</span>
+                <div class="not_found">
+                    <h1 id="B"><?= $searchTitle ?>ไม่พบข้อมูล!</h1>
                 </div>
-            <?php endif; ?>
-        <?php elseif ($request_uri == '/maintenance/end_maintenance') : ?>
-            <?php if (!empty($end_maintenanceSuccess)) : ?>
-                <?php if (isset($_SESSION['end_maintenanceSuccess'])) { ?>
-                    <div class="toast">
-                        <div class="toast_section">
-                            <div class="toast_content">
-                                <i class="fas fa-solid fa-xmark check"></i>
-                                <div class="toast_content_message">
-                                    <span class="text text_2"><?php echo ($_SESSION['end_maintenanceSuccess']); ?></span>
-                                </div>
-                                <i class="fa-solid fa-xmark close"></i>
-                                <div class="progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php unset($_SESSION['end_maintenanceSuccess']); ?>
-                <?php } ?>
-                <form action="<?php echo $base_url ?>/Staff/maintenanceEndprocess.php" method="POST">
-                    <div class="maintenance_section">
-                        <table class="table_maintenace">
-                            <thead>
-                                <tr>
-                                    <th class="sci_name"><span id="B">ชื่อ</span></th>
-                                    <th class="categories"><span id="B">ประเภท</span></th>
-                                    <th class="amount"><span id="B">จำนวน</span></th>
-                                    <th class="installation_date"><span id="B">เริ่มบำรุงรักษา</span></th>
-                                    <th>
-                                        <button type="submit" class="maintenance_button" name="complete_maintenance">
-                                            <span id="B">การบำรุงรักษาเสร็จสิ้น</span>
-                                        </button>
-                                    </th>
+            <?php endif ?>
+        <?php endif ?>
+        <?php if ($request_uri == '/maintenance/end_maintenance') : ?>
+            <?php if (!empty($maintenance_success)) : ?>
+                <table class="table_maintenace">
+                    <thead>
+                        <tr>
+                            <th class="sci_name"><span id="B">ชื่อ</span></th>
+                            <th class="categories"><span id="B">ประเภท</span></th>
+                            <th class="installation_date"><span id="B">วันที่ติดตั้ง</span></th>
+                            <th class="installation_date"><span id="B">วันที่บำรุงรักษาล่าสุด</span></th>
+                            <th><span id="B">บำรุงรักษา</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($maintenance_success as $row) : ?>
+                            <tr>
+                                <td class="sci_name">
+                                    <a href="<?php echo $base_url; ?>/maintenance/detailsMaintenance?id=<?= $row['ID'] ?>">
+                                        <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?> 
+                                        (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>) 
+                                        <i class="fa-solid fa-square-arrow-up-right"></i>
+                                    </a>
+                                </td>
+                                <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td>
+                                    <?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ($row['last_maintenance_date'] == NULL) {
+                                        echo '-';
+                                    } else {
+                                        echo htmlspecialchars(thai_date($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8');
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <span class="maintenance_button">
+                                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                                    </span>
+                                </td>
+                                <form action="<?php echo $base_url ?>/staff-section/maintenanceEndprocess.php" method="post">
                                     <div class="maintenance_popup">
                                         <div class="maintenance_popup_content">
                                             <div class="maintenance_section_header">
@@ -300,34 +310,17 @@ try {
                                             </div>
                                         </div>
                                     </div>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($maintenance_success as $row) : ?>
-                                    <tr>
-                                        <td class="sci_name"><?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?><?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?></td>
-                                        <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
-                                        <td><?= htmlspecialchars($row['amount'], ENT_QUOTES, 'UTF-8') ?></td>
-                                        <td><?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?></td>
-                                        <td class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="selected_ids[]" value="<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
-                                                <span class="custom-checkbox"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
+                                </form>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
             <?php else : ?>
-                <div class="user_approve_not_found">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <span id="B">ไม่มีอุปกรณ์ หรือเครื่องมือที่ทำการบำรุงรักษา</span>
+                <div class="not_found">
+                    <h1 id="B"><?= $searchTitle ?>ไม่พบข้อมูล!</h1>
                 </div>
-            <?php endif; ?>
-        <?php endif; ?>
+            <?php endif ?>
+        <?php endif ?>
     </div>
     <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/noti_toast.js"></script>

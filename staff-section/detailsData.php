@@ -60,11 +60,6 @@ try {
         $stmt->execute();
         $rowCount = $stmt->rowCount(); // นับจำนวนคอลัมน์
         $detailsMaintenance = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if (empty($detailsMaintenance)) {
-            echo "No maintenance details found.";
-            exit;
-        }
     } else {
         echo "ID parameter is missing.";
         exit;
@@ -81,7 +76,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</title>
+    <title>รายละเอียดวัสดุ อุปกรณ์ และเครื่องมือ</title>
     <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
@@ -98,11 +93,13 @@ try {
                     <label id="B"><?php echo $detailsData['sci_name'] ?></label>
                 </div>
                 <div class="add_MET_section_header_2">
-                    <button id="details">ดูรายละเอียด</button>
-                    <button id="maintenance_history">ดูประวัติการบำรุงรักษา</button>
+                    <button class="details <?php if ($request_uri == '/management/detailsData') echo 'active' ?> ">รายละเอียด</button>
+                    <button class="maintenance_history <?php if ($request_uri == '/maintenance/detailsData') echo 'active' ?> ">บำรุงรักษา</button>
                 </div>
             </div>
-            <div class="add_MET_section_form_1 active_1">
+            <div class="add_MET_section_form_1 
+                    <?php if ($request_uri == '/management/detailsData') echo 'active_1' ?> 
+                    <?php if ($request_uri == '/maintenance/detailsData') echo '' ?>">
                 <div class="form_left">
                     <div class="Img">
                         <div class="imgInput">
@@ -171,13 +168,37 @@ try {
                     </div>
                 </div>
             </div>
-            <div class="add_MET_section_form_2">
+            <div class="add_MET_section_form_2 
+                    <?php if ($request_uri == '/maintenance/detailsData') echo 'active_2' ?>">
                 <div class="maintenance_history">
-                    <label for="sci_name">
-                        ประวัติการบำรุงรักษาของ
-                        <span id="B"><?= htmlspecialchars($detailsMaintenance[0]['sci_name'] ?? '--', ENT_QUOTES, 'UTF-8'); ?></span>
-                    </label>
-                    <?php if (is_array($detailsMaintenance)) : ?>
+                    <div class="maintenance_history_header">
+                    <?php if (is_array($detailsMaintenance) && !empty($detailsMaintenance)) : ?>
+                        <div>
+                            ประวัติการบำรุงรักษาของ
+                            <span id="B"><?= htmlspecialchars($detailsMaintenance[0]['sci_name'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
+                                (<?= htmlspecialchars($detailsMaintenance[0]['serial_number'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>)</span>
+                            <span>ได้รับการบำรุงรักษาไปทั้งหมด <?= htmlspecialchars($rowCount, ENT_QUOTES, 'UTF-8'); ?> ครั้ง</span>
+                        </div>
+                        <div>
+                            บำรุงรักษาล่าสุดเมื่อ
+                            <?php
+                            if (isset($detailsMaintenance[0]['last_maintenance_date'])) {
+                                echo thai_date_time_4($detailsMaintenance[0]['last_maintenance_date']);
+                                $daysSinceMaintenance = calculateDaysSinceLastMaintenance($detailsMaintenance[0]['last_maintenance_date']);
+                                if ($daysSinceMaintenance === "( ไม่เคยได้รับการบำรุงรักษา )") {
+                                    echo $daysSinceMaintenance;
+                                } else {
+                                    echo "  ( ไม่ได้รับการบำรุงรักษามามากกว่า " . htmlspecialchars($daysSinceMaintenance, ENT_QUOTES, 'UTF-8') . " วัน )";
+                                }
+                            } else {
+                                echo "( ไม่เคยได้รับการบำรุงรักษา )";
+                            }
+                            ?>
+                            
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    <?php if (is_array($detailsMaintenance) && !empty($detailsMaintenance)) : ?>
                         <?php foreach ($detailsMaintenance as $dataList) : ?>
                             <div class="maintenance_entry">
                                 <span>
@@ -197,14 +218,14 @@ try {
                             </div>
                         <?php endforeach; ?>
                     <?php else : ?>
-                        <p>No maintenance history available.</p>
+                        <div class="maintenance_entry_non"><span id="B">ไม่มีประวัติการบำรุงรักษา</span></div>
                     <?php endif; ?>
                 </div>
             </div>
             <div class="btn_footer">
                 <?php if ($request_uri == '/maintenance/detailsData') : ?>
                     <span class="maintenance_button" id="B">บำรุงรักษา</span>
-                    <form class="for_Maintenance" action="<?= $base_url ?>/Staff/maintenanceProcess.php" method="post">
+                    <form class="for_Maintenance" action="<?= $base_url ?>/staff-section/maintenanceProcess.php" method="post">
                         <div class="maintenance_popup">
                             <div class="maintenance_popup_content">
                                 <div class="maintenance_section_header">
@@ -236,7 +257,6 @@ try {
                         </div>
                     </form>
                     <a href="javascript:history.back();" class="del_notification">กลับ</a>
-
                 <?php endif; ?>
                 <?php if ($request_uri == '/management/detailsData') : ?>
                     <input type="hidden" name="id" value="<?php echo $detailsData['ID']; ?>">
@@ -250,7 +270,7 @@ try {
                                     <span id="B">แจ้งเตือนการลบข้อมูล</span>
                                 </div>
                                 <div class="del_notification_sec02">
-                                    <form action="<?php echo $base_url; ?>/Staff/deleteData.php" method="post">
+                                    <form action="<?php echo $base_url; ?>/staff-section/deleteData.php" method="post">
                                         <input type="hidden" name="ID_deleteData" value="<?= $detailsData['ID'] ?>">
                                         <button type="submit" class="confirm_del">ยืนยัน</button>
                                     </form>

@@ -87,9 +87,9 @@ if (isset($_POST['update'])) {
 
     // Execute both updates and check results
     if ($update_sql->execute() && $info_update_sql->execute()) {
-        $_SESSION['success'] = "Data has been updated successfully";
+        $_SESSION['updateData_success'] = "อัปเดทข้อมูลสำเร็จ";
     } else {
-        $_SESSION['error'] = "Data has not been updated successfully";
+        $_SESSION['updateData_error'] = "อัปเดทข้อมูลไม่สำเร็จ";
     }
 
     header("Location: /management");

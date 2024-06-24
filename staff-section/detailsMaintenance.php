@@ -106,7 +106,7 @@ try {
             <div class="btn_footer">
                 <?php if ($request_uri == '/maintenance/detailsMaintenance') : ?>
                     <span class="maintenance_button" id="B">บำรุงรักษา</span>
-                    <form class="for_Maintenance" action="<?= $base_url ?>/Staff/maintenanceProcess.php" method="post">
+                    <form class="for_Maintenance" action="<?= $base_url ?>/staff-section/maintenanceProcess.php" method="post">
                         <div class="maintenance_popup">
                             <div class="maintenance_popup_content">
                                 <div class="maintenance_section_header">

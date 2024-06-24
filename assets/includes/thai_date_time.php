@@ -141,3 +141,15 @@ function format_phone_number($phone_number)
         return $phone_number;
     }
 }
+
+function calculateDaysSinceLastMaintenance($lastMaintenanceDate)
+{
+    $currentDate = new DateTime();
+    if ($lastMaintenanceDate === null) {
+        return "ไม่เคยได้รับการบำรุงรักษา";
+    } else {
+        $lastMaintenanceDate = new DateTime($lastMaintenanceDate);
+        $interval = $currentDate->diff($lastMaintenanceDate);
+        return $interval->days;
+    }
+}

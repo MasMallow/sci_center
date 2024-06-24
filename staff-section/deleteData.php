@@ -29,7 +29,7 @@ if (!empty($_POST['ID_deleteData'])) {
         $stmt->bindParam(":id", $id);
         $stmt->execute();
 
-        echo "ลบสินค้าเรียบร้อยแล้ว";
+        $_SESSION['delete_success'] = 'ลบข้อมูลสำเร็จ';
         header("Location: /management");
         exit();
     } catch (PDOException $e) {
