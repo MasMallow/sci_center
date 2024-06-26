@@ -5,7 +5,7 @@ include_once 'assets/includes/thai_date_time.php';
 
 if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: sign_in');
+    header('Location: /sign_in');
     exit;
 }
 if (isset($_SESSION['staff_login'])) {
@@ -119,35 +119,6 @@ try {
                     </div>
                 </div>
             </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const toast = document.querySelector(".toast");
-                    const closeIcon = document.querySelector(".close");
-                    const progress = document.querySelector(".progress");
-
-                    // Add active class to trigger the animation
-                    setTimeout(() => {
-                        toast.classList.add("active");
-                        progress.classList.add("active");
-                    }); // Delay slightly to ensure the DOM is ready
-
-                    // Remove active class after a timeout
-                    setTimeout(() => {
-                        toast.classList.remove("active");
-                    }, 5100); // 5s + 100ms delay
-
-                    setTimeout(() => {
-                        progress.classList.remove("active");
-                    }, 5400); // 5.3s + 100ms delay
-
-                    closeIcon.addEventListener("click", () => {
-                        toast.classList.remove("active");
-                        setTimeout(() => {
-                            progress.classList.remove("active");
-                        }, 300);
-                    });
-                });
-            </script>
             <?php unset($_SESSION['maintenanceSuccess']); ?>
         <?php endif ?>
         <div class="header_maintenance_section">
@@ -183,7 +154,7 @@ try {
                             <tr>
                                 <td class="sci_name">
                                     <a href="<?php echo $base_url; ?>/maintenance/detailsData?id=<?= $row['ID'] ?>">
-                                        <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?> 
+                                        <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                         (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
                                         <i class="fa-solid fa-square-arrow-up-right"></i>
                                     </a>
@@ -243,8 +214,9 @@ try {
                     </tbody>
                 </table>
             <?php else : ?>
-                <div class="not_found">
-                    <h1 id="B"><?= $searchTitle ?>ไม่พบข้อมูล!</h1>
+                <div class="maintenance_not_found">
+                    <i class="fa-solid fa-database"></i>
+                    <span id="B">ไม่พบข้อมูล!</span>
                 </div>
             <?php endif ?>
         <?php endif ?>
@@ -265,8 +237,8 @@ try {
                             <tr>
                                 <td class="sci_name">
                                     <a href="<?php echo $base_url; ?>/maintenance/detailsMaintenance?id=<?= $row['ID'] ?>">
-                                        <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?> 
-                                        (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>) 
+                                        <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
+                                        (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
                                         <i class="fa-solid fa-square-arrow-up-right"></i>
                                     </a>
                                 </td>
@@ -306,7 +278,11 @@ try {
                                                     <label for="details_maintenance">รายละเอียดการบำรุงรักษา</label>
                                                     <textarea class="details_maintenance" name="details_maintenance" id="details_maintenance" placeholder="รายละเอียดการบำรุงรักษา"></textarea>
                                                 </div>
-                                                <button type="submit" class="confirm_maintenance" name="complete_maintenance"><span>ยืนยัน</span></button>
+                                                <input type="text" name="serial_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>">
+                                                <input type="text" name="selected_ids" value="<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
+                                                <button type="submit" class="confirm_maintenance" name="complete_maintenance">
+                                                    ยืนยัน
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -316,8 +292,9 @@ try {
                     </tbody>
                 </table>
             <?php else : ?>
-                <div class="not_found">
-                    <h1 id="B"><?= $searchTitle ?>ไม่พบข้อมูล!</h1>
+                <div class="maintenance_not_found">
+                    <i class="fa-solid fa-database"></i>
+                    <span id="B">ไม่พบข้อมูล</span>
                 </div>
             <?php endif ?>
         <?php endif ?>

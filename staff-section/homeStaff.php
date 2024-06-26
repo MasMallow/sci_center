@@ -1,6 +1,6 @@
 <?php
 require_once 'assets/database/dbConfig.php';
-require_once 'assets/includes/thai_date_time.php';
+include_once 'assets/includes/thai_date_time.php';
 
 $bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL OR situation = 0 ORDER BY serial_number");
 $bookings->execute();
@@ -101,13 +101,13 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </a>
                         </div>
                         <div class="staff_item">
+                            <a href="view_log" class="staff_item_btn">
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>ดูระบบภายใน</span>
+                            </a>
                             <a href="view_report" class="staff_item_btn">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
                                 <span class="text">ประวัติการขอใช้</span>
-                            </a>
-                            <a href="top_10_list" class="staff_item_btn">
-                                <i class="fa-solid fa-user-gear"></i>
-                                <span>ดูสถิติ 10 รายการ</span>
                             </a>
                         </div>
                     </div>

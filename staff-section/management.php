@@ -1,4 +1,8 @@
 <?php
+// เริ่ม session
+session_start();
+include_once 'assets/database/dbConfig.php'; // ไฟล์สำหรับเชื่อมต่อฐานข้อมูล
+
 // ดึงข้อมูลผู้ใช้เพียงครั้งเดียว (เพิ่มตรวจสอบค่า session)
 if (isset($_SESSION['staff_login']) && !empty($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
@@ -16,36 +20,44 @@ $searchTitle = "";
 $searchValue = "";
 $result = [];
 
-// ตรวจสอบและกำหนดค่าการค้นหา
-if (isset($_GET['search']) && !empty($_GET['search'])) {
+if (!isset($_GET['page'])) {
+    $page = 1;
+}
+
+// ตรวจสอบและกำหนดค่าการค้นหาและหน้าปัจจุบัน
+if (!empty($_GET['search'])) {
     $searchValue = htmlspecialchars($_GET['search']);
     $searchTitle = "ค้นหา \"$searchValue\" | ";
     $searchQuery = "%" . $_GET["search"] . "%";
+    $page = intval($_GET['page'] ?? 1);
+
+    // เก็บผลการค้นหาไว้ใน session
+    $_SESSION['search_results'] = $searchQuery;
+    $_SESSION['search_value'] = $searchValue;
 } else {
-    $searchQuery = null;
+    // ใช้ผลการค้นหาจาก session ถ้ามี
+    $searchQuery = $_SESSION['search_results'] ?? null;
+    $searchValue = $_SESSION['search_value'] ?? null;
+    $page = intval($_GET['page'] ?? 1);
 }
 
-// หากมีการกำหนดหน้าปัจจุบันให้ใช้ค่านี้ ไม่งั้นให้ใช้หน้าที่ 1
-if (!isset($_GET['page'])) {
-    $page = 1;
-} else {
-    $page = $_GET['page'];
-}
-
-$results_per_page = 1;
+$results_per_page = 1; // เปลี่ยนค่าตามความต้องการ
 
 // คำนวณ offset สำหรับคำสั่ง SQL LIMIT
 $offset = ($page - 1) * $results_per_page;
+
+// ตรวจสอบ URI ปัจจุบันเพื่อกำหนด category
+$request_uri = $_SERVER['REQUEST_URI'];
 
 // คำสั่ง SQL เพื่อดึงข้อมูล
 $query = "SELECT * FROM crud LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number";
 
 // เพิ่มเงื่อนไข categories
-if ($request_uri === '/management/material') {
+if (strpos($request_uri, '/management/material') !== false) {
     $query .= " WHERE crud.categories = 'วัสดุ'";
-} elseif ($request_uri === '/management/equipment') {
+} elseif (strpos($request_uri, '/management/equipment') !== false) {
     $query .= " WHERE crud.categories = 'อุปกรณ์'";
-} elseif ($request_uri === '/management/tools') {
+} elseif (strpos($request_uri, '/management/tools') !== false) {
     $query .= " WHERE crud.categories = 'เครื่องมือ'";
 } else {
     $query .= " WHERE 1=1"; // เพิ่มเงื่อนไขให้เป็นจริงเสมอเพื่อให้สามารถเพิ่ม AND ต่อไปได้
@@ -76,11 +88,11 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $total_records_query = "SELECT COUNT(*) AS total FROM crud LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number";
 
 // เพิ่มเงื่อนไข categories สำหรับนับจำนวน
-if ($request_uri === '/management/material') {
+if (strpos($request_uri, '/management/material') !== false) {
     $total_records_query .= " WHERE crud.categories = 'วัสดุ'";
-} elseif ($request_uri === '/management/equipment') {
+} elseif (strpos($request_uri, '/management/equipment') !== false) {
     $total_records_query .= " WHERE crud.categories = 'อุปกรณ์'";
-} elseif ($request_uri === '/management/tools') {
+} elseif (strpos($request_uri, '/management/tools') !== false) {
     $total_records_query .= " WHERE crud.categories = 'เครื่องมือ'";
 } else {
     $total_records_query .= " WHERE 1=1";
@@ -108,7 +120,13 @@ if ($total_records <= $results_per_page) {
     $pagination_display = true;
 }
 
+
+// ลบตัวแปร search_results
+unset($search_results);
+// ลบค่าใน session ที่ชื่อ search_value
+unset($_SESSION['search_value']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -121,37 +139,9 @@ if ($total_records <= $results_per_page) {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/management_systems.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
-
-    <style>
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .pagination a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-            transition: background-color .3s;
-            border: 1px solid #ddd;
-            margin: 0 4px;
-        }
-
-        .pagination a.active {
-            background-color: #4CAF50;
-            color: white;
-            border: 1px solid #4CAF50;
-        }
-
-        .pagination a:hover:not(.active) {
-            background-color: #ddd;
-        }
-    </style>
 </head>
 
 <body>
-    <!-- Header -->
     <header>
         <?php include_once('assets/includes/navigator.php'); ?>
     </header>
@@ -255,22 +245,17 @@ if ($total_records <= $results_per_page) {
                             </div>
                         </div>
                         <div class="content_status_details">
-                            <?php if ($results['amount'] >= 50) { ?>
+                            <?php if ($results['availability'] == 0) : ?>
                                 <div class="ready-to-use">
                                     <i class="fa-solid fa-circle-check"></i>
-                                    <span id="B">ปกติ</span>
+                                    <span id="B">พร้อมใช้งาน</span>
                                 </div>
-                            <?php } elseif ($results['amount'] <= 30 && $results['amount'] >= 1) { ?>
+                            <?php elseif ($results['availability'] != 0) : ?>
                                 <div class="moderately">
-                                    <i class="fa-solid fa-circle-exclamation"></i>
-                                    <span id="B">ปานกลาง</span>
-                                </div>
-                            <?php } elseif ($results['amount'] == 0) { ?>
-                                <div class="not-available">
                                     <i class="fa-solid fa-ban"></i>
-                                    <span id="B">ไม่พร้อมใช้งาน</span>
+                                    <span id="B">บำรุงรักษา</span>
                                 </div>
-                            <?php } ?>
+                            <?php endif ?>
                             <div class="content_details">
                                 <a href="management/detailsData?id=<?= $results['ID'] ?>" class="details_btn">
                                     <i class="fa-solid fa-circle-info"></i>
@@ -278,9 +263,14 @@ if ($total_records <= $results_per_page) {
                             </div>
                         </div>
                         <div class="management_grid_content_body">
-                            <div class="content_name"><span id="B">ชื่อ </span><?php echo htmlspecialchars($results['sci_name']); ?></div>
-                            <div class="content_categories"><span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?></div>
-                            <div class="content_amount"><span id="B">คงเหลือ </span><?php echo htmlspecialchars($results['amount']); ?></div>
+                            <div class="content_name">
+                                <?php echo htmlspecialchars($results['sci_name']); ?></div>
+                            <div class="content_categories">
+                                <span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?>
+                            </div>
+                            <div class="content_amount">
+                                <span id="B">จำนวน </span><?php echo htmlspecialchars($results['amount']); ?>
+                            </div>
                         </div>
                         <div class="management_grid_content_footer">
                             <a href="<?php echo $base_url; ?>/management/editData?id=<?= $results['ID'] ?>" class="edit_crud_btn">
@@ -296,17 +286,33 @@ if ($total_records <= $results_per_page) {
                 <?php endforeach; ?>
             <?php endif; ?>
             </div>
-            <!-- Pagination -->
+
+            <!-- PAGINATION PAGE -->
             <?php if ($pagination_display) : ?>
                 <div class="pagination">
-                    <?php for ($i = 1; $i <= ceil($total_records / $results_per_page); $i++) : ?>
-                        <a href="?page=<?= $i ?>" <?= ($page == $i) ? 'class="active"' : '' ?>><?= $i ?></a>
-                    <?php endfor; ?>
+                    <?php if ($page > 1) : ?>
+                        <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
+                        <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                    <?php endif; ?>
+
+                    <?php
+                    $total_pages = ceil($total_records / $results_per_page);
+                    for ($i = 1; $i <= $total_pages; $i++) {
+                        if ($i == $page) {
+                            echo "<a class='active'>$i</a>";
+                        } else {
+                            echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
+                        }
+                    }
+                    ?>
+
+                    <?php if ($page < $total_pages) : ?>
+                        <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
+                        <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
     </div>
-    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-    <script src="<?php echo $base_url; ?>/assets/js/pop_upEdit.js"></script>
 </body>
 
 </html>

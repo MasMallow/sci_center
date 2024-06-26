@@ -47,6 +47,31 @@ if (!empty($_GET['start_date']) && !empty($_GET['end_date'])) {
 $stmt = $conn->prepare($sql);
 $stmt->execute($params);
 $viewReport = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+try {
+    // คิวรีสำหรับวัสดุ อุปกรณ์ และเครื่องมือ พร้อมนับจำนวนการใช้งาน
+    $materialQuery = "SELECT sci_name, COUNT(*) as usage_count FROM crud WHERE categories = 'วัสดุ' GROUP BY sci_name ORDER BY usage_count DESC";
+    $equipmentQuery = "SELECT sci_name, COUNT(*) as usage_count FROM crud WHERE categories = 'อุปกรณ์' GROUP BY sci_name ORDER BY usage_count DESC";
+    $toolQuery = "SELECT sci_name, COUNT(*) as usage_count FROM crud WHERE categories = 'เครื่องมือ' GROUP BY sci_name ORDER BY usage_count DESC";
+
+    // เตรียมและดำเนินการคิวรีสำหรับวัสดุ
+    $materialStmt = $conn->prepare($materialQuery);
+    $materialStmt->execute();
+    $materialResult = $materialStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // เตรียมและดำเนินการคิวรีสำหรับอุปกรณ์
+    $equipmentStmt = $conn->prepare($equipmentQuery);
+    $equipmentStmt->execute();
+    $equipmentResult = $equipmentStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // เตรียมและดำเนินการคิวรีสำหรับเครื่องมือ
+    $toolStmt = $conn->prepare($toolQuery);
+    $toolStmt->execute();
+    $toolResult = $toolStmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    // จัดการข้อผิดพลาดในการคิวรีฐานข้อมูล
+    echo "Query failed: " . $e->getMessage();
+}
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -155,6 +180,53 @@ $viewReport = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php } ?>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="top_10_list">
+            <div class="top_10_list_content">
+                <div class="top_10_list_header">
+                    <span id="B">Top 10 วัสดุ</span>
+                </div>
+                <div class="top_10_list_body">
+                    <ul>
+                        <?php
+                        // แสดงผลวัสดุ 10 อันดับแรก
+                        foreach (array_slice($materialResult, 0, 10) as $row) {
+                            echo "<li>{$row['sci_name']} - ใช้งาน {$row['usage_count']} ครั้ง</li>";
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="top_10_list_content">
+                <div class="top_10_list_header">
+                    <span id="B">Top 10 อุปกรณ์</span>
+                </div>
+                <div class="top_10_list_body">
+                    <ul>
+                        <?php
+                        // แสดงผลอุปกรณ์ 10 อันดับแรก
+                        foreach (array_slice($equipmentResult, 0, 10) as $row) {
+                            echo "<li>{$row['sci_name']} - ใช้งาน {$row['usage_count']} ครั้ง</li>";
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="top_10_list_content">
+                <div class="top_10_list_header">
+                    <span id="B">Top 10 เครื่องมือ</span>
+                </div>
+                <div class="top_10_list_body">
+                    <ul>
+                        <?php
+                        // แสดงผลเครื่องมือ 10 อันดับแรก
+                        foreach (array_slice($toolResult, 0, 10) as $row) {
+                            echo "<li>{$row['sci_name']} - ใช้งาน {$row['usage_count']} ครั้ง</li>";
+                        }
+                        ?>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

@@ -93,7 +93,6 @@ try {
                 </div>
                 <div class="col">
                     <?php
-                    // สมมติว่าค่า $editData['installation_date'] อยู่ในรูปแบบ timestamp หรือในรูปแบบที่สามารถแปลงเป็น datetime ได้
                     $installation_date = date('Y-m-d\TH:i', strtotime($editData['installation_date']));
                     ?>
                     <div class="input_Data">

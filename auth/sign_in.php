@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
 if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isset($_SESSION['staff_login'])) {
 ?>
     <!DOCTYPE html>
@@ -76,11 +75,11 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                         </script>
                         <div class="box_content_other">
                             <div class="not_remember">
-                                <span><a href="#">ลืมรหัสผ่าน?</a></span>
+                                <a href="#">ลืมรหัสผ่าน?</a>
                             </div>
                             <div class="sign_up">
-                                <span>ไม่มีบัญชี ?</span>
-                                <a href="/sign_up"><span>สมัครสมาชิก</span>
+                                <a href="/sign_up">
+                                    <span>สมัครสมาชิก</span>
                                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                 </a>
                             </div>

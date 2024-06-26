@@ -77,8 +77,13 @@ switch ($request) {
     case '/view_report/generate_pdf':
         require 'staff-section/generate_pdf.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
-    case '/top_10_list':
-        require 'staff-section/top_10_list.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+    case '/view_log':
+    case '/view_log/approve_request':
+    case '/view_log/approve_users':
+    case '/view_log/management':
+    case '/view_log/maintenance':
+    case '/view_log/view_report':
+        require 'staff-section/view_log.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     default:
         require 'error_page.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด

@@ -9,7 +9,9 @@
   display: flex;
   align-items: center;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  background-color: #F6F8FA;
+  border: 1px solid #D0D7DE;
+  color: #1f2328;
   padding: 0.4rem 1rem;
   gap: 1rem;
   font-size: 1.2rem;
@@ -18,14 +20,14 @@
     align-items: center;
     justify-content: center;
     color: #8f8f8f;
-    background-color: #fff;
+    background-color: #F6F8FA;
     text-decoration: none;
     width: 35px;
     height: 35px;
     border-radius: 50%;
     transition: all 0.25s;
     &:hover {
-      background-color: #f1efef;
+      background-color: #d0d7de;
       color: #000000;
     }
   }

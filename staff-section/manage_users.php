@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':approved_date', $approvalDateTime, PDO::PARAM_STR);
         $stmt->execute();
 
-        // รีเฟรชหน้าเว็บ
+        // ตั้งค่า session และรีเฟรชหน้าเว็บ
         $_SESSION['approveSuccess'] = 'อนุมัติบัญชีผู้ใช้เรียบร้อย';
         header('Location: /manage_users');
         exit;
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
 
-        // รีเฟรชหน้าเว็บ
+        // ตั้งค่า session และรีเฟรชหน้าเว็บ
         $_SESSION['bannedSuccess'] = 'ระงับบัญชีผู้ใช้เรียบร้อย';
         header('Location: /manage_users/management_user');
         exit;
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
 
-        // รีเฟรชหน้าเว็บ
+        // ตั้งค่า session และรีเฟรชหน้าเว็บ
         $_SESSION['delUserSuccess'] = 'ลบบัญชีผู้ใช้เรียบร้อย';
         header('Location: /manage_users/undisapprove_user');
         exit;
@@ -139,70 +139,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
     <div class="manage_user">
         <?php
-        if (isset($_SESSION['approveSuccess'])) : ?>
-            <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2">
-                                <?php
-                                if (isset($_SESSION['approveSuccess'])) {
-                                    echo $_SESSION['approveSuccess'];
-                                    unset($_SESSION['approveSuccess']);
-                                } ?>
-                            </span>
+        $successMessages = [
+            'approveSuccess',
+            'bannedSuccess',
+            'delUserSuccess'
+        ];
+        foreach ($successMessages as $message) :
+            if (isset($_SESSION[$message])) : ?>
+                <div class="toast">
+                    <div class="toast_section">
+                        <div class="toast_content">
+                            <i class="fas fa-solid fa-xmark check"></i>
+                            <div class="toast_content_message">
+                                <span class="text text_2">
+                                    <?php
+                                    echo $_SESSION[$message];
+                                    unset($_SESSION[$message]);
+                                    ?>
+                                </span>
+                            </div>
+                            <i class="fa-solid fa-xmark close"></i>
+                            <div class="progress"></div>
                         </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
                     </div>
                 </div>
-            </div>
-        <?php endif; ?>
-        <?php
-        if (isset($_SESSION['bannedSuccess'])) : ?>
-            <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2">
-                                <?php
-                                if (isset($_SESSION['bannedSuccess'])) {
-                                    echo $_SESSION['bannedSuccess'];
-                                    unset($_SESSION['bannedSuccess']);
-                                }
-                                ?>
-                            </span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
-        <?php
-        if (isset($_SESSION['delUserSuccess'])) : ?>
-            <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2">
-                                <?php
-                                if (isset($_SESSION['delUserSuccess'])) {
-                                    echo $_SESSION['delUserSuccess'];
-                                    unset($_SESSION['delUserSuccess']);
-                                }
-                                ?>
-                            </span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
         <div class="header_user_manage_section">
             <a href="javascript:history.back();"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">การจัดการบัญชีผู้ใช้</span>

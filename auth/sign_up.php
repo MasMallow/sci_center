@@ -61,10 +61,10 @@ require_once 'assets/database/dbConfig.php';
                                     <input type="password" id="password" name="password" required placeholder="กรุณากรอกรหัสผ่าน (Password)">
                                     <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
                                 </div>
-                                <span class="description">
+                                <div class="description">
                                     <b>Note : </b>รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร<br>
                                     <b>Note : </b>รหัสผ่านต้องประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลขอย่างน้อย 1 ตัว
-                                </span>
+                                </div>
                             </div>
                             <div class="input_box">
                                 <span>ยืนยันรหัสผ่านอีกครั้ง</span>
@@ -75,7 +75,6 @@ require_once 'assets/database/dbConfig.php';
                             </div>
                         </div>
                     </div>
-                    <hr>
                     <div class="form">
                         <div class="form_header">
                             <span id="B">ส่วนที่ 2</span>

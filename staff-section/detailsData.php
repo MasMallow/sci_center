@@ -80,6 +80,7 @@ try {
     <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/management_systems.css">
 </head>
 
@@ -87,19 +88,25 @@ try {
     <?php include('assets/includes/navigator.php') ?>
     <main class="add_MET">
         <div class="add_MET_section">
+            <!-- <------------ HEADER FORM ----------------->
             <div class="add_MET_section_header">
                 <div class="add_MET_section_header_1">
                     <a href="javascript:history.back();"><i class="fa-solid fa-arrow-left-long"></i></a>
-                    <label id="B"><?php echo $detailsData['sci_name'] ?></label>
+                    <span id="B">รายละเอียด</span>
                 </div>
                 <div class="add_MET_section_header_2">
-                    <button class="details <?php if ($request_uri == '/management/detailsData') echo 'active' ?> ">รายละเอียด</button>
-                    <button class="maintenance_history <?php if ($request_uri == '/maintenance/detailsData') echo 'active' ?> ">บำรุงรักษา</button>
+                    <button class="details <?php if ($request_uri == '/management/detailsData') echo 'active' ?> ">
+                        <i class="fa-solid fa-circle-info"></i></button>
+                    <button class="maintenance_history <?php if ($request_uri == '/maintenance/detailsData') echo 'active' ?> ">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> </button>
                 </div>
             </div>
+            <!-- <------------ HEADER FORM ----------------->
             <div class="add_MET_section_form_1 
-                    <?php if ($request_uri == '/management/detailsData') echo 'active_1' ?> 
-                    <?php if ($request_uri == '/maintenance/detailsData') echo '' ?>">
+                        <?php if ($request_uri == '/management/detailsData') echo 'active_1' ?> 
+                        <?php if ($request_uri == '/maintenance/detailsData') echo '' ?>">
+
+                <!-- <------------ DETAILS FORM ----------------->
                 <div class="form_left">
                     <div class="Img">
                         <div class="imgInput">
@@ -162,59 +169,71 @@ try {
                     </div>
                     <div class="col">
                         <div class="input_Data">
-                            <label for="details">Details</label>
+                            <label for="details">รายละเอียด</label>
                             <span><?php echo $detailsData['details'] ?></span>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- <------------ MIANTENANCE FORM ----------------->
             <div class="add_MET_section_form_2 
-                    <?php if ($request_uri == '/maintenance/detailsData') echo 'active_2' ?>">
+                        <?php if ($request_uri == '/maintenance/detailsData') echo 'active_2' ?>">
                 <div class="maintenance_history">
                     <div class="maintenance_history_header">
-                    <?php if (is_array($detailsMaintenance) && !empty($detailsMaintenance)) : ?>
-                        <div>
-                            ประวัติการบำรุงรักษาของ
-                            <span id="B"><?= htmlspecialchars($detailsMaintenance[0]['sci_name'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
-                                (<?= htmlspecialchars($detailsMaintenance[0]['serial_number'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>)</span>
-                            <span>ได้รับการบำรุงรักษาไปทั้งหมด <?= htmlspecialchars($rowCount, ENT_QUOTES, 'UTF-8'); ?> ครั้ง</span>
-                        </div>
-                        <div>
-                            บำรุงรักษาล่าสุดเมื่อ
-                            <?php
-                            if (isset($detailsMaintenance[0]['last_maintenance_date'])) {
-                                echo thai_date_time_4($detailsMaintenance[0]['last_maintenance_date']);
-                                $daysSinceMaintenance = calculateDaysSinceLastMaintenance($detailsMaintenance[0]['last_maintenance_date']);
-                                if ($daysSinceMaintenance === "( ไม่เคยได้รับการบำรุงรักษา )") {
-                                    echo $daysSinceMaintenance;
+                        <?php if (is_array($detailsMaintenance) && !empty($detailsMaintenance)) : ?>
+                            <div class="maintenance_history_header_name">
+                                <span id="B"> ประวัติการบำรุงรักษาของ
+                                </span>
+                            </div>
+                            <div class="maintenance_history_header_name_1">
+                                <span id="B"><?= htmlspecialchars($detailsMaintenance[0]['sci_name'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
+                                    (<?= htmlspecialchars($detailsMaintenance[0]['serial_number'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>)</span>
+                                <span>ได้รับการบำรุงรักษาไปทั้งหมด <?= htmlspecialchars($rowCount, ENT_QUOTES, 'UTF-8'); ?> ครั้ง</span>
+                            </div>
+                            <div class="maintenance_history_header_name_1">
+                                บำรุงรักษาล่าสุดเมื่อ
+                                <?php
+                                if (isset($detailsMaintenance[0]['last_maintenance_date'])) {
+                                    echo thai_date_time_4($detailsMaintenance[0]['last_maintenance_date']);
+                                    $daysSinceMaintenance = calculateDaysSinceLastMaintenance($detailsMaintenance[0]['last_maintenance_date']);
+                                    if ($daysSinceMaintenance === "( ไม่เคยได้รับการบำรุงรักษา )") {
+                                        echo $daysSinceMaintenance;
+                                    } else {
+                                        echo "  ( ไม่ได้รับการบำรุงรักษามามากกว่า " . htmlspecialchars($daysSinceMaintenance, ENT_QUOTES, 'UTF-8') . " วัน )";
+                                    }
                                 } else {
-                                    echo "  ( ไม่ได้รับการบำรุงรักษามามากกว่า " . htmlspecialchars($daysSinceMaintenance, ENT_QUOTES, 'UTF-8') . " วัน )";
+                                    echo "( ไม่เคยได้รับการบำรุงรักษา )";
                                 }
-                            } else {
-                                echo "( ไม่เคยได้รับการบำรุงรักษา )";
-                            }
-                            ?>
-                            
-                        </div>
+                                ?>
+                            </div>
                         <?php endif; ?>
                     </div>
                     <?php if (is_array($detailsMaintenance) && !empty($detailsMaintenance)) : ?>
                         <?php foreach ($detailsMaintenance as $dataList) : ?>
                             <div class="maintenance_entry">
-                                <span>
-                                    <span id="B">เริ่มการบำรุงรักษาตั้งแต่</span>
-                                    <?= htmlspecialchars(thai_date_time_3($dataList['start_maintenance'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
-                                    ถึง <?= htmlspecialchars(thai_date_time_3($dataList['end_maintenance'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
-                                </span>
-                                <span>
-                                    <span id="B">ชื่อผู้ดูแล</span> <?= htmlspecialchars($dataList['name_staff'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
-                                </span>
-                                <span>
-                                    <span id="B">หมายเหตุ</span> <?= htmlspecialchars($dataList['note'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
-                                </span>
-                                <span>
-                                    <span id="B">รายละเอียดการบำรุงรักษา</span> <?= htmlspecialchars($dataList['details_maintenance'] ?? '--', ENT_QUOTES, 'UTF-8'); ?> </span>
-                                </span>
+                                <div class="maintenance_row">
+                                    <div class="approve_row">
+                                        <div>
+                                            <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
+                                            <span id="B">เริ่มการบำรุงรักษาตั้งแต่</span>
+                                            <?= htmlspecialchars(thai_date_time_3($dataList['start_maintenance'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                                            ถึง <?= htmlspecialchars(thai_date_time_3($dataList['end_maintenance'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                                        </div>
+                                    </div>
+                                    <div class="expand_row">
+                                        <div>
+                                            <span id="B">ชื่อผู้ดูแล</span> <?= htmlspecialchars($dataList['name_staff'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
+                                        </div>
+                                        <div>
+                                            <span id="B">หมายเหตุ</span> <?= htmlspecialchars($dataList['note'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
+                                        </div>
+                                        <div>
+                                            <span id="B">รายละเอียดการบำรุงรักษา</span> <?= htmlspecialchars($dataList['details_maintenance'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
+                                        </div>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     <?php else : ?>
@@ -222,6 +241,8 @@ try {
                     <?php endif; ?>
                 </div>
             </div>
+
+            <!-- <------------ FOOTER FORM ----------------->
             <div class="btn_footer">
                 <?php if ($request_uri == '/maintenance/detailsData') : ?>
                     <span class="maintenance_button" id="B">บำรุงรักษา</span>
@@ -284,6 +305,7 @@ try {
                     </div>
                 <?php endif ?>
             </div>
+            <!-- <------------ FOOTER FORM ----------------->
         </div>
     </main>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>

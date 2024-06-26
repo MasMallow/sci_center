@@ -1,6 +1,6 @@
 @keyframes movingY {
   from {
-    transform: translateY(50px);
+    transform: translateY(30px);
     opacity: 0;
   }
   to {
@@ -33,21 +33,27 @@
   right: 20px;
   cursor: pointer;
 }
+body {
+  /* background-color: #f9f9f9; */
+  background-color: #f0f2f5;
+}
+
 .register {
   width: 100%;
   max-width: 700px;
   margin: 2rem auto;
 }
+
 .register_page {
   width: 100%;
-  border: 1px solid #dbdbdb;
+  border: 1px solid #c0c0c0; /* สีเส้นขอบที่เข้มขึ้น */
   border-radius: 5px;
-  animation: movingY 0.5s ease;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 14px;
+  animation: movingY 0.4s ease;
+  background-color: #ffffff; /* พื้นหลังของเนื้อหาสีขาว */
 
   .register_page_head {
     padding: 0.4rem 1rem;
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 1px solid #c0c0c0; /* สีเส้นขอบที่เข้มขึ้น */
     font-size: 1.15rem;
     display: flex;
     align-items: center;
@@ -58,25 +64,23 @@
       align-items: center;
       justify-content: center;
       color: #8f8f8f;
-      background-color: #fff;
+      background-color: #ffffff; /* พื้นหลังของลิงก์สีขาว */
       text-decoration: none;
       width: 35px;
       height: 35px;
       border-radius: 50%;
       transition: all 0.25s;
+
       &:hover {
-        background-color: #f1efef;
+        background-color: #e0e0e0; /* สีพื้นหลังเมื่อวางเมาส์สีเทาอ่อน */
         color: #000000;
       }
     }
   }
 }
+
 .register_page .register_page_body {
   padding: 0.5rem 1rem;
-}
-hr {
-  border: 1px solid #dbdbdb;
-  margin: 1rem 0;
 }
 .form .form_header {
   font-size: 1rem;
@@ -116,7 +120,7 @@ select:focus {
 
 /* description */
 .description {
-  font-size: .4rem;
+  font-size: 0.85rem;
   color: rgb(255, 0, 0);
   margin-top: 3px;
   padding-left: 5px;
