@@ -3,21 +3,22 @@ session_start();
 require_once 'assets/database/dbConfig.php';
 include_once 'assets/includes/thai_date_time.php';
 
+// Redirect to sign-in page if not logged in
 if (!isset($_SESSION['staff_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('Location: sign_in');
     exit;
 }
-if (isset($_SESSION['staff_login'])) {
+// Fetch user data from database
+try {
     $userID = $_SESSION['staff_login'];
-    $stmt = $conn->prepare("
-        SELECT * 
-        FROM users_db
-        WHERE userID = :userID
-    ");
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :userID");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit();
 }
 
 $searchTitle = "";
@@ -30,54 +31,40 @@ if (isset($_GET['search'])) {
 
 $request_uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
+// Fetch maintenance data
 try {
+    $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
+
     if ($request_uri == '/maintenance') {
-        // ตรวจสอบและสร้าง search query
-        $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
-
-        // สร้าง query พื้นฐาน
-        $query = "SELECT * FROM crud INNER JOIN info_sciname ON crud.serial_number = info_sciname.serial_number WHERE crud.availability = 0";
-
-        // เพิ่มเงื่อนไขการค้นหา (ถ้ามี)
+        $query = "SELECT * FROM crud 
+                  INNER JOIN info_sciname ON crud.serial_number = info_sciname.serial_number 
+                  WHERE crud.availability = 0";
         if ($searchQuery) {
             $query .= " AND (crud.sci_name LIKE :search OR crud.serial_number LIKE :search)";
         }
-
         $query .= " ORDER BY crud.ID ASC";
-
-        // เตรียม statement
+        
         $stmt = $conn->prepare($query);
-
-        // bind parameter การค้นหา (ถ้ามี)
         if ($searchQuery) {
             $stmt->bindParam(':search', $searchQuery, PDO::PARAM_STR);
         }
-
-        // Execute query
         $stmt->execute();
         $maintenance = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     if ($request_uri == '/maintenance/end_maintenance') {
-        $searchQuery = isset($_GET["search"]) && !empty($_GET["search"]) ? "%" . $_GET["search"] . "%" : null;
-        $query = "SELECT * FROM crud INNER JOIN info_sciname ON crud.serial_number = info_sciname.serial_number WHERE crud.availability != 0";
-
-        // เพิ่มเงื่อนไขการค้นหา (ถ้ามี)
+        $query = "SELECT * FROM crud 
+                  INNER JOIN info_sciname ON crud.serial_number = info_sciname.serial_number 
+                  WHERE crud.availability != 0";
         if ($searchQuery) {
             $query .= " AND (crud.sci_name LIKE :search OR crud.serial_number LIKE :search)";
         }
-
         $query .= " ORDER BY crud.ID ASC";
-
-        // เตรียม statement
+        
         $stmt = $conn->prepare($query);
-
-        // bind parameter การค้นหา (ถ้ามี)
         if ($searchQuery) {
             $stmt->bindParam(':search', $searchQuery, PDO::PARAM_STR);
         }
-
-        // Execute query
         $stmt->execute();
         $maintenance_success = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -165,6 +152,9 @@ try {
                 <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
                 <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
+        </div>
+        <div>
+            <button><a href="/staff-section/report_maintenance.php">รายงาน</a></button>
         </div>
         <?php if ($request_uri == '/maintenance') : ?>
             <?php if (!empty($maintenance)) : ?>
