@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once '../assets/database/dbConfig.php';
-date_default_timezone_set('Asia/Bangkok'); // Set timezone to Asia/Bangkok
+date_default_timezone_set('Asia/Bangkok'); // ตั้งค่าโซนเวลาเป็น Asia/Bangkok
 
-// Check if the user is logged in
+// ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่
 if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
     $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :userID");
@@ -12,9 +12,9 @@ if (isset($_SESSION['staff_login'])) {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Process form submission
+// ประมวลผลเมื่อฟอร์มถูกส่ง
 if (isset($_POST['submit'])) {
-    // Get form data
+    // รับข้อมูลจากฟอร์ม
     $sci_name = trim($_POST['sci_name']);
     $serial_number = trim($_POST['serial_number']);
     $amount = trim($_POST['amount']);
@@ -27,43 +27,48 @@ if (isset($_POST['submit'])) {
     $brand = trim($_POST['brand']);
     $model = trim($_POST['model']);
 
-    // Check if $sci_name contains [] or ()
+    $log_Status = 'Add';
+
+    // ตรวจสอบว่า $sci_name ไม่มี [] หรือ ()
     if (strpos($sci_name, '[') !== false || strpos($sci_name, ']') !== false || strpos($sci_name, '(') !== false || strpos($sci_name, ')') !== false) {
         $_SESSION['errorUpload'] = "ห้ามใส่ [] หรือ () ในชื่อวิทยาศาสตร์";
         header('location: ' . $base_url . '/management/addData');
         exit();
     }
 
-    // Handle thumbnail upload
+    // จัดการการอัปโหลดรูปภาพ
     $img = $_FILES['img'];
     $thumbnail_extension = strtolower(pathinfo($img['name'], PATHINFO_EXTENSION));
     $folder = '../assets/uploads/';
     $thumbnail_path = $folder . uniqid() . '.' . $thumbnail_extension;
 
-    // Allowed image types
+    // ประเภทของรูปภาพที่อนุญาต
     $allowed = array('jpg', 'jpeg', 'png');
     if (in_array($thumbnail_extension, $allowed)) {
         if ($img['size'] > 0 && $img['error'] == 0) {
-            // Check if image name already exists in database
+            // ตรวจสอบว่าชื่อรูปภาพมีอยู่ในฐานข้อมูลหรือไม่
             $stmt = $conn->prepare("SELECT * FROM crud WHERE img_name = :img_name");
             $stmt->bindParam(":img_name", $img['name']);
             $stmt->execute();
             $insert_curd = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $log_Name = $userData['pre'] . $userData['firstname'] . ' ' . $userData['lastname'];
+            $log_Role = $userData['role'];
 
             if ($insert_curd) {
                 $_SESSION['errorUpload'] = "ชื่อไฟล์ภาพนี้ถูกใช้ไปแล้ว";
                 header('location: ' . $base_url . '/management/addData');
                 exit();
             } else {
-                // Upload the image
+                // อัปโหลดรูปภาพ
                 if (move_uploaded_file($img['tmp_name'], $thumbnail_path)) {
-                    $conn->beginTransaction(); // Start transaction
+                    $conn->beginTransaction(); // เริ่มต้นการทำธุรกรรม
 
                     try {
-                        // Insert data into crud table
+                        // ใส่ข้อมูลลงในตาราง crud
                         $sql = $conn->prepare("INSERT INTO crud (img_name, sci_name, serial_number, amount, categories, uploaded_on) VALUES (:img_name, :sci_name, :serial_number, :amount, :categories, :uploaded)");
                         $thumbnail_new_name = basename($thumbnail_path);
-                        $uploaded = date("Y-m-d H:i:s"); // Current date and time
+                        $uploaded = date("Y-m-d H:i:s"); // วันที่และเวลาปัจจุบัน
                         $sql->bindParam(":img_name", $thumbnail_new_name);
                         $sql->bindParam(":sci_name", $sci_name);
                         $sql->bindParam(":serial_number", $serial_number);
@@ -72,7 +77,7 @@ if (isset($_POST['submit'])) {
                         $sql->bindParam(":uploaded", $uploaded);
                         $sql->execute();
 
-                        // Insert data into info_sciname table
+                        // ใส่ข้อมูลลงในตาราง info_sciname
                         $sql = $conn->prepare("INSERT INTO info_sciname (sci_name, serial_number, installation_date, details, brand, model, company, contact_number, contact) VALUES (:sci_name, :serial_number, :installation_date, :details, :brand, :model, :company, :contact_number, :contact)");
                         $sql->bindParam(":sci_name", $sci_name);
                         $sql->bindParam(":serial_number", $serial_number);
@@ -85,14 +90,27 @@ if (isset($_POST['submit'])) {
                         $sql->bindParam(":contact", $contact);
                         $sql->execute();
 
-                        // Commit transaction
+                        // ใส่ข้อมูลลงในตาราง logs_management
+                        $log_Content = json_encode([
+                            'sci_name' => $sci_name,
+                            'serial_number' => $serial_number,
+                        ], JSON_UNESCAPED_UNICODE);
+                        $sql = $conn->prepare("INSERT INTO logs_management (log_Name, log_Role, log_Status, log_Content) 
+                                                VALUES (:log_Name, :log_Role, :log_Status, :log_Content)");
+                        $sql->bindParam(":log_Name", $log_Name);
+                        $sql->bindParam(":log_Role", $log_Role);
+                        $sql->bindParam(":log_Status", $log_Status);
+                        $sql->bindParam(":log_Content", $log_Content);
+                        $sql->execute();
+
+                        // ยืนยันการทำธุรกรรม
                         $conn->commit();
 
                         $_SESSION['Uploadsuccess'] = "เพิ่มข้อมูลสำเร็จ";
                         header('location: ' . $base_url . '/management/addData');
                         exit();
                     } catch (Exception $e) {
-                        // Rollback transaction
+                        // ยกเลิกการทำธุรกรรม
                         $conn->rollBack();
                         $_SESSION['errorUpload'] = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
                         header('location: ' . $base_url . '/management/addData');
@@ -119,4 +137,3 @@ if (isset($_POST['submit'])) {
     header('location: ' . $base_url . '/management/addData');
     exit();
 }
-?>

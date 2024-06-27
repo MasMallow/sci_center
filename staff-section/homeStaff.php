@@ -107,7 +107,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </a>
                             <a href="view_report" class="staff_item_btn">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
-                                <span class="text">ประวัติการขอใช้</span>
+                                <span class="text">รายงาน และ TOP 10</span>
                             </a>
                         </div>
                     </div>

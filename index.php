@@ -72,6 +72,7 @@ switch ($request) {
         break;
     case '/view_report':
     case '/view_report/userID/startDate/endDate':
+    case '/view_report/top_10':
         require 'staff-section/view_report.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/view_report/generate_pdf':
@@ -79,10 +80,15 @@ switch ($request) {
         break;
     case '/view_log':
     case '/view_log/approve_request':
+    case '/view_log/approve_request/details':
     case '/view_log/approve_users':
+    case '/view_log/approve_users/details':
     case '/view_log/management':
+    case '/view_log/management/details':
     case '/view_log/maintenance':
+    case '/view_log/maintenance/details':
     case '/view_log/view_report':
+    case '/view_log/view_report/details':
         require 'staff-section/view_log.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     default:
