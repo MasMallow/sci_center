@@ -15,9 +15,14 @@ if (isset($_SESSION['user_login'])) {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($userData) {
-        if ($userData['status'] == '0') {
+        if ($userData['status'] == 'n_approved') {
             unset($_SESSION['user_login']);
             header('Location: auth/sign_in');
+            exit();
+        }
+        elseif($userData['status'] == 'w_approved'){
+            unset($_SESSION['reserve_cart']);
+            header('Location: /home.php');
             exit();
         }
     }
@@ -215,7 +220,7 @@ if (isset($_GET['action'])) {
                                 <a href="<?php echo $base_url; ?>/" class="back_to_main">กลับหน้าหลัก</a>
                             </div>
                             <div class="footer_section_btn_2">
-                                <button class="submit cart_btn">ยืนยัน</button>
+                                <span class="submit cart_btn">ยืนยัน</span>
                                 <div class="cart_submit_popup">
                                     <div class="cart_submit">
                                         <div class="cart_submit_header">

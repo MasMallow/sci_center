@@ -1,7 +1,7 @@
 <?php
 session_start();
-unset($_SESSION['user_login']);
-unset($_SESSION['admin_login']);
-unset($_SESSION['staff_login']);
+session_unset();
+session_destroy();
 header('location:../home.php');
+exit();
 ?>

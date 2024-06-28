@@ -73,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             (reservation_date <= :reservationdate AND end_date >= :reservationdate) OR
                             (reservation_date <= :enddate AND end_date >= :enddate) OR
                             (reservation_date >= :reservationdate AND end_date <= :enddate)
-                        )"
-                    );
+                        ) AND situation != 2"
+                    );                    
                     $reservation_check_query->bindValue(':productName', "%$productName%", PDO::PARAM_STR);
                     $reservation_check_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
                     $reservation_check_query->bindParam(':enddate', $enddate, PDO::PARAM_STR);
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach ($errorMessages as $message) {
                 echo $message . '<br>';
             }
-            echo '<a href="cart_use">กลับหน้าตะกร้า</a><br>';
+            echo '<a href="/cart_systems">กลับหน้าตะกร้า</a><br>';
         } else {
             // เตรียมข้อมูลสำหรับการจอง
             $itemBorrowed = implode(', ', $itemList);
@@ -116,18 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert_query->bindParam(':random_string', $random_string, PDO::PARAM_STR);
             $insert_query->execute();
 
-            $insert_logs = $conn->prepare(
-                "INSERT INTO logs_usage (authID, authName, log_orDers, log_Data, created_at, reservation_date, end_date) 
-                VALUES (:authID, :authName, :random_string, :list_name, NOW(), :reservationdate, :enddate)"
-            );
-            $insert_logs->bindParam(':authID', $userID, PDO::PARAM_INT);
-            $insert_logs->bindParam(':authName', $firstname, PDO::PARAM_STR);
-            $insert_logs->bindParam(':random_string', $random_string, PDO::PARAM_STR);
-            $insert_logs->bindParam(':list_name', $itemBorrowed, PDO::PARAM_STR);
-            $insert_logs->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
-            $insert_logs->bindParam(':enddate', $enddate, PDO::PARAM_STR);
-            $insert_logs->execute();
-
             // ล้างตะกร้าหลังจากการจองเสร็จสิ้น
             unset($_SESSION['reserve_cart']);
 
@@ -141,4 +129,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-?>
