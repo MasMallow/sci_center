@@ -24,7 +24,7 @@ try {
     $returned = $_GET['returned'] ?? 'used'; // ตรวจสอบค่าที่ถูกส่งมาจาก query parameter 'returned'
 
     // ตรวจสอบและเลือกคำสั่ง SQL ตามค่า 'returned' ที่รับมาelse {
-    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_id = :user_id AND situation = 1 AND date_return IS NULL");
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND situation = 1 AND date_return IS NULL");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC); // เก็บข้อมูลที่ได้จากการ query ลงในตัวแปร $dataList
@@ -152,7 +152,7 @@ try {
 
                                     <form method="POST" action="check_request_bookings_notification">
                                         <input type="hidden" name="return_id" value="<?= htmlspecialchars($data['id']); ?>">
-                                        <input type="hidden" name="user_id" value="<?= htmlspecialchars($data['user_id']); ?>">
+                                        <input type="hidden" name="user_id" value="<?= htmlspecialchars($data['userID']); ?>">
                                         <div class="confirm_btn">
                                             <span class="btn_text">คืนรายการที่ขอใช้งาน</span>
                                         </div>

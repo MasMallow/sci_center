@@ -32,7 +32,7 @@ try {
 
     // ดึงข้อมูลการจอง
     if (isset($user_id)) {
-        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE user_id = :user_id AND reservation_date >= CURDATE()");
+        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND reservation_date >= CURDATE()");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -60,7 +60,7 @@ try {
 
 <body>
     <header>
-        <?php include 'assets/includes/header.php'; ?>
+        <?php include 'assets/includes/navigator.php'; ?>
     </header>
     <div class="maintenance">
         <div class="header_maintenance_section">
@@ -85,7 +85,7 @@ try {
                                 <th><span id="B">วัน เวลาที่ทำรายการ</span></th>
                                 <th><span id="B">วัน เวลาที่จอง</span></th>
                                 <th>
-                                    <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($bookings[0]['user_id']); ?>">
+                                    <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($bookings[0]['userID']); ?>">
                                     <button type="submit"><span id="B">ยกเลิกการจอง</span></button>
                                 </th>
                                 <th><span id="B">สถานะ</span></th>
@@ -110,7 +110,7 @@ try {
                                     <td><?php echo thai_date_time($booking['created_at']); ?></td>
                                     <td><?php echo thai_date_time($booking['reservation_date']); ?></td>
                                     <td>
-                                        <input type="checkbox" name="booking_ids[]" value="<?php echo htmlspecialchars($booking['id']); ?>">
+                                        <input type="checkbox" name="booking_ids[]" value="<?php echo htmlspecialchars($booking['ID']); ?>">
                                     </td>
                                     <td>
                                         <?php
