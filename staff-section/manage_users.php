@@ -13,7 +13,7 @@ if (isset($_SESSION['staff_login'])) {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: auth/sign_in.php');
+    header('Location: /sign_in');
     exit;
 }
 
@@ -137,34 +137,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header>
         <?php include 'assets/includes/navigator.php'; ?>
     </header>
-    <div class="manage_user">
-        <?php
-        $successMessages = [
-            'approveSuccess',
-            'bannedSuccess',
-            'delUserSuccess'
-        ];
-        foreach ($successMessages as $message) :
-            if (isset($_SESSION[$message])) : ?>
-                <div class="toast">
-                    <div class="toast_section">
-                        <div class="toast_content">
-                            <i class="fas fa-solid fa-xmark check"></i>
-                            <div class="toast_content_message">
-                                <span class="text text_2">
-                                    <?php
-                                    echo $_SESSION[$message];
-                                    unset($_SESSION[$message]);
-                                    ?>
-                                </span>
-                            </div>
-                            <i class="fa-solid fa-xmark close"></i>
-                            <div class="progress"></div>
+    <?php
+    $successMessages = [
+        'approveSuccess',
+        'bannedSuccess',
+        'delUserSuccess'
+    ];
+    foreach ($successMessages as $message) :
+        if (isset($_SESSION[$message])) : ?>
+            <div class="toast">
+                <div class="toast_section">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2">
+                                <?php
+                                echo $_SESSION[$message];
+                                unset($_SESSION[$message]);
+                                ?>
+                            </span>
                         </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                        <div class="progress"></div>
                     </div>
                 </div>
-            <?php endif; ?>
-        <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    <div class="manage_user">
         <div class="header_user_manage_section">
             <a href="javascript:history.back();"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">การจัดการบัญชีผู้ใช้</span>

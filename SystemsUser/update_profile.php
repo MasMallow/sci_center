@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../assets/database/dbConfig.php'; // เรียกใช้งานไฟล์ที่เชื่อมต่อฐานข้อมูลด้วย PDO
+require_once '../assets/database/dbConfig.php'; // เรียกใช้งานไฟล์ที่เชื่อมต่อฐานข้อมูลด้วย PDO
 
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['staff_login'];
@@ -41,16 +41,18 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     }
 
     // อัปเดตข้อมูลในฐานข้อมูล
-    $sql = "UPDATE users SET pre=:pre, firstname=:firstname, lastname=:lastname, phone_number=:phone_number, role=:role, agency=:agency $passwordUpdateQuery WHERE userID=:user_id";
+    $sql = "UPDATE users_db 
+            SET pre=:pre, firstname=:firstname, lastname=:lastname, phone_number=:phone_number, role=:role, agency=:agency $passwordUpdateQuery 
+            WHERE userID=:user_id";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute($params);
 
     if ($stmt->rowCount() > 0) {
         $_SESSION['edit_profile_success'] = "แก้ไขชื่อผู้ใช้สำเร็จ";
-        header("Location: ../home");
+        header("Location: /profile_user/edit_profile");
     } else {
         $_SESSION['edit_profile_error'] = "!! เกิดข้อผิดพลาด ไม่สามารถแก้ไขผู้ใช้ได้";
-        header("Location: ../home");
+        header("Location: /profile_user/edit_profile");
     }
 }

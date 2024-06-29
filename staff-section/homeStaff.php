@@ -16,6 +16,13 @@ $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime 
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
+
+$stmt = $conn->prepare("SELECT * FROM crud");
+$stmt->execute();
+$CRUD = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$numCRUD = count($CRUD); // นับจำนวนรายการ
+
+
 $previousSn = '';
 $previousFirstname = '';
 
@@ -56,6 +63,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <div class="staff">
+        <!-- --------------- ROW 1 --------------- -->
         <div class="staff_page">
             <div class="staff_section">
                 <div class="staff_header">
@@ -115,38 +123,42 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="staff_notification">
                 <div class="staff_notification_header">
+                    <i class="fa-solid fa-bell"></i>
                     <span id="B">แจ้งเตือน</span>
                 </div>
                 <div class="staff_notification_body">
-                    <?php if (!empty($data)) : ?>
-                        <div class="staff_notification_stack">
-                            <?php foreach ($data as $datas) : ?>
-                                <div class="staff_notification_data">
-                                    <span>
-                                        <?php echo htmlspecialchars($datas['serial_number']); ?>
-                                    </span>
-                                    <span>
-                                        <?php echo htmlspecialchars(thai_date_time_2($datas['reservation_date'])); ?>
-                                    </span>
-                                </div>
-                            <?php endforeach; ?>
+                    <div class="staff_notification_alert">
+                        <div class="notification_request">
+                            <?php if (!empty($num)) : ?>
+                                <span>มีการขอใช้</span>
+                                <span id="B">
+                                    <?php echo htmlspecialchars($num); ?> รายการ
+                                </span>
+                            <?php else : ?>
+                                <span id="B">ไม่พบข้อมูลการขอใช้</span>
+                            <?php endif ?>
                         </div>
-                    <?php else : ?>
-                        <div class="non_notification_stack">
-                            <div class="non_notification_stack_1">
-                                <i class="fa-solid fa-envelope"></i>
-                                <span id="B">ไม่มีแจ้งเตือนการขอใช้</span>
-                            </div>
+                        <div class="notification_crud">
+                            <?php if (!empty($numCRUD)) : ?>
+                                <span>วัสดุ อุปกรณ์ และเครื่องมือในคลัง</span>
+                                <span id="B">
+                                    <?php echo htmlspecialchars($numCRUD); ?> รายการ
+                                </span>
+                            <?php else : ?>
+                                <span id="B">ไม่พบข้อมูลจำนวนวัสดุ อุปกรณ์ และเครื่องมือในคลัง</span>
+                            <?php endif ?>
                         </div>
-                    <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- -------------- ROW 2 --------------- -->
         <div class="staff_page">
             <div class="staff_section_approve">
                 <div class="staff_approved_header">
                     <div class="section_1">
-                        <i class="fa-solid fa-user-tie"></i>
+                        <i class="fa-solid fa-file-signature"></i>
                         <span id="B">อนุมัติการขอใช้</span>
                     </div>
                     <div class="section_2">
@@ -178,7 +190,6 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <?php
                                                     // แยกข้อมูล Item Borrowed
                                                     $items = explode(',', $row['list_name']);
-
                                                     // แสดงข้อมูลรายการที่ยืม
                                                     foreach ($items as $item) {
                                                         $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
@@ -221,11 +232,13 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </div>
+
+        <!-- -------------- ROW 3 --------------- -->
         <div class="staff_page">
             <div class="staff_section_2">
                 <div class="staff_header_maintenance">
                     <div class="section_1">
-                        <i class="fa-solid fa-user-tie"></i>
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
                         <span id="B">การบำรุงรักษา</span>
                     </div>
                     <div class="section_2">
@@ -288,6 +301,7 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="staff_notification_2">
                 <div class="staff_notification_maintenance_header">
+                    <i class="fa-solid fa-bell"></i>
                     <span id="B">แจ้งเตือนการบำรุงรักษา</span>
                 </div>
                 <div class="staff_notification_body">

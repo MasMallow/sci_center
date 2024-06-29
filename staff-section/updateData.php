@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../assets/database/dbConfig.php');
+
 // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่
 if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
@@ -10,8 +11,9 @@ if (isset($_SESSION['staff_login'])) {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่
+// ตรวจสอบว่ามีการส่งข้อมูลการอัปเดทเข้ามาหรือไม่
 if (isset($_POST['update'])) {
+    // รับข้อมูลจากฟอร์มและตัดช่องว่างหน้า-หลังออก
     $id = $_POST['id'];
     $sci_name = trim($_POST['sci_name']);
     $serial_number = trim($_POST['serial_number']);
@@ -28,11 +30,13 @@ if (isset($_POST['update'])) {
     $img2 = $_POST['img2'];
     $upload = $_FILES['img']['name'];
 
+    // ตั้งค่าค่าเริ่มต้นสำหรับ log
     $log_Status = 'Edit';
     $log_Name = $userData['pre'] . $userData['firstname'] . ' ' . $userData['lastname'];
     $log_Role = $userData['role'];
-    $fileNew = $img2; // Default to previous image
+    $fileNew = $img2; // ใช้รูปภาพเดิมเป็นค่าเริ่มต้น
 
+    // ตรวจสอบว่ามีการอัปโหลดไฟล์ใหม่หรือไม่
     if ($upload != '') {
         $allow = array('jpg', 'jpeg', 'png');
         $extension = pathinfo($img['name'], PATHINFO_EXTENSION);
@@ -41,6 +45,7 @@ if (isset($_POST['update'])) {
         $folder = '../assets/uploads/';
         $filePath = $folder . $fileNew;
 
+        // ตรวจสอบชนิดไฟล์และขนาดไฟล์
         if (in_array($fileActExt, $allow) && $img['size'] > 0 && $img['error'] == 0) {
             if (!move_uploaded_file($img['tmp_name'], $filePath)) {
                 $_SESSION['error'] = "Failed to upload the file";
@@ -54,19 +59,20 @@ if (isset($_POST['update'])) {
         }
     }
 
-    // Fetch existing data
+    // ดึงข้อมูลที่มีอยู่เพื่อตรวจสอบการอัปเดทรูปภาพ
     $sql = $conn->prepare("SELECT * FROM crud WHERE ID = :ID");
     $sql->bindParam(":ID", $id);
     $sql->execute();
     $result = $sql->fetch(PDO::FETCH_ASSOC);
 
+    // ลบรูปภาพเดิมหากมีการอัปโหลดรูปภาพใหม่
     if ($upload != '') {
         @unlink($folder . $result['img_name']);
     } else {
         $fileNew = $result['img_name'];
     }
 
-    // Update crud table
+    // อัปเดตตาราง crud
     $update_sql = $conn->prepare("UPDATE crud SET sci_name = :sci_name, amount = :amount, categories = :categories, img_name = :img_name WHERE ID = :ID");
     $update_sql->bindParam(":ID", $id);
     $update_sql->bindParam(":sci_name", $sci_name);
@@ -74,7 +80,7 @@ if (isset($_POST['update'])) {
     $update_sql->bindParam(":categories", $categories);
     $update_sql->bindParam(":img_name", $fileNew);
 
-    // Update info_sciname table
+    // อัปเดตตาราง info_sciname
     $info_update_sql = $conn->prepare("UPDATE info_sciname SET 
         sci_name = :sci_name, 
         serial_number = :serial_number, 
@@ -102,21 +108,27 @@ if (isset($_POST['update'])) {
         'sci_name' => $sci_name,
         'serial_number' => $serial_number,
     ], JSON_UNESCAPED_UNICODE);
-    $sql = $conn->prepare("INSERT INTO logs_management (log_Name, log_Role, log_Status, log_Content) 
+    $log_sql = $conn->prepare("INSERT INTO logs_management (log_Name, log_Role, log_Status, log_Content) 
                             VALUES (:log_Name, :log_Role, :log_Status, :log_Content)");
-    $sql->bindParam(":log_Name", $log_Name);
-    $sql->bindParam(":log_Role", $log_Role);
-    $sql->bindParam(":log_Status", $log_Status);
-    $sql->bindParam(":log_Content", $log_Content);
-    $sql->execute();
+    $log_sql->bindParam(":log_Name", $log_Name);
+    $log_sql->bindParam(":log_Role", $log_Role);
+    $log_sql->bindParam(":log_Status", $log_Status);
+    $log_sql->bindParam(":log_Content", $log_Content);
 
-    // Execute both updates and check results
-    if ($update_sql->execute() && $info_update_sql->execute()) {
+    // Execute all queries and check results
+    $conn->beginTransaction(); // Begin transaction
+    try {
+        $update_sql->execute();
+        $info_update_sql->execute();
+        $log_sql->execute();
+        $conn->commit(); // Commit transaction
         $_SESSION['updateData_success'] = "อัปเดทข้อมูลสำเร็จ";
-    } else {
-        $_SESSION['updateData_error'] = "อัปเดทข้อมูลไม่สำเร็จ";
+    } catch (Exception $e) {
+        $conn->rollBack(); // Rollback transaction if any query fails
+        $_SESSION['updateData_error'] = "อัปเดทข้อมูลไม่สำเร็จ: " . $e->getMessage();
     }
 
     header("Location: /management");
     exit;
 }
+?>

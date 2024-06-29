@@ -269,11 +269,12 @@ tbody tr {
   border: 1px solid #d0d7de;
 }
 .content {
-  background-color: #01bdb6;
   width: 100%;
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.7rem 0;
 }
 .sciName {
   width: 75%;

@@ -1,7 +1,6 @@
 <?php
-// เริ่ม session
 session_start();
-include_once 'assets/database/dbConfig.php'; // ไฟล์สำหรับเชื่อมต่อฐานข้อมูล
+require_once 'assets/database/dbConfig.php'; // ไฟล์สำหรับเชื่อมต่อฐานข้อมูล
 
 // ดึงข้อมูลผู้ใช้เพียงครั้งเดียว (เพิ่มตรวจสอบค่า session)
 if (isset($_SESSION['staff_login']) && !empty($_SESSION['staff_login'])) {

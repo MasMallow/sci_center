@@ -14,7 +14,13 @@ $request = rtrim($request, '/');
 
 switch ($request) {
     case '':
+    case '/material':
+    case '/equipment':
+    case '/tools':
         require 'home.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
+        break;
+    case '/details':
+        require 'details.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
     case '/sign_in':
         require 'auth/sign_in.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
@@ -62,6 +68,7 @@ switch ($request) {
     case '/management/editData':
         require 'staff-section/editData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด
         break;
+    case '/detailsData':
     case '/management/detailsData':
     case '/maintenance/detailsData':
         require 'staff-section/detailsData.php'; // ตรวจสอบว่าไฟล์นี้มีอยู่และไม่มีข้อผิดพลาด

@@ -24,7 +24,6 @@
   height: 60px;
   top: 0;
   left: 0;
-  transition: all 0.5s ease-in-out;
 }
 
 .header_nav {
@@ -35,7 +34,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: all 0.5s ease-in-out;
+
+  @media screen and (max-width: 1450px) {
+    max-width: 100%;
+    padding: 0 2rem;
+  }
 }
+
 .header_nav_banner {
   display: flex;
   align-items: center;
@@ -97,7 +103,7 @@
 
   & .menu {
     list-style: none;
-    padding: .5rem 0.7rem;
+    padding: 0.5rem 0.7rem;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border: 1px #bdbdbd solid;
@@ -113,7 +119,7 @@
     z-index: 1;
 
     & .menu_li {
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
       cursor: pointer;
       transition: all 0.3s;
       border: 1px transparent solid;
@@ -194,29 +200,25 @@
   }
 }
 
-/* Not LogIn */
+/* ----------- NOT_LOGIN ---------- */
 .not-login {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
   outline: none;
   border: none;
-  padding: 8px 10px;
+  padding: 0.5rem 0.75rem;
   border-radius: 5px;
   font-size: 14px;
   color: black;
   background-color: white;
-  transition: all 0.1s;
-}
+  transition: all 0.25s;
 
-.not-login:hover {
-  border: 1px solid black;
-}
+  &:hover {
+    background-color: #f5f4f4;
+  }
 
-.not-login a {
-  display: flex;
-  align-items: center;
-  color: black;
-}
-
-.not-login .ilogion {
-  font-size: 20px;
-  margin: 0px 5px;
+  .ilogion {
+    font-size: 1.1rem;
+  }
 }

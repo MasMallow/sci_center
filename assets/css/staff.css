@@ -31,50 +31,55 @@
 }
 .staff_section_approve {
   width: 100%;
-  height: 45vh;
+  height: 42.5vh;
   border: 1px solid #d0d7de;
   border-radius: 5px;
+  overflow: hidden;
 }
 .staff_section {
   width: 100%;
-  height: 30vh;
+  height: 25vh;
   border: 1px solid #d0d7de;
   border-radius: 5px;
+  overflow: hidden;
 }
 .staff_notification {
   width: 55%;
-  height: 30vh;
+  height: 25vh;
   border: 1px solid #d0d7de;
   border-radius: 5px;
+  overflow: hidden;
 }
 .staff_section_2 {
   width: 100%;
   height: 45vh;
   border: 1px solid #d0d7de;
   border-radius: 5px;
+  overflow: hidden;
 
-  a{
+  a {
     color: #1f2328;
-
   }
 }
 .staff_notification_2 {
   width: 55%;
   height: 45vh;
-  border: 1px solid #bbb;
+  border: 1px solid #d0d7de;
   border-radius: 5px;
+  overflow: hidden;
 }
 .staff_header,
 .staff_notification_header {
   width: 100%;
   height: 20%;
-    font-size: 1.15rem;
+  font-size: 1.15rem;
   padding: 0.7rem 1.2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 1px solid #bbb;
+  background-color: #f6f8fa;
+  border-bottom: 1px solid #d0d7de;
 
   & .section_1 {
     display: flex;
@@ -100,7 +105,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 1px solid #bbb;
+  background-color: #f6f8fa;
+  border-bottom: 1px solid #d0d7de;
 
   & .section_1 {
     display: flex;
@@ -118,13 +124,14 @@
 .staff_approved_header {
   width: 100%;
   height: 13.5%;
-    font-size: 1.15rem;
+  font-size: 1.15rem;
   padding: 0.7rem 1.2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 1px solid #bbb;
+  background-color: #f6f8fa;
+  border-bottom: 1px solid #d0d7de;
 
   & .section_1 {
     display: flex;
@@ -141,7 +148,7 @@
 }
 .staff_approved_content {
   width: 100%;
-  height: 86.5%;
+  height: 100%;
 }
 .staff_content {
   width: 100%;
@@ -165,8 +172,6 @@
   width: 100%;
   height: 100%;
   padding: 0.5rem 1rem;
-  overflow: hidden;
-  overflow: scroll;
 }
 
 .staff_item {
@@ -194,7 +199,7 @@
   transition: background-color 0.3s;
 
   & i {
-      font-size: 1.15rem;
+    font-size: 1.15rem;
   }
 
   &:hover {
@@ -215,7 +220,7 @@
   transition: background-color 0.3s;
 
   & i {
-      font-size: 1.15rem;
+    font-size: 1.15rem;
   }
 
   &:hover {
@@ -224,8 +229,31 @@
 }
 
 .staff_notification_body {
+  overflow: hidden;
   overflow: scroll;
+  scrollbar-width: none;
   padding: 0.5rem 1rem;
+}
+.staff_notification_alert {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+.notification_request,
+.notification_crud {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: 1px solid #d0d7de;
+  gap: 0.4rem;
+  font-size: 1.025rem;
+  border-left: 4px solid #1f6feb;
 }
 .staff_notification_stack {
   display: flex;
@@ -279,6 +307,7 @@
   flex-direction: column;
   width: 100%;
   gap: 0.5rem;
+  overflow: hidden;
 }
 
 .approve_row {
