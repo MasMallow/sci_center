@@ -1,45 +1,100 @@
-<h1>ตารางการจอง</h1>
-<h1>*ห้ามยืมอุปกรณ์ที่ถูกจองในวันที่จอง*</h1>
-<a href="home.php">กลับหน้าหลัก</a>
-<a href="history_booking_log.php">ประวัติการจองทั้งหมด</a>
-<br>
-<br>
 <?php
-session_start();
-require_once 'assets/database/dbConfig.php';
-include_once 'assets/includes/thai_date_time.php';
-
-try {
-    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date >= CURDATE() AND situation = 1";
-    $stmt = $conn->query($sql);
-
-    if ($stmt->rowCount() > 0) {
-        echo "<table border='1'>
-        <tr>
-        <th>ชื่ออุปกรณ์</th>
-        <th>วันที่ถูกจอง</th>
-        </tr>";
-        while ($row = $stmt->fetch()) {
-            echo "<tr>";
-            $items = explode(',', $row['list_name']);
-            echo "<td>";
-            foreach ($items as $item) {
-                $item_parts = explode('(', $item); // แยกชื่ออุปกรณ์และจำนวน
-                $product_name = trim($item_parts[0]); // ชื่ออุปกรณ์ (ตัดช่องว่างที่เป็นไปได้)
-                $quantity = str_replace(')', '', $item_parts[1]); // จำนวน (ตัดวงเล็บออก)
-                echo $product_name . " " . $quantity . " ชิ้น ";
-            }
-            echo "</td>";
-            echo "<td>" . thai_date_time($row['reservation_date']) . "</td>";
-            echo "</tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "0 results";
-    }
-} catch (PDOException $e) {
-    echo "เกิดข้อผิดพลาด: " . $e->getMessage();
+if (isset($_SESSION['user_login'])) {
+    $userID = $_SESSION['user_login'];
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db
+        WHERE userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
-$pdo = null;
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตารางการขอใช้</title>
+    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/bookingTable.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
+</head>
+
+<body>
+    <header>
+        <?php include_once 'assets/includes/navigator.php'; ?>
+    </header>
+    <main class="bookingTable">
+        <div class="bookingTable_header">
+            <a href="javascript:history.back();">
+                <i class="fa-solid fa-arrow-left-long"></i>
+            </a>
+            <span id="B">ตารางการขอใช้ศูนย์วิทยาศาสตร์</span>
+        </div>
+        <div class="bookingTable_content">
+            <?php
+            session_start();
+            require_once 'assets/database/dbConfig.php';
+            include_once 'assets/includes/thai_date_time.php';
+
+            try {
+                $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date >= CURDATE() AND situation = 1";
+                $stmt = $conn->query($sql);
+
+                if ($stmt->rowCount() > 0) {
+            ?>
+                    <div class="bookingTable_div">
+                        <div class="bookingTable_div_header1">
+                            <div id="B">ห้ามขอใช้ในวันที่ที่มีการขอใช้แล้ว</div>
+                        </div>
+                        <div class="header1">
+                            <div class="header_item" id="B">ชื่อรายการ</div>
+                            <div class="header_item" id="B">วันเวลาที่ขอใช้งาน</div>
+                        </div>
+                        <?php
+                        while ($row = $stmt->fetch()) {
+                        ?>
+                            <div class="row">
+                                <div class="cell">
+                                    <?php
+                                    $items = explode(',', $row['list_name']);
+                                    foreach ($items as $item) {
+                                        $item_parts = explode('(', $item); // แยกชื่ออุปกรณ์และจำนวน
+                                        $product_name = trim($item_parts[0]); // ชื่ออุปกรณ์ (ตัดช่องว่างที่เป็นไปได้)
+                                        $quantity = str_replace(')', '', $item_parts[1]); // จำนวน (ตัดวงเล็บออก)
+                                        echo $product_name . " " . $quantity . " รายการ ";
+                                    }
+                                    ?>
+                                </div>
+                                <div class="cell">
+                                    <?php echo thai_date_time($row['reservation_date']); ?>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
+            <?php
+                } else {
+                    echo "0 results";
+                }
+            } catch (PDOException $e) {
+                echo "เกิดข้อผิดพลาด: " . $e->getMessage();
+            }
+
+            $pdo = null;
+            ?>
+        </div>
+    </main>
+    <footer>
+        <?php include_once 'assets/includes/footer.php'; ?>
+    </footer>
+</body>
+
+</html>

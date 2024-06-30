@@ -190,11 +190,11 @@ try {
                             </a>
                             <a class="group_li_02" href="<?php echo $base_url; ?>/booking_log">
                                 <i class="fa-solid fa-calendar-check"></i>
-                                <span class="text">ติดตามการจอง</span>
+                                <span class="text">ติดตามการขอใช้งาน</span>
                             </a>
                             <a class="group_li_03" href="<?php echo $base_url; ?>/bookings_list">
                                 <i class="fa-solid fa-calendar-xmark"></i>
-                                <span class="text">ยกเลิกการจอง</span>
+                                <span class="text">ยกเลิกการขอใช้งาน</span>
                             </a>
                         </li>
                         <li class="group_li">
@@ -329,13 +329,12 @@ try {
 
 
     <!-- ---------------- FOOTER ------------------ -->
-    <footer><?php include_once 'assets/includes/footer.php' ?></footer>
-</body>
+    <footer><?php include "assets/includes/footer.php" ?></footer>
 
-<!-- JavaScript -->
-<script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-<script src="<?php echo $base_url; ?>/assets/js/details.js"></script>
-<script src="<?php echo $base_url; ?>/assets/js/datetime.js"></script>
+    <!-- JavaScript -->
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/details.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/datetime.js"></script>
 </body>
 
 </html>

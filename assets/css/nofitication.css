@@ -1,28 +1,26 @@
-.notification_page{
-  max-width: 1400px;
-  margin: 0 auto;
-}
-.maintenance {
-  display: flex;
+.notification_page {
+  max-width: 1350px;
   width: 100%;
   margin: 3rem auto 1rem auto;
 }
-.header_maintenance_section {
+.notification_header {
   width: 100%;
   display: flex;
   align-items: center;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
+  color: #1f2328;
   padding: 0.5rem 1rem;
   gap: 0.75rem;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
 
   & a {
     display: flex;
     align-items: center;
     justify-content: center;
     color: #8f8f8f;
-    background-color: #fff;
+    background-color: #f6f8fa;
     text-decoration: none;
     width: 35px;
     height: 35px;
@@ -30,7 +28,7 @@
     transition: all 0.25s;
 
     &:hover {
-      background-color: #f1efef;
+      background-color: #d0d7de;
       color: #000000;
     }
   }
@@ -74,57 +72,69 @@
   }
 }
 .notification_section {
-  display: flex;
-  width: 1350px;
-  margin: 0 auto;
-  margin-top: 1rem;
-}
-.table_notification {
-  border-collapse: collapse;
+  min-height: 100vh;
   width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem 1.25rem;
+  border: 1px solid #d0d7de;
+  border-radius: 5px;
 }
-thead tr {
-  border: 1px solid #bdbdbd;
-}
-thead {
-  th {
-    font-size: 1.2rem;
-    text-align: start;
-    border-left: none;
-    border-right: none;
-    border-top: 1.5px solid #bdbdbd;
-    border-bottom: 1.5px solid #bdbdbd;
-    background-color: #e7e7e7;
-    padding: 0.75rem 0;
-  }
 
-  & .sci_name {
-    max-width: 20%;
-    width: 100%;
-  }
-  & .serial_number,
-  .installation_date {
-    max-width: 20%;
-    width: 100%;
-  }
+.notification {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
 
-  & .categories,
-  .amount {
+  .icon_notification {
     width: 10%;
+
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0969da;
+      font-size: 1.5rem;
+    }
+  }
+
+  .notification_details {
+    width: 100%;
+    line-height: 170%;
   }
 }
 
-tbody tr {
-  border: 1px solid #dbdbdb;
-  border-bottom: 1.5px solid #bdbdbd;
-  background-color: #ffffff;
-  & td {
-    padding: 1rem 0;
-  }
+.status {
+  float: right;
+  font-size: 0.9em;
+  padding: .2rem 1rem;
+  border-radius: 5px;
 }
-.serial_number {
-  padding-left: 1rem;
+
+.subtext {
+  color: #555;
 }
+
+.status_pending {
+  background-color: #ffc107;
+  color: #fff;
+}
+
+.status_approved {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.status_used {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
 .user_approve_not_found {
   width: 100%;
   display: flex;
@@ -141,94 +151,4 @@ tbody tr {
 .user_approve_not_found span {
   font-size: 1.5rem;
   margin-top: 1rem;
-}
-
-.toast {
-  position: absolute;
-  top: 40px;
-  right: 35px;
-  border-radius: 10px;
-  background-color: #fff;
-  padding: 20px 35px 20px 25px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #4070f4;
-  overflow: hidden;
-  transform: translatex(calc(100% + 35px));
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
-
-  & .toast_content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    & .check {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 30px;
-      width: 30px;
-      background-color: #4070f4;
-      color: #fff;
-      border-radius: 50%;
-    }
-
-    & .toast_content_message {
-      display: flex;
-      flex-direction: column;
-      margin: 0 20px;
-
-      & .text {
-        font-size: 1.1rem;
-        color: #666666;
-      }
-
-      & .text-2 {
-        font-size: 1rem;
-        color: #333;
-      }
-    }
-  }
-
-  & .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    padding: 5px;
-    cursor: pointer;
-    opacity: 0.7;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  & .progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    width: 100%;
-    background-color: #ddd;
-
-    &:before {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      height: 100%;
-      width: 100%;
-      background-color: #4070f4;
-    }
-  }
-}
-.toast.active {
-  transform: translateX(0%);
-}
-.toast .progress.active:before {
-  animation: progress 5s linear forwards;
-}
-@keyframes progress {
-  100% {
-    right: 100%;
-  }
 }

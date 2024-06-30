@@ -38,3 +38,21 @@ modal.addEventListener("click", function (event) {
         document.body.style.paddingRight = "";
     }
 });
+
+var closeModalButton = document.getElementById('closeAlertButton');
+var modalAlertbook = document.querySelector('.cart_alert');
+
+closeModalButton.addEventListener('click', function () {
+    closeModal();
+});
+
+modalAlertbook.addEventListener('click', function (event) {
+    if (event.target === modalAlertbook) {
+        closeModal();
+    }
+});
+
+function closeModal() {
+    var modal = document.querySelector('.cart_alert');
+    modal.style.display = 'none';
+}

@@ -19,8 +19,7 @@ if (isset($_SESSION['user_login'])) {
             unset($_SESSION['user_login']);
             header('Location: auth/sign_in');
             exit();
-        }
-        elseif($userData['status'] == 'w_approved'){
+        } elseif ($userData['status'] == 'w_approved') {
             unset($_SESSION['reserve_cart']);
             header('Location: /home.php');
             exit();
@@ -81,7 +80,7 @@ if (isset($_GET['action'])) {
     </header>
     <div class="sci_center_cart">
         <div class="sci_center_cart_header">
-            <a href="<?php echo $base_url; ?>/"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <a href="javascript:history.back();"><i class="fa-solid fa-arrow-left-long"></i></a>
             <span id="B">รายการที่เลือกทั้งหมด</span>
         </div>
         <?php if (empty($_SESSION['reserve_cart'])) : ?>
@@ -108,7 +107,7 @@ if (isset($_GET['action'])) {
                             <div class="cart_alert_body">
                                 <div class="cart_alert_body_sec1">
                                     <i class="fa-solid fa-circle-check"></i>
-                                    <span id="B">การจองสำเร็จ รอการอนุมัติจากเจ้าหน้าที่</span>
+                                    <span id="B">การขอใช้งานสำเร็จ รอการอนุมัติจากเจ้าหน้าที่</span>
                                 </div>
                                 <div class="cart_alert_body_sec2">
                                     <span id="B">ข้อมูลการจอง</span>
@@ -136,28 +135,10 @@ if (isset($_GET['action'])) {
                             </div>
                         </div>
                     </div>
-                    <script>
-                        var closeModalButton = document.getElementById('closeAlertButton');
-                        var modalAlertbook = document.querySelector('.cart_alert');
-
-                        closeModalButton.addEventListener('click', function() {
-                            closeModal();
-                        });
-
-                        modalAlertbook.addEventListener('click', function(event) {
-                            if (event.target === modalAlertbook) {
-                                closeModal();
-                            }
-                        });
-
-                        function closeModal() {
-                            var modal = document.querySelector('.cart_alert');
-                            modal.style.display = 'none';
-                        }
-                    </script>
                     <?php
                     unset($_SESSION['reserve_1']);
                     unset($_SESSION['reserve_2']);
+                    unset($_SESSION['reserve_3']);
                     ?>
                 <?php endif; ?>
             <?php else : ?>
@@ -250,8 +231,6 @@ if (isset($_GET['action'])) {
                 </form>
             </div>
         <?php endif; ?>
-
-    </div>
     </div>
     <script src="<?php echo $base_url; ?>/assets/js/cart.js"></script>
 </body>

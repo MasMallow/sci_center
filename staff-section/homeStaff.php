@@ -352,6 +352,9 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
             });
         });
     </script>
+    <!-- JavaScript -->
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+
 </body>
 
 </html>

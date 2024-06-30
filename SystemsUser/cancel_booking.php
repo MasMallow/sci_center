@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once '../assets/database/dbConfig.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_ids'])) {
     $booking_ids = $_POST['booking_ids'];
@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_ids'])) {
     }
     
     // Redirect back to bookings_list.php or display a confirmation message
-    header('Location: bookings_list');
+    header('Location: /bookings_list');
     exit();
 }
 ?>
