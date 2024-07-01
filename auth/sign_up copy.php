@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 
 // Set form values from the session if available, otherwise use default values
 $form_values = isset($_SESSION['form_values']) ? $_SESSION['form_values'] : array(

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 include_once 'assets/includes/thai_date_time.php';
 
 // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่

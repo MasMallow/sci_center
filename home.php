@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 
 if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];

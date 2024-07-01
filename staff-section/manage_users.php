@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 include_once 'assets/includes/thai_date_time.php';
 $request_uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
@@ -56,9 +56,9 @@ function fetchUsers($conn, $status, $role, $search = null)
 // ตั้งค่าตำแหน่งและสถานะตามการจัดการ
 $role = 'user';
 $search = isset($_GET["search"]) ? $_GET["search"] : null;
-if ($request_uri === '/manage_users/management_user') {
+if ($request_uri === '/management_user') {
     $users_approved = fetchUsers($conn, 'approved', $role, $search);
-} elseif ($request_uri === '/manage_users/undisapprove_user') {
+} elseif ($request_uri === '/undisapprove_user') {
     $users_banned = fetchUsers($conn, 'n_approved', $role, $search);
 }
 
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // ตั้งค่า session และรีเฟรชหน้าเว็บ
         $_SESSION['bannedSuccess'] = 'ระงับบัญชีผู้ใช้เรียบร้อย';
-        header('Location: /manage_users/management_user');
+        header('Location: /management_user');
         exit;
     }
     // ลบผู้ใช้
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // ตั้งค่า session และรีเฟรชหน้าเว็บ
         $_SESSION['delUserSuccess'] = 'ลบบัญชีผู้ใช้เรียบร้อย';
-        header('Location: /manage_users/undisapprove_user');
+        header('Location: /undisapprove_user');
         exit;
     }
 }
@@ -172,8 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="user_manage_btn_section">
             <div class="user_manage_btn">
                 <a href="/manage_users" class="<?= ($request_uri == '/manage_users') ? 'active' : ''; ?> btn_user_manage_01">อมุมัติบัญชีผู้ใช้</a>
-                <a href="/manage_users/management_user" class="<?= ($request_uri == '/manage_users/management_user') ? 'active' : ''; ?> btn_user_manage_02">ตรวจสอบและแก้ไขบัญชี</a>
-                <a href="/manage_users/undisapprove_user" class="<?= ($request_uri == '/manage_users/undisapprove_user') ? 'active' : ''; ?> btn_user_manage_03">ยกเลิกระงับบัญชี</a>
+                <a href="/management_user" class="<?= ($request_uri == '/management_user' || $request_uri == '/management_user/details') ? 'active' : ''; ?> btn_user_manage_02">ตรวจสอบและแก้ไขบัญชี</a>
+                <a href="/undisapprove_user" class="<?= ($request_uri == '/undisapprove_user') ? 'active' : ''; ?> btn_user_manage_03">ยกเลิกระงับบัญชี</a>
             </div>
             <!-- แบบฟอร์มการค้นหา -->
             <form class="user_manage_search" method="get">
@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-        <?php if (in_array($request_uri, ['/manage_users', '/manage_users/management_user', '/manage_users/undisapprove_user'])) : ?>
+        <?php if (in_array($request_uri, ['/manage_users', '/management_user', '/undisapprove_user'])) : ?>
             <?php
             $header = '';
             $user_list = [];
@@ -192,11 +192,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $header = 'บัญชีที่รออนุมัติ';
                     $user_list = $users;
                     break;
-                case '/manage_users/management_user':
+                case '/management_user':
                     $header = 'บัญชีที่อนุมัติแล้ว';
                     $user_list = $users_approved;
                     break;
-                case '/manage_users/undisapprove_user':
+                case '/undisapprove_user':
                     $header = 'บัญชีที่ถูกระงับ';
                     $user_list = $users_banned;
                     break;
@@ -223,8 +223,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php foreach ($user_list as $user) : ?>
                                 <tr>
                                     <td class="UID">
-                                        <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
-                                        <?= $user['userID']; ?>
+                                        <a href="<?= $base_url; ?>/management_user/details?id=<?= $user['userID'] ?>">
+                                            <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
+                                            <?= $user['userID']; ?></a>
                                     </td>
                                     <td><?= $user['pre'] . $user['firstname'] . " " . $user['lastname']; ?></td>
                                     <td><?= $user['role']; ?></td>
@@ -315,6 +316,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="user_manage_not_found">
                     <i class="fa-solid fa-user-xmark"></i>
                     <span id="B">ไม่มีพบบัญชีผู้ใช้ในระบบ</span>
+                </div>
+            <?php endif; ?>
+        <?php elseif ($request_uri == '/management_user/details') : ?>
+            <?php
+            try {
+                if (isset($_GET['id'])) {
+                    $id = (int)$_GET['id'];
+                    $stmt = $conn->prepare("
+                SELECT * FROM users_db                           
+                WHERE userID = :id
+            ");
+                    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $detailsdataUsed = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+            } catch (PDOException $e) {
+                echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+                exit;
+            } ?>
+            <?php if (!empty($detailsdataUsed)) : ?>
+                <div class="viewLog_request_Details">
+                    <div class="viewLog_request_MAIN">
+                        <div class="viewLog_request_header">
+                            <div class="path-indicator">
+                                <a href="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="viewLog_request_body">
+                            <?php foreach ($detailsdataUsed as $Data) : ?>
+                                <div class="viewLog_request_content">
+                                    <div class="list_name">
+                                        <a href="<?= $base_url; ?>/management_user/details?id=<?= $Data['userID'] ?>">
+                                            <?= $Data['userID'] ?>
+                                            <?= htmlspecialchars($Data['pre'], ENT_QUOTES, 'UTF-8') . htmlspecialchars($Data['firstname'], ENT_QUOTES, 'UTF-8') . ' ' . htmlspecialchars($Data['lastname'], ENT_QUOTES, 'UTF-8'); ?></a>
+                                    </div>
+                                    <div class="reservation_date">
+                                        ขอใช้
+                                        <?= thai_date_time_2(htmlspecialchars($Data['created_at'], ENT_QUOTES, 'UTF-8')) ?>
+                                    </div>
+                                    <div class="approver">
+                                        ผู้อนุมัติ
+                                        <?= htmlspecialchars($Data['email'], ENT_QUOTES, 'UTF-8') ?>
+                                    </div>
+                                    <div class="reservation_date">
+                                        ขอใช้
+                                        <?= format_phone_number(htmlspecialchars($Data['phone_number'], ENT_QUOTES, 'UTF-8')) ?>
+                                    </div>
+                                    <div class="reservation_date">
+                                        ขอใช้
+                                        <?= htmlspecialchars($Data['role'], ENT_QUOTES, 'UTF-8') ?>
+                                    </div>
+                                    <div class="reservation_date">
+                                        ขอใช้
+                                        <?= htmlspecialchars($Data['agency'], ENT_QUOTES, 'UTF-8') ?>
+                                    </div>
+                                    <div class="reservation_date">
+                                        ขอใช้
+                                        <?= htmlspecialchars($Data['status'], ENT_QUOTES, 'UTF-8') ?>
+                                    </div>
+                                    <div class="reservation_date">
+                                        ขอใช้
+                                        <?= htmlspecialchars($Data['approved_by'], ENT_QUOTES, 'UTF-8') ?>
+                                    </div>
+                                    <div class="reservation_date">
+                                        ขอใช้
+                                        <?= htmlspecialchars($Data['approved_date'], ENT_QUOTES, 'UTF-8') ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php else : ?>
+                <div class="viewNotfound">
+                    <i class="fa-solid fa-database"></i>
+                    <span id="B">ไม่พบข้อมูล</span>
                 </div>
             <?php endif; ?>
         <?php endif; ?>

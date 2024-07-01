@@ -1,7 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('Asia/Bangkok');
-require_once '../../assets/database/dbConfig.php';
+require_once '../../assets/database/config.php';
 
 function getIP()
 {

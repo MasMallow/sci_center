@@ -1,6 +1,6 @@
 <?php
 // change_password.php
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 
 $message = '';
 

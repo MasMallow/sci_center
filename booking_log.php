@@ -40,7 +40,7 @@ if (isset($_SESSION['user_login'])) {
         <div class="bookingTable_content">
             <?php
             session_start();
-            require_once 'assets/database/dbConfig.php';
+            require_once 'assets/database/config.php';
             include_once 'assets/includes/thai_date_time.php';
 
             try {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 include_once 'assets/includes/thai_date_time.php';
 
 if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
@@ -219,13 +219,14 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'profile';
             </div>
         <?php endif; ?>
     </main>
-    <footer class="small">
+    <footer>
         <div class="footer-content">
             <div class="footer-copyright">
                 <span>Copyright © 2024 ศูนย์วิทยาศาสตร์</span>
                 <span>ออกแบบและพัฒนาโดย ภูวเดช และ พิสิฐพงศ์. All Rights Reserved</span>
             </div>
     </footer>
+    <script src="<?php echo htmlspecialchars($base_url); ?>/assets/js/ajax.js"></script>
     <script src="<?php echo htmlspecialchars($base_url); ?>/assets/js/show_password.js"></script>
     <script src="<?php echo htmlspecialchars($base_url); ?>/assets/js/noti_toast.js"></script>
 </body>

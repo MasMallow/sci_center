@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../assets/database/dbConfig.php';
+require_once '../assets/database/config.php';
 date_default_timezone_set('Asia/Bangkok');
 
 if (isset($_SESSION['user_login'])) {

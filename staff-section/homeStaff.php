@@ -1,5 +1,5 @@
 <?php
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 include_once 'assets/includes/thai_date_time.php';
 
 $bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL OR situation = 0 ORDER BY serial_number");
@@ -11,11 +11,6 @@ $user->execute();
 $datauser = $user->fetchAll(PDO::FETCH_ASSOC);
 $numuser = count($datauser); // นับจำนวนรายการ
 
-// ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ
-$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL ORDER BY serial_number");
-$stmt->execute();
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$num = count($data); // นับจำนวนรายการ
 
 $stmt = $conn->prepare("SELECT * FROM crud");
 $stmt->execute();
@@ -48,7 +43,64 @@ $stmt = $conn->prepare("
 $stmt->execute();
 $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+try {
+    $userID = $_SESSION['staff_login'];
 
+    // ดึงข้อมูลผู้ใช้
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users_db
+        WHERE userID = :userID
+    ");
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // ดึงข้อมูลการใช้งาน
+    $users = $conn->prepare("SELECT * FROM users_db");
+    $users->execute();
+    $UserData = $users->fetchAll(PDO::FETCH_ASSOC);
+    $userCount = count($UserData); // นับจำนวนรายการ
+
+    // ดึงข้อมูลการอนุมัติการจอง
+    $used = $conn->prepare("SELECT * FROM approve_to_reserve");
+    $used->execute();
+    $dataUsed = $used->fetchAll(PDO::FETCH_ASSOC);
+    $usedCount = count($dataUsed); // นับจำนวนรายการ
+
+    // ดึงข้อมูลการอนุมัติการจอง
+    $stmt = $conn->prepare("SELECT * FROM logs_management");
+    $stmt->execute();
+    $Management = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $ManagementCount = count($Management); // นับจำนวนรายการ
+
+    // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ (วัสดุ)
+    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'วัสดุ' ORDER BY serial_number");
+    $stmt->execute();
+    $material = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $materialCount = count($material); // นับจำนวนรายการ
+
+    // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ (อุปกรณ์)
+    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'อุปกรณ์' ORDER BY serial_number");
+    $stmt->execute();
+    $equipment = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $equipmentCount = count($equipment); // นับจำนวนรายการ
+
+    // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ (เครื่องมือ)
+    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'เครื่องมือ' ORDER BY serial_number");
+    $stmt->execute();
+    $tools = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $toolsCount = count($tools); // นับจำนวนรายการ
+
+    // ดึงข้อมูลการบำรุงรักษา
+    $stmt = $conn->prepare("SELECT ID FROM logs_maintenance");
+    $stmt->execute();
+    $maintenance = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $maintenanceCount = count($maintenance); // นับจำนวนรายการ
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,14 +160,14 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <span class="text">การบำรุงรักษา</span>
                             </a>
                         </div>
-                        <div class="staff_item">
-                            <a href="view_log" class="staff_item_btn">
-                                <i class="fa-solid fa-user-gear"></i>
-                                <span>ดูระบบภายใน</span>
-                            </a>
+                        <div class="staff_item"> 
                             <a href="view_report" class="staff_item_btn">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
-                                <span class="text">รายงาน และ TOP 10</span>
+                                <span class="text">รายงาน</span>
+                            </a>
+                            <a href="view_top10" class="staff_item_btn">
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>TOP 10</span>
                             </a>
                         </div>
                     </div>
@@ -154,80 +206,58 @@ $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- -------------- ROW 2 --------------- -->
-        <div class="staff_page">
-            <div class="staff_section_approve">
-                <div class="staff_approved_header">
-                    <div class="section_1">
-                        <i class="fa-solid fa-file-signature"></i>
-                        <span id="B">อนุมัติการขอใช้</span>
+        <div class="viewLog_content_MAIN">
+            <div class="viewLog_content_1">
+                <div class="Content_1">
+                    <div class="Content_1_header">
+                        <span id="B">จำนวนบัญชีทั้งหมดในระบบ</span>
                     </div>
-                    <div class="section_2">
-                        <div class="approve_table_header">
-                            <span>รายการที่ขอใช้ทั้งหมด <span id="B">(<?php echo $num; ?>)</span> รายการ</span>
-                        </div>
+                    <div class="Content_1_body">
+                        <span id="B"><?php echo $userCount; ?></span>บัญชี
                     </div>
                 </div>
-                <div class="staff_approved_content">
-                    <div class="staff_content_table">
-                        <?php if (empty($data)) : ?>
-                            <div class="approve_not_found_section">
-                                <i class="fa-solid fa-xmark"></i>
-                                <span id="B">ไม่พบข้อมูลการขอใช้</span>
-                            </div>
-                        <?php endif ?>
-                        <?php if (!empty($data)) : ?>
-                            <div class="approve_container">
-                                <?php
-                                foreach ($data as $row) :
-                                    if ($previousSn != $row['serial_number']) { ?>
-                                        <div class="approve_row">
-                                            <div class="defualt_row">
-                                                <div class="serial_number">
-                                                    <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
-                                                    <?php echo $row['serial_number']; ?>
-                                                </div>
-                                                <div class="items">
-                                                    <?php
-                                                    // แยกข้อมูล Item Borrowed
-                                                    $items = explode(',', $row['list_name']);
-                                                    // แสดงข้อมูลรายการที่ยืม
-                                                    foreach ($items as $item) {
-                                                        $item_parts = explode('(', $item); // แยกชื่อสินค้าและจำนวนชิ้น
-                                                        $product_name = trim($item_parts[0]); // ชื่อสินค้า (ตัดวงเล็บออก)
-                                                        $quantity = str_replace(')', '', $item_parts[1]); // จำนวนชิ้น (ตัดวงเล็บออกและตัดช่องว่างข้างหน้าและหลัง)
-                                                        echo $product_name . ' <span id="B"> ( ' . $quantity . ' รายการ )</span><br>';
-                                                    }
-                                                    ?>
-                                                </div>
-                                                <div class="reservation_date">
-                                                    <span id="B">วัน เวลาที่ทำการขอใช้</span><br>
-                                                    <?php echo thai_date_time_2($row['reservation_date']); ?>
-                                                </div>
-                                                <div class="approve_actions">
-                                                    <form class="approve_form" method="POST" action="<?php echo $base_url; ?>/staff-section/processRequest.php">
-                                                        <input type="hidden" name="id" value="<?php echo $row['ID']; ?>">
-                                                        <input type="hidden" name="userID" value="<?php echo $row['userID']; ?>">
-                                                        <button class="confirm_approve" type="submit" name="confirm"><i class="fa-solid fa-circle-check"></i></button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <div class="expand_row">
-                                                <div>
-                                                    <span id="B">ชื่อผู้ใช้ และวัน เวลาที่ทำรายการ :</span>
-                                                    <?php echo htmlspecialchars($row['name_user']); ?>
-                                                </div>
-                                                <div>
-                                                    <?php echo thai_date_time_2(htmlspecialchars($row['created_at'])); ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                <?php
-                                        $previousSn = $row['serial_number'];
-                                    }
-                                endforeach;
-                                ?>
-                            </div>
-                        <?php endif ?>
+                <div class="Content_1">
+                    <div class="Content_1_header">
+                        <span id="B">จำนวนการขอใช้ทั้งหมด</span>
+                    </div>
+                    <div class="Content_1_body">
+                        <span id="B"><?php echo $usedCount; ?></span>ครั้ง
+                    </div>
+                </div>
+                <div class="Content_1">
+                    <div class="Content_1_header">
+                        <span id="B">จำนวนการบำรุงรักษาทั้งหมด</span>
+                    </div>
+                    <div class="Content_1_body">
+                        <span id="B"><?php echo $maintenanceCount; ?></span>ครั้ง
+                    </div>
+                </div>
+            </div>
+
+            <!-- ------------------- ROW 3 ------------------ -->
+            <div class="viewLog_content_1">
+                <div class="Content_1">
+                    <div class="Content_1_header">
+                        <span id="B">จำนวนวัสดุทั้งหมด</span>
+                    </div>
+                    <div class="Content_1_body">
+                        <span id="B"><?php echo $userCount; ?></span>จำนวน
+                    </div>
+                </div>
+                <div class="Content_1">
+                    <div class="Content_1_header">
+                        <span id="B">จำนวนอุปกรณ์ทั้งหมด</span>
+                    </div>
+                    <div class="Content_1_body">
+                        <span id="B"><?php echo $usedCount; ?></span>จำนวน
+                    </div>
+                </div>
+                <div class="Content_1">
+                    <div class="Content_1_header">
+                        <span id="B">จำนวนเครื่องมือทั้งหมด</span>
+                    </div>
+                    <div class="Content_1_body">
+                        <span id="B"><?php echo $maintenanceCount; ?></span>จำนวน
                     </div>
                 </div>
             </div>

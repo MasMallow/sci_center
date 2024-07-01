@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../assets/database/dbConfig.php');
+require_once('../assets/database/config.php');
 
 // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่
 if (isset($_SESSION['staff_login'])) {

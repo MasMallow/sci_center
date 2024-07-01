@@ -9,8 +9,8 @@
   display: flex;
   align-items: center;
   border-radius: 5px;
-  background-color: #F6F8FA;
-  border: 1px solid #D0D7DE;
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
   color: #1f2328;
   padding: 0.4rem 1rem;
   gap: 1rem;
@@ -20,7 +20,7 @@
     align-items: center;
     justify-content: center;
     color: #8f8f8f;
-    background-color: #F6F8FA;
+    background-color: #f6f8fa;
     text-decoration: none;
     width: 35px;
     height: 35px;
@@ -117,7 +117,7 @@ button.search {
 }
 
 .user_manage_data_header {
-  font-size: .95rem;
+  font-size: 0.95rem;
   padding-left: 0.75rem;
   padding-bottom: 0.5rem;
 }
@@ -182,10 +182,10 @@ tbody tr {
     padding: 1rem 0;
   }
 }
-.open_expand_row{
+.open_expand_row {
   padding-right: 0.5rem;
 }
-.expandable_row{
+.expandable_row {
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -387,4 +387,35 @@ tbody tr {
 .user_manage_not_found span {
   font-size: 1.5rem;
   margin-top: 1rem;
+}
+.viewLog_request_Details {
+  width: 100%;
+  height: 100%;
+
+  .viewLog_request_MAIN {
+    border-radius: 5px;
+    border: 1px solid #d0d7de;
+
+    .viewLog_request_header {
+      font-size: 1.2rem;
+      color: #1f2328;
+      padding: 0.5rem 1rem;
+      background-color: #f6f8fa;
+      border-bottom: 1px solid #d0d7de;
+    }
+
+    .viewLog_request_body {
+      display: flex;
+      flex-direction: column;
+      border-radius: 5px;
+      overflow: hidden;
+
+      .viewLog_request_content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1.25rem 1rem;
+      }
+    }
+  }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 require_once 'assets/TCPDF-main/tcpdf.php'; // รวมไฟล์ TCPDF
 include 'assets/includes/thai_date_time.php';
 

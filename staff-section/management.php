@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php'; // ไฟล์สำหรับเชื่อมต่อฐานข้อมูล
+require_once 'assets/database/config.php';
+include_once 'assets/includes/thai_date_time.php';
 
 // ดึงข้อมูลผู้ใช้เพียงครั้งเดียว (เพิ่มตรวจสอบค่า session)
 if (isset($_SESSION['staff_login']) && !empty($_SESSION['staff_login'])) {
@@ -124,6 +125,12 @@ if ($total_records <= $results_per_page) {
 unset($search_results);
 // ลบค่าใน session ที่ชื่อ search_value
 unset($_SESSION['search_value']);
+
+// ดึงข้อมูลการอนุมัติการจอง
+$stmt = $conn->prepare("SELECT * FROM logs_management");
+$stmt->execute();
+$Management = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$ManagementCount = count($Management); // นับจำนวนรายการ
 ?>
 
 <!DOCTYPE html>
@@ -215,101 +222,228 @@ unset($_SESSION['search_value']);
                 <a href="<?php echo $base_url; ?>/management/addData">
                     <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
                 </a>
+                <?php if ($request_uri == '/management') : ?>
+                    <a href="<?php echo $base_url; ?>/management/viewlog">
+                        <span>ดูระบบ</span>
+                    </a>
+                <?php elseif ($request_uri == '/management/viewlog') : ?>
+                    <a href="<?php echo $base_url; ?>/management">
+                        <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
+                    </a>
+                <?php endif ?>
             </div>
         </div>
-        <div class="management_section_btn">
-            <form class="management_search_header" method="get">
-                <input class="search_input" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
-                <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-            </form>
-            <form class="btn_management_all">
-                <a href="/management" class="<?= (strpos($request_uri, '/management') !== false && $request_uri === '/management') ? 'active' : ''; ?> btn_management_01">ทั้งหมด</a>
-                <a href="/management/material" class="<?= (strpos($request_uri, '/management/material') !== false) ? 'active' : ''; ?> btn_management_02">วัสดุ</a>
-                <a href="/management/equipment" class="<?= (strpos($request_uri, '/management/equipment') !== false) ? 'active' : ''; ?> btn_management_02">อุปกรณ์</a>
-                <a href="/management/tools" class="<?= (strpos($request_uri, '/management/tools') !== false) ? 'active' : ''; ?> btn_management_03">เครื่องมือ</a>
-            </form>
-        </div>
-        <?php if (empty($result)) : ?>
-            <div class="management_found">
-                <i class="icon fa-solid fa-xmark"></i>
-                <span id="B">ไม่พบรายการวัสดุ อุปกรณ์ และเครื่องมือในระบบ</span>
+
+        <?php if ($request_uri == '/management') : ?>
+            <!-- ----------------- BTN SECTION ------------------- -->
+            <div class="management_section_btn">
+                <form class="management_search_header" method="get">
+                    <input class="search_input" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
+                    <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+                <form class="btn_management_all">
+                    <a href="/management" class="<?= (strpos($request_uri, '/management') === 0 && strpos($request_uri, '/management/material') === false && strpos($request_uri, '/management/equipment') === false && strpos($request_uri, '/management/tools') === false && strpos($request_uri, '?') === false) ? 'active' : ''; ?> btn_management_01">ทั้งหมด</a>
+                    <a href="/management/material" class="<?= (strpos($request_uri, '/management/material') === 0) ? 'active' : ''; ?> btn_management_02">วัสดุ</a>
+                    <a href="/management/equipment" class="<?= (strpos($request_uri, '/management/equipment') === 0) ? 'active' : ''; ?> btn_management_02">อุปกรณ์</a>
+                    <a href="/management/tools" class="<?= (strpos($request_uri, '/management/tools') === 0) ? 'active' : ''; ?> btn_management_03">เครื่องมือ</a>
+                </form>
             </div>
-        <?php else : ?>
-            <div class="management_grid">
-                <?php foreach ($result as $results) : ?>
-                    <div class="management_grid_content">
-                        <div class="management_grid_header">
-                            <div class="content_img">
-                                <img src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
+            <?php if (empty($result)) : ?>
+                <div class="management_found">
+                    <i class="icon fa-solid fa-xmark"></i>
+                    <span id="B">ไม่พบรายการวัสดุ อุปกรณ์ และเครื่องมือในระบบ</span>
+                </div>
+            <?php else : ?>
+                <div class="management_grid">
+                    <?php foreach ($result as $results) : ?>
+                        <div class="management_grid_content">
+                            <div class="management_grid_header">
+                                <div class="content_img">
+                                    <img src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
+                                </div>
                             </div>
-                        </div>
-                        <div class="content_status_details">
-                            <?php if ($results['availability'] == 0) : ?>
-                                <div class="ready-to-use">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    <span id="B">พร้อมใช้งาน</span>
+                            <div class="content_status_details">
+                                <?php if ($results['availability'] == 0) : ?>
+                                    <div class="ready-to-use">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <span id="B">พร้อมใช้งาน</span>
+                                    </div>
+                                <?php elseif ($results['availability'] != 0) : ?>
+                                    <div class="moderately">
+                                        <i class="fa-solid fa-ban"></i>
+                                        <span id="B">บำรุงรักษา</span>
+                                    </div>
+                                <?php endif ?>
+                                <div class="content_details">
+                                    <a href="management/detailsData?id=<?= $results['ID'] ?>" class="details_btn">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </a>
                                 </div>
-                            <?php elseif ($results['availability'] != 0) : ?>
-                                <div class="moderately">
-                                    <i class="fa-solid fa-ban"></i>
-                                    <span id="B">บำรุงรักษา</span>
+                            </div>
+                            <div class="management_grid_content_body">
+                                <div class="content_name">
+                                    <?php echo htmlspecialchars($results['sci_name']); ?></div>
+                                <div class="content_categories">
+                                    <span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?>
                                 </div>
-                            <?php endif ?>
-                            <div class="content_details">
-                                <a href="management/detailsData?id=<?= $results['ID'] ?>" class="details_btn">
+                                <div class="content_amount">
+                                    <span id="B">จำนวน </span><?php echo htmlspecialchars($results['amount']); ?>
+                                </div>
+                            </div>
+                            <div class="management_grid_content_footer">
+                                <a href="<?php echo $base_url; ?>/management/editData?id=<?= $results['ID'] ?>" class="edit_crud_btn">
                                     <i class="fa-solid fa-circle-info"></i>
+                                    <span>แก้ไขข้อมูล</span>
+                                </a>
+                                <a href="<?php echo $base_url; ?>/management/detailsData?id=<?= $results['ID'] ?>" class="delete_btn">
+                                    <i class="icon fa-solid fa-trash"></i>
+                                    <span>ลบข้อมูล</span>
                                 </a>
                             </div>
                         </div>
-                        <div class="management_grid_content_body">
-                            <div class="content_name">
-                                <?php echo htmlspecialchars($results['sci_name']); ?></div>
-                            <div class="content_categories">
-                                <span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </div>
+
+                <!-- PAGINATION PAGE -->
+                <?php if ($pagination_display) : ?>
+                    <div class="pagination">
+                        <?php if ($page > 1) : ?>
+                            <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
+                            <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                        <?php endif; ?>
+
+                        <?php
+                        $total_pages = ceil($total_records / $results_per_page);
+                        for ($i = 1; $i <= $total_pages; $i++) {
+                            if ($i == $page) {
+                                echo "<a class='active'>$i</a>";
+                            } else {
+                                echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
+                            }
+                        }
+                        ?>
+
+                        <?php if ($page < $total_pages) : ?>
+                            <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
+                            <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+            <?php elseif ($request_uri == '/management/viewlog') : ?>
+                <?php if (!empty($Management)) : ?>
+                    <div class="viewLog_Management_PAGE">
+                        <div class="viewLog_Management_MAIN">
+                            <div class="viewLog_Management_header">
+                                <span id="B">การจัดการระบบคลัง</span>
                             </div>
-                            <div class="content_amount">
-                                <span id="B">จำนวน </span><?php echo htmlspecialchars($results['amount']); ?>
+                            <div class="viewLog_Management_body">
+                                <?php foreach ($Management as $Data) : ?>
+                                    <div class="viewLog_Management_content">
+                                        <div class="viewLog_User_content_1">
+                                            <i class="open_expand_row fa-solid fa-circle-arrow-right"></i>
+                                            <a href="<?= $base_url . '/management/viewlog/details?id=' . htmlspecialchars($Data['ID'], ENT_QUOTES, 'UTF-8') ?>">
+                                                <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
+                                                ( <?= htmlspecialchars($Data['log_Role'], ENT_QUOTES, 'UTF-8') ?>) </a>
+                                        </div>
+                                        <div class="viewLog_User_content_2">
+                                            <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
+                                        </div>
+                                        <div class="viewLog_User_content_3">
+                                            ได้ทำการ
+                                            <?php
+                                            switch ($Data['log_Status']) {
+                                                case 'Add':
+                                                    echo "เพิ่มข้อมูล";
+                                                    break;
+                                                case 'Edit':
+                                                    echo "แก้ไขข้อมูล";
+                                                    break;
+                                                case 'Delete':
+                                                    echo "ลบข้อมูล";
+                                                    break;
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
-                        </div>
-                        <div class="management_grid_content_footer">
-                            <a href="<?php echo $base_url; ?>/management/editData?id=<?= $results['ID'] ?>" class="edit_crud_btn">
-                                <i class="fa-solid fa-circle-info"></i>
-                                <span>แก้ไขข้อมูล</span>
-                            </a>
-                            <a href="<?php echo $base_url; ?>/management/detailsData?id=<?= $results['ID'] ?>" class="delete_btn">
-                                <i class="icon fa-solid fa-trash"></i>
-                                <span>ลบข้อมูล</span>
-                            </a>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            </div>
-
-            <!-- PAGINATION PAGE -->
-            <?php if ($pagination_display) : ?>
-                <div class="pagination">
-                    <?php if ($page > 1) : ?>
-                        <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
-                        <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
-                    <?php endif; ?>
-
-                    <?php
-                    $total_pages = ceil($total_records / $results_per_page);
-                    for ($i = 1; $i <= $total_pages; $i++) {
-                        if ($i == $page) {
-                            echo "<a class='active'>$i</a>";
-                        } else {
-                            echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
-                        }
+                <?php else : ?>
+                    <div class="viewNotfound">
+                        <i class="fa-solid fa-database"></i>
+                        <span id="B">ไม่พบข้อมูล</span>
+                    </div>
+                <?php endif; ?>
+            <?php elseif ($request_uri == '/management/view_log/details') : ?>
+                <?php
+                try {
+                    if (isset($_GET['id'])) {
+                        $id = (int)$_GET['id'];
+                        $stmt = $conn->prepare("SELECT * FROM logs_management WHERE ID = :id");
+                        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                        $stmt->execute();
+                        $detailsManagement = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     }
-                    ?>
-
-                    <?php if ($page < $total_pages) : ?>
-                        <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
-                        <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
-                    <?php endif; ?>
-                </div>
+                } catch (PDOException $e) {
+                    echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+                    exit;
+                } ?>
+                <?php if (!empty($detailsManagement)) : ?>
+                    <div class="viewLog_Management_Details">
+                        <div class="viewLog_Management_MAIN">
+                            <div class="viewLog_Management_header">
+                                <div class="path-indicator">
+                                    <a href="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="viewLog_Management_body">
+                                <?php foreach ($detailsManagement as $Data) : ?>
+                                    <div class="viewLog_Management_content">
+                                        <div class="viewLog_Management_content_1">
+                                            <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
+                                            (<?= htmlspecialchars($Data['log_Role'], ENT_QUOTES, 'UTF-8') ?>)
+                                            <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
+                                            ได้ทำการ
+                                            <?php
+                                            switch ($Data['log_Status']) {
+                                                case 'Add':
+                                                    echo "เพิ่มข้อมูล";
+                                                    break;
+                                                case 'Edit':
+                                                    echo "แก้ไขข้อมูล";
+                                                    break;
+                                                case 'Delete':
+                                                    echo "ลบข้อมูล";
+                                                    break;
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="viewLog_Management_content_2">
+                                            <?php
+                                            $logContent = json_decode($Data['log_Content'], true);
+                                            if ($logContent) : ?>
+                                                <div class="log-item"><span id="B">ชื่อวิทยาศาสตร์</span> <?= htmlspecialchars($logContent['sci_name'], ENT_QUOTES, 'UTF-8') ?></div>
+                                                <div class="log-item"><span id="B">หมายเลขซีเรียล</span> <?= htmlspecialchars($logContent['serial_number'], ENT_QUOTES, 'UTF-8') ?></div>
+                                            <?php else : ?>
+                                                ไม่สามารถแสดงข้อมูลได้
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php else : ?>
+                    <div class="viewNotfound">
+                        <i class="fa-solid fa-database"></i>
+                        <span id="B">ไม่พบข้อมูล</span>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
     </div>
 </body>
