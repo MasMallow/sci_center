@@ -44,7 +44,7 @@ if (isset($_SESSION['user_login'])) {
             include_once 'assets/includes/thai_date_time.php';
 
             try {
-                $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date >= CURDATE() AND situation = 1";
+                $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date >= CURDATE() AND situation = 1 AND date_return = NULL";
                 $stmt = $conn->query($sql);
 
                 if ($stmt->rowCount() > 0) {
@@ -82,7 +82,7 @@ if (isset($_SESSION['user_login'])) {
                     </div>
             <?php
                 } else {
-                    echo "0 results";
+                    echo "ไม่มีการจอง";
                 }
             } catch (PDOException $e) {
                 echo "เกิดข้อผิดพลาด: " . $e->getMessage();

@@ -75,7 +75,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
                         </script>
                         <div class="box_content_other">
                             <div class="not_remember">
-                                <a href="#">ลืมรหัสผ่าน?</a>
+                                <a href="/auth/change_password.php">ลืมรหัสผ่าน?</a>
                             </div>
                             <div class="sign_up">
                                 <a href="/sign_up">

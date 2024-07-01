@@ -14,6 +14,11 @@ if (isset($_SESSION['staff_login'])) {
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+else{
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: auth/sign_in.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

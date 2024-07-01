@@ -1,6 +1,6 @@
 <?php
 // change_password.php
-require_once 'assets/database/dbConfig.php';
+require_once '../assets/database/dbConfig.php';
 
 $message = '';
 
@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" id="new_password" name="new_password" required>
         <br><br>
         <button type="submit">เปลี่ยนรหัสผ่าน</button>
+        <a href="/sign_in">เข้าสู่ระบบ</a>
     </form>
 </body>
 </html>
