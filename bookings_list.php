@@ -32,7 +32,7 @@ try {
 
     // ดึงข้อมูลการจอง
     if (isset($user_id)) {
-        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND reservation_date >= CURDATE()");
+        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND reservation_date >= CURDATE() AND date_return = NULL");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);

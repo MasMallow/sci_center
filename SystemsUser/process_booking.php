@@ -8,7 +8,7 @@ if (isset($_GET['item'])) {
     $item = $_GET['item'];
 
     // Fetch the booking details for the specific item
-    $stmt = $conn->prepare("SELECT * FROM approve_to_bookings WHERE id = :item");
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE id = :item");
     $stmt->bindParam(':item', $item, PDO::PARAM_INT);
     $stmt->execute();
     $data = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch a single row instead of all rows

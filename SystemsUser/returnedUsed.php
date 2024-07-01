@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
     $sMessage = "แจ้งเตือนการคืนอุปกรณ์\n";
 
     // Fetch the updated data from approve_to_use
-    $update_query = $conn->prepare("SELECT * FROM approve_to_bookings WHERE id = :id");
+    $update_query = $conn->prepare("SELECT * FROM approve_to_reserve WHERE id = :id");
     $update_query->bindParam(':id', $return_id, PDO::PARAM_INT);
     $update_query->execute();
     $update_data = $update_query->fetch(PDO::FETCH_ASSOC);
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
             </script>";
     }
     curl_close($chOne);
-    header('Location: returned_system');
+    header('Location: /returned_system');
     exit();
 }
 ?>
