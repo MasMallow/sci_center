@@ -26,8 +26,14 @@ switch ($request) {
     case '/sign_up':
         require 'auth/sign_up.php'; // หน้าลงทะเบียน
         break;
+    case '/changePassword':
+        require 'auth/change_password.php'; // หน้าลงทะเบียน
+        break;
     case '/cart_systems':
         require 'cart_systems.php'; // ระบบตะกร้าสินค้า
+        break;
+    case '/process_useitem':
+        require 'process_useitem.php'; // ระบบคืนสินค้า
         break;
     case '/returned_system':
         require 'returned_system.php'; // ระบบคืนสินค้า
@@ -80,6 +86,9 @@ switch ($request) {
     case '/maintenance/end_maintenance':
         require 'staff-section/maintenance.php'; // การบำรุงรักษา
         break;
+    case '/maintenance/report_maintenance':
+        require 'staff-section/report_maintenance.php'; // การบำรุงรักษา
+        break;
     case '/view_report':
     case '/view_report/userID/startDate/endDate':
         require 'staff-section/view_report.php'; // ดูรายงาน
@@ -94,4 +103,3 @@ switch ($request) {
         require 'error_page.php'; // หน้าข้อผิดพลาด
         break;
 }
-?>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'assets/database/dbConfig.php';
+require_once 'assets/database/config.php';
 include_once 'assets/includes/thai_date_time.php';
 if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];

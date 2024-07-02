@@ -1,5 +1,4 @@
 <?php
-// change_password.php
 require_once 'assets/database/config.php';
 
 $message = '';
@@ -32,23 +31,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>เปลี่ยนรหัสผ่าน</title>
+    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/login.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
 </head>
+
 <body>
-    <h2>เปลี่ยนรหัสผ่าน</h2>
-    <?php if ($message): ?>
-        <p><?php echo $message; ?></p>
-    <?php endif; ?>
-    <form action="change_password.php" method="POST">
-        <label for="email">อีเมล:</label>
-        <input type="email" id="email" name="email" required>
-        <br><br>
-        <label for="new_password">รหัสผ่านใหม่:</label>
-        <input type="password" id="new_password" name="new_password" required>
-        <br><br>
-        <button type="submit">เปลี่ยนรหัสผ่าน</button>
-    </form>
+    <header><?php include_once('assets/includes/navigator.php'); ?></header>
+    <main class="resetPassword">
+        <div class="resetPassword_header">
+            <span id="B">เปลี่ยนรหัสผ่าน</span>
+        </div>
+        <?php if ($message) : ?>
+            <p><?php echo $message; ?></p>
+        <?php endif; ?>
+        <form class="resetPasswordMain" action="<?php echo $base_url; ?>/auth/change_password.php" method="POST">
+            <label for="email">อีเมล</label>
+            <input type="email" id="email" name="email" required>
+            <label for="new_password">รหัสผ่านใหม่</label>
+            <input type="password" id="new_password" name="new_password" required>
+            <div class="resetPasswordBTN">
+                <button type="submit" class="btn">เปลี่ยนรหัสผ่าน</button>
+                <a href="/sign_in" class="link">เข้าสู่ระบบ</a>
+            </div>
+        </form>
+    </main>
 </body>
+
 </html>

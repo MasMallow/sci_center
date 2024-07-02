@@ -36,10 +36,10 @@ $maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt = $conn->prepare("
     SELECT * 
     FROM crud 
-    LEFT JOIN logs_maintenance ON crud.ID = logs_maintenance.ID
+    LEFT JOIN logs_maintenance ON crud.serial_number = logs_maintenance.serial_number
     WHERE availability = 1 
     AND end_maintenance > DATE_ADD(CURDATE(), INTERVAL 2 DAY) 
-    ORDER BY crud.ID ASC");
+    ORDER BY crud.serial_number ASC");
 $stmt->execute();
 $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -117,6 +117,7 @@ try {
     <div class="staff">
         <!-- --------------- ROW 1 --------------- -->
         <div class="staff_page">
+            <!-- --------------- ROW 1 LEFT--------------- -->
             <div class="staff_section">
                 <div class="staff_header">
                     <div class="section_1">
@@ -160,46 +161,45 @@ try {
                                 <span class="text">การบำรุงรักษา</span>
                             </a>
                         </div>
-                        <div class="staff_item"> 
+                        <div class="staff_item">
                             <a href="view_report" class="staff_item_btn">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
                                 <span class="text">รายงาน</span>
                             </a>
                             <a href="view_top10" class="staff_item_btn">
-                                <i class="fa-solid fa-user-gear"></i>
+                                <i class="fa-solid fa-thumbs-up"></i>
                                 <span>TOP 10</span>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- --------------- ROW 1 RIGHT--------------- -->
             <div class="staff_notification">
                 <div class="staff_notification_header">
                     <i class="fa-solid fa-bell"></i>
                     <span id="B">แจ้งเตือน</span>
                 </div>
-                <div class="staff_notification_body">
-                    <div class="staff_notification_alert">
-                        <div class="notification_request">
-                            <?php if (!empty($num)) : ?>
-                                <span>มีการขอใช้</span>
-                                <span id="B">
-                                    <?php echo htmlspecialchars($num); ?> รายการ
-                                </span>
-                            <?php else : ?>
-                                <span id="B">ไม่พบข้อมูลการขอใช้</span>
-                            <?php endif ?>
-                        </div>
-                        <div class="notification_crud">
-                            <?php if (!empty($numCRUD)) : ?>
-                                <span>วัสดุ อุปกรณ์ และเครื่องมือในคลัง</span>
-                                <span id="B">
-                                    <?php echo htmlspecialchars($numCRUD); ?> รายการ
-                                </span>
-                            <?php else : ?>
-                                <span id="B">ไม่พบข้อมูลจำนวนวัสดุ อุปกรณ์ และเครื่องมือในคลัง</span>
-                            <?php endif ?>
-                        </div>
+                <div class="staff_notification_row1">
+                    <div class="notification_request">
+                        <?php if (!empty($num)) : ?>
+                            <span>มีการขอใช้</span>
+                            <span id="B">
+                                <?php echo htmlspecialchars($num); ?> รายการ
+                            </span>
+                        <?php else : ?>
+                            <span id="B">ไม่พบข้อมูลการขอใช้</span>
+                        <?php endif ?>
+                    </div>
+                    <div class="notification_crud">
+                        <?php if (!empty($numCRUD)) : ?>
+                            <span>วัสดุ อุปกรณ์ และเครื่องมือในคลัง</span>
+                            <span id="B">
+                                <?php echo htmlspecialchars($numCRUD); ?> รายการ
+                            </span>
+                        <?php else : ?>
+                            <span id="B">ไม่พบข้อมูลจำนวนวัสดุ อุปกรณ์ และเครื่องมือในคลัง</span>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>
@@ -265,70 +265,65 @@ try {
 
         <!-- -------------- ROW 3 --------------- -->
         <div class="staff_page">
+            <!-- ROW 3 LEFT -->
             <div class="staff_section_2">
                 <div class="staff_header_maintenance">
-                    <div class="section_1">
-                        <i class="fa-solid fa-screwdriver-wrench"></i>
-                        <span id="B">การบำรุงรักษา</span>
-                    </div>
-                    <div class="section_2">
-                        <a href="maintenance">ไปที่หน้าบำรุงการรักษา</a>
-                    </div>
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <span id="B">การบำรุงรักษา</span>
                 </div>
-                <div class="staff_content">
-                    <div class="staff_content_table">
-                        <?php if (empty($maintenance_notify)) { ?>
-                            <div class="approve_not_found_section">
-                                <i class="fa-solid fa-xmark"></i>
-                                <span id="B">ไม่พบข้อมูลอุปกรณ์ และเครื่องมือ</span>
-                            </div>
-                        <?php } ?>
-                        <?php if (!empty($maintenance_notify)) { ?>
-                            <div class="approve_container">
-                                <?php foreach ($maintenance_notify as $row) : ?>
-                                    <div class="approve_row">
-                                        <div class="defualt_row">
-                                            <div class="serial_number">
-                                                <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
-                                                <?php echo htmlspecialchars($row['serial_number']); ?>
-                                            </div>
-                                            <div class="items">
-                                                <a href="<?php echo $base_url; ?>/maintenance/detailsMaintenance?id=<?= $row['ID'] ?>">
-                                                    <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
-                                                </a>
-                                            </div>
-                                            <div class="reservation_date">
-                                                <?php
-                                                $daysSinceMaintenance = calculateDaysSinceLastMaintenance($row['last_maintenance_date']);
-                                                if ($daysSinceMaintenance === "ไม่เคยได้รับการบำรุงรักษา") {
-                                                    echo $daysSinceMaintenance;
-                                                } else {
-                                                    echo "ไม่ได้รับการบำรุงรักษามามากกว่า " . $daysSinceMaintenance . " วัน";
-                                                }
-                                                ?>
-                                            </div>
+                <div class="staff_content_row3">
+                    <?php if (empty($maintenance_notify)) { ?>
+                        <div class="approve_not_found_section">
+                            <i class="fa-solid fa-xmark"></i>
+                            <span id="B">ไม่พบข้อมูลอุปกรณ์ และเครื่องมือ</span>
+                        </div>
+                    <?php } ?>
+                    <?php if (!empty($maintenance_notify)) : ?>
+                        <div class="approve_container">
+                            <?php foreach ($maintenance_notify as $row) : ?>
+                                <div class="approve_row">
+                                    <div class="defualt_row">
+                                        <div class="serial_number">
+                                            <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
+                                            <?php echo htmlspecialchars($row['serial_number']); ?>
                                         </div>
-                                        <div class="expand_row">
-                                            <div>
-                                                <?php
-                                                if ($row['last_maintenance_date'] === null) {
-                                                    echo "ไม่เคยมีประวัติการบำรุงรักษา";
-                                                } else {
-                                                    echo thai_date_time_3(htmlspecialchars($row['last_maintenance_date']));
-                                                }
-                                                ?>
-                                            </div>
-                                            <div><span id="B">ประเภท</span>
-                                                <?php echo htmlspecialchars($row['categories']); ?>
-                                            </div>
+                                        <div class="items">
+                                            <a href="<?php echo $base_url; ?>/maintenance/detailsMaintenance?id=<?= $row['ID'] ?>">
+                                                <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
+                                            </a>
+                                        </div>
+                                        <div class="reservation_date">
+                                            <?php
+                                            $daysSinceMaintenance = calculateDaysSinceLastMaintenance($row['last_maintenance_date']);
+                                            if ($daysSinceMaintenance === "ไม่เคยได้รับการบำรุงรักษา") {
+                                                echo $daysSinceMaintenance;
+                                            } else {
+                                                echo "ไม่ได้รับการบำรุงรักษามามากกว่า " . $daysSinceMaintenance . " วัน";
+                                            }
+                                            ?>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php } ?>
-                    </div>
+                                    <div class="expand_row">
+                                        <div>
+                                            <?php
+                                            if ($row['last_maintenance_date'] === null) {
+                                                echo "ไม่เคยมีประวัติการบำรุงรักษา";
+                                            } else {
+                                                echo thai_date_time_3(htmlspecialchars($row['last_maintenance_date']));
+                                            }
+                                            ?>
+                                        </div>
+                                        <div><span id="B">ประเภท</span>
+                                            <?php echo htmlspecialchars($row['categories']); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif ?>
                 </div>
             </div>
+            <!-- ROW 3 RIGHT -->
             <div class="staff_notification_2">
                 <div class="staff_notification_maintenance_header">
                     <i class="fa-solid fa-bell"></i>
@@ -360,6 +355,13 @@ try {
             </div>
         </div>
     </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-copyright">
+                <span>Copyright © 2024 ศูนย์วิทยาศาสตร์</span>
+                <span>ออกแบบและพัฒนาโดย ภูวเดช และ พิสิฐพงศ์. All Rights Reserved</span>
+            </div>
+    </footer>
     <script>
         function toggleExpandRow(element) {
             const expandRow = element.closest('.approve_row').querySelector('.expand_row');

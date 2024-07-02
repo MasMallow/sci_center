@@ -12,9 +12,9 @@
   background-color: #f6f8fa;
   border: 1px solid #d0d7de;
   color: #1f2328;
-  padding: 0.4rem 1rem;
+  padding: 0.3rem 0.8rem;
   gap: 1rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   & a {
     display: flex;
     align-items: center;
@@ -35,13 +35,13 @@
 .user_manage_btn_section {
   width: 100%;
   display: flex;
+  align-content: center;
   justify-content: space-between;
-  margin: 0 auto;
-  margin-top: 1.5rem;
+  margin: 1rem auto;
 }
 .user_manage_btn {
   display: flex;
-  margin-bottom: 1rem;
+  align-items: center;
 
   .btn_user_manage_01,
   .btn_user_manage_02,
@@ -66,6 +66,7 @@
     border-radius: 0 6px 6px 0;
   }
   .active {
+    font-family: Sarabun-Bold;
     border: 1px solid #01bdb6;
     background-color: #dffffd81;
   }
@@ -180,6 +181,9 @@ tbody tr {
   background-color: #ffffff;
   & td {
     padding: 1rem 0;
+  }
+  a {
+    color: #000;
   }
 }
 .open_expand_row {
@@ -388,33 +392,73 @@ tbody tr {
   font-size: 1.5rem;
   margin-top: 1rem;
 }
-.viewLog_request_Details {
+.viewLogUsers {
   width: 100%;
   height: 100%;
+  margin-bottom: 1rem;
 
-  .viewLog_request_MAIN {
+  .viewLogUsersMain {
     border-radius: 5px;
     border: 1px solid #d0d7de;
+    overflow: hidden;
 
-    .viewLog_request_header {
-      font-size: 1.2rem;
+    .viewLogUsers_header {
+      font-size: 1.05rem;
       color: #1f2328;
       padding: 0.5rem 1rem;
       background-color: #f6f8fa;
       border-bottom: 1px solid #d0d7de;
     }
 
-    .viewLog_request_body {
+    .viewLogUsers_body {
       display: flex;
       flex-direction: column;
       border-radius: 5px;
       overflow: hidden;
+      padding: 0.7rem 1rem;
 
-      .viewLog_request_content {
+      .viewLogUsers_content {
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
         padding: 1.25rem 1rem;
+
+        .wait_approved {
+          font-family: Sarabun-Bold;
+          color: orange;
+        }
+
+        .approved {
+          font-family: Sarabun-Bold;
+          color: green;
+        }
+      }
+
+      .viewLogUsers_content_LOG {
+        padding: 0.7rem 1rem;
+        border: 1px solid #e1e4e8;
+        border-radius: 6px;
+        background-color: #f6f8fa;
+        margin-bottom: 0.5rem;
+      }
+
+      .list_name {
+        font-family: Sarabun-bold;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .reservation_date,
+      .approver {
+        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+      }
+
+      .label {
+        font-weight: 500;
+        color: #1f2328;
+        margin-right: 0.5rem;
+        font-size: 0.9rem;
       }
     }
   }

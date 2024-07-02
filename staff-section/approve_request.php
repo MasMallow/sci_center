@@ -65,7 +65,7 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
                 <span id="B">อนุมัติการขอใช้</span>
             </div>
             <div class="approve_btn">
-                <a href="/approve_request" class="<?= ($request_uri == '/approve_request') ? 'active' : ''; ?> btn_approve_01">อมุมัติการขอใช้</a>
+                <a href="/approve_request" class="<?= ($request_uri == '/approve_request') ? 'active' : ''; ?> btn_approve_01">อนุมัติการขอใช้</a>
                 <a href="/approve_request/viewlog" class="<?= ($request_uri == '/approve_request/viewlog' || $request_uri == '/approve_request/viewlog/details') ? 'active' : ''; ?> btn_approve_02">ดูการขอใช้</a>
             </div>
         </div>
@@ -181,12 +181,6 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
                                         ขอใช้
                                         <?= thai_date_time(htmlspecialchars($Data['reservation_date'], ENT_QUOTES, 'UTF-8')) ?>
                                     </div>
-                                    <div class="approver">
-                                        ผู้อนุมัติ
-                                        <?= htmlspecialchars($Data['approver'], ENT_QUOTES, 'UTF-8') ?>
-                                        เมื่อ
-                                        <?= thai_date_time_2(htmlspecialchars($Data['reservation_date'], ENT_QUOTES, 'UTF-8')) ?>
-                                    </div>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -198,9 +192,7 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
                     <span id="B">ไม่พบข้อมูล</span>
                 </div>
             <?php endif; ?>
-
         <?php elseif ($request_uri == '/approve_request/viewlog/details') : ?>
-
             <?php
             try {
                 if (isset($_GET['id'])) {
@@ -221,23 +213,19 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
             <?php if (!empty($detailsdataUsed)) : ?>
                 <div class="viewLog_request_Details">
                     <div class="viewLog_request_MAIN">
-                        <div class="viewLog_request_header">
-                            <div class="path-indicator">
-                                <a href="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>">
-                                    <?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>
-                                </a>
-                            </div>
+                        <div class="viewLog_request_header" id="B">
+                            รายละเอียดการขอใช้
                         </div>
                         <div class="viewLog_request_body">
                             <?php foreach ($detailsdataUsed as $Data) : ?>
                                 <div class="viewLog_request_content">
                                     <div class="viewLog_request_content_1">
                                         <span id="B">ชื่อรายการ</span>
-                                        <?= htmlspecialchars($Data['list_name'], ENT_QUOTES, 'UTF-8'); ?>
                                         <?= htmlspecialchars($Data['serial_number'], ENT_QUOTES, 'UTF-8'); ?>
+                                        <?= htmlspecialchars($Data['list_name'], ENT_QUOTES, 'UTF-8'); ?>
                                     </div>
                                     <div class="viewLog_request_content_2">
-                                        <span id="B">ชื่อผู้ขอใช้</span>
+                                        <span id="B">ผู้ขอใช้</span>
                                         <?= htmlspecialchars($Data['name_user'], ENT_QUOTES, 'UTF-8') ?>
                                         <span id="B">ขอใช้</span>
                                         <?= thai_date_time_2(htmlspecialchars($Data['reservation_date'], ENT_QUOTES, 'UTF-8')) ?>
@@ -245,6 +233,8 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
                                     <div class="viewLog_request_content_3">
                                         <span id="B">สิ้นสุด</span>
                                         <?= thai_date_time_2(htmlspecialchars($Data['end_date'], ENT_QUOTES, 'UTF-8')) ?>
+                                    </div>
+                                    <div class="viewLog_request_content_4">
                                         <span id="B">วันที่คืน</span>
                                         <?php if ($Data['date_return'] === NULL) : ?>
                                             --
@@ -252,7 +242,7 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
                                             <?= thai_date_time_2(htmlspecialchars($Data['date_return'], ENT_QUOTES, 'UTF-8')); ?>
                                         <?php endif ?>
                                     </div>
-                                    <div class="viewLog_request_content_4">
+                                    <div class="viewLog_request_content_5">
                                         <span id="B">ผู้อนุมัติ</span>
                                         <?= htmlspecialchars($Data['approver'], ENT_QUOTES, 'UTF-8') ?>
                                         <?= thai_date_time_2(htmlspecialchars($Data['approvaldatetime'], ENT_QUOTES, 'UTF-8')) ?>

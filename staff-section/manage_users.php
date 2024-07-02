@@ -39,6 +39,7 @@ try {
 // ฟังก์ชันในการดึงข้อมูลผู้ใช้ตามเงื่อนไข
 function fetchUsers($conn, $status, $role, $search = null)
 {
+    
     if ($search) {
         $search = "%" . $search . "%";
         $stmt = $conn->prepare("SELECT * FROM users_db WHERE (userID LIKE :search OR pre LIKE :search OR firstname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
@@ -177,7 +178,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <!-- แบบฟอร์มการค้นหา -->
             <form class="user_manage_search" method="get">
-                <input type="hidden" name="manage" value="<?= htmlspecialchars($manage); ?>">
                 <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
                 <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
@@ -279,38 +279,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </form>
                                     </td>
                                 </tr>
-                                <tr style="display: none;">
-                                    <td colspan="7">
-                                        <div class="expandable_row">
-                                            <div>
-                                                <span id="B">เบอร์โทรศัพท์</span> <?= format_phone_number($user['phone_number']); ?>
-                                            </div>
-                                            <div>
-                                                <span id="B">อีเมล</span> <?= $user['email']; ?>
-                                            </div>
-                                            <div>
-                                                <span id="B">ประเภทผู้ใช้</span> <?= $user['urole'] === 'user' ? 'ผู้ใช้งานทั่วไป' : 'เจ้าหน้าที่'; ?>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                    <script>
-                        function toggleExpandRow(element) {
-                            var row = element.closest('tr').nextElementSibling;
-                            if (row.style.display === 'none' || row.style.display === '') {
-                                row.style.display = 'table-row';
-                                element.classList.remove('fa-circle-arrow-right');
-                                element.classList.add('fa-circle-arrow-down');
-                            } else {
-                                row.style.display = 'none';
-                                element.classList.remove('fa-circle-arrow-down');
-                                element.classList.add('fa-circle-arrow-right');
-                            }
-                        }
-                    </script>
                 </div>
             <?php else : ?>
                 <div class="user_manage_not_found">
@@ -336,54 +307,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             } ?>
             <?php if (!empty($detailsdataUsed)) : ?>
-                <div class="viewLog_request_Details">
-                    <div class="viewLog_request_MAIN">
-                        <div class="viewLog_request_header">
-                            <div class="path-indicator">
-                                <a href="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>">
-                                    <?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>
-                                </a>
-                            </div>
+                <div class="viewLogUsers">
+                    <div class="viewLogUsersMain">
+                        <div class="viewLogUsers_header" id="B">
+                            รายละเอียด
                         </div>
-                        <div class="viewLog_request_body">
+                        <div class="viewLogUsers_body">
                             <?php foreach ($detailsdataUsed as $Data) : ?>
-                                <div class="viewLog_request_content">
+                                <div class="viewLogUsers_content">
                                     <div class="list_name">
-                                        <a href="<?= $base_url; ?>/management_user/details?id=<?= $Data['userID'] ?>">
-                                            <?= $Data['userID'] ?>
-                                            <?= htmlspecialchars($Data['pre'], ENT_QUOTES, 'UTF-8') . htmlspecialchars($Data['firstname'], ENT_QUOTES, 'UTF-8') . ' ' . htmlspecialchars($Data['lastname'], ENT_QUOTES, 'UTF-8'); ?></a>
+                                        <?= $Data['userID'] ?>
+                                        <?= htmlspecialchars($Data['pre'], ENT_QUOTES, 'UTF-8') . htmlspecialchars($Data['firstname'], ENT_QUOTES, 'UTF-8') . ' ' . htmlspecialchars($Data['lastname'], ENT_QUOTES, 'UTF-8'); ?>
                                     </div>
                                     <div class="reservation_date">
-                                        ขอใช้
+                                        <span id="B">สร้างบัญชี</span>
                                         <?= thai_date_time_2(htmlspecialchars($Data['created_at'], ENT_QUOTES, 'UTF-8')) ?>
                                     </div>
                                     <div class="approver">
-                                        ผู้อนุมัติ
+                                        <span id="B">อีเมล</span>
                                         <?= htmlspecialchars($Data['email'], ENT_QUOTES, 'UTF-8') ?>
                                     </div>
                                     <div class="reservation_date">
-                                        ขอใช้
+                                        <span id="B">เบอร์โทรศัพท์</span>
                                         <?= format_phone_number(htmlspecialchars($Data['phone_number'], ENT_QUOTES, 'UTF-8')) ?>
                                     </div>
                                     <div class="reservation_date">
-                                        ขอใช้
+                                        <span id="B">ตำแหน่ง</span>
                                         <?= htmlspecialchars($Data['role'], ENT_QUOTES, 'UTF-8') ?>
                                     </div>
                                     <div class="reservation_date">
-                                        ขอใช้
+                                        <span id="B">หน่วยงาน</span>
                                         <?= htmlspecialchars($Data['agency'], ENT_QUOTES, 'UTF-8') ?>
                                     </div>
                                     <div class="reservation_date">
-                                        ขอใช้
-                                        <?= htmlspecialchars($Data['status'], ENT_QUOTES, 'UTF-8') ?>
+                                        <span id="B">สถานะ</span>
+                                        <?php if ($userData['status'] === 'w_approved') : ?>
+                                            <span class="wait_approved">รอการอนุมัติบัญชี</span>
+                                        <?php elseif ($userData['status'] === 'approved') : ?>
+                                            <span class="approved">บัญชีผ่านการอนุมัติ</span>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="reservation_date">
-                                        ขอใช้
+                                        <span id="B">ผู้อนุมัติ</span>
                                         <?= htmlspecialchars($Data['approved_by'], ENT_QUOTES, 'UTF-8') ?>
+                                        <?= thai_date_time_2(htmlspecialchars($Data['approved_date'], ENT_QUOTES, 'UTF-8')) ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php else : ?>
+                <div class="viewNotfound">
+                    <i class="fa-solid fa-database"></i>
+                    <span id="B">ไม่พบข้อมูล</span>
+                </div>
+            <?php endif; ?>
+
+            <!-- ---------- LOGS USER ------------ -->
+            <?php
+            try {
+                if (isset($_GET['id'])) {
+                    $id = (int)$_GET['id'];
+                    $stmt = $conn->prepare("
+            SELECT * FROM logs_user
+            WHERE authID = :id
+            ORDER BY log_Date ASC LIMIT 20
+        ");
+                    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $logsUSER = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+            } catch (PDOException $e) {
+                echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+                exit;
+            }
+            ?>
+            <?php if (!empty($logsUSER)) : ?>
+                <div class="viewLogUsers">
+                    <div class="viewLogUsersMain">
+                        <div class="viewLogUsers_header" id="B">
+                            การเข้าสู่ระบบ
+                        </div>
+                        <div class="viewLogUsers_body">
+                            <?php foreach ($logsUSER as $Data) : ?>
+                                <div class="viewLogUsers_content_LOG">
+                                    <div class="list_name">
+                                        <?= htmlspecialchars($Data['authID'], ENT_QUOTES, 'UTF-8') ?>
+                                        <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
                                     </div>
                                     <div class="reservation_date">
-                                        ขอใช้
-                                        <?= htmlspecialchars($Data['approved_date'], ENT_QUOTES, 'UTF-8') ?>
+                                        <span class="label">เข้าสู่ระบบ</span>
+                                        <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
+                                    </div>
+                                    <div class="approver">
+                                        <span class="label">IP</span>
+                                        <?= htmlspecialchars($Data['log_IP'], ENT_QUOTES, 'UTF-8') ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

@@ -154,7 +154,7 @@ if (isset($_GET['action'])) {
                                     <span id="B">( <?php echo count($_SESSION['reserve_cart']); ?> )</span><span> รายการ</span>
                                 </div>
                                 <div class="count_list_2">
-                                    <a href="booking_log.php">ตรวจสอบการจอง</a>
+                                    <a href="/booking_log">ตรวจสอบการจอง</a>
                                 </div>
                             </div>
                             <table class="cart_data">

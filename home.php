@@ -184,6 +184,10 @@ try {
                         </li>
                         <li class="group_li">
                             <span class="group_title">การขอใช้งาน</span>
+                            <a class="group_li_01" href="<?php echo $base_url; ?>/process_useitem">
+                            <i class="fa-solid fa-hourglass-start"></i>
+                            <span class="text">เริ่มต้นการใช้งาน</span>
+                            </a>
                             <a class="group_li_01" href="<?php echo $base_url; ?>/returned_system">
                                 <i class="fa-solid fa-hourglass-end"></i>
                                 <span class="text">สิ้นสุดการใช้งาน</span>
@@ -322,14 +326,15 @@ try {
                 </div>
             <?php endif; ?>
         </main>
+
+        <!-- ---------------- FOOTER ------------------ -->
+        <footer><?php include "assets/includes/footer.php" ?></footer>
     <?php
     elseif (isset($userData['urole']) && $userData['urole'] == 'staff') :
         include('staff-section/homeStaff.php');
     endif; ?>
 
 
-    <!-- ---------------- FOOTER ------------------ -->
-    <footer><?php include "assets/includes/footer.php" ?></footer>
 
     <!-- JavaScript -->
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>

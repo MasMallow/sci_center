@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../assets/database/dbConfig.php';
-include_once '../assets/includes/thai_date_time.php';
+require_once 'assets/database/config.php';
+include_once 'assets/includes/thai_date_time.php';
 
 try {
     $user_id = $_SESSION['user_login'];
@@ -72,7 +72,7 @@ try {
 
 <body>
     <header>
-        <?php include_once '../assets/includes/navigator.php'; ?>
+        <?php include_once 'assets/includes/navigator.php'; ?>
     </header>
     <div class="return_page">
         <div class="return_content_header_section">

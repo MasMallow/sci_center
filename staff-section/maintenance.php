@@ -43,7 +43,7 @@ try {
             $query .= " AND (crud.sci_name LIKE :search OR crud.serial_number LIKE :search)";
         }
         $query .= " ORDER BY crud.ID ASC";
-        
+
         $stmt = $conn->prepare($query);
         if ($searchQuery) {
             $stmt->bindParam(':search', $searchQuery, PDO::PARAM_STR);
@@ -53,19 +53,40 @@ try {
     }
 
     if ($request_uri == '/maintenance/end_maintenance') {
-        $query = "SELECT * FROM crud 
-                  INNER JOIN info_sciname ON crud.serial_number = info_sciname.serial_number 
+        // สร้างคำสั่ง SQL โดยเลือกข้อมูลที่ใหม่ที่สุดจาก logs_maintenance
+        $query = "SELECT crud.*, info_sciname.*, logs_maintenance.* FROM crud
+                  LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number
+                  LEFT JOIN (
+                      SELECT * FROM logs_maintenance AS lm1
+                      WHERE lm1.created_at = (
+                          SELECT MAX(lm2.created_at) 
+                          FROM logs_maintenance AS lm2 
+                          WHERE lm2.serial_number = lm1.serial_number
+                      )
+                  ) AS logs_maintenance ON crud.serial_number = logs_maintenance.serial_number
                   WHERE crud.availability != 0";
+
+        // เพิ่มเงื่อนไขการค้นหา (ถ้ามี)
         if ($searchQuery) {
             $query .= " AND (crud.sci_name LIKE :search OR crud.serial_number LIKE :search)";
         }
-        $query .= " ORDER BY crud.ID ASC";
-        
+
+        // เรียงลำดับข้อมูลตามวันที่สร้างใน logs_maintenance
+        $query .= " ORDER BY logs_maintenance.created_at DESC";
+
+        // เตรียม statement สำหรับการรันคำสั่ง SQL
         $stmt = $conn->prepare($query);
+
+        // ผูกค่าพารามิเตอร์สำหรับการค้นหา (ถ้ามี)
         if ($searchQuery) {
-            $stmt->bindParam(':search', $searchQuery, PDO::PARAM_STR);
+            $searchParam = "%{$searchQuery}%";
+            $stmt->bindParam(':search', $searchParam, PDO::PARAM_STR);
         }
+
+        // รันคำสั่ง SQL
         $stmt->execute();
+
+        // ดึงข้อมูลทั้งหมด
         $maintenance_success = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 } catch (PDOException $e) {
@@ -118,25 +139,24 @@ try {
                     เริ่มการบำรุงรักษา</a>
                 <a href="/maintenance/end_maintenance" class="<?= ($request_uri == '/maintenance/end_maintenance') ? 'active' : ''; ?> btn_maintenance_02">
                     สิ้นสุดการบำรุงรักษา</a>
+                <a href="/maintenance/report_maintenance" class="btn_reportMaintenance">รายงาน</a>
             </div>
             <form class="maintenance_search_header" method="get">
                 <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
                 <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-        <div>
-            <button><a href="/staff-section/report_maintenance.php">รายงาน</a></button>
-        </div>
         <?php if ($request_uri == '/maintenance') : ?>
             <?php if (!empty($maintenance)) : ?>
                 <table class="table_maintenace">
                     <thead>
                         <tr>
-                            <th class="sci_name"><span id="B">ชื่อ</span></th>
+                            <th class="sci_name"><span id="B">ชื่อ</span>
+                            </th>
                             <th class="categories"><span id="B">ประเภท</span></th>
                             <th class="installation_date"><span id="B">วันที่ติดตั้ง</span></th>
                             <th class="installation_date"><span id="B">วันที่บำรุงรักษาล่าสุด</span></th>
-                            <th><span id="B">บำรุงรักษา</span></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -234,14 +254,14 @@ try {
                                 </td>
                                 <td><?= htmlspecialchars($row['categories'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td>
-                                    <?= htmlspecialchars(thai_date($row['installation_date']), ENT_QUOTES, 'UTF-8') ?>
+                                    <?= htmlspecialchars(thai_date($row['start_maintenance']), ENT_QUOTES, 'UTF-8') ?>
                                 </td>
                                 <td>
                                     <?php
                                     if ($row['last_maintenance_date'] == NULL) {
                                         echo '-';
                                     } else {
-                                        echo htmlspecialchars(thai_date($row['last_maintenance_date']), ENT_QUOTES, 'UTF-8');
+                                        echo htmlspecialchars(thai_date($row['end_maintenance']), ENT_QUOTES, 'UTF-8');
                                     }
                                     ?>
                                 </td>
