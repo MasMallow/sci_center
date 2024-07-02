@@ -25,6 +25,9 @@ if (isset($_SESSION['user_login'])) {
             exit();
         }
     }
+} else {
+    header("Location: /sign_in");
+    exit();
 }
 
 // Check if cart session exists, create one if not

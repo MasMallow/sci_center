@@ -80,27 +80,6 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="subtext"><span id="B">วันเวลาที่ขอใช้งาน </span><?= thai_date_time_2($row['created_at']); ?></div>
                             <div class="subtext"><span id="B">วันเวลาที่สิ้นสุดขอใช้งาน </span> <?= thai_date_time_2($row['reservation_date']); ?></div>
-                            <div>
-                                <?php
-                                $situation = $row['situation'];
-                                if ($situation === null) {
-                                    echo 'ยังไม่ได้รับอนุมัติ';
-                                } elseif ($notification === 'used' && $situation == 1) {
-                                    echo 'ได้รับอนุมัติ';
-                                } elseif ($notification === 'reserve') {
-                                    $checkBookingsDate = strtotime($row['reservation_date']);
-                                    $currentDate = time();
-
-                                    if (date('Y-m-d', $checkBookingsDate) == date('Y-m-d', $currentDate) && $situation == 1) {
-                                        echo '<button type="button" onclick="location.href=\'process_booking.php?action=add&item=' . $row['ID'] . '\'" class="use-it"><i class="icon fa-solid fa-arrow-up"></i><span>ขอใช้</span></button>';
-                                    } elseif ($situation == 1) {
-                                        echo 'ได้รับการอนุมัติ';
-                                    } elseif ($situation == 3) {
-                                        echo 'ได้ทำการขอใช้แล้ว';
-                                    }
-                                }
-                                ?>
-                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>

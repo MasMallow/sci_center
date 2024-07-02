@@ -19,15 +19,10 @@ try {
                 exit();
             }
         }
-    }
-
-    // ตรวจสอบการล็อกอินของเจ้าหน้าที่
-    if (isset($_SESSION['staff_login'])) {
-        $user_id = $_SESSION['staff_login'];
-        $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+        unset($_SESSION['user_login']);
+        header("Location: /sign_in");
+        exit();
     }
 
     // ดึงข้อมูลการจอง

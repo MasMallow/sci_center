@@ -1,14 +1,32 @@
 <?php
+session_start();
+require_once 'assets/database/dbConfig.php';
+include_once 'assets/includes/thai_date_time.php';
 if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];
     $stmt = $conn->prepare("
         SELECT * 
         FROM users_db
-        WHERE userID = :userID
-    ");
+        WHERE userID = :userID    
+        ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($userData) {
+        if ($userData['status'] == 'n_approved') {
+            unset($_SESSION['user_login']);
+            header('Location: auth/sign_in');
+            exit();
+        } elseif ($userData['status'] == 'w_approved') {
+            unset($_SESSION['reserve_cart']);
+            header('Location: /home.php');
+            exit();
+        }
+    }
+} else {
+    header("Location: /sign_in");
+    exit();
 }
 ?>
 
@@ -39,10 +57,6 @@ if (isset($_SESSION['user_login'])) {
         </div>
         <div class="bookingTable_content">
             <?php
-            session_start();
-            require_once 'assets/database/config.php';
-            include_once 'assets/includes/thai_date_time.php';
-
             try {
                 $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date >= CURDATE() AND situation = 1 AND date_return = NULL";
                 $stmt = $conn->query($sql);
