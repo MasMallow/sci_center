@@ -46,6 +46,13 @@ if (isset($_POST['submit'])) {
     $allowed = array('jpg', 'jpeg', 'png');
     if (in_array($thumbnail_extension, $allowed)) {
         if ($img['size'] > 0 && $img['error'] == 0) {
+            // ตรวจสอบขนาดของไฟล์ภาพ (ไม่เกิน 3MB)
+            if ($img['size'] > 3 * 1024 * 1024) {
+                $_SESSION['errorUpload'] = "ขนาดของไฟล์ภาพเกิน 3MB";
+                header('location: ' . $base_url . '/management/addData');
+                exit();
+            }
+
             // ตรวจสอบว่าชื่อรูปภาพมีอยู่ในฐานข้อมูลหรือไม่
             $stmt = $conn->prepare("SELECT * FROM crud WHERE img_name = :img_name");
             $stmt->bindParam(":img_name", $img['name']);
