@@ -52,7 +52,7 @@ try {
         $page = intval($_GET['page'] ?? 1);
     }
 
-    $results_per_page = 1; // เปลี่ยนค่าตามความต้องการ
+    $results_per_page = 40; // เปลี่ยนค่าตามความต้องการ
 
     // คำนวณ offset สำหรับคำสั่ง SQL LIMIT
     $offset = ($page - 1) * $results_per_page;
@@ -162,7 +162,7 @@ try {
         <main class="content">
             <div class="content_FLEX">
                 <!-- ------------------ SIDEBAR ------------------ -->
-                <div class="menu_navigator">
+                <sidebar class="menu_navigator">
                     <ul class="sb_ul">
                         <li>
                             <a class="link <?php echo ($request_uri == '/') ? 'active ' : ''; ?>" href="<?php echo $base_url; ?>">
@@ -184,19 +184,19 @@ try {
                         </li>
                         <li class="group_li">
                             <span class="group_title">การขอใช้งาน</span>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/process_useitem">
-                            <i class="fa-solid fa-hourglass-start"></i>
-                            <span class="text">เริ่มต้นการใช้งาน</span>
+                            <a class="group_li_01" href="<?php echo $base_url; ?>/StartProcess">
+                                <i class="fa-solid fa-hourglass-start"></i>
+                                <span class="text">เริ่มต้นการใช้งาน</span>
                             </a>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/returned_system">
+                            <a class="group_li_01" href="<?php echo $base_url; ?>/EndProcess">
                                 <i class="fa-solid fa-hourglass-end"></i>
                                 <span class="text">สิ้นสุดการใช้งาน</span>
                             </a>
-                            <a class="group_li_02" href="<?php echo $base_url; ?>/booking_log">
+                            <a class="group_li_02" href="<?php echo $base_url; ?>/CheckReserve">
                                 <i class="fa-solid fa-calendar-check"></i>
-                                <span class="text">ติดตามการขอใช้งาน</span>
+                                <span class="text">ตรวจสอบการขอใช้งาน</span>
                             </a>
-                            <a class="group_li_03" href="<?php echo $base_url; ?>/bookings_list">
+                            <a class="group_li_03" href="<?php echo $base_url; ?>/TrackingReserve">
                                 <i class="fa-solid fa-calendar-xmark"></i>
                                 <span class="text">ยกเลิกการขอใช้งาน</span>
                             </a>
@@ -210,13 +210,13 @@ try {
                         </li>
                         <li class="group_li">
                             <span class="group_title">รายการที่จอง</span>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/cart_systems">
+                            <a class="group_li_01" href="<?php echo $base_url; ?>/Cart">
                                 <i class="fa-solid fa-cart-shopping"></i>
                                 <span class="text">รายการที่จอง</span>
                             </a>
                         </li>
                     </ul>
-                </div>
+                </sidebar>
 
                 <!-- ------------------ MAIN CONTENT ------------------ -->
                 <div class="content_area">
@@ -279,8 +279,8 @@ try {
                                         </div>
                                         <div class="grid_content_footer">
                                             <div class="content_btn">
-                                                <?php if ($data['amount'] >= 1) : ?>
-                                                    <a href="cart_systems?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
+                                                <?php if ($data['amount'] >= 1  && ($data['availability'] == 0)) : ?>
+                                                    <a href="Cart?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
                                                         <i class="fa-solid fa-address-book"></i>
                                                         <span>ทำการขอใช้</span>
                                                     </a>
@@ -333,8 +333,6 @@ try {
     elseif (isset($userData['urole']) && $userData['urole'] == 'staff') :
         include('staff-section/homeStaff.php');
     endif; ?>
-
-
 
     <!-- JavaScript -->
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>

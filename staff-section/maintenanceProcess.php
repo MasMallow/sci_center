@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
                     showConfirmButton: false,
                     timer: 1500
                 }).then(function() {
-                    window.location.href = 'home.php';
+                    window.location.href = 'Home.php';
                 });
                 </script>";
         }

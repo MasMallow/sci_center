@@ -13,13 +13,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Sarabun;
-  text-decoration: none;
-  list-style: none;
-  scrollbar-width: none;
-}
-
-*::-webkit-scrollbar {
-  display: none;
 }
 
 .show_password {
@@ -33,10 +26,6 @@
   right: 20px;
   cursor: pointer;
 }
-body {
-  /* background-color: #f9f9f9; */
-  background-color: #f0f2f5;
-}
 
 .register {
   width: 100%;
@@ -46,15 +35,17 @@ body {
 
 .register_page {
   width: 100%;
-  border: 1px solid #c0c0c0; /* สีเส้นขอบที่เข้มขึ้น */
+  border: 1px solid #d0d7de;
+  color: #1f2328;
   border-radius: 5px;
   animation: movingY 0.4s ease;
-  background-color: #ffffff; /* พื้นหลังของเนื้อหาสีขาว */
+  overflow: hidden;
 
   .register_page_head {
     padding: 0.4rem 1rem;
-    border-bottom: 1px solid #c0c0c0; /* สีเส้นขอบที่เข้มขึ้น */
-    font-size: 1.15rem;
+    background-color: #f6f8fa;
+    border-bottom: 1px solid #d0d7de; /* สีเส้นขอบที่เข้มขึ้น */
+    font-size: 1.1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -64,7 +55,7 @@ body {
       align-items: center;
       justify-content: center;
       color: #8f8f8f;
-      background-color: #ffffff; /* พื้นหลังของลิงก์สีขาว */
+      background-color: #f6f8fa;
       text-decoration: none;
       width: 35px;
       height: 35px;
@@ -72,7 +63,7 @@ body {
       transition: all 0.25s;
 
       &:hover {
-        background-color: #e0e0e0; /* สีพื้นหลังเมื่อวางเมาส์สีเทาอ่อน */
+        background-color: #d0d7de;
         color: #000000;
       }
     }
@@ -86,14 +77,15 @@ body {
   font-size: 1rem;
   padding-top: 0.75rem;
   padding-left: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .form .input_box {
   width: 100%;
-  margin: 0.545rem 0;
+  margin: 0.5rem 0;
 }
 .form .input_box span {
-  font-size: 0.975rem;
+  font-size: 0.95rem;
   display: block;
   padding-left: 0.5rem;
   margin-bottom: 0.25rem;

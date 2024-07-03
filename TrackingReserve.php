@@ -5,35 +5,30 @@ include_once 'assets/includes/thai_date_time.php';
 
 try {
     // ตรวจสอบการล็อกอินของผู้ใช้
-    if (isset($_SESSION['user_login'])) {
-        $user_id = $_SESSION['user_login'];
-        $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($userData) {
-            if ($userData['status'] == 'n_approved') {
-                unset($_SESSION['user_login']);
-                header('Location: /sign_in');
-                exit();
-            }
-        }
-    } else {
-        unset($_SESSION['user_login']);
+    if (!isset($_SESSION['user_login'])) {
         header("Location: /sign_in");
         exit();
     }
 
-    // ดึงข้อมูลการจอง
-    if (isset($user_id)) {
-        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND reservation_date >= CURDATE() AND date_return = NULL");
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } else {
-        $bookings = [];
+    $user_id = $_SESSION['user_login'];
+
+    // ดึงข้อมูลผู้ใช้
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$userData || $userData['status'] == 'n_approved') {
+        unset($_SESSION['user_login']);
+        header('Location: /sign_in');
+        exit();
     }
+
+    // ดึงข้อมูลการจอง
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND reservation_date >= CURDATE() AND date_return IS NULL");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     // จัดการข้อผิดพลาดที่เกิดจากการเชื่อมต่อฐานข้อมูล
     echo "Error: " . $e->getMessage();
@@ -45,7 +40,7 @@ try {
 
 <head>
     <meta charset="UTF-8">
-    <title>ยกเลิกการจอง</title>
+    <title>ยกเลิกการขอใช้งาน</title>
     <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
@@ -62,12 +57,12 @@ try {
             <a href="javascript:history.back();">
                 <i class="fa-solid fa-arrow-left-long"></i>
             </a>
-            <span id="B">รายการจอง</span>
+            <span id="B">รายการการขอใช้</span>
         </div>
         <?php if (empty($bookings)) : ?>
             <div class="approve_not_found_section">
                 <i class="fa-solid fa-xmark"></i>
-                <span id="B">ไม่พบข้อมูลการจอง</span>
+                <span id="B">ไม่พบข้อมูลการขอใช้</span>
             </div>
         <?php else : ?>
             <style>
@@ -155,7 +150,7 @@ try {
                     color: #fff;
                 }
             </style>
-            <form method="POST" action="<?php echo $base_url; ?>/SystemsUser/cancel_booking.php">
+            <form method="POST" action="<?php echo $base_url; ?>/backend/cancel_booking.php">
                 <div class="bookingList_section">
                     <div class="booking_header">
                         <div class="serial_number">Serial Number</div>

@@ -128,16 +128,15 @@ button.search {
 thead {
   tr {
     border: 1px solid #bdbdbd;
-
     th {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       text-align: start;
       border-left: none;
       border-right: none;
       border-top: 1.5px solid #bdbdbd;
       border-bottom: 1.5px solid #bdbdbd;
       background-color: #e7e7e7;
-      padding: 0.75rem 0;
+      padding: 0.7rem 0;
 
       & .UID {
         max-width: 10%;
@@ -422,16 +421,6 @@ tbody tr {
         flex-direction: column;
         gap: 0.75rem;
         padding: 1.25rem 1rem;
-
-        .wait_approved {
-          font-family: Sarabun-Bold;
-          color: orange;
-        }
-
-        .approved {
-          font-family: Sarabun-Bold;
-          color: green;
-        }
       }
 
       .viewLogUsers_content_LOG {
@@ -462,4 +451,19 @@ tbody tr {
       }
     }
   }
+}
+
+.wait_approved {
+  font-family: Sarabun-Bold;
+  color: orange;
+}
+
+.approved {
+  font-family: Sarabun-Bold;
+  color: green;
+}
+
+.n_approved {
+  font-family: Sarabun-Bold;
+  color: red;
 }

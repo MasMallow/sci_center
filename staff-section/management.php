@@ -41,7 +41,7 @@ if (!empty($_GET['search'])) {
     $page = intval($_GET['page'] ?? 1);
 }
 
-$results_per_page = 1; // เปลี่ยนค่าตามความต้องการ
+$results_per_page = 48; // เปลี่ยนค่าตามความต้องการ
 
 // คำนวณ offset สำหรับคำสั่ง SQL LIMIT
 $offset = ($page - 1) * $results_per_page;
@@ -125,12 +125,6 @@ if ($total_records <= $results_per_page) {
 unset($search_results);
 // ลบค่าใน session ที่ชื่อ search_value
 unset($_SESSION['search_value']);
-
-// ดึงข้อมูลการอนุมัติการจอง
-$stmt = $conn->prepare("SELECT * FROM logs_management");
-$stmt->execute();
-$Management = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$ManagementCount = count($Management); // นับจำนวนรายการ
 ?>
 
 <!DOCTYPE html>
@@ -219,18 +213,9 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
                 </span>
             </div>
             <div class="choose_categories_btn">
-                <?php if ($request_uri == '/management') : ?>
-                    <a href="<?php echo $base_url; ?>/management/addData">
-                        <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
-                    </a>
-                    <a href="<?php echo $base_url; ?>/management/viewlog">
-                        <span>ดูระบบ</span>
-                    </a>
-                <?php elseif ($request_uri == '/management/viewlog') : ?>
-                    <a href="<?php echo $base_url; ?>/management">
-                        <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
-                    </a>
-                <?php endif ?>
+                <a href="<?php echo $base_url; ?>/management/addData">
+                    <span>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</span>
+                </a>
             </div>
         </div>
         <!-- ----------------- BTN SECTION ------------------- -->
@@ -328,118 +313,6 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
-
-            <!-- <?php if (!empty($Management)) : ?>
-                <div class="viewLog_Management_PAGE">
-                    <div class="viewLog_Management_MAIN">
-                        <div class="viewLog_Management_header">
-                            <span id="B">การจัดการระบบคลัง</span>
-                        </div>
-                        <div class="viewLog_Management_body">
-                            <?php foreach ($Management as $Data) : ?>
-                                <div class="viewLog_Management_content">
-                                    <div class="viewLog_User_content_1">
-                                        <i class="open_expand_row fa-solid fa-circle-arrow-right"></i>
-                                        <a href="<?= $base_url . '/management/viewlog/details?id=' . htmlspecialchars($Data['ID'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
-                                            ( <?= htmlspecialchars($Data['log_Role'], ENT_QUOTES, 'UTF-8') ?>) </a>
-                                    </div>
-                                    <div class="viewLog_User_content_2">
-                                        <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
-                                    </div>
-                                    <div class="viewLog_User_content_3">
-                                        ได้ทำการ
-                                        <?php
-                                        switch ($Data['log_Status']) {
-                                            case 'Add':
-                                                echo "เพิ่มข้อมูล";
-                                                break;
-                                            case 'Edit':
-                                                echo "แก้ไขข้อมูล";
-                                                break;
-                                            case 'Delete':
-                                                echo "ลบข้อมูล";
-                                                break;
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php else : ?>
-                <div class="viewNotfound">
-                    <i class="fa-solid fa-database"></i>
-                    <span id="B">ไม่พบข้อมูล</span>
-                </div>
-            <?php endif; ?>
-            <?php
-            try {
-                if (isset($_GET['id'])) {
-                    $id = (int)$_GET['id'];
-                    $stmt = $conn->prepare("SELECT * FROM logs_management WHERE ID = :id");
-                    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $detailsManagement = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                }
-            } catch (PDOException $e) {
-                echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
-                exit;
-            } ?>
-            <?php if (!empty($detailsManagement)) : ?>
-                <div class="viewLog_Management_Details">
-                    <div class="viewLog_Management_MAIN">
-                        <div class="viewLog_Management_header">
-                            <div class="path-indicator">
-                                <a href="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>">
-                                    <?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="viewLog_Management_body">
-                            <?php foreach ($detailsManagement as $Data) : ?>
-                                <div class="viewLog_Management_content">
-                                    <div class="viewLog_Management_content_1">
-                                        <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
-                                        (<?= htmlspecialchars($Data['log_Role'], ENT_QUOTES, 'UTF-8') ?>)
-                                        <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
-                                        ได้ทำการ
-                                        <?php
-                                        switch ($Data['log_Status']) {
-                                            case 'Add':
-                                                echo "เพิ่มข้อมูล";
-                                                break;
-                                            case 'Edit':
-                                                echo "แก้ไขข้อมูล";
-                                                break;
-                                            case 'Delete':
-                                                echo "ลบข้อมูล";
-                                                break;
-                                        }
-                                        ?>
-                                    </div>
-                                    <div class="viewLog_Management_content_2">
-                                        <?php
-                                        $logContent = json_decode($Data['log_Content'], true);
-                                        if ($logContent) : ?>
-                                            <div class="log-item"><span id="B">ชื่อวิทยาศาสตร์</span> <?= htmlspecialchars($logContent['sci_name'], ENT_QUOTES, 'UTF-8') ?></div>
-                                            <div class="log-item"><span id="B">หมายเลขซีเรียล</span> <?= htmlspecialchars($logContent['serial_number'], ENT_QUOTES, 'UTF-8') ?></div>
-                                        <?php else : ?>
-                                            ไม่สามารถแสดงข้อมูลได้
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php else : ?>
-                <div class="viewNotfound">
-                    <i class="fa-solid fa-database"></i>
-                    <span id="B">ไม่พบข้อมูล</span>
-                </div>
-            <?php endif; ?> -->
     </div>
 </body>
 

@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!empty($insufficient_items)) {
             $error_message = "ของมีไม่เพียงพอ: " . implode(', ', $insufficient_items);
-            echo $error_message .'<a href="home.php"> กลับหน้าหลัก</a>';
+            echo $error_message .'<a href="Home.php"> กลับหน้าหลัก</a>';
             exit;
         }
 
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 showConfirmButton: false,
                 timer: 1500
             }).then(function() {
-                window.location.href = 'home.php';
+                window.location.href = 'Home.php';
             });
             </script>";
         }
@@ -205,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     showConfirmButton: false,
                     timer: 1500
                 }).then(function() {
-                    window.location.href = 'home.php';
+                    window.location.href = 'Home.php';
                 });
                 </script>";
             }

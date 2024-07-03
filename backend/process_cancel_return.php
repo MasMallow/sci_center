@@ -82,12 +82,12 @@ if (isset($_POST['cancel'])) {
                 showConfirmButton: false,
                 timer: 1500
             }).then(function() {
-                window.location.href = 'home.php';
+                window.location.href = 'Home.php';
             });
             </script>";
         }
         curl_close($chOne);
-        header('Location: /home.php');
+        header('Location: /Home.php');
         exit;
     }
 }

@@ -139,7 +139,7 @@ try {
         </div>
         <!-- <------------ FOOTER FORM ----------------->
         <div class="DetailsPAGE_footer">
-            <a href="<?php echo $base_url;?>/cart_systems?action=add&item=<?= htmlspecialchars($detailsData['sci_name']) ?>" class="used_it">
+            <a href="<?php echo $base_url;?>/Cart?action=add&item=<?= htmlspecialchars($detailsData['sci_name']) ?>" class="used_it">
                 <i class="fa-solid fa-address-book"></i>
                 <span>ทำการขอใช้</span>
             </a>

@@ -178,20 +178,24 @@ try {
 
             <!-- <------------ MIANTENANCE FORM ----------------->
             <div class="add_MET_section_form_2 
-                        <?php if ($request_uri == '/maintenance/detailsData') echo 'active_2' ?>">
+                <?php if ($request_uri == '/maintenance/detailsData') echo 'active_2' ?>">
                 <div class="maintenance_history">
                     <div class="maintenance_history_header">
+                        <!-- ตรวจสอบว่ามีข้อมูลการบำรุงรักษาหรือไม่ -->
                         <?php if (is_array($detailsMaintenance) && !empty($detailsMaintenance)) : ?>
                             <div class="maintenance_history_header_name">
-                                <span id="B"> ประวัติการบำรุงรักษาของ
-                                </span>
+                                <span id="B">ประวัติการบำรุงรักษาของ</span>
                             </div>
                             <div class="maintenance_history_header_name_1">
-                                <span id="B"><?= htmlspecialchars($detailsMaintenance[0]['sci_name'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
-                                    (<?= htmlspecialchars($detailsMaintenance[0]['serial_number'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>)</span>
+                                <!-- แสดงชื่อและหมายเลขเครื่อง -->
+                                <span id="B">
+                                    <?= htmlspecialchars($detailsMaintenance[0]['sci_name'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
+                                    (<?= htmlspecialchars($detailsMaintenance[0]['serial_number'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>)
+                                </span>
                                 <span>ได้รับการบำรุงรักษาไปทั้งหมด <?= htmlspecialchars($rowCount, ENT_QUOTES, 'UTF-8'); ?> ครั้ง</span>
                             </div>
                             <div class="maintenance_history_header_name_1">
+                                <!-- แสดงวันที่บำรุงรักษาล่าสุด -->
                                 บำรุงรักษาล่าสุดเมื่อ
                                 <?php
                                 if (isset($detailsMaintenance[0]['last_maintenance_date'])) {
@@ -209,9 +213,10 @@ try {
                             </div>
                         <?php endif; ?>
                     </div>
-                    <?php if (is_array($detailsMaintenance) && !empty($detailsMaintenance)) : ?>
-                        <?php foreach ($detailsMaintenance as $dataList) : ?>
-                            <div class="maintenance_entry">
+                    <div class="maintenance_entry">
+                        <!-- แสดงข้อมูลการบำรุงรักษาทั้งหมด -->
+                        <?php if (is_array($detailsMaintenance) && !empty($detailsMaintenance)) : ?>
+                            <?php foreach ($detailsMaintenance as $dataList) : ?>
                                 <div class="maintenance_row">
                                     <div class="approve_row">
                                         <div>
@@ -231,14 +236,16 @@ try {
                                         <div>
                                             <span id="B">รายละเอียดการบำรุงรักษา</span> <?= htmlspecialchars($dataList['details_maintenance'] ?? '--', ENT_QUOTES, 'UTF-8'); ?>
                                         </div>
-                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <div class="maintenance_entry_non"><span id="B">ไม่มีประวัติการบำรุงรักษา</span></div>
-                    <?php endif; ?>
+                            <?php endforeach; ?>
+                    </div>
+                <?php else : ?>
+                    <!-- แสดงข้อความเมื่อไม่มีข้อมูลการบำรุงรักษา -->
+                    <div class="maintenance_entry_non">
+                        <span id="B">ไม่มีประวัติการบำรุงรักษา</span>
+                    </div>
+                <?php endif; ?>
                 </div>
             </div>
 

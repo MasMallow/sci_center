@@ -49,7 +49,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกข้อมูล</title>
+    <title>สถิติ 10 รายการ</title>
     <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
@@ -62,10 +62,10 @@ try {
         <?php include_once 'assets/includes/navigator.php'; ?>
     </header>
     <main class="viewReport">
-        <div class="viewReport_header">
+        <nav class="viewReport_header">
             <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
-            <span id="B">ระบบบันทึก LOG </span>
-        </div>
+            <span id="B">สถิติ 10 รายการ</span>
+        </nav>
         <div class="top_10_list">
             <div class="top_10_list_content">
                 <div class="top_10_list_header">
@@ -114,12 +114,8 @@ try {
             </div>
         </div>
     </main>
-    <footer class="small">
-        <div class="footer-content">
-            <div class="footer-copyright">
-                <span>Copyright © 2024 ศูนย์วิทยาศาสตร์เทคโนโลยี</span>
-                <span>Designed And Developed By Puwadech and Phisitphong. All Rights Reserved</span>
-            </div>
+    <footer>
+        <?php include_once 'assets/includes/footer_2.php'; ?>
     </footer>
 </body>
 

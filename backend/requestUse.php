@@ -74,14 +74,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             (reservation_date <= :enddate AND end_date >= :enddate) OR
                             (reservation_date >= :reservationdate AND end_date <= :enddate)
                         ) AND situation != 2"
-                    );                    
+                    );
                     $reservation_check_query->bindValue(':productName', "%$productName%", PDO::PARAM_STR);
                     $reservation_check_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
                     $reservation_check_query->bindParam(':enddate', $enddate, PDO::PARAM_STR);
                     $reservation_check_query->execute();
 
                     if ($reservation_check_query->rowCount() > 0) {
-                        $errorMessages[] = "อุปกรณ์ $productName ได้มีคนทำการจองไว้แล้ว";
+                        $errorMessages[] = "$productName <br> ได้มีคนทำการขอใช้ไว้แล้ว";
                     }
                 }
 
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($quantity <= $product['amount']) {
                     $itemList[] = "$productName ($quantity)";
                 } else {
-                    $errorMessages[] = "อุปกรณ์ $productName มีจำนวนไม่เพียงพอ (มีเพียง " . $product['amount'] . " ชิ้นในสต็อก)";
+                    $errorMessages[] = "$productName มีจำนวนไม่เพียงพอ (มีเพียง " . $product['amount'] . " ชิ้นในสต็อก)";
                 }
             }
         }
@@ -98,8 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($errorMessages)) {
             foreach ($errorMessages as $message) {
                 echo $message . '<br>';
+                // เก็บข้อมูลการจองใน session
+                $_SESSION['reserveError'] = $message;
+
+                header("Location: $base_url/Cart");
+                exit();
             }
-            echo '<a href="/cart_systems">กลับหน้าตะกร้า</a><br>';
         } else {
             // เตรียมข้อมูลสำหรับการจอง
             $itemBorrowed = implode(', ', $itemList);
@@ -124,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['reserve_2'] = $itemBorrowed;
             $_SESSION['reserve_3'] = $reservationdate;
 
-            header("Location: $base_url/cart_systems");
+            header("Location: $base_url/Cart");
             exit();
         }
     }

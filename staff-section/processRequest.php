@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach ($errorMessages as $message) {
                 echo $message . '<br>';
             }
-            echo '<a href="home.php">กลับหน้าหลัก</a><br>';
+            echo '<a href="Home.php">กลับหน้าหลัก</a><br>';
             exit;
         } else {
             // ถ้าไม่มีข้อผิดพลาดในการจอง, ทำการอัปเดตข้อมูลการจอง
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     showConfirmButton: false,
                     timer: 1500
                 }).then(function() {
-                    window.location.href = 'home.php';
+                    window.location.href = 'Home.php';
                 });
                 </script>";
             }

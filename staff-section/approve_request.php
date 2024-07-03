@@ -26,7 +26,7 @@ if (isset($_SESSION['staff_login'])) {
 $stmt = $conn->prepare("
         SELECT * FROM approve_to_reserve 
         WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL 
-        ORDER BY ID ASC");
+        ORDER BY created_at ASC");
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $num = count($data); // นับจำนวนรายการ
@@ -57,17 +57,15 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
 
     <?php include('assets/includes/navigator.php') ?>
     <div class="approve_section">
-        <div class="header_approve">
-            <div class="header_approve_section">
-                <a href="javascript:history.back();">
-                    <i class="fa-solid fa-arrow-left-long"></i>
-                </a>
-                <span id="B">อนุมัติการขอใช้</span>
-            </div>
-            <div class="approve_btn">
-                <a href="/approve_request" class="<?= ($request_uri == '/approve_request') ? 'active' : ''; ?> btn_approve_01">อนุมัติการขอใช้</a>
-                <a href="/approve_request/viewlog" class="<?= ($request_uri == '/approve_request/viewlog' || $request_uri == '/approve_request/viewlog/details') ? 'active' : ''; ?> btn_approve_02">ดูการขอใช้</a>
-            </div>
+        <div class="header_approve_section">
+            <a href="javascript:history.back();">
+                <i class="fa-solid fa-arrow-left-long"></i>
+            </a>
+            <span id="B">อนุมัติการขอใช้</span>
+        </div>
+        <div class="approve_btn">
+            <a href="/approve_request" class="<?= ($request_uri == '/approve_request') ? 'active' : ''; ?> btn_approve_01">อนุมัติการขอใช้</a>
+            <a href="/approve_request/viewlog" class="<?= ($request_uri == '/approve_request/viewlog' || $request_uri == '/approve_request/viewlog/details') ? 'active' : ''; ?> btn_approve_02">ดูการขอใช้</a>
         </div>
 
         <?php if ($request_uri == '/approve_request') : ?>

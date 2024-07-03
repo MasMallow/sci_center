@@ -43,8 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <header><?php include_once('assets/includes/navigator.php'); ?></header>
-    <main class="resetPassword">
+    <header>
+        <?php include_once('assets/includes/navigator.php'); ?>
+    </header>
+
+        <main class="resetPassword">
         <div class="resetPassword_header">
             <span id="B">เปลี่ยนรหัสผ่าน</span>
         </div>
@@ -62,6 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </main>
+
+    <footer>
+        <?php include_once('assets/includes/footer_2.php');?>
+    </footer>
+
+    <script src="<?php echo $base_url;?>/assets/js/ajax.js"></script>
+</html>
 </body>
 
 </html>

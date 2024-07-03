@@ -12,7 +12,7 @@ if (isset($_SESSION['user_login'])) {
 
     if ($userData) {
         if ($userData['status'] !== 'approved') {
-            header("Location: home.php");
+            header("Location: Home.php");
             exit();
         }
     }
@@ -97,12 +97,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
                 showConfirmButton: false,
                 timer: 1500
             }).then(function() {
-                window.location.href = 'home.php';
+                window.location.href = 'Home.php';
             });
             </script>";
     }
     curl_close($chOne);
-    header('Location: /returned_system');
+    header('Location: /EndProcess');
     exit();
 }
 ?>

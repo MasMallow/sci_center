@@ -15,7 +15,7 @@ switch ($request) {
     case '/material':
     case '/equipment':
     case '/tools':
-        require 'home.php'; // หน้าแรก
+        require 'Home.php'; // หน้าแรก
         break;
     case '/details':
         require 'details.php'; // หน้ารายละเอียด
@@ -29,27 +29,27 @@ switch ($request) {
     case '/changePassword':
         require 'auth/change_password.php'; // หน้าลงทะเบียน
         break;
-    case '/cart_systems':
-        require 'cart_systems.php'; // ระบบตะกร้าสินค้า
+    case '/Cart':
+        require 'Cart.php'; // ระบบตะกร้าสินค้า
         break;
-    case '/process_useitem':
-        require 'process_useitem.php'; // ระบบคืนสินค้า
+    case '/StartProcess':
+        require 'StartProcess.php'; // ระบบคืนสินค้า
         break;
-    case '/returned_system':
-        require 'returned_system.php'; // ระบบคืนสินค้า
+    case '/EndProcess':
+        require 'EndProcess.php'; // ระบบคืนสินค้า
         break;
-    case '/booking_log':
-        require 'booking_log.php'; // บันทึกการจอง
+    case '/CheckReserve':
+        require 'CheckReserve.php'; // บันทึกการจอง
         break;
-    case '/bookings_list':
-        require 'bookings_list.php'; // รายการการจอง
+    case '/TrackingReserve':
+        require 'TrackingReserve.php'; // รายการการจอง
         break;
     case '/notification':
         require 'notification.php'; // การแจ้งเตือน
         break;
     case '/profile_user':
+    case '/edit_user':
     case '/profile_user/edit_profile':
-    case '/manage_users/management_user/edit_user':
         require 'profile_user.php'; // โปรไฟล์ผู้ใช้
         break;
     case '/approve_request':
@@ -64,14 +64,14 @@ switch ($request) {
         require 'staff-section/manage_users.php'; // จัดการผู้ใช้
         break;
     case '/management':
-    case '/management/viewlog':
-    case '/management/viewlog/details':
     case '/management/material':
     case '/management/equipment':
     case '/management/tools':
         require 'staff-section/management.php'; // จัดการวัสดุอุปกรณ์
         break;
     case '/management/addData':
+    case '/management/viewlog':
+    case '/management/viewlog/details':
         require 'staff-section/addData.php'; // เพิ่มข้อมูล
         break;
     case '/management/editData':

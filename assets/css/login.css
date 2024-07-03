@@ -24,16 +24,12 @@
   padding: 0px;
   font-family: Sarabun;
   box-sizing: border-box;
-  overflow: hidden;
 }
 .sign_in_box {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  /* background-color: rgb(248, 248, 248); */
-  background-color: #ffffff;
 }
 /* #0e4bf1 */
 
@@ -41,14 +37,15 @@
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  min-width: 480px;
+  min-width: 450px;
   animation: movingY 0.5s ease;
-  border: 1px solid #dbdbdb;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 14px;
+  border: 1px solid #d0d7de;
+  overflow: hidden;
 }
 .box_content_header {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #dbdbdb;
+  background-color: #f6f8fa;
+  border-bottom: 1px solid #d0d7de;
   font-size: 1.2rem;
 }
 .box_content_logo {
@@ -64,7 +61,7 @@
 }
 .box_content_content {
   display: grid;
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   gap: 0.785rem;
 }
 .input {
@@ -72,14 +69,15 @@
   outline: none;
   border: none;
   height: 45px;
-  padding: 1.25rem 0px;
+  padding: 1rem 0px;
   padding-left: 20px;
   border-radius: 7px;
-  font-size: 1rem;
+  font-size: 0.975rem;
   background-color: #e6e6e6;
-}
-.input:focus {
-  border: 1px solid #2176ff;
+
+  :focus {
+    border: 1px solid #2176ff;
+  }
 }
 
 /* Show Password */
@@ -94,22 +92,21 @@
   right: 20px;
   cursor: pointer;
 }
-.btn-section {
-  padding: 0.6rem 1rem;
-}
+
 .sign-in {
   width: 100%;
-  padding: 13px;
+  padding: 10px;
   outline: none;
   border: none;
-  border-radius: 7px;
+  border-radius: 5px;
   background-color: #2176ff;
   color: #fff;
   cursor: pointer;
   transition: 0.3s;
-}
-.sign-in:hover {
-  background-color: #125cd3;
+
+  :hover {
+    background-color: #125cd3;
+  }
 }
 .box_content_other {
   display: flex;
@@ -135,7 +132,7 @@
 }
 .footer {
   font-size: 0.875rem;
-  border-top: 1px solid #dbdbdb;
+  border-top: 1px solid #d0d7de;
   text-align: center;
   color: #686767;
   padding: 0.5rem;
@@ -147,7 +144,7 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
 .resetPassword {
   width: 100%;
   max-width: 700px;
-  margin: 5rem auto;
+  margin: 10rem auto;
 }
 .resetPassword_header {
   font-size: 1.5rem;
@@ -156,21 +153,28 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
 }
 .resetPasswordMain {
   width: 100%;
-  background-color: #ffffff;
   border: 1px solid #d1d5da;
-  border-radius: 6px;
-  padding: 20px;
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
 }
 .resetPassword label {
   display: block;
+  padding-left: 0.3rem;
   margin-bottom: 5px;
 }
 .resetPassword input {
+  margin-bottom: 1rem;
+  position: relative;
+  height: 40px;
   width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #e1e4e8;
-  border-radius: 4px;
+  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0 1rem;
+  color: #000;
+}
+input:focus {
+  border: 1px solid rgb(0, 119, 255);
 }
 .resetPasswordBTN {
   display: flex;

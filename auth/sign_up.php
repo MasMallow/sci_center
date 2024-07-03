@@ -2,7 +2,6 @@
 session_start();
 require_once 'assets/database/config.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,13 +12,13 @@ require_once 'assets/database/config.php';
     <title>สมัครบัญชีผู้ใช้</title>
     <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/sign_up.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/sign_up.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/notification_popup.css">
 </head>
 
 <body>
-    <?php if (isset($_SESSION['errorSign_up'])) { ?>
+    <?php if (isset($_SESSION['errorSign_up'])) : ?>
         <div class="toast">
             <div class="toast_section error">
                 <div class="toast_content">
@@ -33,7 +32,9 @@ require_once 'assets/database/config.php';
             </div>
         </div>
         <?php unset($_SESSION['errorSign_up']); ?>
-    <?php } ?>
+    <?php endif ?>
+
+    <!-- ----------------- HEADER ------------------- -->
     <header>
         <?php include_once 'assets/includes/navigator.php'; ?>
     </header>

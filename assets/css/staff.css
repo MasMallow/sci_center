@@ -22,12 +22,16 @@
   width: 100%;
   max-width: 1300px;
   margin: 3rem auto;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 .staff_page {
   display: flex;
   width: 100%;
   gap: 1.5rem;
+}
+.staff_content {
+  width: 100%;
+  height: 80%;
 }
 .staff_section {
   width: 100%;
@@ -79,6 +83,21 @@
   flex-direction: column;
   gap: 1rem;
   padding: 0.5rem 0.7rem;
+}
+.staff_content_div {
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1rem;
+}
+.staff_content_table {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 1rem;
 }
 .notification_request,
 .notification_crud {
@@ -151,10 +170,6 @@
   align-items: center;
   gap: 1rem;
 }
-.staff_content {
-  width: 100%;
-  height: 80%;
-}
 .staff_content_row3,
 .staff_notification_body {
   width: 100%;
@@ -163,23 +178,8 @@
   border: 1px solid #d0d7de;
   border-radius: 5px;
   padding: 0.7rem 0.7rem;
-  scrollbar-width: none;
   overflow: scroll;
-}
-.staff_content_div {
-  width: 100%;
-  height: 100%;
-  padding: 0.75rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
-  gap: 1rem;
-}
-.staff_content_table {
-  width: 100%;
-  height: 100%;
-  padding: 0.5rem 1rem;
+  overflow-x: hidden;
 }
 
 .staff_item {
@@ -236,11 +236,6 @@
   }
 }
 
-.staff_notification_body {
-  overflow: hidden;
-  overflow: scroll;
-  scrollbar-width: none;
-}
 .staff_notification_alert {
   width: 100%;
   height: 100%;
@@ -263,6 +258,15 @@
   border-left: 4px solid #c82333;
   border-radius: 5px;
   padding: 0.6rem 0.75rem;
+
+  .staff_notification_data_1 {
+    font-size: 1rem;
+    font-family: Sarabun-Bold;
+  }
+  .staff_notification_data_2 {
+    font-size: 0.9rem;
+    padding-left: 0.2rem;
+  }
 }
 .non_notification_stack {
   width: 100%;
@@ -310,6 +314,7 @@
   border: 1px solid #ddd;
   border-radius: 7.5px;
   padding: 0.75rem 1rem;
+  font-size: 0.95rem;
 }
 .defualt_row {
   width: 100%;
@@ -330,6 +335,10 @@
 }
 .items {
   width: 40%;
+
+  a {
+    color: black;
+  }
 }
 
 .serial_number .open_expand_row {

@@ -16,19 +16,8 @@ $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$userData) {
-    $_SESSION['error'] = 'ผู้ใช้ไม่พบ!';
-    header('Location: /sign_in');
-    exit();
-}
-
-if ($userData['status'] !== 'approved') {
-    header("Location: /");
-    exit();
-}
-
 $firstname = $userData['pre'] . $userData['firstname'] . ' ' . $userData['lastname'];
-$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE name_user = :firstname ORDER BY created_at DESC");
+$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE name_user = :firstname ORDER BY created_at DESC LIMIT 10");
 $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -78,13 +67,24 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 }
                                 ?>
                             </div>
-                            <div class="subtext"><span id="B">วันเวลาที่ขอใช้งาน </span><?= thai_date_time_2($row['created_at']); ?></div>
-                            <div class="subtext"><span id="B">วันเวลาที่สิ้นสุดขอใช้งาน </span> <?= thai_date_time_2($row['reservation_date']); ?></div>
+                            <div class="subtext"><span id="B">ขอใช้งาน </span><?= thai_date_time_2($row['created_at']); ?></div>
+                            <div class="subtext"><span id="B">ถึง </span> <?= thai_date_time_2($row['reservation_date']); ?>
+                                <div class="status">
+                                    <?php
+                                    $situation = $row['situation'];
+                                    if ($situation === null) {
+                                        echo '<div class="status_pending">ยังไม่ได้รับอนุมัติ</div>';
+                                    } elseif ($situation == 1) {
+                                        echo '<div class="status_approved">ได้รับอนุมัติ</div>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else : ?>
-                <div class=" user_approve_not_found">
+                <div class="notification_not_found">
                     <i class="icon fa-solid fa-address-book"></i>
                     <span id="B">ไม่มีแจ้งเตือนการขอใช้งาน</span>
                 </div>
@@ -96,8 +96,6 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </footer>
     <!-- JavaScript -->
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-    <script src="<?php echo $base_url; ?>/assets/js/details.js"></script>
-    <script src="<?php echo $base_url; ?>/assets/js/datetime.js"></script>
 </body>
 
 </html>

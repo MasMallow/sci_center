@@ -2,24 +2,26 @@
 require_once 'assets/database/config.php';
 include_once 'assets/includes/thai_date_time.php';
 
-$bookings = $conn->prepare("SELECT * FROM approve_to_reserve WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL OR situation = 0 ORDER BY serial_number");
+$bookings = $conn->prepare("
+        SELECT * FROM approve_to_reserve 
+        WHERE approvaldatetime IS NULL 
+        AND approver IS NULL AND situation IS NULL OR situation = 0 
+        ");
 $bookings->execute();
 $data = $bookings->fetchAll(PDO::FETCH_ASSOC);
 $numbookings = count($data); // นับจำนวนรายการ
-$user = $conn->prepare("SELECT * FROM users_db WHERE status = 'w_approved' AND urole = 'user'");;
+
+$user = $conn->prepare("
+        SELECT * FROM users_db 
+        WHERE status = 'w_approved' AND urole = 'user'");;
 $user->execute();
 $datauser = $user->fetchAll(PDO::FETCH_ASSOC);
 $numuser = count($datauser); // นับจำนวนรายการ
-
 
 $stmt = $conn->prepare("SELECT * FROM crud");
 $stmt->execute();
 $CRUD = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $numCRUD = count($CRUD); // นับจำนวนรายการ
-
-
-$previousSn = '';
-$previousFirstname = '';
 
 $stmt = $conn->prepare("
     SELECT crud.*, info_sciname.*, 
@@ -182,10 +184,10 @@ try {
                 </div>
                 <div class="staff_notification_row1">
                     <div class="notification_request">
-                        <?php if (!empty($num)) : ?>
+                        <?php if (!empty($numbookings)) : ?>
                             <span>มีการขอใช้</span>
                             <span id="B">
-                                <?php echo htmlspecialchars($num); ?> รายการ
+                                <?php echo htmlspecialchars($numbookings); ?> รายการ
                             </span>
                         <?php else : ?>
                             <span id="B">ไม่พบข้อมูลการขอใช้</span>
@@ -272,12 +274,12 @@ try {
                     <span id="B">การบำรุงรักษา</span>
                 </div>
                 <div class="staff_content_row3">
-                    <?php if (empty($maintenance_notify)) { ?>
+                    <?php if (empty($maintenance_notify)) : ?>
                         <div class="approve_not_found_section">
                             <i class="fa-solid fa-xmark"></i>
                             <span id="B">ไม่พบข้อมูลอุปกรณ์ และเครื่องมือ</span>
                         </div>
-                    <?php } ?>
+                    <?php endif ?>
                     <?php if (!empty($maintenance_notify)) : ?>
                         <div class="approve_container">
                             <?php foreach ($maintenance_notify as $row) : ?>
@@ -288,7 +290,7 @@ try {
                                             <?php echo htmlspecialchars($row['serial_number']); ?>
                                         </div>
                                         <div class="items">
-                                            <a href="<?php echo $base_url; ?>/maintenance/detailsMaintenance?id=<?= $row['ID'] ?>">
+                                            <a href="<?php echo $base_url; ?>/maintenance/detailsData?id=<?= $row['ID'] ?>">
                                                 <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                             </a>
                                         </div>
@@ -334,10 +336,10 @@ try {
                         <div class="staff_notification_stack">
                             <?php foreach ($end_maintenance_notify as $datas) : ?>
                                 <div class="staff_notification_data">
-                                    <span>
+                                    <span class="staff_notification_data_1">
                                         <?php echo htmlspecialchars($datas['sci_name']); ?>
                                     </span>
-                                    <span>ใกล้ถึงวันสิ้นสุดการบำรุงรักษา
+                                    <span class="staff_notification_data_2">ใกล้ถึงวันสิ้นสุดการบำรุงรักษา
                                         <?php echo htmlspecialchars(thai_date_time_3($datas['end_maintenance'])); ?>
                                     </span>
                                 </div>
@@ -356,11 +358,7 @@ try {
         </div>
     </div>
     <footer>
-        <div class="footer-content">
-            <div class="footer-copyright">
-                <span>Copyright © 2024 ศูนย์วิทยาศาสตร์</span>
-                <span>ออกแบบและพัฒนาโดย ภูวเดช และ พิสิฐพงศ์. All Rights Reserved</span>
-            </div>
+        <?php include_once 'assets/includes/footer_2.php'; ?>
     </footer>
     <script>
         function toggleExpandRow(element) {

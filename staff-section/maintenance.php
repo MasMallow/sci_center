@@ -37,7 +37,7 @@ try {
 
     if ($request_uri == '/maintenance') {
         $query = "SELECT * FROM crud 
-                  INNER JOIN info_sciname ON crud.serial_number = info_sciname.serial_number 
+                  LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number 
                   WHERE crud.availability = 0";
         if ($searchQuery) {
             $query .= " AND (crud.sci_name LIKE :search OR crud.serial_number LIKE :search)";
@@ -139,7 +139,7 @@ try {
                     เริ่มการบำรุงรักษา</a>
                 <a href="/maintenance/end_maintenance" class="<?= ($request_uri == '/maintenance/end_maintenance') ? 'active' : ''; ?> btn_maintenance_02">
                     สิ้นสุดการบำรุงรักษา</a>
-                <a href="/maintenance/report_maintenance" class="btn_reportMaintenance">รายงาน</a>
+                <a href="/maintenance/report_maintenance" class="btn_reportMaintenance"><i class="fa-solid fa-file-pdf"></i></a>
             </div>
             <form class="maintenance_search_header" method="get">
                 <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
@@ -237,9 +237,9 @@ try {
                         <tr>
                             <th class="sci_name"><span id="B">ชื่อ</span></th>
                             <th class="categories"><span id="B">ประเภท</span></th>
-                            <th class="installation_date"><span id="B">วันที่ติดตั้ง</span></th>
-                            <th class="installation_date"><span id="B">วันที่บำรุงรักษาล่าสุด</span></th>
-                            <th><span id="B">บำรุงรักษา</span></th>
+                            <th class="installation_date"><span id="B">เริ่มต้นการบำรุงรักษา</span></th>
+                            <th class="installation_date"><span id="B">สิ้นสุดการบำรุงรักษา</span></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>

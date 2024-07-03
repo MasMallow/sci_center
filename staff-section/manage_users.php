@@ -37,30 +37,28 @@ try {
 }
 
 // ฟังก์ชันในการดึงข้อมูลผู้ใช้ตามเงื่อนไข
-function fetchUsers($conn, $status, $role, $search = null)
+function fetchUsers($conn, $status, $search = null)
 {
-    
+
     if ($search) {
         $search = "%" . $search . "%";
         $stmt = $conn->prepare("SELECT * FROM users_db WHERE (userID LIKE :search OR pre LIKE :search OR firstname LIKE :search OR lastname LIKE :search) AND status = :status AND urole = :role");
         $stmt->bindParam(':search', $search, PDO::PARAM_STR);
     } else {
-        $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = :status AND urole = :role");
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE status = :status");
     }
 
     $stmt->bindParam(':status', $status, PDO::PARAM_STR);
-    $stmt->bindParam(':role', $role, PDO::PARAM_STR);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // ตั้งค่าตำแหน่งและสถานะตามการจัดการ
-$role = 'user';
 $search = isset($_GET["search"]) ? $_GET["search"] : null;
 if ($request_uri === '/management_user') {
-    $users_approved = fetchUsers($conn, 'approved', $role, $search);
+    $users_approved = fetchUsers($conn, 'approved', $search);
 } elseif ($request_uri === '/undisapprove_user') {
-    $users_banned = fetchUsers($conn, 'n_approved', $role, $search);
+    $users_banned = fetchUsers($conn, 'n_approved', $search);
 }
 
 // การจัดการคำขอ POST
@@ -149,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="toast">
                 <div class="toast_section">
                     <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
+                        <i class="fas fa-solid fa-check check"></i>
                         <div class="toast_content_message">
                             <span class="text text_2">
                                 <?php
@@ -231,7 +229,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <td><?= $user['role']; ?></td>
                                     <td><?= $user['agency']; ?></td>
                                     <td><?= thai_date_time($user['created_at']); ?></td>
-                                    <td class="<?= $user['status'] === 'approved' ? 'green_text' : 'red_text'; ?>"><?= $user['status'] === 'approved' ? 'อนุมัติ' : 'ไม่ได้รับอนุมัติ'; ?></td>
+                                    <td>
+                                        <?php if ($user['status'] === 'w_approved') : ?>
+                                            <span class="wait_approved">รอการอนุมัติบัญชี</span>
+                                        <?php elseif ($user['status'] === 'approved') : ?>
+                                            <span class="approved">บัญชีผ่านการอนุมัติ</span>
+                                        <?php elseif ($user['status'] === 'n_approved') : ?>
+                                            <span class="n_approved">บัญชีถูกระงับ</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="operation">
                                         <form method="post">
                                             <div class="btn_user_manage_section">
@@ -240,8 +246,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <button type="submit" class="approval_user" name="approval_user">
                                                         <i class="fa-regular fa-circle-check"></i>
                                                     </button>
-                                                <?php elseif ($request_uri == '/manage_users/management_user') : ?>
-                                                    <a href="<?php echo $base_url; ?>/manage_users/management_user/edit_user" class="edit_user">
+                                                <?php elseif ($request_uri == '/management_user') : ?>
+                                                    <a href="<?php echo $base_url; ?>/edit_user?id=<?= $user['userID'] ?>" class="edit_user">
                                                         <i class="fa-solid fa-pencil"></i>
                                                     </a>
                                                     <button class="ban_user" type="submit" name="ban_user">
@@ -250,7 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <button class="delete_user" type="submit" name="delete_user">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
-                                                <?php elseif ($request_uri == '/manage_users/undisapprove_user') : ?>
+                                                <?php elseif ($request_uri == '/undisapprove_user') : ?>
                                                     <button type="submit" class="approval_user" name="approval_user">
                                                         <i class="fa-regular fa-circle-check"></i>
                                                     </button>
@@ -289,6 +295,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span id="B">ไม่มีพบบัญชีผู้ใช้ในระบบ</span>
                 </div>
             <?php endif; ?>
+
+            <!-- --------------- USER DEATILS PAGE ----------------- -->
         <?php elseif ($request_uri == '/management_user/details') : ?>
             <?php
             try {
@@ -345,6 +353,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <span class="wait_approved">รอการอนุมัติบัญชี</span>
                                         <?php elseif ($userData['status'] === 'approved') : ?>
                                             <span class="approved">บัญชีผ่านการอนุมัติ</span>
+                                        <?php elseif ($userData['status'] === 'n_approved') : ?>
+                                            <span class="n_approved">บัญชีถูกระงับ</span>
                                         <?php endif; ?>
                                     </div>
                                     <div class="reservation_date">

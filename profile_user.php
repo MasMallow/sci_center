@@ -24,8 +24,6 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
     $stmt->execute();
     $log_usage = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
-$page = isset($_GET['page']) ? $_GET['page'] : 'profile';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,12 +62,12 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'profile';
         </div>
         <?php
         $request_uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
-        if ($request_uri == '/profile_user/edit_profile') : ?>
+        if ($request_uri == '/profile_user/edit_profile' || $request_uri == '/edit_user') : ?>
             <?php if (isset($_SESSION['edit_profile_success'])) : ?>
                 <div class="toast">
                     <div class="toast_section">
                         <div class="toast_content">
-                            <i class="fas fa-solid fa-xmark check"></i>
+                            <i class="fas fa-solid fa-check check"></i>
                             <div class="toast_content_message">
                                 <span class="text text_2"><?php echo $_SESSION['edit_profile_success']; ?></span>
                             </div>
@@ -80,12 +78,33 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'profile';
                 </div>
                 <?php unset($_SESSION['edit_profile_success']); ?>
             <?php endif ?>
+            <?php
+            try {
+                // ถ้ามีการส่งค่า GET id มา จะใช้ค่า GET id นี้แทน
+                if (isset($_GET['id'])) {
+                    $id = (int)$_GET['id'];
+                    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :id");
+                    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $profileUSER = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($profileUSER) {
+                        $userData = $profileUSER; // ใช้ข้อมูลจากค่า GET id
+                    }
+                }
+            } catch (PDOException $e) {
+                // จัดการข้อผิดพลาดที่เกิดจากการเชื่อมต่อฐานข้อมูล
+                echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+                exit();
+            }
+            ?>
+
             <div class="editProfile">
                 <div class="profile_user_details">
                     <div class="edit_profile_header">
                         <span id="B">แก้ไขบัญชีผู้ใช้</span>
                     </div>
-                    <form class="edit_profile_body" action="<?php echo $base_url; ?>/SystemsUser/update_profile.php" method="post">
+                    <form class="edit_profile_body" action="<?php echo $base_url; ?>/backend/updateProfile.php" method="post">
                         <div class="columnData">
                             <div class="input_edit">
                                 <span>รหัสผ่านใหม่</span>

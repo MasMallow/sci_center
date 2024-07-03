@@ -21,7 +21,7 @@ if (isset($_SESSION['user_login'])) {
             exit();
         } elseif ($userData['status'] == 'w_approved') {
             unset($_SESSION['reserve_cart']);
-            header('Location: /home.php');
+            header('Location: /Home.php');
             exit();
         }
     }
@@ -45,11 +45,11 @@ if (isset($_GET['action'])) {
         if (!in_array($itemToAdd, $_SESSION['reserve_cart'])) {
             $_SESSION['reserve_cart'][] = $itemToAdd;
         }
-        header('Location: cart_systems');
+        header('Location: Cart');
         exit();
     } elseif ($action === 'clear') {
         $_SESSION['reserve_cart'] = [];
-        header('Location: cart_systems');
+        header('Location: Cart');
         exit();
     } elseif ($action === 'remove' && isset($_GET['item'])) {
         $itemToRemove = $_GET['item'];
@@ -58,7 +58,7 @@ if (isset($_GET['action'])) {
         if ($key !== false) {
             unset($_SESSION['reserve_cart'][$key]);
         }
-        header('Location: cart_systems');
+        header('Location: Cart');
         exit();
     }
 }
@@ -98,6 +98,8 @@ if (isset($_GET['action'])) {
                         <span class="warning">!! ถ้าต้องการเลือกวัสดุ อุปกรณ์และเครื่องมือเพิ่มให้กลับหน้าหลัก !!</span>
                     </div>
                 </div>
+
+                <!-- ------------- NOTIFICATION ---------------- -->
                 <?php if (isset($_SESSION['reserve_1'])) : ?>
                     <div class="cart_alert">
                         <div class="cart_alert_content">
@@ -143,9 +145,39 @@ if (isset($_GET['action'])) {
                     unset($_SESSION['reserve_2']);
                     unset($_SESSION['reserve_3']);
                     ?>
-                <?php endif; ?>
+                <?php endif ?>
             <?php else : ?>
-                <form method="post" action="<?php echo $base_url; ?>/SystemsUser/waiting_approve_reserve.php">
+                <?php if (isset($_SESSION['reserveError'])) : ?>
+                    <div class="cart_alert">
+                        <div class="cart_alert_content">
+                            <div class="cart_alert_header">
+                                <span id="B">แจ้งเตือน</span>
+                                <div class="modalClose" id="closeAlertButton">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+                            </div>
+                            <div class="cart_alert_body">
+                                <div class="cart_alert_body_sec1">
+                                    <i class="fa-solid fa-circle-xmark error"></i>
+                                    <span id="B">เกิดข้อผิดพลาดในการขอใช้</span>
+                                </div>
+                                <div class="cart_alert_body_sec2">
+                                    <span class="cart_alert_body_sec202">
+                                        <?php echo $_SESSION['reserveError']; ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="cart_alert_footer">
+                                <a class="back_to_home" href="<?php echo $base_url; ?>/">กลับหน้าหลัก</a>
+                                <a class="go_to_notification" href="booking_log">ตรวจสอบการขอใช้</a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    unset($_SESSION['reserveError']);
+                    ?>
+                <?php endif; ?>
+                <form method="post" action="<?php echo $base_url; ?>/backend/requestUse.php">
                     <div class="main_cart_content">
                         <div class="table_section">
                             <div class="count_list">
@@ -154,7 +186,7 @@ if (isset($_GET['action'])) {
                                     <span id="B">( <?php echo count($_SESSION['reserve_cart']); ?> )</span><span> รายการ</span>
                                 </div>
                                 <div class="count_list_2">
-                                    <a href="/booking_log">ตรวจสอบการจอง</a>
+                                    <a href="/booking_log">ตรวจสอบการขอใช้</a>
                                 </div>
                             </div>
                             <table class="cart_data">
@@ -180,7 +212,11 @@ if (isset($_GET['action'])) {
                                     ?>
                                         <tbody>
                                             <tr>
-                                                <td><img src="<?php echo $imageURL; ?>" alt="<?php echo $productName; ?>"></td>
+                                                <td>
+                                                    <div class="flex-container">
+                                                        <div class="flex-item"><img src="<?php echo $imageURL; ?>" alt="<?php echo $productName; ?>"></div>
+                                                    </div>
+                                                </td>
                                                 <td><?php echo $productName; ?></td>
                                                 <td>
                                                     <span><?php echo $categories ?></span>
@@ -188,7 +224,7 @@ if (isset($_GET['action'])) {
                                                 <td>
                                                     <div class="amount_delete">
                                                         <input type="number" name="amount[<?php echo $item; ?>]" value="1" min="1">
-                                                        <a class="btn_delete" href="cart_systems?action=remove&item=<?php echo $item; ?>">
+                                                        <a class="btn_delete" href="Cart?action=remove&item=<?php echo $item; ?>">
                                                             <i class="fa-solid fa-trash-can"></i>
                                                         </a>
                                                     </div>
@@ -228,7 +264,7 @@ if (isset($_GET['action'])) {
                                         </div>
                                     </div>
                                 </div>
-                                <a href="cart_systems?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
+                                <a href="Cart?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
                             </div>
                         </div>
                 </form>
