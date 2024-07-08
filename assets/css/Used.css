@@ -1,10 +1,10 @@
-.return_page {
+.UsedPage {
   width: 100%;
-  max-width: 1350px;
-  margin: 3rem auto 1rem auto;
+  max-width: 1250px;
+  margin: 2.5rem auto;
 }
 
-.return_content_header_section {
+.UsedPage_header {
   width: 100%;
   display: flex;
   align-items: center;
@@ -12,9 +12,9 @@
   background-color: #f6f8fa;
   border: 1px solid #d0d7de;
   color: #1f2328;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.8rem;
   gap: 0.75rem;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 
   & a {
     display: flex;
@@ -34,58 +34,36 @@
     }
   }
 }
-.returned_btn {
-  display: flex;
-  margin-top: 1rem;
 
-  .returned_btn_01,
-  .returned_btn_02 {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    border: transparent;
-    transition: all 0.3s;
-  }
-
-  .returned_btn_01 {
-    border-radius: 6px 0 0 6px;
-  }
-
-  .returned_btn_02 {
-    border-radius: 0 6px 6px 0;
-  }
-  .active {
-    border: 1px solid #01bdb6;
-    background-color: #dffffd81;
-  }
-}
-
-.return_content_not_found_section {
+.UsedPage_not_found {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 10rem;
+
+  i {
+    font-size: 4rem;
+    color: #bdbdbd;
+    margin: 1rem 0;
+  }
+  span {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
 }
-.return_content_not_found_section i {
-  font-size: 4rem;
-  color: #bdbdbd;
-  margin: 1rem 0;
-}
-.return_content_not_found_section span {
-  font-size: 1.5rem;
-  margin-top: 1rem;
-}
-.return_content_section {
+
+.UsedPage_content {
   width: 100%;
   margin-top: 1rem;
 }
 
-.return_table_header {
+.UsedPage_tableHeader {
   font-size: 1rem;
   margin-bottom: 10px;
 }
 
-.table_return .return_row {
+.UsedPage_Table .UsedPage_row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -94,11 +72,11 @@
   border-radius: 5px;
 }
 
-.return_serial_number,
-.return_list,
-.return_borrowdatetime,
-.return_returndate,
-.return_return_list {
+.UsedPage_serial_number,
+.UsedPage_list,
+.UsedPage_borrowdatetime,
+.UsedPage_returndate,
+.UsedPage_returnList {
   flex: 1;
   margin-right: 10px;
 }

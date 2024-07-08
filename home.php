@@ -79,7 +79,7 @@ try {
         $query .= " AND (crud.sci_name LIKE :search OR crud.serial_number LIKE :search)";
     }
 
-    $query .= " ORDER BY crud.ID ASC LIMIT :offset, :results_per_page";
+    $query .= " ORDER BY RAND() ASC LIMIT :offset, :results_per_page";
 
     // ดึงข้อมูลจากฐานข้อมูล
     $stmt = $conn->prepare($query);
@@ -184,11 +184,11 @@ try {
                         </li>
                         <li class="group_li">
                             <span class="group_title">การขอใช้งาน</span>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/StartProcess">
+                            <a class="group_li_01" href="<?php echo $base_url; ?>/UsedStart">
                                 <i class="fa-solid fa-hourglass-start"></i>
                                 <span class="text">เริ่มต้นการใช้งาน</span>
                             </a>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/EndProcess">
+                            <a class="group_li_01" href="<?php echo $base_url; ?>/UsedEnd">
                                 <i class="fa-solid fa-hourglass-end"></i>
                                 <span class="text">สิ้นสุดการใช้งาน</span>
                             </a>
@@ -197,8 +197,8 @@ try {
                                 <span class="text">ตรวจสอบการขอใช้งาน</span>
                             </a>
                             <a class="group_li_03" href="<?php echo $base_url; ?>/TrackingReserve">
-                                <i class="fa-solid fa-calendar-xmark"></i>
-                                <span class="text">ยกเลิกการขอใช้งาน</span>
+                                <i class="fa-solid fa-list"></i>
+                                <span class="text">ติดตามการขอใช้งาน</span>
                             </a>
                         </li>
                         <li class="group_li">
@@ -261,7 +261,7 @@ try {
                                                 </div>
                                             <?php endif ?>
                                             <div class="content_details">
-                                                <a href="/details?id=<?= $data['ID'] ?>" class="details_btn">
+                                                <a href="/details/<?= $data['ID'] ?>" class="details_btn">
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </a>
                                             </div>
@@ -286,8 +286,8 @@ try {
                                                     </a>
                                                 <?php else : ?>
                                                     <div class="not_available">
-                                                        <i class="fa-solid fa-check"></i>
-                                                        <span>"ไม่พร้อมใช้งาน"</span>
+                                                        <i class="fa-solid fa-ban"></i>
+                                                        <span>ไม่พร้อมใช้งาน</span>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>

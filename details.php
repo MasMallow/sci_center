@@ -17,15 +17,16 @@ if (isset($_SESSION['user_login'])) {
 
 try {
     // ตรวจสอบว่ามีค่าพารามิเตอร์ 'id' ที่ถูกส่งมาหรือไม่
-    if (isset($_GET['id'])) {
-        $id = $_GET['id'];
+    $uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    $id = end($uriSegments); // หรือ $uriSegments[count($uriSegments)-1];
 
+    if (is_numeric($id)) {
         // เตรียมการดึงข้อมูลเพื่อทำการแก้ไข
         $stmt = $conn->prepare("
-                SELECT * FROM crud 
-                LEFT JOIN info_sciname 
-                ON crud.serial_number = info_sciname.serial_number 
-                WHERE crud.ID = :id");
+            SELECT * FROM crud 
+            LEFT JOIN info_sciname 
+            ON crud.serial_number = info_sciname.serial_number 
+            WHERE crud.ID = :id");
 
         // ผูกค่าพารามิเตอร์ ':id' กับตัวแปร $id
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
@@ -35,12 +36,19 @@ try {
 
         // ดึงข้อมูลที่ได้จากการ execute มาเก็บในตัวแปร $detailsData
         $detailsData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($detailsData) {
+            // แสดงผลข้อมูลที่ดึงมาได้
+        } else {
+            echo "ไม่มีข้อมูลที่ต้องการ";
+        }
+    } else {
+        echo "ID ไม่ถูกต้อง";
     }
 } catch (PDOException $e) {
     // แสดงข้อความข้อผิดพลาดถ้าเกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล
     echo 'Error: ' . $e->getMessage();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +80,7 @@ try {
             <div class="form_left">
                 <div class="Img">
                     <div class="imgInput">
-                        <img src="<?php echo $base_url;?>/assets/uploads/<?php echo $detailsData['img_name']; ?>" class="previewImg">
+                        <img src="<?php echo $base_url; ?>/assets/uploads/<?php echo $detailsData['img_name']; ?>" class="previewImg">
                     </div>
                 </div>
             </div>
@@ -139,7 +147,7 @@ try {
         </div>
         <!-- <------------ FOOTER FORM ----------------->
         <div class="DetailsPAGE_footer">
-            <a href="<?php echo $base_url;?>/Cart?action=add&item=<?= htmlspecialchars($detailsData['sci_name']) ?>" class="used_it">
+            <a href="<?php echo $base_url; ?>/Cart?action=add&item=<?= htmlspecialchars($detailsData['sci_name']) ?>" class="used_it">
                 <i class="fa-solid fa-address-book"></i>
                 <span>ทำการขอใช้</span>
             </a>

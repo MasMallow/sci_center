@@ -4,45 +4,28 @@ require_once '../assets/database/config.php';
 
 // ตรวจสอบการเข้าสู่ระบบของผู้ใช้
 if (!isset($_SESSION['user_login'])) {
-    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: auth/sign_in.php');
+    $_SESSION['successSign_up'] = 'กรุณาเข้าสู่ระบบ!';
+    header("Location: $base_url/sign_in");
     exit();
 }
 
-if (isset($_SESSION['user_login'])) {
-    $userID = $_SESSION['user_login'];
-    $stmt = $conn->prepare("
-        SELECT * 
-        FROM users_db
-        WHERE userID = :userID    
-        ");
-    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($userData) {
-        if ($userData['status'] == '0') {
-            unset($_SESSION['user_login']);
-            header('Location: auth/sign_in');
-            exit();
-        }
-    }
-}
-
-// ฟังก์ชันสำหรับการสร้างสตริงสุ่ม
-function generateRandomString($length = 7)
-{
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    return substr(str_shuffle($characters), 0, $length);
-}
-
-$random_string = generateRandomString();
+// ------------------ REQUEST FOR USE --------------------------------
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reserve'])) {
         $reservationdate = $_POST['reservation_date'];
         $items = $_POST['amount'];
         $enddate = $_POST['end_date'];
+
+        // ฟังก์ชันสำหรับการสร้างสตริงสุ่ม
+        function generateRandomString($length = 7)
+        {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            return substr(str_shuffle($characters), 0, $length);
+        }
+
+        $random_string = generateRandomString();
+
 
         $user_query = $conn->prepare("
                 SELECT * FROM users_db 

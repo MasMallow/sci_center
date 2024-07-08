@@ -107,7 +107,7 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
             <div class="toast">
                 <div class="toast_section">
                     <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
+                        <i class="fas fa-solid fa-check check"></i>
                         <div class="toast_content_message">
                             <span class="text text_2"><?php echo $_SESSION['approve_success']; ?></span>
                         </div>

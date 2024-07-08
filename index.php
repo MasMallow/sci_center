@@ -2,7 +2,7 @@
 require_once 'assets/database/config.php';
 
 // รับ URI ของคำขอปัจจุบัน
-$request_uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+$request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // ตรวจสอบว่า $request_uri เริ่มต้นด้วย $base_url หรือไม่
 $request = (strpos($request_uri, $base_url) === 0) ? substr($request_uri, strlen($base_url)) : $request_uri;
@@ -17,7 +17,7 @@ switch ($request) {
     case '/tools':
         require 'Home.php'; // หน้าแรก
         break;
-    case '/details':
+    case (preg_match('/\/details\/\d+/', $request_uri) ? true : false):
         require 'details.php'; // หน้ารายละเอียด
         break;
     case '/sign_in':
@@ -32,11 +32,11 @@ switch ($request) {
     case '/Cart':
         require 'Cart.php'; // ระบบตะกร้าสินค้า
         break;
-    case '/StartProcess':
-        require 'StartProcess.php'; // ระบบคืนสินค้า
+    case '/UsedStart':
+        require 'UsedStart.php'; // ระบบคืนสินค้า
         break;
-    case '/EndProcess':
-        require 'EndProcess.php'; // ระบบคืนสินค้า
+    case '/UsedEnd':
+        require 'UsedEnd.php'; // ระบบคืนสินค้า
         break;
     case '/CheckReserve':
         require 'CheckReserve.php'; // บันทึกการจอง

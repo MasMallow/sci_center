@@ -15,44 +15,23 @@ try {
         exit();
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reserve_id'])) {
-        $reserve_id = $_POST['reserve_id'];
-        $list_name = str_replace(',', '', $_POST['list_name']);
-
-        // Parse the list_name to extract item names and quantities
-        preg_match_all('/(.*?)[(](\d+)[)]/', $list_name, $matches, PREG_SET_ORDER);
-
-        // Update the usage status and reduce the quantity in the database
-        $conn->beginTransaction();
-
-        // Update the approve_to_reserve table to set Usage_item
-        $updateUsageStmt = $conn->prepare("UPDATE approve_to_reserve SET Usage_item = 1 WHERE ID = :reserve_id AND userID = :user_id");
-        $updateUsageStmt->bindParam(':reserve_id', $reserve_id, PDO::PARAM_INT);
-        $updateUsageStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $updateUsageStmt->execute();
-
-        // Reduce the quantity in the crud table for each item
-        foreach ($matches as $match) {
-            $item_name = trim($match[1]);
-            $quantity = intval($match[2]);
-
-            $updateCrudStmt = $conn->prepare("UPDATE crud SET amount = amount - :quantity WHERE sci_name = :item_name");
-            $updateCrudStmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-            $updateCrudStmt->bindParam(':item_name', $item_name, PDO::PARAM_STR);
-            $updateCrudStmt->execute();
-        }
-
-        $conn->commit();
+    if ($userData['status'] !== 'approved') {
+        unset($_SESSION['cart']);
+        header("Location: . $base_url; .");
+        exit();
     }
 
-    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND Usage_item IS NULL AND situation = 1 AND DATE(reservation_date) = CURDATE()");
+    $returned = $_GET['returned'] ?? 'used'; // ตรวจสอบค่าที่ถูกส่งมาจาก query parameter 'returned'
+
+    // ตรวจสอบและเลือกคำสั่ง SQL ตามค่า 'returned' ที่รับมาelse {
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND situation = 1 AND date_return IS NULL AND Usage_item = 1");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $num = count($dataList);
+    $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC); // เก็บข้อมูลที่ได้จากการ query ลงในตัวแปร $dataList
+    $num = count($dataList); // นับจำนวนรายการ
 } catch (Exception $e) {
-    error_log($e->getMessage());
-    header("Location: error_page.php");
+    error_log($e->getMessage()); // บันทึกข้อผิดพลาดลงในไฟล์ log
+    header("Location: error_page.php"); // เปลี่ยนเส้นทางไปยังหน้าข้อผิดพลาด
     exit();
 }
 
@@ -63,40 +42,40 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เริ่มต้นการใช้งาน</title>
+    <title>คืนรายการที่ขอใช้งาน</title>
     <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/returnUsed.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/Used.css">
 </head>
 
 <body>
     <header>
         <?php include_once 'assets/includes/navigator.php'; ?>
     </header>
-    <div class="return_page">
-        <div class="return_content_header_section">
-            <a href="<?php echo $base_url; ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
-            <span id="B">ใช้งานอุปกรณ์ที่จอง</span>
+    <div class="UsedPage">
+        <div class="UsedPage_header">
+            <a href="javascript:history.back();"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <span id="B">คืนใช้งานวัสดุ อุปกรณ์ เครื่องมือที่ทำการขอใช้งาน</span>
         </div>
         <?php if (empty($dataList)) : ?>
-            <div class="return_content_not_found_section">
-                <i class="fa-solid fa-hourglass-end"></i>
+            <div class="UsedPage_not_found">
+                <i class="fa-solid fa-database"></i>
                 <span id="B">ไม่พบข้อมูล</span>
             </div>
         <?php else : ?>
-            <div class="return_content_section">
-                <div class="return_table_header">
-                    <span>รายการที่จองทั้งหมด <span id="B">(<?php echo $num; ?>)</span> รายการ</span>
+            <div class="UsedPage_content">
+                <div class="UsedPage_tableHeader">
+                    <span>รายการที่ขอใช้งานทั้งหมด <span id="B">(<?php echo $num; ?>)</span> รายการ</span>
                 </div>
-                <div class="table_return">
+                <div class="UsedPage_Table">
                     <?php foreach ($dataList as $data) : ?>
-                        <div class="return_row">
-                            <div class="return_serial_number">
+                        <div class="UsedPage_row">
+                            <div class="UsedPage_serial_number">
                                 <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
                                 <?php echo htmlspecialchars($data['serial_number']); ?>
                             </div>
-                            <div class="return_list">
+                            <div class="UsedPage_list">
                                 <?php
                                 $items = explode(',', $data['list_name']);
                                 foreach ($items as $item) {
@@ -107,21 +86,21 @@ try {
                                 }
                                 ?>
                             </div>
-                            <div class="return_borrowdatetime">
-                                <?php echo thai_date_time($data['reservation_date']); ?>
+                            <div class="UsedPage_borrowdatetime">
+                                <?php echo thai_date_time($data['borrowdatetime'] ?? $data['reservation_date']); ?>
                             </div>
-                            <div class="return_returndate">
+                            <div class="UsedPage_returndate">
                                 <div class="notification">
-                                    <span class="icon">&#9888;</span>
-                                    <?php echo thai_date_time($data['end_date']); ?>
+                                    <span class="icon">&#9888;</span> <!-- Use appropriate icon here -->
+                                    <?php echo thai_date_time($data['returndate'] ?? $data['end_date']); ?>
                                 </div>
                             </div>
-                            <div class="return_return_list">
-                                <form method="POST" action="">
-                                    <input type="hidden" name="reserve_id" value="<?= htmlspecialchars($data['ID']); ?>">
-                                    <input type="hidden" name="list_name" value="<?= htmlspecialchars($data['list_name']); ?>">
+                            <div class="UsedPage_return_list">
+                                <form method="POST" action="<?php echo $base_url;?>/backend/returnedUsed.php">
+                                    <input type="hidden" name="return_id" value="<?= htmlspecialchars($data['ID']); ?>">
+                                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($data['userID']); ?>">
                                     <div class="list_item">
-                                        <button class="submit_returned" type="submit">เริ่มใช้งาน</button>
+                                        <button class="submit_returned" type="submit">ยืนยันการคืน</button>
                                     </div>
                                 </form>
                             </div>
@@ -139,6 +118,7 @@ try {
             </div>
         <?php endif; ?>
     </div>
+    <!-- JavaScript -->
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
     <script>
         function toggleExpandRow(element) {
