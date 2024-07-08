@@ -133,6 +133,7 @@ try {
                             <th class="list" id="B">รายการการขอใช้</th>
                             <th class="start_date" id="B">วันเวลาที่ขอใช้</th>
                             <th class="end_date" id="B">วันเวลาสิ้นสุดการขอใช้</th>
+                            <th class="return_date" id="B">วันที่คืนอุปกรณ์</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,10 +151,22 @@ try {
                                             $quantity = str_replace(')', '', $item_parts[1]);
                                             echo $product_name . ' <span id="B"> ' . $quantity . ' </span> รายการ<br>';
                                         }
+                                        if ($row["Usage_item"] == 0 || $row["Usage_item"] == NULL) {
+                                            echo '***อุปกรณ์ยังไม่ถูกใช้งาน***';
+                                        } else {
+                                            echo '***อุปกรณ์ได้ใช้งานแล้ว***';
+                                        }
                                         ?>
                                     </td>
                                     <td><?php echo thai_date_time($row["created_at"]); ?></td>
                                     <td><?php echo thai_date_time($row["reservation_date"]); ?></td>
+                                    <td><?php
+                                        if ($row["date_return"] == Null) {
+                                            echo '***อุปกรณ์ยังไม่ได้คืน***';
+                                        } else {
+                                            echo thai_date_time($row["date_return"]);
+                                        }
+                                        ?></td>
                                 </tr>
                             <?php }
                         } else { ?>

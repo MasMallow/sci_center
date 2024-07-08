@@ -267,6 +267,7 @@ if (isset($_GET['action'])) {
                                 <a href="Cart?action=clear" class="clear_cart">ยกเลิกสิ่งที่เลือกทั้งหมด</a>
                             </div>
                         </div>
+                    </div>
                 </form>
             </div>
         <?php endif; ?>
