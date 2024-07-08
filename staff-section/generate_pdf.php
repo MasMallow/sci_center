@@ -111,6 +111,7 @@ ob_start();
                 <th>ชื่อ</th>
                 <th>ชื่อรายการ</th>
                 <th>วันที่ทำการขอใช้</th>
+                <th>วันที่คืน</th>
             </tr>
         </thead>
         <tbody>
@@ -130,6 +131,14 @@ ob_start();
                             ?>
                         </td>
                         <td><?php echo thai_date_time($row["reservation_date"]); ?></td>
+                        <td><?php
+                        if ($row["date_return"] == NULL) {
+                            echo '***อุปกรณ์ยังไม่ได้คืน***';
+                        }
+                        else {
+                            echo thai_date_time($row["date_return"]); 
+                        }
+                        ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>
