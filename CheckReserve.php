@@ -9,7 +9,7 @@ if (isset($_SESSION['user_login'])) {
         SELECT * 
         FROM users_db
         WHERE userID = :userID    
-        ");
+    ");
     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
     $stmt->execute();
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -17,11 +17,11 @@ if (isset($_SESSION['user_login'])) {
     if ($userData) {
         if ($userData['status'] == 'n_approved') {
             unset($_SESSION['user_login']);
-            header('Location: auth/sign_in');
+            header('Location: /sign_in');
             exit();
         } elseif ($userData['status'] == 'w_approved') {
             unset($_SESSION['reserve_cart']);
-            header('Location: /Home.php');
+            header('Location: /');
             exit();
         }
     }
@@ -29,25 +29,50 @@ if (isset($_SESSION['user_login'])) {
     header("Location: /sign_in");
     exit();
 }
-try {
-    // เตรียมคำสั่ง SQL เพื่อดึงข้อมูลการอนุมัติการจอง
-    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date >= CURDATE() AND situation = 1 AND date_return IS NULL";
-    $stmt = $conn->query($sql);
 
-    // ตรวจสอบว่ามีข้อมูลหรือไม่
-    if ($stmt->rowCount() > 0) {
-    } else {
-        echo "ไม่มีการจอง";
-    }
+$current_month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
+$current_year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
+
+// Adjust the month and year for month navigation
+if ($current_month < 1) {
+    $current_month = 12;
+    $current_year--;
+} elseif ($current_month > 12) {
+    $current_month = 1;
+    $current_year++;
+}
+
+try {
+    $start_date = "$current_year-$current_month-01";
+    $end_date = date("Y-m-t", strtotime($start_date));
+    
+    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date BETWEEN :start_date AND :end_date AND situation = 1 AND date_return IS NULL";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':start_date', $start_date);
+    $stmt->bindParam(':end_date', $end_date);
+    $stmt->execute();
+    $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // แสดงข้อผิดพลาดหากมีการเกิดข้อผิดพลาดในระหว่างการดึงข้อมูล
     echo "เกิดข้อผิดพลาด: " . $e->getMessage();
 }
 
-// ปิดการเชื่อมต่อฐานข้อมูล
-$conn = null;
-?>
+function generate_calendar($reservations, $current_month, $current_year) {
+    $days_in_month = cal_days_in_month(CAL_GREGORIAN, $current_month, $current_year);
+    $calendar = array_fill(1, $days_in_month, []);
 
+    foreach ($reservations as $reservation) {
+        $day = date('j', strtotime($reservation['reservation_date']));
+        $calendar[$day][] = $reservation;
+    }
+
+    return $calendar;
+}
+
+$calendar = generate_calendar($reservations, $current_month, $current_year);
+
+$first_day_of_month = date('w', strtotime("$current_year-$current_month-01"));
+$days_of_week = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,6 +86,39 @@ $conn = null;
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/bookingTable.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
+    <style>
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .calendar .day, .calendar .day-name {
+            border: 1px solid #ddd;
+            padding: 10px;
+            position: relative;
+        }
+        .calendar .day-name {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .calendar .day .date {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-weight: bold;
+        }
+        .calendar .day .reservation {
+            margin-top: 20px;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -75,36 +133,45 @@ $conn = null;
             <span id="B">ตารางการขอใช้ศูนย์วิทยาศาสตร์</span>
         </div>
         <div class="bookingTable_content">
-            <div class="bookingTable_div">
-                <div class="bookingTable_div_header1">
-                    <div id="B">ห้ามขอใช้ในวันที่ที่มีการขอใช้แล้ว</div>
-                </div>
-                <div class="header1">
-                    <div class="header_item" id="B">ชื่อรายการ</div>
-                    <div class="header_item" id="B">วันเวลาที่ขอใช้งาน</div>
-                </div>
-                <?php
-                // ใช้ foreach เพื่อวนลูปข้อมูลที่ดึงมา
-                foreach ($stmt as $row) :
-                ?>
-                    <div class="row">
-                        <div class="cell">
-                            <?php
-                            // แยกรายการจาก string เป็น array
-                            $items = explode(',', $row['list_name']);
-                            foreach ($items as $item) {
-                                $item_parts = explode('(', $item); // แยกชื่ออุปกรณ์และจำนวน
-                                $product_name = trim($item_parts[0]); // ชื่ออุปกรณ์ (ตัดช่องว่างที่เป็นไปได้)
-                                $quantity = str_replace(')', '', $item_parts[1]); // จำนวน (ตัดวงเล็บออก)
-                                echo $product_name . " " . $quantity . " รายการ ";
-                            }
-                            ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo thai_date_time($row['reservation_date']); ?>
-                        </div>
-                    </div>
+            <div class="navigation">
+                <a href="?month=<?php echo $current_month - 1; ?>&year=<?php echo $current_year; ?>" class="btn btn-prev">เดือนก่อนหน้า</a>
+                <span><?php echo thai_date_time("$current_year-$current_month-01", 'F Y'); ?></span>
+                <a href="?month=<?php echo $current_month + 1; ?>&year=<?php echo $current_year; ?>" class="btn btn-next">เดือนถัดไป</a>
+            </div>
+            <div class="calendar">
+                <?php foreach ($days_of_week as $day) : ?>
+                    <div class="day-name"><?php echo $day; ?></div>
                 <?php endforeach; ?>
+                
+                <?php for ($i = 0; $i < $first_day_of_month; $i++) : ?>
+                    <div class="day"></div>
+                <?php endfor; ?>
+
+                <?php for ($i = 1; $i <= date('t', strtotime("$current_year-$current_month-01")); $i++) : ?>
+                    <div class="day">
+                        <div class="date"><?php echo $i; ?></div>
+                        <?php if (isset($calendar[$i])) : ?>
+                            <div class="reservation">
+                                <?php foreach ($calendar[$i] as $reservation) : ?>
+                                    <div class="cell">
+                                        <?php
+                                        $items = explode(',', $reservation['list_name']);
+                                        foreach ($items as $item) {
+                                            $item_parts = explode('(', $item);
+                                            $product_name = trim($item_parts[0]);
+                                            $quantity = str_replace(')', '', $item_parts[1]);
+                                            echo $product_name . " " . $quantity . " รายการ ";
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo thai_date_time($reservation['reservation_date']); ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endfor; ?>
             </div>
         </div>
     </main>

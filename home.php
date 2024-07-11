@@ -209,10 +209,10 @@ try {
                             </a>
                         </li>
                         <li class="group_li">
-                            <span class="group_title">รายการที่จอง</span>
+                            <span class="group_title">รายการที่ขอใช้</span>
                             <a class="group_li_01" href="<?php echo $base_url; ?>/Cart">
                                 <i class="fa-solid fa-cart-shopping"></i>
-                                <span class="text">รายการที่จอง</span>
+                                <span class="text">รายการที่ขอใช้</span>
                             </a>
                         </li>
                     </ul>
