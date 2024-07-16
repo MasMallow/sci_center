@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $reservationdate = $_POST['reservation_date'];
         $items = $_POST['amount'];
         $enddate = $_POST['end_date'];
-
+        $userID = $_SESSION['user_login'];
         // ฟังก์ชันสำหรับการสร้างสตริงสุ่ม
         function generateRandomString($length = 7)
         {
@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $random_string = generateRandomString();
-
 
         $user_query = $conn->prepare("
                 SELECT * FROM users_db 

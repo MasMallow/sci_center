@@ -111,19 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Result error
         if (curl_error($chOne)) {
             echo 'error:' . curl_error($chOne);
-        } else {
-            $result_ = json_decode($result, true);
-            echo "<script>
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'การยืมเสร็จสิ้น',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(function() {
-                window.location.href = 'Home.php';
-            });
-            </script>";
         }
         curl_close($chOne);
         header('Location: /project/approve_for_use.php');
@@ -195,19 +182,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Result error 
             if (curl_error($chOne)) {
                 echo 'error:' . curl_error($chOne);
-            } else {
-                $result_ = json_decode($result, true);
-                echo "<script>
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'การยืมเสร็จสิ้น',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(function() {
-                    window.location.href = 'Home.php';
-                });
-                </script>";
             }
             curl_close($chOne);
             header('Location: /project/approve_for_use.php');

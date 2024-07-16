@@ -99,18 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         $result_ = json_decode($result, true);
         if ($result_['status'] !== 200) {
             echo "Error sending message: " . $result_['message'];
-        } else {
-            echo "<script>
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'การบำรุงรักษาเสร็จสิ้น',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(function() {
-                    window.location.href = 'Home.php';
-                });
-                </script>";
         }
     }
     curl_close($chOne);

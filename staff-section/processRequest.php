@@ -109,19 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // การจัดการข้อผิดพลาด
             if (curl_error($chOne)) {
                 echo 'error:' . curl_error($chOne);
-            } else {
-                $result_ = json_decode($result, true);
-                echo "<script>
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'การยืมเสร็จสิ้น',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(function() {
-                    window.location.href = 'Home.php';
-                });
-                </script>";
             }
             curl_close($chOne);
 
