@@ -143,17 +143,6 @@ try {
 
 // สำหรับ Notification
 
-$user_id = $_SESSION['user_login'];
-$stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
-$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-$stmt->execute();
-$userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$firstname = $userData['pre'] . $userData['firstname'] . ' ' . $userData['lastname'];
-$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE name_user = :firstname ORDER BY created_at DESC LIMIT 10");
-$stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-$stmt->execute();
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -177,7 +166,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </header>
 
     <!-- ตรวจสอบสิทธิ์ของผู้ใช้งาน -->
-    <?php if (isset($userData['urole']) && ($userData['urole'] == 'user' || empty($userData['urole']))) : ?>
+    <?php if (isset($userData['urole']) && $userData['urole'] == 'user' || empty($userData['urole'])) : ?>
         <main class="content">
             <div class="content_FLEX">
                 <!-- ------------------ SIDEBAR ------------------ -->

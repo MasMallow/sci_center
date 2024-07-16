@@ -50,7 +50,7 @@ try {
     }
 
     // ดึงข้อมูลการขอใช้งานที่ยังไม่ได้ใช้งานและตรงกับวันที่ปัจจุบัน
-    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND Usage_item IS NULL AND situation = 1 AND DATE(reservation_date) = CURDATE()");
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND Usage_item = 0 AND date_return is NUll AND situation = 1 AND DATE(reservation_date) <= CURDATE()");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -143,6 +143,9 @@ try {
                                     <input type="hidden" name="reserve_id" value="<?= htmlspecialchars($data['ID']); ?>">
                                     <input type="hidden" name="list_name" value="<?= htmlspecialchars($data['list_name']); ?>">
                                     <div class="list_item">
+                                        <?php
+                                        echo $data['userID'];
+                                        ?>
                                         <button class="submitUSED" type="submit">เริ่มใช้งาน</button>
                                     </div>
                                 </form>
