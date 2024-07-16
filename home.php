@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'assets/database/config.php';
+include_once 'assets/includes/thai_date_time.php';
 
 if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];
@@ -52,7 +53,7 @@ try {
         $page = intval($_GET['page'] ?? 1);
     }
 
-    $results_per_page = 40; // เปลี่ยนค่าตามความต้องการ
+    $results_per_page = 20; // เปลี่ยนค่าตามความต้องการ
 
     // คำนวณ offset สำหรับคำสั่ง SQL LIMIT
     $offset = ($page - 1) * $results_per_page;
@@ -139,8 +140,21 @@ try {
 } catch (PDOException $e) {
     echo 'เกิดข้อผิดพลาด: ' . $e->getMessage();
 }
+
+// สำหรับ Notification
+
+$user_id = $_SESSION['user_login'];
+$stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
+$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->execute();
+$userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$firstname = $userData['pre'] . $userData['firstname'] . ' ' . $userData['lastname'];
+$stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE name_user = :firstname ORDER BY created_at DESC LIMIT 10");
+$stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+$stmt->execute();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<?php include_once 'assets/includes/header.php' ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -153,191 +167,198 @@ try {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/nofitication.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
 </head>
 
 <body>
-    <header><?php include_once('assets/includes/navigator.php'); ?></header>
-    <?php if (isset($userData['urole']) && $userData['urole'] == 'user' || empty($userData['urole'])) : ?>
+    <header>
+        <?php include_once('assets/includes/navigator.php'); ?>
+    </header>
+
+    <!-- ตรวจสอบสิทธิ์ของผู้ใช้งาน -->
+    <?php if (isset($userData['urole']) && ($userData['urole'] == 'user' || empty($userData['urole']))) : ?>
         <main class="content">
             <div class="content_FLEX">
                 <!-- ------------------ SIDEBAR ------------------ -->
                 <sidebar class="menu_navigator">
                     <ul class="sb_ul">
                         <li>
-                            <a class="link <?php echo ($request_uri == '/') ? 'active ' : ''; ?>" href="<?php echo $base_url; ?>">
+                            <a class="link <?= ($request_uri == '/') ? 'active' : ''; ?>" href="<?= $base_url; ?>">
                                 <i class="icon fa-solid fa-house"></i>
                                 <span class="text">หน้าหลัก</span>
                             </a>
                         </li>
                         <li class="group_li">
                             <span class="group_title">ประเภท</span>
-                            <a class="group_li_01 <?php echo ($request_uri == '/material') ? 'active ' : ''; ?>" href="/material">
+                            <a class="group_li_01 <?= ($request_uri == '/material') ? 'active' : ''; ?>" href="/material">
                                 <span class="text">ประเภทวัสดุ</span>
                             </a>
-                            <a class="group_li_02 <?php echo ($request_uri == '/equipment') ? 'active ' : ''; ?>" href="/equipment">
+                            <a class="group_li_02 <?= ($request_uri == '/equipment') ? 'active' : ''; ?>" href="/equipment">
                                 <span class="text">ประเภทอุปกรณ์</span>
                             </a>
-                            <a class="group_li_03 <?php echo ($request_uri == '/tools') ? 'active ' : ''; ?>" href="/tools">
+                            <a class="group_li_03 <?= ($request_uri == '/tools') ? 'active' : ''; ?>" href="/tools">
                                 <span class="text">ประเภทเครื่องมือ</span>
                             </a>
                         </li>
                         <li class="group_li">
                             <span class="group_title">การขอใช้งาน</span>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/UsedStart">
+                            <a class="group_li_01" href="<?= $base_url; ?>/UsedStart">
                                 <i class="fa-solid fa-hourglass-start"></i>
                                 <span class="text">เริ่มต้นการใช้งาน</span>
                             </a>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/UsedEnd">
+                            <a class="group_li_01" href="<?= $base_url; ?>/UsedEnd">
                                 <i class="fa-solid fa-hourglass-end"></i>
                                 <span class="text">สิ้นสุดการใช้งาน</span>
                             </a>
-                            <a class="group_li_02" href="<?php echo $base_url; ?>/CheckReserve">
+                            <a class="group_li_02" href="<?= $base_url; ?>/CheckReserve">
                                 <i class="fa-solid fa-calendar-check"></i>
                                 <span class="text">ตรวจสอบการขอใช้งาน</span>
                             </a>
-                            <a class="group_li_03" href="<?php echo $base_url; ?>/TrackingReserve">
+                            <a class="group_li_03" href="<?= $base_url; ?>/TrackingReserve">
                                 <i class="fa-solid fa-list"></i>
                                 <span class="text">ติดตามการขอใช้งาน</span>
                             </a>
                         </li>
                         <li class="group_li">
                             <span class="group_title">แจ้งเตือน</span>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/notification">
+                            <a class="group_li_01 <?= ($request_uri == '/notification') ? 'active' : ''; ?>" " href=" <?= $base_url; ?>/notification">
                                 <i class="fa-solid fa-envelope"></i>
                                 <span class="text">แจ้งเตือน</span>
                             </a>
                         </li>
                         <li class="group_li">
                             <span class="group_title">รายการที่ขอใช้</span>
-                            <a class="group_li_01" href="<?php echo $base_url; ?>/Cart">
+                            <a class="group_li_01" href="<?= $base_url; ?>/Cart">
                                 <i class="fa-solid fa-cart-shopping"></i>
                                 <span class="text">รายการที่ขอใช้</span>
                             </a>
                         </li>
                     </ul>
                 </sidebar>
-
                 <!-- ------------------ MAIN CONTENT ------------------ -->
-                <div class="content_area">
-                    <!-- ----------------- SEARCH SECTION ----------------- -->
-                    <div class="content_area_header">
-                        <form class="contentSearch" method="get">
-                            <input type="hidden" name="page" value="<?= htmlspecialchars($page); ?>">
-                            <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
-                            <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        </form>
-                        <div class="content_area_nav">
-                            <div class="date" id="date"></div>
-                            <div class="time" id="time"></div>
-                        </div>
-                    </div>
-
-                    <!-- ----------------- CONTENT ------------------ -->
-                    <div class="content_area_all">
-                        <?php if (empty($results)) : ?>
-                            <div class="grid_content_not_found">
-                                <span id="B">ไม่พบข้อมูลที่ค้นหา</span>
+                <?php if ($request_uri == '/' || $request_uri == '/material' || $request_uri == '/equipment' || $request_uri == '/tools') : ?>
+                    <div class="content_area">
+                        <!-- ----------------- SEARCH SECTION ----------------- -->
+                        <div class="content_area_header">
+                            <form class="contentSearch" method="get">
+                                <input type="hidden" name="page" value="<?= htmlspecialchars($page); ?>">
+                                <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
+                                <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </form>
+                            <div class="content_area_nav">
+                                <div class="date" id="date"></div>
+                                <div class="time" id="time"></div>
                             </div>
-                        <?php else : ?>
-                            <div class="content_area_grid">
-                                <?php foreach ($results as $data) : ?>
-                                    <div class="grid_content">
-                                        <div class="grid_content_header">
-                                            <div class="content_img">
-                                                <img src="<?php echo $base_url; ?>/assets/uploads/<?= htmlspecialchars($data['img_name']) ?>" alt="Image">
-                                            </div>
-                                        </div>
-                                        <div class="content_status_details">
-                                            <?php if ($data['availability'] == 0) : ?>
-                                                <div class="ready-to-use">
-                                                    <i class="fa-solid fa-circle-check"></i>
-                                                    <span id="B">พร้อมใช้งาน</span>
+                        </div>
+                        <!-- ----------------- CONTENT ------------------ -->
+                        <div class="content_area_all">
+                            <?php if (empty($results)) : ?>
+                                <div class="grid_content_not_found">
+                                    <span id="B">ไม่พบข้อมูลที่ค้นหา</span>
+                                </div>
+                            <?php else : ?>
+                                <div class="content_area_grid">
+                                    <?php foreach ($results as $data) : ?>
+                                        <div class="grid_content">
+                                            <div class="grid_content_header">
+                                                <div class="content_img">
+                                                    <img src="<?= htmlspecialchars($base_url); ?>/assets/uploads/<?= htmlspecialchars($data['img_name']) ?>" alt="Image">
                                                 </div>
-                                            <?php elseif ($data['availability'] != 0) : ?>
-                                                <div class="moderately">
-                                                    <i class="fa-solid fa-ban"></i>
-                                                    <span id="B">บำรุงรักษา</span>
-                                                </div>
-                                            <?php endif ?>
-                                            <div class="content_details">
-                                                <a href="/details/<?= $data['ID'] ?>" class="details_btn">
-                                                    <i class="fa-solid fa-circle-info"></i>
-                                                </a>
                                             </div>
-                                        </div>
-                                        <div class="grid_content_body">
-                                            <div class="content_name">
-                                                <?= htmlspecialchars($data['sci_name']) ?> (<?= htmlspecialchars($data['serial_number']) ?>)
-                                            </div>
-                                            <div class="content_categories">
-                                                <span id="B">ประเภท </span><?= htmlspecialchars($data['categories']) ?>
-                                            </div>
-                                            <div class="content_amount">
-                                                <span id="B">คงเหลือ </span><?= htmlspecialchars($data['amount']) ?>
-                                            </div>
-                                        </div>
-                                        <div class="grid_content_footer">
-                                            <div class="content_btn">
-                                                <?php if ($data['amount'] >= 1  && ($data['availability'] == 0)) : ?>
-                                                    <a href="Cart?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
-                                                        <i class="fa-solid fa-address-book"></i>
-                                                        <span>ทำการขอใช้</span>
-                                                    </a>
-                                                <?php else : ?>
-                                                    <div class="not_available">
-                                                        <i class="fa-solid fa-ban"></i>
-                                                        <span>ไม่พร้อมใช้งาน</span>
+                                            <div class="content_status_details">
+                                                <?php if ($data['availability'] == 0) : ?>
+                                                    <div class="ready-to-use">
+                                                        <i class="fa-solid fa-circle-check"></i>
+                                                        <span id="B">พร้อมใช้งาน</span>
                                                     </div>
-                                                <?php endif; ?>
+                                                <?php else : ?>
+                                                    <div class="moderately">
+                                                        <i class="fa-solid fa-ban"></i>
+                                                        <span id="B">บำรุงรักษา</span>
+                                                    </div>
+                                                <?php endif ?>
+                                                <div class="content_details">
+                                                    <a href="/details/<?= htmlspecialchars($data['ID']) ?>" class="details_btn">
+                                                        <i class="fa-solid fa-circle-info"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="grid_content_body">
+                                                <div class="content_name">
+                                                    <?= htmlspecialchars($data['sci_name']) ?> (<?= htmlspecialchars($data['serial_number']) ?>)
+                                                </div>
+                                                <div class="content_categories">
+                                                    <span id="B">ประเภท : </span><?= htmlspecialchars($data['categories']) ?>
+                                                </div>
+                                                <div class="content_amount">
+                                                    <span id="B">คงเหลือ : </span><?= htmlspecialchars($data['amount']) ?>
+                                                </div>
+                                            </div>
+                                            <div class="grid_content_footer">
+                                                <div class="content_btn">
+                                                    <?php if ($data['amount'] >= 1 && $data['availability'] == 0) : ?>
+                                                        <a href="Cart?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
+                                                            <i class="fa-solid fa-address-book"></i>
+                                                            <span>ขอใช้</span>
+                                                        </a>
+                                                    <?php else : ?>
+                                                        <div class="not_available">
+                                                            <i class="fa-solid fa-ban"></i>
+                                                            <span>ไม่พร้อมใช้งาน</span>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <!-- PAGINATION PAGE -->
+                        <?php if ($pagination_display) : ?>
+                            <div class="pagination">
+                                <?php if ($page > 1) : ?>
+                                    <a href="?page=1<?= $searchValue ? '&search=' . htmlspecialchars($searchValue) : ''; ?>">&laquo;</a>
+                                    <a href="?page=<?= $page - 1; ?><?= $searchValue ? '&search=' . htmlspecialchars($searchValue) : ''; ?>">&lsaquo;</a>
+                                <?php endif; ?>
+
+                                <?php
+                                $total_pages = ceil($total_records / $results_per_page);
+                                for ($i = 1; $i <= $total_pages; $i++) {
+                                    if ($i == $page) {
+                                        echo "<a class='active'>$i</a>";
+                                    } else {
+                                        echo "<a href='?page=$i" . ($searchValue ? '&search=' . htmlspecialchars($searchValue) : '') . "'>$i</a>";
+                                    }
+                                }
+                                ?>
+
+                                <?php if ($page < $total_pages) : ?>
+                                    <a href="?page=<?= $page + 1; ?><?= $searchValue ? '&search=' . htmlspecialchars($searchValue) : ''; ?>">&rsaquo;</a>
+                                    <a href="?page=<?= $total_pages; ?><?= $searchValue ? '&search=' . htmlspecialchars($searchValue) : ''; ?>">&raquo;</a>
+                                <?php endif; ?>
                             </div>
                         <?php endif; ?>
                     </div>
-                </div>
+                <?php elseif ($request_uri == '/notification') : ?>
+                    <?php include('notification.php'); ?>
+                <?php endif; ?>
             </div>
-
-            <!-- PAGINATION PAGE -->
-            <?php if ($pagination_display) : ?>
-                <div class="pagination">
-                    <?php if ($page > 1) : ?>
-                        <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
-                        <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
-                    <?php endif; ?>
-
-                    <?php
-                    $total_pages = ceil($total_records / $results_per_page);
-                    for ($i = 1; $i <= $total_pages; $i++) {
-                        if ($i == $page) {
-                            echo "<a class='active'>$i</a>";
-                        } else {
-                            echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
-                        }
-                    }
-                    ?>
-
-                    <?php if ($page < $total_pages) : ?>
-                        <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
-                        <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
         </main>
 
         <!-- ---------------- FOOTER ------------------ -->
         <footer><?php include "assets/includes/footer.php" ?></footer>
-    <?php
-    elseif (isset($userData['urole']) && $userData['urole'] == 'staff') :
-        include('staff-section/homeStaff.php');
-    endif; ?>
+
+    <?php elseif (isset($userData['urole']) && $userData['urole'] == 'staff') : ?>
+        <?php include('staff-section/homeStaff.php'); ?>
+    <?php endif; ?>
 
     <!-- JavaScript -->
-    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-    <script src="<?php echo $base_url; ?>/assets/js/details.js"></script>
-    <script src="<?php echo $base_url; ?>/assets/js/datetime.js"></script>
+    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?= $base_url; ?>/assets/js/details.js"></script>
+    <script src="<?= $base_url; ?>/assets/js/datetime.js"></script>
 </body>
+
 
 </html>

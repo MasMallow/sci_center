@@ -27,10 +27,25 @@
   cursor: pointer;
 }
 
-.register {
-  width: 100%;
-  max-width: 700px;
-  margin: 2rem auto;
+.register_layout {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 3rem;
+}
+
+.register_logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  img {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+  }
 }
 
 .register_page {
@@ -42,13 +57,14 @@
   overflow: hidden;
 
   .register_page_head {
-    padding: 0.4rem 1rem;
-    background-color: #f6f8fa;
-    border-bottom: 1px solid #d0d7de; /* สีเส้นขอบที่เข้มขึ้น */
-    font-size: 1.1rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.7rem;
+    padding: 0.35rem 1rem;
+    background-color: #f6f8fa;
+    border-bottom: 1px solid #d0d7de;
+    font-size: 1.1rem;
+    text-align: center;
 
     a {
       display: flex;
@@ -73,18 +89,12 @@
 .register_page .register_page_body {
   padding: 0.5rem 1rem;
 }
-.form .form_header {
-  font-size: 1rem;
-  padding-top: 0.75rem;
-  padding-left: 0.5rem;
-  margin-bottom: 1rem;
-}
 
-.form .input_box {
+.input_box {
   width: 100%;
   margin: 0.5rem 0;
 }
-.form .input_box span {
+.input_box label {
   font-size: 0.95rem;
   display: block;
   padding-left: 0.5rem;
@@ -93,7 +103,7 @@
 .input_box input,
 .input_box select {
   position: relative;
-  height: 43.5px;
+  height: 40px;
   width: 100%;
   outline: none;
   border: 1px solid #ddd;
@@ -101,7 +111,7 @@
   padding: 0 1rem;
   color: #000;
 }
-.form .col {
+.col {
   display: flex;
   column-gap: 0.75rem;
 }
@@ -119,46 +129,51 @@ select:focus {
 }
 
 /* Button */
+.btn_section {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-top: 0.75rem;
+}
 .btn_section_sign_up {
+  width: 48%;
   display: flex;
   align-items: center;
-  justify-content: end;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  gap: 0.5rem;
 }
 .btn_section_sign_up .submit {
+  width: 100%;
+  font-size: 0.85rem;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
   outline: none;
   border: none;
-  padding: 0.45rem 1rem;
+  padding: 0.425rem 0;
   border-radius: 5px;
   color: white;
   background-color: rgb(30, 124, 248);
   transition: all 0.3s;
   cursor: pointer;
-  font-size: 0.875rem;
 
   &:hover {
     background-color: rgb(0, 86, 199);
   }
 }
 .btn_section_sign_up .cancel {
+  width: 100%;
+  font-size: 0.85rem;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  outline: none;
-  border: none;
-  padding: 0.45rem 1rem;
+  padding: 0.425rem 0;
   border-radius: 5px;
   color: white;
   background-color: rgb(201, 53, 53);
   transition: all 0.3s;
   cursor: pointer;
-  font-size: 0.875rem;
 
   &:hover {
     background-color: rgb(167, 6, 6);

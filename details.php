@@ -36,17 +36,8 @@ try {
 
         // ดึงข้อมูลที่ได้จากการ execute มาเก็บในตัวแปร $detailsData
         $detailsData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($detailsData) {
-            // แสดงผลข้อมูลที่ดึงมาได้
-        } else {
-            echo "ไม่มีข้อมูลที่ต้องการ";
-        }
-    } else {
-        echo "ID ไม่ถูกต้อง";
     }
 } catch (PDOException $e) {
-    // แสดงข้อความข้อผิดพลาดถ้าเกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล
     echo 'Error: ' . $e->getMessage();
 }
 ?>
@@ -69,10 +60,8 @@ try {
     <main class="DetailsPAGE">
         <!-- <------------ HEADER FORM ----------------->
         <div class="DetailsPAGE_header">
-            <div class="add_MET_section_header_1">
-                <a href="javascript:history.back();"><i class="fa-solid fa-arrow-left-long"></i></a>
-                <span id="B">รายละเอียด</span>
-            </div>
+            <a href="javascript:history.back();"><i class="fa-solid fa-arrow-left-long"></i></a>
+            <span id="B">รายละเอียด</span>
         </div>
 
         <!-- <------------ DETAILS FORM ----------------->
@@ -147,11 +136,18 @@ try {
         </div>
         <!-- <------------ FOOTER FORM ----------------->
         <div class="DetailsPAGE_footer">
-            <a href="<?php echo $base_url; ?>/Cart?action=add&item=<?= htmlspecialchars($detailsData['sci_name']) ?>" class="used_it">
-                <i class="fa-solid fa-address-book"></i>
-                <span>ทำการขอใช้</span>
-            </a>
-            <a href="javascript:history.back();" class="go_back">กลับ</a>
+            <?php if ($detailsData['amount'] >= 1  && ($detailsData['availability'] == 0)) : ?>
+                <a href="<?php echo $base_url; ?>/Cart?action=add&item=<?= htmlspecialchars($detailsData['sci_name']) ?>" class="used_it">
+                    <i class="fa-solid fa-address-book"></i>
+                    <span>ขอใช้</span>
+                </a>
+            <?php else : ?>
+                <div class="notAvailable">
+                    <i class="fa-solid fa-ban"></i>
+                    <span>ไม่พร้อมใช้งาน</span>
+                </div>
+            <?php endif; ?>
+            <a href="javascript:history.back();" class="go_back"><i class="fa-solid fa-arrow-left-long"></i><span>กลับ</span></a>
         </div>
         <!-- <------------ FOOTER FORM ----------------->
     </main>

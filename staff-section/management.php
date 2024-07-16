@@ -225,12 +225,44 @@ unset($_SESSION['search_value']);
                 <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
             <form class="btn_management_all">
-                <a href="/management" class="<?= (strpos($request_uri, '/management') === 0 && strpos($request_uri, '/management/material') === false && strpos($request_uri, '/management/equipment') === false && strpos($request_uri, '/management/tools') === false && strpos($request_uri, '?') === false) ? 'active' : ''; ?> btn_management_01">ทั้งหมด</a>
-                <a href="/management/material" class="<?= (strpos($request_uri, '/management/material') === 0) ? 'active' : ''; ?> btn_management_02">วัสดุ</a>
-                <a href="/management/equipment" class="<?= (strpos($request_uri, '/management/equipment') === 0) ? 'active' : ''; ?> btn_management_02">อุปกรณ์</a>
-                <a href="/management/tools" class="<?= (strpos($request_uri, '/management/tools') === 0) ? 'active' : ''; ?> btn_management_03">เครื่องมือ</a>
+                <select class="dropdown_management" onchange="location = this.value;">
+                    <option value="/management" class="btn_management_01" <?= (strpos($request_uri, '/management') === 0 && strpos($request_uri, '/management/material') === false && strpos($request_uri, '/management/equipment') === false && strpos($request_uri, '/management/tools') === false && strpos($request_uri, '?') === false) ? 'selected' : ''; ?>>ทั้งหมด</option>
+                    <option value="/management/material" class="btn_management_02" <?= (strpos($request_uri, '/management/material') === 0) ? 'selected' : ''; ?>>วัสดุ</option>
+                    <option value="/management/equipment" class="btn_management_02" <?= (strpos($request_uri, '/management/equipment') === 0) ? 'selected' : ''; ?>>อุปกรณ์</option>
+                    <option value="/management/tools" class="btn_management_03" <?= (strpos($request_uri, '/management/tools') === 0) ? 'selected' : ''; ?>>เครื่องมือ</option>
+                </select>
             </form>
         </div>
+        <style>
+            .btn_management_all {
+                display: flex;
+                justify-content: center;
+                margin: 20px;
+            }
+
+            .dropdown_management {
+                padding: 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                background-color: #f9f9f9;
+            }
+
+            .dropdown_management:focus {
+                outline: none;
+                border-color: #007bff;
+                box-shadow: 0 0 5px rgba(0, 123, 255, .5);
+            }
+
+            .dropdown_management option {
+                padding: 10px;
+            }
+        </style>
+        <script>
+            document.querySelector('.dropdown_management').addEventListener('change', function() {
+                window.location.href = this.value;
+            });
+        </script>
         <?php if (empty($result)) : ?>
             <div class="management_found">
                 <i class="icon fa-solid fa-xmark"></i>
@@ -239,81 +271,137 @@ unset($_SESSION['search_value']);
         <?php else : ?>
             <div class="management_grid">
                 <?php foreach ($result as $results) : ?>
-                    <div class="management_grid_content">
-                        <div class="management_grid_header">
-                            <div class="content_img">
-                                <img src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
+                    <div class="management_grid_row">
+                        <div class="content_img">
+                            <img src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
+                        </div>
+                        <div class="content_info">
+                            <div class="content_name">
+                                <?php echo htmlspecialchars($results['sci_name']); ?>
+                                <?php if ($results['availability'] == 0) : ?>
+                                    <div class="ready-to-use">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <span>พร้อมใช้งาน</span>
+                                    </div>
+                                <?php else : ?>
+                                    <div class="moderately">
+                                        <i class="fa-solid fa-ban"></i>
+                                        <span>บำรุงรักษา</span>
+                                    </div>
+                                <?php endif ?>
+                            </div>
+                            <div class="subcontent_name">
+                                <div class="categories">
+                                    <span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?>
+                                </div>
+                                <div class="amount">
+                                    <span id="B">จำนวน </span><?php echo htmlspecialchars($results['amount']); ?>
+                                </div>
                             </div>
                         </div>
                         <div class="content_status_details">
-                            <?php if ($results['availability'] == 0) : ?>
-                                <div class="ready-to-use">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    <span id="B">พร้อมใช้งาน</span>
+                            <div class="content_actions">
+                                <div class="toggle_menu"><i class="fa-solid fa-ellipsis"></i></div>
+                                <div class="action_menu">
+                                    <a href="<?php echo $base_url; ?>/management/detailsData?id=<?= $results['ID'] ?>">
+                                        <i class="fa-solid fa-circle-info"></i> <span>รายละเอียด</span>
+                                    </a>
+                                    <button class="action_btn edit_btn" onclick="location.href='<?php echo $base_url; ?>/management/editData?id=<?= $results['ID'] ?>'">
+                                        <i class="fa-solid fa-pen-to-square"></i><span>แก้ไข</span>
+                                    </button>
+                                    <button class="action_btn delete_btn" onclick="location.href='<?php echo $base_url; ?>/management/deleteData?id=<?= $results['ID'] ?>'">
+                                        <i class="fa-solid fa-trash-can"></i><span>ลบ</span>
+                                    </button>
                                 </div>
-                            <?php elseif ($results['availability'] != 0) : ?>
-                                <div class="moderately">
-                                    <i class="fa-solid fa-ban"></i>
-                                    <span id="B">บำรุงรักษา</span>
-                                </div>
-                            <?php endif ?>
-                            <div class="content_details">
-                                <a href="management/detailsData?id=<?= $results['ID'] ?>" class="details_btn">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </a>
                             </div>
-                        </div>
-                        <div class="management_grid_content_body">
-                            <div class="content_name">
-                                <?php echo htmlspecialchars($results['sci_name']); ?></div>
-                            <div class="content_categories">
-                                <span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?>
-                            </div>
-                            <div class="content_amount">
-                                <span id="B">จำนวน </span><?php echo htmlspecialchars($results['amount']); ?>
-                            </div>
-                        </div>
-                        <div class="management_grid_content_footer">
-                            <a href="<?php echo $base_url; ?>/management/editData?id=<?= $results['ID'] ?>" class="edit_crud_btn">
-                                <i class="fa-solid fa-circle-info"></i>
-                                <span>แก้ไขข้อมูล</span>
-                            </a>
-                            <a href="<?php echo $base_url; ?>/management/detailsData?id=<?= $results['ID'] ?>" class="delete_btn">
-                                <i class="icon fa-solid fa-trash"></i>
-                                <span>ลบข้อมูล</span>
-                            </a>
                         </div>
                     </div>
                 <?php endforeach; ?>
-            <?php endif; ?>
             </div>
+        <?php endif; ?>
+        <style>
+            .management_grid_row {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
 
-            <!-- PAGINATION PAGE -->
-            <?php if ($pagination_display) : ?>
-                <div class="pagination">
-                    <?php if ($page > 1) : ?>
-                        <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
-                        <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
-                    <?php endif; ?>
+            .management_grid_row.in-view {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const rows = document.querySelectorAll('.management_grid_row');
 
-                    <?php
-                    $total_pages = ceil($total_records / $results_per_page);
-                    for ($i = 1; $i <= $total_pages; $i++) {
-                        if ($i == $page) {
-                            echo "<a class='active'>$i</a>";
-                        } else {
-                            echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in-view');
                         }
-                    }
-                    ?>
+                    });
+                }, {
+                    threshold: 0.1
+                });
 
-                    <?php if ($page < $total_pages) : ?>
-                        <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
-                        <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
+                rows.forEach(row => {
+                    observer.observe(row);
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // เลือกเมนูทั้งหมดที่สามารถเปิดได้
+                const toggleMenus = document.querySelectorAll('.toggle_menu');
+
+                toggleMenus.forEach(menu => {
+                    // กำหนดเหตุการณ์เมื่อคลิกที่ toggle_menu
+                    menu.addEventListener('click', function() {
+                        // หาปุ่มเมนูที่อยู่ถัดไป (action_menu)
+                        const actionMenu = this.nextElementSibling;
+                        // สลับการแสดงเมนู
+                        actionMenu.style.display = actionMenu.style.display === 'block' ? 'none' : 'block';
+                    });
+                });
+
+                // ปิดเมนูเมื่อคลิกที่อื่น
+                window.addEventListener('click', function(e) {
+                    toggleMenus.forEach(menu => {
+                        const actionMenu = menu.nextElementSibling;
+                        if (!menu.contains(e.target) && !actionMenu.contains(e.target)) {
+                            actionMenu.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        </script>
+        <!-- PAGINATION PAGE -->
+        <?php if ($pagination_display) : ?>
+            <div class="pagination">
+                <?php if ($page > 1) : ?>
+                    <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
+                    <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                <?php endif; ?>
+
+                <?php
+                $total_pages = ceil($total_records / $results_per_page);
+                for ($i = 1; $i <= $total_pages; $i++) {
+                    if ($i == $page) {
+                        echo "<a class='active'>$i</a>";
+                    } else {
+                        echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
+                    }
+                }
+                ?>
+
+                <?php if ($page < $total_pages) : ?>
+                    <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
+                    <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </body>
 
-</html>
+</html>t

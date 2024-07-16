@@ -12,11 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Remove active class after a timeout
     setTimeout(() => {
         toast.classList.remove("active");
-    }, 5100); // 5s + 100ms delay
+    }, 3000); // 5s + 100ms delay
 
     setTimeout(() => {
         progress.classList.remove("active");
-    }, 5400); // 5.3s + 100ms delay
+    }, 3300); // 5.3s + 100ms delay
 
     closeIcon.addEventListener("click", () => {
         toast.classList.remove("active");

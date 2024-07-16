@@ -1,94 +1,92 @@
 .notification_page {
-  max-width: 1200px;
   width: 100%;
-  margin: 2.5rem auto;
+  margin: 0 auto;
   min-height: 100vh;
 }
 .notification_header {
   width: 100%;
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-  background-color: #f6f8fa;
-  border: 1px solid #d0d7de;
+  max-width: 750px;
+  margin: 0 auto;
   color: #1f2328;
   padding: 0.3rem 0.8rem;
-  gap: 0.75rem;
-  font-size: 1.1rem;
-
-  & a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #8f8f8f;
-    background-color: #f6f8fa;
-    text-decoration: none;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    transition: all 0.25s;
-
-    &:hover {
-      background-color: #d0d7de;
-      color: #000000;
-    }
-  }
+  font-size: 1.15rem;
 }
 .notification_section {
   width: 100%;
   max-width: 750px;
-  margin: 1.5rem auto;
-  padding: 0.75rem;
-  border: 1px solid #d0d7de;
+  margin: 0.65rem auto;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .notification {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 0.3rem 0.8rem;
-  margin-bottom: 10px;
-  background-color: #f2f2f2;
+  overflow: hidden;
+}
 
-  .icon_notification {
-    width: 10%;
+.notification_HEADER_ICON {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f6f8fa;
+  border-bottom: 1px solid #d0d7de;
+  color: #1f2328;
+  padding: 0.7rem 1.2rem;
+
+  .notification_title {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #1f2328;
 
     .icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: #0969da;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
     }
-  }
 
-  .notification_details {
-    width: 100%;
-    line-height: 170%;
+    .titleSN {
+      padding-left: 0.75rem;
+    }
   }
 }
 
-.status {
-  float: right;
+.notification_details {
+  line-height: 200%;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.975rem;
+  color: #1f2328;
+}
+
+.notification_footer {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #d0d7de;
+  color: #1f2328;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.94rem;
 }
 
 .status_pending {
+  font-family: Sarabun-bold;
   font-size: 0.8rem;
-  padding: 0.2rem 1rem;
-  border-radius: 5px;
-  background-color: #ffc107;
-  color: #fff;
+  gap: 0.5rem;
+  border-radius: 10px;
+  padding: 0.3rem 0.7rem;
+  color: #e6a611;
+  background-color: #f8eec4;
 }
 
 .status_approved {
+  font-family: Sarabun-bold;
   font-size: 0.8rem;
-  padding: 0.2rem 1rem;
-  border-radius: 5px;
-  background-color: #28a745;
-  color: #fff;
+  gap: 0.5rem;
+  border-radius: 10px;
+  padding: 0.3rem 0.7rem;
+  color: #2d794b;
+  background-color: #b6fdd4;
 }
 
 .notification_not_found {

@@ -15,6 +15,7 @@ switch ($request) {
     case '/material':
     case '/equipment':
     case '/tools':
+    case '/notification':
         require 'Home.php'; // หน้าแรก
         break;
     case (preg_match('/\/details\/\d+/', $request_uri) ? true : false):
@@ -41,11 +42,11 @@ switch ($request) {
     case '/CheckReserve':
         require 'CheckReserve.php'; // บันทึกการจอง
         break;
+    case (preg_match('/\/reservation_details\/\d+/', $request_uri) ? true : false):
+        require 'ReservationDetails.php'; // บันทึกการจอง
+        break;
     case '/TrackingReserve':
         require 'TrackingReserve.php'; // รายการการจอง
-        break;
-    case '/notification':
-        require 'notification.php'; // การแจ้งเตือน
         break;
     case '/profile_user':
     case '/edit_user':
