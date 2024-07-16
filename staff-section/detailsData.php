@@ -251,66 +251,62 @@ try {
 
             <!-- <------------ FOOTER FORM ----------------->
             <div class="btn_footer">
-                <?php if ($request_uri == '/maintenance/detailsData') : ?>
-                    <span class="maintenance_button" id="B">บำรุงรักษา</span>
-                    <form class="for_Maintenance" action="<?= $base_url ?>/staff-section/maintenanceProcess.php" method="post">
-                        <div class="maintenance_popup">
-                            <div class="maintenance_popup_content">
-                                <div class="maintenance_section_header">
-                                    <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
-                                    <div class="modalClose" id="closeMaintenance">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </div>
-                                </div>
-                                <div class="maintenace_popup">
-                                    <div class="inputMaintenance">
-                                        <label for="start_maintenance">วันเริ่มต้นการบำรุงรักษา</label>
-                                        <input type="date" id="start_maintenance" name="start_maintenance" required>
-                                    </div>
-                                    <div class="inputMaintenance">
-                                        <label for="end_maintenance">วันสิ้นสุดการบำรุงรักษา</label>
-                                        <input type="date" id="end_maintenance" name="end_maintenance" required>
-                                    </div>
-                                    <div class="inputMaintenance">
-                                        <label for="note">หมายเหตุ</label>
-                                        <input type="text" id="note" name="note" placeholder="หมายเหตุ">
-                                    </div>
-                                    <div class="inputMaintenance">
-                                        <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
-                                        <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
-                                    </div>
-                                    <input type="hidden" name="selected_ids" value="<?php echo $detailsData['ID']; ?>">
-                                    <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
+                <span class="maintenance_button" id="B">บำรุงรักษา</span>
+                <form class="for_Maintenance" action="<?= $base_url ?>/staff-section/maintenanceProcess.php" method="post">
+                    <div class="maintenance_popup">
+                        <div class="maintenance_popup_content">
+                            <div class="maintenance_section_header">
+                                <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
+                                <div class="modalClose" id="closeMaintenance">
+                                    <i class="fa-solid fa-xmark"></i>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                    <a href="javascript:history.back();" class="del_notification">กลับ</a>
-                <?php endif; ?>
-                <?php if ($request_uri == '/management/detailsData') : ?>
-                    <input type="hidden" name="id" value="<?php echo $detailsData['ID']; ?>">
-                    <a href="<?php echo $base_url; ?>/management/editData?id=<?= $detailsData['ID'] ?>" class="submitADD">แก้ไขข้อมูล</a>
-                    <span class="del_notification" data-modal="<?= $detailsData['ID'] ?>">ลบข้อมูล</span>
-                    <div class="del_notification_alert" id="<?php echo htmlspecialchars($detailsData['ID']); ?>">
-                        <div class="del_notification_content">
-                            <div class="del_notification_popup">
-                                <div class="del_notification_sec01">
-                                    <i class="fa-solid fa-triangle-exclamation"></i>
-                                    <span id="B">แจ้งเตือนการลบข้อมูล</span>
+                            <div class="maintenace_popup">
+                                <div class="inputMaintenance">
+                                    <label for="start_maintenance">วันเริ่มต้นการบำรุงรักษา</label>
+                                    <input type="date" id="start_maintenance" name="start_maintenance" required>
                                 </div>
-                                <div class="del_notification_sec02">
-                                    <form action="<?php echo $base_url; ?>/staff-section/deleteData.php" method="post">
-                                        <input type="hidden" name="ID_deleteData" value="<?= $detailsData['ID'] ?>">
-                                        <button type="submit" class="confirm_del">ยืนยัน</button>
-                                    </form>
-                                    <div class="cancel_del" id="closeDetails">
-                                        <span id="B">ปิดหน้าต่าง</span>
-                                    </div>
+                                <div class="inputMaintenance">
+                                    <label for="end_maintenance">วันสิ้นสุดการบำรุงรักษา</label>
+                                    <input type="date" id="end_maintenance" name="end_maintenance" required>
+                                </div>
+                                <div class="inputMaintenance">
+                                    <label for="note">หมายเหตุ</label>
+                                    <input type="text" id="note" name="note" placeholder="หมายเหตุ">
+                                </div>
+                                <div class="inputMaintenance">
+                                    <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
+                                    <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
+                                </div>
+                                <input type="hidden" name="selected_ids" value="<?php echo $detailsData['ID']; ?>">
+                                <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <a href="javascript:history.back();" class="del_notification">กลับ</a>
+                <input type="hidden" name="id" value="<?php echo $detailsData['ID']; ?>">
+                <a href="<?php echo $base_url; ?>/management/editData?id=<?= $detailsData['ID'] ?>" class="submitADD">แก้ไขข้อมูล</a>
+                <span class="del_notification" data-modal="<?= $detailsData['ID'] ?>">ลบข้อมูล</span>
+                <div class="del_notification_alert" id="<?php echo htmlspecialchars($detailsData['ID']); ?>">
+                    <div class="del_notification_content">
+                        <div class="del_notification_popup">
+                            <div class="del_notification_sec01">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span id="B">แจ้งเตือนการลบข้อมูล</span>
+                            </div>
+                            <div class="del_notification_sec02">
+                                <form action="<?php echo $base_url; ?>/staff-section/deleteData.php" method="post">
+                                    <input type="hidden" name="ID_deleteData" value="<?= $detailsData['ID'] ?>">
+                                    <button type="submit" class="confirm_del">ยืนยัน</button>
+                                </form>
+                                <div class="cancel_del" id="closeDetails">
+                                    <span id="B">ปิดหน้าต่าง</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                <?php endif ?>
+                </div>
             </div>
             <!-- <------------ FOOTER FORM ----------------->
         </div>

@@ -42,7 +42,8 @@ switch ($request) {
     case '/CheckReserve':
         require 'CheckReserve.php'; // บันทึกการจอง
         break;
-    case (preg_match('/\/reservation_details\/\d+/', $request_uri) ? true : false):
+    case preg_match('/\/reservation_details\/\d+/', $request_uri):
+    case preg_match('/\/approve_request\/reservation_details\/\d+/', $request_uri):
         require 'ReservationDetails.php'; // บันทึกการจอง
         break;
     case '/TrackingReserve':
@@ -56,6 +57,7 @@ switch ($request) {
     case '/approve_request':
     case '/approve_request/viewlog':
     case '/approve_request/viewlog/details':
+    case '/approve_request/calendar':
         require 'staff-section/approve_request.php'; // อนุมัติคำขอ
         break;
     case '/manage_users':

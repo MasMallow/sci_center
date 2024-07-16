@@ -72,6 +72,9 @@
       background-color: #0969da;
     }
   }
+  .warning {
+    color: red;
+  }
   .group_li_02 {
     display: flex;
     align-items: center;
@@ -90,6 +93,9 @@
       color: #ffffff;
       background-color: #0969da;
     }
+  }
+  .warning {
+    color: red;
   }
   .group_li_03 {
     display: flex;

@@ -4,6 +4,9 @@
   box-sizing: border-box;
   font-family: Sarabun;
 }
+#B {
+  font-family: Sarabun-bold;
+}
 .Dashboard_Management {
   width: 100%;
   max-width: 1350px;
@@ -54,7 +57,7 @@
 .management_section_btn {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
   margin: 1rem auto;
 
   .management_search {
@@ -63,13 +66,11 @@
   }
 }
 .management_search_header {
-  width: 50%;
   display: flex;
   align-items: center;
 
   .search_input {
-    width: 100%;
-    max-width: 60%;
+    width: 500px;
     height: 40px;
     padding: 1rem 1rem;
     border: none;
@@ -105,51 +106,28 @@
     }
   }
 }
+
 .btn_management_all {
   display: flex;
-  align-items: center;
-  justify-content: end;
-  width: 40%;
+  justify-content: center;
+}
 
-  & .btn_management_01 {
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    border-radius: 6px 0 0 6px;
-    transition: all 0.3s;
-    border: transparent;
-    color: #000;
-    background-color: #f2f2f2;
-  }
+.dropdown_management {
+  padding: 0.4rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
 
-  & .btn_management_02 {
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    border: transparent;
-    transition: all 0.3s;
-    color: #000;
-    background-color: #f2f2f2;
-  }
+.dropdown_management:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
 
-  & .btn_management_03 {
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0 6px 6px 0;
-    border: transparent;
-    transition: all 0.3s;
-    color: #000;
-    background-color: #f2f2f2;
-  }
-
-  & .active {
-    border: 1px solid #01bdb6;
-    background-color: #dffffd81;
-  }
+.dropdown_management option {
+  padding: 10px;
 }
 .choose_categories_btn {
   display: flex;
@@ -1016,7 +994,7 @@
   gap: 1rem;
   font-size: 0.875rem;
 }
-.content_status_details{
+.content_status_details {
   width: 10%;
   display: flex;
   align-items: center;

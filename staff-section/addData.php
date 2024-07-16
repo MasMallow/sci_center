@@ -47,35 +47,35 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
     </header>
     <?php if ($request_uri == '/management/addData') : ?>
         <main class="add_MET_PAGE">
-            <?php if (isset($_SESSION['updateData_success'])) : ?>
+            <?php if (isset($_SESSION['Uploadsuccess'])) : ?>
                 <div class="toast">
                     <div class="toast_section">
                         <div class="toast_content">
                             <i class="fas fa-solid fa-check check"></i>
                             <div class="toast_content_message">
-                                <span class="text text_2"><?php echo $_SESSION['updateData_success']; ?></span>
+                                <span class="text text_2"><?php echo $_SESSION['Uploadsuccess']; ?></span>
                             </div>
                             <i class="fa-solid fa-xmark close"></i>
                             <div class="progress"></div>
                         </div>
                     </div>
                 </div>
-                <?php unset($_SESSION['updateData_success']); ?>
+                <?php unset($_SESSION['Uploadsuccess']); ?>
             <?php endif ?>
-            <?php if (isset($_SESSION['updateData_error'])) : ?>
+            <?php if (isset($_SESSION['errorUpload'])) : ?>
                 <div class="toast error">
                     <div class="toast_section">
                         <div class="toast_content">
                             <i class="fas fa-solid fa-xmark check error"></i>
                             <div class="toast_content_message">
-                                <span class="text text_2"><?php echo $_SESSION['updateData_error']; ?></span>
+                                <span class="text text_2"><?php echo $_SESSION['errorUpload']; ?></span>
                             </div>
                             <i class="fa-solid fa-xmark close"></i>
                             <div class="progress error"></div>
                         </div>
                     </div>
                 </div>
-                <?php unset($_SESSION['updateData_error']); ?>
+                <?php unset($_SESSION['errorUpload']); ?>
             <?php endif ?>
             <div class="add_MET_section_header">
                 <div class="add_MET_section_header_1">
@@ -85,7 +85,7 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
                     <span id="B">เพิ่มรายการศูนย์วิทยาศาสตร์</span>
                 </div>
                 <div class="add_MET_section_header_11">
-                    <a href="<?php echo $base_url; ?>/management/viewlog">ดูระบบ</a>
+                    <a href="<?php echo $base_url; ?>/management/viewlog"><span id="B">ดูระบบ</span></a>
                 </div>
             </div>
             <form action="<?php echo $base_url; ?>/staff-section/upload.php" method="POST" enctype="multipart/form-data">

@@ -233,31 +233,6 @@ unset($_SESSION['search_value']);
                 </select>
             </form>
         </div>
-        <style>
-            .btn_management_all {
-                display: flex;
-                justify-content: center;
-                margin: 20px;
-            }
-
-            .dropdown_management {
-                padding: 10px;
-                font-size: 16px;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                background-color: #f9f9f9;
-            }
-
-            .dropdown_management:focus {
-                outline: none;
-                border-color: #007bff;
-                box-shadow: 0 0 5px rgba(0, 123, 255, .5);
-            }
-
-            .dropdown_management option {
-                padding: 10px;
-            }
-        </style>
         <script>
             document.querySelector('.dropdown_management').addEventListener('change', function() {
                 window.location.href = this.value;
@@ -309,7 +284,7 @@ unset($_SESSION['search_value']);
                                     <button class="action_btn edit_btn" onclick="location.href='<?php echo $base_url; ?>/management/editData?id=<?= $results['ID'] ?>'">
                                         <i class="fa-solid fa-pen-to-square"></i><span>แก้ไข</span>
                                     </button>
-                                    <button class="action_btn delete_btn" onclick="location.href='<?php echo $base_url; ?>/management/deleteData?id=<?= $results['ID'] ?>'">
+                                    <button class="action_btn delete_btn" onclick="location.href='<?php echo $base_url; ?>/management/detailsData?id=<?= $results['ID'] ?>'">
                                         <i class="fa-solid fa-trash-can"></i><span>ลบ</span>
                                     </button>
                                 </div>

@@ -7,7 +7,7 @@
   gap: 1rem;
 }
 .profile_user_header {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   padding: 0.3rem 0.8rem;
   border-radius: 5px;
   background-color: #f6f8fa;
@@ -44,17 +44,11 @@
   form a {
     display: flex;
     align-items: center;
-    font-size: 0.95rem;
-    color: #1f2328;
-    background-color: #f6f8fa;
+    font-size: 0.925rem;
+    color: #007bff;
+    font-family: Sarabun-bold;
     text-decoration: none;
     padding: 0.25rem 0.5rem;
-    border-radius: 5px;
-    transition: all 0.25s;
-
-    &:hover {
-      background-color: #d0d7de;
-    }
   }
 }
 
@@ -129,7 +123,6 @@
   width: 100%;
   height: 100%;
   border-radius: 5px;
-  overflow: hidden;
   border: 1px solid #d0d7de;
 }
 

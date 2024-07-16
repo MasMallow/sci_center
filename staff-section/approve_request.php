@@ -73,10 +73,64 @@ $totalUsedData = $totalUsedStmt->fetchColumn();
 $totalUsedPages = ceil($totalUsedData / $usedLimit);
 
 $usedCount = count($dataUsed); // นับจำนวนรายการ
+
+
+// ตรวจสอบค่าของ month และ year จาก GET parameters
+$current_month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
+$current_year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
+
+if ($current_month < 1) {
+    $current_month = 12;
+    $current_year--;
+} elseif ($current_month > 12) {
+    $current_month = 1;
+    $current_year++;
+}
+
+$today = date('Y-m-d');
+
+try {
+    // กำหนดช่วงวันที่ของเดือนที่เลือก
+    $start_date = "$current_year-$current_month-01";
+    $end_date = date("Y-m-t", strtotime($start_date));
+
+    // ดึงข้อมูลการจองที่อยู่ในช่วงวันที่ที่กำหนด
+    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date BETWEEN :start_date AND :end_date";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':start_date', $start_date);
+    $stmt->bindParam(':end_date', $end_date);
+    $stmt->execute();
+    $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "เกิดข้อผิดพลาด: " . $e->getMessage();
+}
+
+// ฟังก์ชันสำหรับสร้างปฏิทินจากข้อมูลการจอง
+function generate_calendar($reservations, $current_month, $current_year)
+{
+    $days_in_month = cal_days_in_month(CAL_GREGORIAN, $current_month, $current_year);
+    $calendar = array_fill(1, $days_in_month, []);
+
+    foreach ($reservations as $reservation) {
+        $day = date('j', strtotime($reservation['reservation_date']));
+        $calendar[$day][] = $reservation;
+    }
+
+    return $calendar;
+}
+
+// สร้างปฏิทินจากข้อมูลการจอง
+$calendar = generate_calendar($reservations, $current_month, $current_year);
+
+// กำหนดวันที่เริ่มต้นของเดือน
+$first_day_of_month = date('w', strtotime("$current_year-$current_month-01"));
+$days_of_week = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,7 +140,9 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/approval.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/bookingTable.css">
 </head>
+
 <body>
 
     <?php include('assets/includes/navigator.php') ?>
@@ -99,108 +155,181 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
         </div>
         <div class="approve_btn">
             <a href="/approve_request" class="<?= ($request_uri == '/approve_request') ? 'active' : ''; ?> btn_approve_01">อนุมัติการขอใช้</a>
-            <a href="/approve_request/viewlog" class="<?= ($request_uri == '/approve_request/viewlog' || $request_uri == '/approve_request/viewlog/details') ? 'active' : ''; ?> btn_approve_02">ดูการขอใช้</a>
+            <a href="/approve_request/calendar" class="<?= ($request_uri == '/approve_request/calendar') ? 'active' : ''; ?> btn_approve_02">ปฎิทินการขอใช้</a>
+            <a href="/approve_request/viewlog" class="<?= ($request_uri == '/approve_request/viewlog' || $request_uri == '/approve_request/viewlog/details') ? 'active' : ''; ?> btn_approve_03">ดูการขอใช้</a>
         </div>
 
-    <?php if ($request_uri == '/approve_request') : ?>
-        <?php if (isset($_SESSION['approve_success'])) : ?>
-            <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-check check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?php echo $_SESSION['approve_success']; ?></span>
+        <?php if ($request_uri == '/approve_request') : ?>
+            <?php if (isset($_SESSION['approve_success'])) : ?>
+                <div class="toast">
+                    <div class="toast_section">
+                        <div class="toast_content">
+                            <i class="fas fa-solid fa-check check"></i>
+                            <div class="toast_content_message">
+                                <span class="text text_2"><?php echo $_SESSION['approve_success']; ?></span>
+                            </div>
+                            <i class="fa-solid fa-xmark close"></i>
+                            <div class="progress"></div>
                         </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
                     </div>
+                </div>
+                <?php unset($_SESSION['approve_success']); ?>
+            <?php endif ?>
+            <div class="approve_table_section">
+                <?php if (empty($data)) : ?>
+                    <div class="approve_not_found_section">
+                        <i class="fa-solid fa-xmark"></i>
+                        <span id="B">ไม่พบข้อมูลการขอใช้</span>
+                    </div>
+                <?php else : ?>
+                    <table class="approve_table_data">
+                        <div class="approve_table_header">
+                            <span>รายการที่ขอใช้ทั้งหมด <span id="B"><?php echo $totalData; ?></span> รายการ</span>
+                        </div>
+                        <thead>
+                            <tr>
+                                <th class="s_number"><span id="B">หมายเลขรายการ</span></th>
+                                <th class="name_use"><span id="B">ชื่อผู้ขอใช้งาน</span></th>
+                                <th class="item_name"><span id="B">รายการที่ขอใช้งาน</span></th>
+                                <th class="return"><span id="B">วันเวลาที่ขอใช้งาน</span></th>
+                                <th class="approval"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $previousSn = null;
+                            foreach ($data as $row) :
+                                if ($previousSn != $row['serial_number']) :
+                            ?>
+                                    <tr>
+                                        <td class="sn">
+                                            <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
+                                            <?php echo $row['serial_number']; ?>
+                                        </td>
+                                        <td><?php echo $row['name_user']; ?></td>
+                                        <td>
+                                            <?php
+                                            // แยกข้อมูล Item Borrowed
+                                            $items = explode(',', $row['list_name']);
+                                            // แสดงข้อมูลรายการที่ยืม
+                                            foreach ($items as $item) {
+                                                list($product_name, $quantity) = explode('(', $item);
+                                                $product_name = trim($product_name);
+                                                $quantity = str_replace(')', '', trim($quantity));
+                                                echo $product_name . ' <span id="B"> ( ' . $quantity . ' รายการ )</span><br>';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td><?php echo thai_date_time($row['reservation_date']); ?></td>
+                                        <td>
+                                            <form class="approve_form" method="POST" action="<?php echo $base_url; ?>/staff-section/processRequest.php">
+                                                <input type="hidden" name="id" value="<?php echo $row['ID']; ?>">
+                                                <input type="hidden" name="userID" value="<?php echo $row['userID']; ?>">
+                                                <button class="confirm_approve" type="submit" name="confirm">
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr style="display: none;">
+                                        <td colspan="7">
+                                            <div class="expandable_row">
+                                                <div>
+                                                    <span id="B">วันเวลาที่ทำรายการ</span>
+                                                    <?php echo thai_date_time_2($row['created_at']); ?>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            <?php
+                                    $previousSn = $row['serial_number'];
+                                endif;
+                            endforeach;
+                            ?>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <?php if ($page > 1) : ?>
+                            <a href="?page=<?php echo $page - 1; ?>" class="prev"><i class="fa-solid fa-arrow-left"></i> หน้าก่อน</a>
+                        <?php endif; ?>
+                        <?php if ($page < $totalPages) : ?>
+                            <a href="?page=<?php echo $page + 1; ?>" class="next">หน้าถัดไป <i class="fa-solid fa-arrow-right"></i></a>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+        <?php elseif ($request_uri == '/approve_request/calendar') : ?>
+            <div class="bookingTable_content">
+                <div class="navigation">
+                    <?php
+                    // คำนวณเดือนก่อนหน้า
+                    $prev_month = $current_month - 1;
+                    $prev_year = $current_year;
+                    if ($prev_month < 1) {
+                        $prev_month = 12;
+                        $prev_year--;
+                    }
+
+                    // คำนวณเดือนถัดไป
+                    $next_month = $current_month + 1;
+                    $next_year = $current_year;
+                    if ($next_month > 12) {
+                        $next_month = 1;
+                        $next_year++;
+                    }
+                    ?>
+                    <a href="?month=<?php echo $prev_month; ?>&year=<?php echo $prev_year; ?>" class="btn-prev"><i class="fa-solid fa-angle-left"></i></a>
+                    <div class="navigationCENTER">
+                        <span><?php echo thai_date_time_5("$current_year-$current_month"); ?></span>
+                        <button id="reset-to-current"><i class="fa-regular fa-calendar-days"></i></button>
+                    </div>
+                    <a href="?month=<?php echo $next_month; ?>&year=<?php echo $next_year; ?>" class="btn-next"><i class="fa-solid fa-angle-right"></i></a>
+                </div>
+
+                <script>
+                    document.getElementById('reset-to-current').addEventListener('click', function() {
+                        var currentDate = new Date();
+                        var currentMonth = currentDate.getMonth() + 1; // เดือนใน JavaScript เริ่มต้นที่ 0
+                        var currentYear = currentDate.getFullYear();
+                        window.location.href = '?month=' + currentMonth + '&year=' + currentYear;
+                    });
+                </script>
+                <div class="calendar">
+                    <?php foreach ($days_of_week as $day) : ?>
+                        <div class="day-name"><?php echo $day; ?></div>
+                    <?php endforeach; ?>
+
+                    <?php for ($i = 0; $i < $first_day_of_month; $i++) : ?>
+                        <div class="day"></div>
+                    <?php endfor; ?>
+
+                    <?php
+                    $days_in_month = date('t', strtotime("$current_year-$current_month-01"));
+                    for ($i = 1; $i <= $days_in_month; $i++) :
+                        // Set class for the current day
+                        $day_date = date('Y-m-d', strtotime("$current_year-$current_month-$i"));
+                        $day_class = ($day_date == $today) ? 'day today' : 'day';
+                    ?>
+                        <div class="<?php echo $day_class; ?>">
+                            <div class="date"><?php echo $i; ?></div>
+                            <?php if (isset($calendar[$i])) : ?>
+                                <div class="reservation">
+                                    <div class="notification">
+                                        <?php foreach ($calendar[$i] as $reservation) : ?>
+                                            <?php if (!empty($reservation)) : ?>
+                                                <a href="<?php echo $base_url; ?>/approve_request/reservation_details/<?php echo $day_date; ?>">
+                                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                                </a>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endfor; ?>
                 </div>
             </div>
-            <?php unset($_SESSION['approve_success']); ?>
-        <?php endif ?>
-        <div class="approve_table_section">
-            <?php if (empty($data)) : ?>
-                <div class="approve_not_found_section">
-                    <i class="fa-solid fa-xmark"></i>
-                    <span id="B">ไม่พบข้อมูลการขอใช้</span>
-                </div>
-            <?php else : ?>
-                <table class="approve_table_data">
-                    <div class="approve_table_header">
-                        <span>รายการที่ขอใช้ทั้งหมด <span id="B"><?php echo $totalData; ?></span> รายการ</span>
-                    </div>
-                    <thead>
-                        <tr>
-                            <th class="s_number"><span id="B">หมายเลขรายการ</span></th>
-                            <th class="name_use"><span id="B">ชื่อผู้ขอใช้งาน</span></th>
-                            <th class="item_name"><span id="B">รายการที่ขอใช้งาน</span></th>
-                            <th class="return"><span id="B">วันเวลาที่ขอใช้งาน</span></th>
-                            <th class="approval"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $previousSn = null;
-                        foreach ($data as $row) :
-                            if ($previousSn != $row['serial_number']) :
-                        ?>
-                                <tr>
-                                    <td class="sn">
-                                        <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
-                                        <?php echo $row['serial_number']; ?>
-                                    </td>
-                                    <td><?php echo $row['name_user']; ?></td>
-                                    <td>
-                                        <?php
-                                        // แยกข้อมูล Item Borrowed
-                                        $items = explode(',', $row['list_name']);
-                                        // แสดงข้อมูลรายการที่ยืม
-                                        foreach ($items as $item) {
-                                            list($product_name, $quantity) = explode('(', $item);
-                                            $product_name = trim($product_name);
-                                            $quantity = str_replace(')', '', trim($quantity));
-                                            echo $product_name . ' <span id="B"> ( ' . $quantity . ' รายการ )</span><br>';
-                                        }
-                                        ?>
-                                    </td>
-                                    <td><?php echo thai_date_time($row['reservation_date']); ?></td>
-                                    <td>
-                                        <form class="approve_form" method="POST" action="<?php echo $base_url; ?>/staff-section/processRequest.php">
-                                            <input type="hidden" name="id" value="<?php echo $row['ID']; ?>">
-                                            <input type="hidden" name="userID" value="<?php echo $row['userID']; ?>">
-                                            <button class="confirm_approve" type="submit" name="confirm">
-                                                <i class="fa-solid fa-circle-check"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr style="display: none;">
-                                    <td colspan="7">
-                                        <div class="expandable_row">
-                                            <div>
-                                                <span id="B">วันเวลาที่ทำรายการ</span>
-                                                <?php echo thai_date_time_2($row['created_at']); ?>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                        <?php
-                                $previousSn = $row['serial_number'];
-                            endif;
-                        endforeach;
-                        ?>
-                    </tbody>
-                </table>
-                <div class="pagination">
-                    <?php if ($page > 1) : ?>
-                        <a href="?page=<?php echo $page - 1; ?>" class="prev"><i class="fa-solid fa-arrow-left"></i> หน้าก่อน</a>
-                    <?php endif; ?>
-                    <?php if ($page < $totalPages) : ?>
-                        <a href="?page=<?php echo $page + 1; ?>" class="next">หน้าถัดไป <i class="fa-solid fa-arrow-right"></i></a>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
-        </div>
 
         <?php elseif ($request_uri == '/approve_request/viewlog') : ?>
             <?php if (!empty($dataUsed)) : ?>
@@ -309,23 +438,24 @@ $usedCount = count($dataUsed); // นับจำนวนรายการ
                 </div>
             <?php endif; ?>
 
-    <?php endif; ?>
-</div>
+        <?php endif; ?>
+    </div>
 
-<script>
-    function toggleExpandRow(element) {
-        var row = element.closest('tr').nextElementSibling;
-        if (row.style.display === 'none' || row.style.display === '') {
-            row.style.display = 'table-row';
-            element.classList.remove('fa-circle-arrow-right');
-            element.classList.add('fa-circle-arrow-down');
-        } else {
-            row.style.display = 'none';
-            element.classList.remove('fa-circle-arrow-down');
-            element.classList.add('fa-circle-arrow-right');
+    <script>
+        function toggleExpandRow(element) {
+            var row = element.closest('tr').nextElementSibling;
+            if (row.style.display === 'none' || row.style.display === '') {
+                row.style.display = 'table-row';
+                element.classList.remove('fa-circle-arrow-right');
+                element.classList.add('fa-circle-arrow-down');
+            } else {
+                row.style.display = 'none';
+                element.classList.remove('fa-circle-arrow-down');
+                element.classList.add('fa-circle-arrow-right');
+            }
         }
-    }
-</script>
-<script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    </script>
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
 </body>
+
 </html>

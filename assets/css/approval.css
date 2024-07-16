@@ -14,7 +14,7 @@
   color: #1f2328;
   padding: 0.3rem 0.8rem;
   gap: 0.75rem;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 
   & a {
     display: flex;
@@ -42,7 +42,8 @@
   margin-bottom: 1rem;
 
   .btn_approve_01,
-  .btn_approve_02 {
+  .btn_approve_02,
+  .btn_approve_03{
     color: #000;
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
@@ -56,6 +57,10 @@
   }
 
   .btn_approve_02 {
+    border-radius: 0 0 0 0;
+  }
+
+  .btn_approve_03 {
     border-radius: 0 6px 6px 0;
   }
 
