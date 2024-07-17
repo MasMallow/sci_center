@@ -103,7 +103,7 @@ try {
                                         </div>
                                         <div class="checkbox">
                                             <input type="hidden" name="reserveID" value="<?php echo htmlspecialchars($booking['ID']); ?>">
-                                            <button type="submit">ยกเลิกการจอง</button>
+                                            <button type="submit">ยกเลิกการขอใช้</button>
                                         </div>
                                     </div>
                                 </div>

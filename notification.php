@@ -46,7 +46,28 @@
             <div class="notification_not_found">
                 <i class="icon fa-solid fa-address-book"></i>
                 <span id="B">ไม่มีแจ้งเตือนการขอใช้งาน</span>
+
+                <?php
+                if (isset($_SESSION['user_login'])) :
+                    $user_id = $_SESSION['user_login'];
+                    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
+                    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if (!$userData) :
+                        header("Location: /sign_in");
+                        exit();
+                    endif;
+                else :
+                ?>
+                    <a href="<?php echo $base_url; ?>/sign_in" class="not_login">
+                        <i class="ilogion fa-solid fa-right-to-bracket"></i>
+                        <span class="text">เข้าสู่ระบบ</span>
+                    </a>
+                <?php endif; ?>
             </div>
+
         <?php endif; ?>
     </div>
 </main>

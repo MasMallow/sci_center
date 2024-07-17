@@ -97,7 +97,7 @@
   align-items: center;
   margin-top: 10rem;
 
-  i {
+  .icon {
     font-size: 4rem;
     color: #d0d7de;
     margin: 1rem 0;
@@ -105,5 +105,20 @@
   span {
     font-size: 1.5rem;
     margin-top: 1rem;
+  }
+  .not_login {
+    width: 40%;
+    text-align: center;
+    margin-top: 1rem;
+    background-color: #0969da;
+    border: none;
+    outline: none;
+    padding: 0.4rem 1rem;
+    border-radius: 5px;
+    color: #ffffff;
+
+    .text{
+      font-size: .9rem;
+    }
   }
 }

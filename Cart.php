@@ -17,11 +17,11 @@ if (isset($_SESSION['user_login'])) {
     if ($userData) {
         if ($userData['status'] == 'n_approved') {
             unset($_SESSION['user_login']);
-            header('Location: auth/sign_in');
+            header('Location: /sign_in');
             exit();
         } elseif ($userData['status'] == 'w_approved') {
             unset($_SESSION['reserve_cart']);
-            header('Location: /Home.php');
+            header('Location: /');
             exit();
         }
     }
@@ -129,6 +129,14 @@ if (isset($_GET['action'])) {
                                             <tr>
                                                 <td>วันเวลาที่ขอจอง</td>
                                                 <td><?php echo thai_date_time($_SESSION['reserve_3']); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>QR CODE <br> สำหรับติดตามการขอใช้</td>
+                                                <td>
+                                                    <div class="content_img">
+                                                        <img src="<?= htmlspecialchars($base_url); ?>/assets/logo/QR.png" alt="Image">
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

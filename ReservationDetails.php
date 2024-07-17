@@ -1,10 +1,10 @@
 <?php
-// Start session and include necessary files
+// เริ่มเซสชันและรวมไฟล์ที่จำเป็น
 session_start();
 require_once 'assets/database/config.php';
 include_once 'assets/includes/thai_date_time.php';
 
-// Check if user is logged in
+// ตรวจสอบว่าผู้ใช้ล็อกอินอยู่หรือไม่
 if (isset($_SESSION['user_login'])) {
     $userID = $_SESSION['user_login'];
     $stmt = $conn->prepare("
@@ -33,28 +33,38 @@ if (isset($_SESSION['user_login'])) {
 }
 
 try {
-    // Extract date from URL
+    // ดึงวันที่จาก URL
     $request_uri = $_SERVER['REQUEST_URI'];
     $uri_segments = explode('/', $request_uri);
-    $reservation_date = end($uri_segments); // Get the last segment of the URI
+    $reservation_date = end($uri_segments); // ดึงส่วนสุดท้ายของ URI
 
-    // Validate date format
-    if (DateTime::createFromFormat('Y-m-d', $reservation_date) || DateTime::createFromFormat('Y-n-j', $reservation_date)) {
-        // Fetch reservation data for the specified date
+    // ตรวจสอบรูปแบบวันที่
+    $date = DateTime::createFromFormat('Y-m-d', $reservation_date);
+    if (!$date) {
+        $date = DateTime::createFromFormat('Y-n-j', $reservation_date);
+    }
+
+    if ($date) {
+        $reservation_date = $date->format('Y-m-d'); // ทำให้แน่ใจว่ารูปแบบเป็นมาตรฐาน
+
+        // ดึงข้อมูลการจองสำหรับวันที่ที่ระบุ
         $sql = "SELECT * FROM approve_to_reserve WHERE DATE(reservation_date) = :reservation_date AND situation = 1 AND date_return IS NULL";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':reservation_date', $reservation_date);
         $stmt->execute();
         $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
-        throw new Exception("Invalid date format.");
+        throw new Exception("รูปแบบวันที่ไม่ถูกต้อง.");
     }
 } catch (PDOException $e) {
-    echo "เกิดข้อผิดพลาด: " . $e->getMessage();
+    error_log("ข้อผิดพลาด PDO: " . $e->getMessage());
+    echo "เกิดข้อผิดพลาด: กรุณาลองใหม่อีกครั้ง";
 } catch (Exception $e) {
-    echo "เกิดข้อผิดพลาด: " . $e->getMessage();
+    error_log("ข้อผิดพลาดทั่วไป: " . $e->getMessage());
+    echo "เกิดข้อผิดพลาด: กรุณาลองใหม่อีกครั้ง";
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

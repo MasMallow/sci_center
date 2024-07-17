@@ -143,9 +143,6 @@ try {
                                     <input type="hidden" name="reserve_id" value="<?= htmlspecialchars($data['ID']); ?>">
                                     <input type="hidden" name="list_name" value="<?= htmlspecialchars($data['list_name']); ?>">
                                     <div class="list_item">
-                                        <?php
-                                        echo $data['userID'];
-                                        ?>
                                         <button class="submitUSED" type="submit">เริ่มใช้งาน</button>
                                     </div>
                                 </form>

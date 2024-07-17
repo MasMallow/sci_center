@@ -201,7 +201,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                             <i class="fa-solid fa-plus-minus"></i>
                             <span class="text">จัดการระบบข้อมูล</span>
                         </a>
-                        <a href="maintenance" class="group_li_02">
+                        <a href="maintenance/dashboard" class="group_li_02">
                             <i class="icon fa-solid fa-screwdriver-wrench"></i>
                             <span class="text">การบำรุงรักษา</span>
                         </a>

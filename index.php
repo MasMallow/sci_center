@@ -18,9 +18,6 @@ switch ($request) {
     case '/notification':
         require 'Home.php'; // หน้าแรก
         break;
-    case (preg_match('/\/details\/\d+/', $request_uri) ? true : false):
-        require 'details.php'; // หน้ารายละเอียด
-        break;
     case '/sign_in':
         require 'auth/sign_in.php'; // หน้าเข้าสู่ระบบ
         break;
@@ -41,10 +38,6 @@ switch ($request) {
         break;
     case '/CheckReserve':
         require 'CheckReserve.php'; // บันทึกการจอง
-        break;
-    case preg_match('/\/reservation_details\/\d+/', $request_uri):
-    case preg_match('/\/approve_request\/reservation_details\/\d+/', $request_uri):
-        require 'ReservationDetails.php'; // บันทึกการจอง
         break;
     case '/TrackingReserve':
         require 'TrackingReserve.php'; // รายการการจอง
@@ -85,7 +78,8 @@ switch ($request) {
     case '/maintenance/detailsData':
         require 'staff-section/detailsData.php'; // รายละเอียดข้อมูล
         break;
-    case '/maintenance':
+    case '/maintenance/dashboard':
+    case '/maintenance/maintenance':
     case '/maintenance/end_maintenance':
         require 'staff-section/maintenance.php'; // การบำรุงรักษา
         break;
@@ -103,6 +97,15 @@ switch ($request) {
         require 'staff-section/view_top10.php'; // ดูบันทึก
         break;
     default:
-        require 'error_page.php'; // หน้าข้อผิดพลาด
+        // จัดการกรณีที่ต้องใช้ regex นอก switch
+        if (preg_match('/\/reservation_details\/(\d+)/', $request_uri, $matches)) {
+            $day_date = $matches[1]; // ดึงข้อมูลวันที่จาก URL
+            require 'ReservationDetails.php'; // บันทึกการจอง
+        } elseif (preg_match('/\/details\/\d+/', $request_uri)) {
+            require 'details.php'; // หน้ารายละเอียด
+        } else {
+            require 'error_page.php'; // หน้าข้อผิดพลาด
+        }
         break;
 }
+?>

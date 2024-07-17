@@ -16,8 +16,7 @@ if (isset($_SESSION['user_login'])) {
             exit();
         }
     }
-}
-else {
+} else {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('Location: auth/sign_in.php');
     exit;
@@ -69,6 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
         $sMessage .= "วันที่คืน: " . date('d/m/Y H:i', strtotime($currentDateTime)) . "\n";
     }
 
+    // ตั้งค่าข้อความแจ้งเตือนใน session
+    $_SESSION['USEDEND_success'] = 'สิ้นสุดการขอใช้';
+
+
     $sMessage .= "-------------------------------";
 
     $sToken = "7ijLerwP9wvrN0e3ykl8y3y9c991p1WQuX1Dy8Pv3Fx";
@@ -92,4 +95,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
     header('Location: /UsedEnd');
     exit();
 }
-?>

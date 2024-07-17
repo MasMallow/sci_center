@@ -316,13 +316,19 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                             <?php if (isset($calendar[$i])) : ?>
                                 <div class="reservation">
                                     <div class="notification">
-                                        <?php foreach ($calendar[$i] as $reservation) : ?>
-                                            <?php if (!empty($reservation)) : ?>
+                                        <?php
+                                        $showLink = false; // สถานะการแสดงแท็ก <a>
+                                        foreach ($calendar[$i] as $reservation) :
+                                            if (!empty($reservation) && !$showLink) :
+                                                $showLink = true; // ตั้งค่าสถานะเป็นจริงเมื่อแสดงแท็ก <a>
+                                        ?>
                                                 <a href="<?php echo $base_url; ?>/approve_request/reservation_details/<?php echo $day_date; ?>">
                                                     <i class="fa-solid fa-circle-exclamation"></i>
                                                 </a>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                                        <?php
+                                            endif;
+                                        endforeach;
+                                        ?>
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -391,11 +397,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                 <div class="viewLog_request_Details">
                     <div class="viewLog_request_MAIN">
                         <div class="viewLog_request_header">
-                            <div class="path-indicator">
-                                <a href="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>">
-                                    <?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>
-                                </a>
-                            </div>
+                            <span id="B">รายละเอียด</span>
                         </div>
                         <div class="viewLog_request_body">
                             <?php foreach ($detailsdataUsed as $Data) : ?>

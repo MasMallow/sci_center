@@ -27,21 +27,21 @@ if (isset($_SESSION['staff_login'])) {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+//----------------------------------------------------------
 try {
     $searchTitle = "";
     $searchValue = "";
-    $result = [];
+    $results = [];
+    $results_per_page = 20; // เปลี่ยนค่าตามความต้องการ
 
-    if (!isset($_GET['page'])) {
-        $page = 1;
-    }
+    // รับค่าหน้าปัจจุบัน
+    $page = intval($_GET['page'] ?? 1);
 
-    // ตรวจสอบและกำหนดค่าการค้นหาและหน้าปัจจุบัน
+    // รับค่าการค้นหาถ้ามี
     if (!empty($_GET['search'])) {
         $searchValue = htmlspecialchars($_GET['search']);
         $searchTitle = "ค้นหา \"$searchValue\" | ";
-        $searchQuery = "%" . $_GET["search"] . "%";
-        $page = intval($_GET['page'] ?? 1);
+        $searchQuery = "%" . $searchValue . "%";
 
         // เก็บผลการค้นหาไว้ใน session
         $_SESSION['search_results'] = $searchQuery;
@@ -50,10 +50,7 @@ try {
         // ใช้ผลการค้นหาจาก session ถ้ามี
         $searchQuery = $_SESSION['search_results'] ?? null;
         $searchValue = $_SESSION['search_value'] ?? null;
-        $page = intval($_GET['page'] ?? 1);
     }
-
-    $results_per_page = 20; // เปลี่ยนค่าตามความต้องการ
 
     // คำนวณ offset สำหรับคำสั่ง SQL LIMIT
     $offset = ($page - 1) * $results_per_page;
@@ -62,17 +59,15 @@ try {
     $request_uri = $_SERVER['REQUEST_URI'];
 
     // คำสั่ง SQL เพื่อดึงข้อมูล
-    $query = "SELECT * FROM crud LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number";
+    $query = "SELECT * FROM crud LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number WHERE 1=1";
 
     // เพิ่มเงื่อนไข categories
     if (strpos($request_uri, '/material') !== false) {
-        $query .= " WHERE crud.categories = 'วัสดุ'";
+        $query .= " AND crud.categories = 'วัสดุ'";
     } elseif (strpos($request_uri, '/equipment') !== false) {
-        $query .= " WHERE crud.categories = 'อุปกรณ์'";
+        $query .= " AND crud.categories = 'อุปกรณ์'";
     } elseif (strpos($request_uri, '/tools') !== false) {
-        $query .= " WHERE crud.categories = 'เครื่องมือ'";
-    } else {
-        $query .= " WHERE 1=1"; // เพิ่มเงื่อนไขให้เป็นจริงเสมอเพื่อให้สามารถเพิ่ม AND ต่อไปได้
+        $query .= " AND crud.categories = 'เครื่องมือ'";
     }
 
     // เพิ่มเงื่อนไขการค้นหา
@@ -97,17 +92,15 @@ try {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // นับจำนวนรายการทั้งหมด
-    $total_records_query = "SELECT COUNT(*) AS total FROM crud LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number";
+    $total_records_query = "SELECT COUNT(*) AS total FROM crud LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number WHERE 1=1";
 
     // เพิ่มเงื่อนไข categories สำหรับนับจำนวน
     if (strpos($request_uri, '/material') !== false) {
-        $total_records_query .= " WHERE crud.categories = 'วัสดุ'";
+        $total_records_query .= " AND crud.categories = 'วัสดุ'";
     } elseif (strpos($request_uri, '/equipment') !== false) {
-        $total_records_query .= " WHERE crud.categories = 'อุปกรณ์'";
+        $total_records_query .= " AND crud.categories = 'อุปกรณ์'";
     } elseif (strpos($request_uri, '/tools') !== false) {
-        $total_records_query .= " WHERE crud.categories = 'เครื่องมือ'";
-    } else {
-        $total_records_query .= " WHERE 1=1";
+        $total_records_query .= " AND crud.categories = 'เครื่องมือ'";
     }
 
     // เพิ่มเงื่อนไขการค้นหาสำหรับนับจำนวน
@@ -126,18 +119,28 @@ try {
     $total_records = $stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
 
     // ถ้าไม่มีข้อมูลมากกว่าหรือเท่ากับ จำนวนที่กำหนดต่อหน้า ก็ไม่ต้องแสดง pagination
-    if ($total_records <= $results_per_page) {
-        $pagination_display = false;
-    } else {
-        $pagination_display = true;
+    $pagination_display = $total_records > $results_per_page;
+
+    // ลบตัวแปร search_results และ search_value ใน session
+    unset($_SESSION['search_results'], $_SESSION['search_value']);
+
+    // สำหรับ Notification
+    if (isset($_SESSION['user_login'])) {
+        $user_id = $_SESSION['user_login'];
+        $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $firstname = $userData['pre'] . $userData['firstname'] . ' ' . $userData['lastname'];
+        $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE name_user = :firstname ORDER BY created_at DESC LIMIT 10");
+        $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
-    // ลบตัวแปร search_results
-    unset($_SESSION['search_results']);
-    // ลบค่าใน session ที่ชื่อ search_value
-    unset($_SESSION['search_value']);
 } catch (PDOException $e) {
+    echo 'เกิดข้อผิดพลาด: ' . $e->getMessage();
+} catch (Exception $e) {
     echo 'เกิดข้อผิดพลาด: ' . $e->getMessage();
 }
 ?>
@@ -163,7 +166,7 @@ try {
     </header>
 
     <!-- ตรวจสอบสิทธิ์ของผู้ใช้งาน -->
-    <?php if (isset($userData['urole']) && $userData['urole'] == 'user' || empty($userData['urole'])) : ?>
+    <?php if (isset($userData['urole']) && ($userData['urole'] == 'user') || empty($userData)) : ?>
         <main class="content">
             <div class="content_FLEX">
                 <!-- ------------------ SIDEBAR ------------------ -->
@@ -208,7 +211,7 @@ try {
                         </li>
                         <li class="group_li">
                             <span class="group_title">แจ้งเตือน</span>
-                            <a class="group_li_01 <?= ($request_uri == '/notification') ? 'active' : ''; ?>" " href=" <?= $base_url; ?>/notification">
+                            <a class="group_li_01 <?= ($request_uri == '/notification') ? 'active' : ''; ?>" href="<?= $base_url; ?>/notification">
                                 <i class="fa-solid fa-envelope"></i>
                                 <span class="text">แจ้งเตือน</span>
                             </a>
@@ -224,116 +227,14 @@ try {
                 </sidebar>
                 <!-- ------------------ MAIN CONTENT ------------------ -->
                 <?php if ($request_uri == '/' || $request_uri == '/material' || $request_uri == '/equipment' || $request_uri == '/tools') : ?>
-                    <div class="content_area">
-                        <!-- ----------------- SEARCH SECTION ----------------- -->
-                        <div class="content_area_header">
-                            <form class="contentSearch" method="get">
-                                <input type="hidden" name="page" value="<?= htmlspecialchars($page); ?>">
-                                <input class="search" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
-                                <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                            </form>
-                            <div class="content_area_nav">
-                                <div class="date" id="date"></div>
-                                <div class="time" id="time"></div>
-                            </div>
-                        </div>
-                        <!-- ----------------- CONTENT ------------------ -->
-                        <div class="content_area_all">
-                            <?php if (empty($results)) : ?>
-                                <div class="grid_content_not_found">
-                                    <span id="B">ไม่พบข้อมูลที่ค้นหา</span>
-                                </div>
-                            <?php else : ?>
-                                <div class="content_area_grid">
-                                    <?php foreach ($results as $data) : ?>
-                                        <div class="grid_content">
-                                            <div class="grid_content_header">
-                                                <div class="content_img">
-                                                    <img src="<?= htmlspecialchars($base_url); ?>/assets/uploads/<?= htmlspecialchars($data['img_name']) ?>" alt="Image">
-                                                </div>
-                                            </div>
-                                            <div class="content_status_details">
-                                                <?php if ($data['availability'] == 0) : ?>
-                                                    <div class="ready-to-use">
-                                                        <i class="fa-solid fa-circle-check"></i>
-                                                        <span id="B">พร้อมใช้งาน</span>
-                                                    </div>
-                                                <?php else : ?>
-                                                    <div class="moderately">
-                                                        <i class="fa-solid fa-ban"></i>
-                                                        <span id="B">บำรุงรักษา</span>
-                                                    </div>
-                                                <?php endif ?>
-                                                <div class="content_details">
-                                                    <a href="/details/<?= htmlspecialchars($data['ID']) ?>" class="details_btn">
-                                                        <i class="fa-solid fa-circle-info"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="grid_content_body">
-                                                <div class="content_name">
-                                                    <?= htmlspecialchars($data['sci_name']) ?> (<?= htmlspecialchars($data['serial_number']) ?>)
-                                                </div>
-                                                <div class="content_categories">
-                                                    <span id="B">ประเภท : </span><?= htmlspecialchars($data['categories']) ?>
-                                                </div>
-                                                <div class="content_amount">
-                                                    <span id="B">คงเหลือ : </span><?= htmlspecialchars($data['amount']) ?>
-                                                </div>
-                                            </div>
-                                            <div class="grid_content_footer">
-                                                <div class="content_btn">
-                                                    <?php if ($data['amount'] >= 1 && $data['availability'] == 0) : ?>
-                                                        <a href="Cart?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
-                                                            <i class="fa-solid fa-address-book"></i>
-                                                            <span>ขอใช้</span>
-                                                        </a>
-                                                    <?php else : ?>
-                                                        <div class="not_available">
-                                                            <i class="fa-solid fa-ban"></i>
-                                                            <span>ไม่พร้อมใช้งาน</span>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        <!-- PAGINATION PAGE -->
-                        <?php if ($pagination_display) : ?>
-                            <div class="pagination">
-                                <?php if ($page > 1) : ?>
-                                    <a href="?page=1<?= $searchValue ? '&search=' . htmlspecialchars($searchValue) : ''; ?>">&laquo;</a>
-                                    <a href="?page=<?= $page - 1; ?><?= $searchValue ? '&search=' . htmlspecialchars($searchValue) : ''; ?>">&lsaquo;</a>
-                                <?php endif; ?>
-
-                                <?php
-                                $total_pages = ceil($total_records / $results_per_page);
-                                for ($i = 1; $i <= $total_pages; $i++) {
-                                    if ($i == $page) {
-                                        echo "<a class='active'>$i</a>";
-                                    } else {
-                                        echo "<a href='?page=$i" . ($searchValue ? '&search=' . htmlspecialchars($searchValue) : '') . "'>$i</a>";
-                                    }
-                                }
-                                ?>
-
-                                <?php if ($page < $total_pages) : ?>
-                                    <a href="?page=<?= $page + 1; ?><?= $searchValue ? '&search=' . htmlspecialchars($searchValue) : ''; ?>">&rsaquo;</a>
-                                    <a href="?page=<?= $total_pages; ?><?= $searchValue ? '&search=' . htmlspecialchars($searchValue) : ''; ?>">&raquo;</a>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                    <?php include('Data.php'); ?>
                 <?php elseif ($request_uri == '/notification') : ?>
                     <?php include('notification.php'); ?>
                 <?php endif; ?>
             </div>
         </main>
         <!-- ---------------- FOOTER ------------------ -->
-        <footer><?php include "assets/includes/footer.php" ?></footer>
+        <footer><?php include "assets/includes/footer.php"; ?></footer>
 
     <?php elseif (isset($userData['urole']) && $userData['urole'] == 'staff') : ?>
         <?php include('staff-section/homeStaff.php'); ?>
