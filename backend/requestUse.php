@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $items = $_POST['amount'];
         $enddate = $_POST['end_date'];
         $userID = $_SESSION['user_login'];
+
         // ฟังก์ชันสำหรับการสร้างสตริงสุ่ม
         function generateRandomString($length = 7)
         {
@@ -25,6 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $random_string = generateRandomString();
+
+        // ตรวจสอบวันที่
+        $currentDate = date('Y-m-d');
+        if ($reservationdate < $currentDate) {
+            $_SESSION['reserveError'] = 'วันที่จองต้องไม่เป็นอดีต!';
+            header("Location: $base_url/Cart");
+            exit();
+        }
+
+        if ($enddate < $currentDate || $enddate < $reservationdate) {
+            $_SESSION['reserveError'] = 'วันที่สิ้นสุดต้องไม่เป็นอดีตและต้องไม่ก่อนวันที่จอง!';
+            header("Location: $base_url/Cart");
+            exit();
+        }
 
         $user_query = $conn->prepare("
                 SELECT * FROM users_db 
