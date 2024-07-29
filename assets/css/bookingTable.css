@@ -1,9 +1,10 @@
 .bookingTable {
   width: 100%;
-  max-width: 1300px;
+  max-width: 1000px;
   min-height: 100vh;
   margin: 2.5rem auto;
 }
+
 .bookingTable_header {
   width: 100%;
   display: flex;
@@ -12,11 +13,10 @@
   background-color: #f6f8fa;
   border: 1px solid #d0d7de;
   color: #1f2328;
-  padding: 0.3rem 0.8rem;
+  padding: 0.3rem 1.2rem;
   gap: 0.75rem;
-  font-size: 1.1rem;
 
-  & a {
+  .historyBACK {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,6 +34,7 @@
     }
   }
 }
+
 .navigation {
   display: flex;
   justify-content: space-between;
@@ -147,38 +148,50 @@
 
 /* --------------- DETAILS -------------- */
 .bookingTable_content {
-  width: 90%;
-  margin: 0 auto;
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
 }
+
+.bookingDetails_content {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid #d0d7de;
+  overflow: hidden;
+}
+
 .reservation-details {
   width: 100%;
   display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #d0d7de;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.reservationIcon {
+  display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 2rem;
-  border-radius: 5px;
-  border: 1px solid #d0d7de;
-  border-left: 5px solid #01bdb6;
+  padding: 0.7rem 1.2rem;
+  background-color: #f6f8fa;
+  border-bottom: 1px solid #d0d7de;
+  color: #1f2328;
+}
 
-  .reservationIcon {
-    width: 10%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-  }
+.reservetionDetails,
+.reservetionDetails_Date {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.2rem;
 
-  .reservetionDetails {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-left: 1rem;
-
-    .reservetionDetails_Name {
-      font-size: 1.1rem;
-      line-height: 170%;
-      font-family: Sarabun-bold;
-    }
+  a {
+    color: #0969da;
+    text-decoration: none;
   }
 }

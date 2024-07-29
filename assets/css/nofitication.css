@@ -12,19 +12,38 @@
   font-size: 1.15rem;
 }
 .notification_section {
+  padding: 0 0.7rem;
+  gap: 1rem;
   width: 100%;
   max-width: 750px;
-  margin: 0.65rem auto;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  max-height: 70vh;
+  overflow: hidden;
+  overflow-y: auto;
+  margin: 1rem auto;
+}
+/* สำหรับเบราว์เซอร์ Webkit เช่น Chrome, Safari */
+.notification_section::-webkit-scrollbar {
+  width: 8px; /* ความกว้างของ scrollbar */
+}
+
+.notification_section::-webkit-scrollbar-track {
+  background: #f1f1f1; /* สีพื้นหลังของ track */
+  border-radius: 10px; /* ทำให้ track มีมุมโค้งมน */
+}
+
+.notification_section::-webkit-scrollbar-thumb {
+  background: #888; /* สีของ scrollbar */
+  border-radius: 10px; /* ทำให้ scrollbar มีมุมโค้งมน */
+}
+
+.notification_section::-webkit-scrollbar-thumb:hover {
+  background: #555; /* สีของ scrollbar เมื่อ hover */
 }
 
 .notification {
   border: 1px solid #ddd;
   border-radius: 5px;
-  overflow: hidden;
+  margin-bottom: 0.75rem;
 }
 
 .notification_HEADER_ICON {
@@ -117,8 +136,8 @@
     border-radius: 5px;
     color: #ffffff;
 
-    .text{
-      font-size: .9rem;
+    .text {
+      font-size: 0.9rem;
     }
   }
 }

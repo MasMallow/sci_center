@@ -27,7 +27,7 @@
                     </div>
                     <ul class="menu">
                         <li class="menu_li"><a href="<?php echo $base_url; ?>/profile_user">รายละเอียดผู้ใช้งาน</a></li>
-                        <li class="menu_li"><a href="<?php echo $base_url; ?>/auth/sign_out.php">ออกจากระบบ</a></li>
+                        <li class="menu_li"><a href="<?php echo $base_url; ?>/models/sign_out.php">ออกจากระบบ</a></li>
                     </ul>
                 </div>
             <?php elseif (isset($_SESSION['staff_login'])) : ?>
@@ -40,7 +40,7 @@
                         <i class="arrow_rotate fa-solid fa-chevron-up"></i>
                     </div>
                     <ul class="menu">
-                        <li class="menu_li"><a href="<?php echo $base_url; ?>/auth/sign_out.php">ออกจากระบบ</a></li>
+                        <li class="menu_li"><a href="<?php echo $base_url; ?>/models/sign_out.php">ออกจากระบบ</a></li>
                     </ul>
                 </div>
             <?php else : ?>

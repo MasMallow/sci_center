@@ -17,8 +17,9 @@
 .maintenance {
   width: 100%;
   max-width: 1300px;
-  margin: 2rem auto 1rem auto;
+  margin: 2.5rem auto;
 }
+
 .header_maintenance_section {
   width: 100%;
   display: flex;
@@ -31,7 +32,7 @@
   gap: 0.75rem;
   font-size: 1.1rem;
 
-  a {
+  .historyBACK {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,7 +44,7 @@
     border-radius: 50%;
     transition: all 0.25s;
 
-    :hover {
+    &:hover {
       background-color: #d0d7de;
       color: #000000;
     }
@@ -58,38 +59,26 @@
 
   .btn_maintenance_all {
     display: flex;
-    max-width: 100%;
-    width: 100%;
+    border-bottom: 1px solid #e0e0e0;
+  }
 
-    .btn_maintenance_01 {
-      display: flex;
-      align-items: center;
-      color: #000000;
-      font-size: 0.9rem;
-      padding: 0.5rem 1rem;
-      border-radius: 6px 0 0 6px;
-      transition: all 0.3s;
-      border: transparent;
-      background-color: #f2f2f2;
-    }
+  .btn_maintenance_all a {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #666;
+    font-size: 0.925rem;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+  }
 
-    .btn_maintenance_02 {
-      display: flex;
-      align-items: center;
-      color: #000000;
-      font-size: 0.9rem;
-      padding: 0.5rem 1rem;
-      border-radius: 0 6px 6px 0;
-      border: transparent;
-      transition: all 0.3s;
-      background-color: #f2f2f2;
-    }
+  .btn_maintenance_all a:hover {
+    color: #333; /* Darker gray text on hover */
+  }
 
-    .active {
-      font-family: Sarabun-bold;
-      border: 1px solid #01bdb6;
-      background-color: #dffffd81;
-    }
+  .btn_maintenance_all a.active {
+    font-family: Sarabun-bold;
+    color: #333; /* Darker gray text */
+    border-bottom: 2px solid #000; /* Black underline for active link */
+    transition: color 0.3s ease, border-bottom 0.3s ease; /* Smooth transition for color and border */
   }
 
   .maintenance_search_header {
@@ -123,8 +112,8 @@
       outline: none;
       border-radius: 0 10px 10px 0;
       color: #fff;
-      background-color: #2176ff;
       transition: 0.2s;
+      background-color: #2176ff;
       font-size: 1rem;
 
       &:hover {
@@ -138,99 +127,118 @@
   }
 }
 
-.table_maintenace {
-  margin: 1rem 0;
-  border-collapse: collapse;
+.approve_container {
   width: 100%;
 }
 
-.btn_reportMaintenance {
+.approve_row {
+  border-bottom: 1px solid #ddd;
+  padding: 1.2rem 1rem;
+  font-size: 0.95rem;
+}
+
+.defualt_row {
+  width: 100%;
   display: flex;
   align-items: center;
-  font-size: 1rem;
-  margin-left: 0.5rem;
-  padding: 0.345rem 0.5rem;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-  background-color: #c1f2b0;
-  color: green;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: #aeff94;
-  }
+  justify-content: space-between;
+}
+.serial_number,
+.approve_actions {
+  display: flex;
+  align-items: center;
+  word-break: normal;
+  width: 20%;
 }
 
-thead tr {
-  border: 1px solid #bdbdbd;
+.reservation_date {
+  width: 25%;
 }
-thead {
-  th {
-    font-size: 1.1rem;
-    text-align: start;
-    border-left: none;
-    border-right: none;
-    border-top: 1.5px solid #bdbdbd;
-    border-bottom: 1.5px solid #bdbdbd;
-    background-color: #e7e7e7;
-    padding: 0.7rem 0;
-  }
-
-  & .sci_name {
-    max-width: 50%;
-    width: 100%;
-  }
-  & .installation_date {
-    max-width: 15%;
-    width: 100%;
-  }
-
-  & .categories {
-    width: 7.5%;
-  }
-}
-.maintenance_button {
-  font-size: 0.9rem;
-  padding: 0.5rem;
-  border-radius: 5px;
-  border: 1px solid #9e9e9e;
-  background-color: #fff;
-  transition: all 0.3s;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #e0e0e086;
-  }
-}
-
-tbody tr {
-  font-size: 0.975rem;
-  border: 1px solid #dbdbdb;
-  border-bottom: 1.5px solid #bdbdbd;
-  background-color: #ffffff;
-
-  td {
-    padding: 1rem 0;
-  }
-}
-.sci_name {
-  padding-left: 1rem;
+.items {
+  width: 40%;
 
   a {
-    color: #000;
-  }
-
-  i {
-    font-size: 0.9rem;
-    color: #535353;
+    color: black;
   }
 }
-.sci_name01 {
-  padding-left: 1rem;
+
+.serial_number .open_expand_row {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.expand_row {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+  gap: 1rem;
+}
+
+.expand_row > div {
+  margin-bottom: 5px;
+}
+
+.table_maintenance {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.table_maintenanceContent {
+  width: 100%;
+  display: flex;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid #ddd;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.table_maintenanceContent_00 {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  gap: 0.75rem;
+}
+
+.MaintenanceButton {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.table_maintenanceContent_1 a {
+  color: #000;
+  font-size: 1.055rem;
+  font-family: Sarabun-bold;
+  text-decoration: none;
+}
+
+.table_maintenanceContent_2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.922rem;
 }
 
 /* <------ MAINTENANCE POPUP ------> */
+.maintenance_button {
+  background-color: #2176ff;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .maintenance_popup {
   position: fixed;
   top: 0;
@@ -360,17 +368,8 @@ tbody tr {
 }
 
 /* ------------- MAINTENANCE REPORT -------------- */
-.history {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table tbody tr:hover {
-  background-color: #ebebeb;
-}
-
 .report-button {
-  width: 100%;
+  width: 50%;
   display: flex;
   align-items: center;
   margin-top: 1rem;
@@ -381,24 +380,25 @@ table tbody tr:hover {
     font-size: 1rem;
   }
 }
+
 .form_1 {
   width: 100%;
 }
-.view_Maintenance_column {
+.view_maintenance_column {
   display: flex;
   width: 100%;
   column-gap: 1rem;
 }
-.view_Maintenance_input {
+.view_maintenance_input {
   width: 100%;
 }
-.view_Maintenance_input label {
+.view_maintenance_input label {
   display: block;
   font-size: 1.1rem;
   padding-left: 0.5rem;
   padding-bottom: 0.25rem;
 }
-.view_Maintenance_input input {
+.view_maintenance_input input {
   position: relative;
   height: 40px;
   width: 100%;
@@ -412,27 +412,60 @@ table tbody tr:hover {
     border: 1px solid rgb(0, 119, 255);
   }
 }
+
 .view_Maintenance_btn {
-  gap: 0.5rem;
+  gap: 0.35rem;
   display: flex;
   justify-content: center;
   align-items: center;
+}
 
-  & .search {
-    height: 40px;
-    padding: 0 2rem;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    color: #fff;
-    transition: all 0.2s ease-in-out;
-    background-color: rgb(30, 124, 248);
+.searchReport {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+  background-color: rgb(30, 124, 248);
 
-    &:hover {
-      background-color: rgb(0, 86, 199);
-    }
+  &:hover {
+    background-color: rgb(0, 86, 199);
   }
 }
+
+.maintenanceReport {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d0d7de;
+  border-radius: 5px;
+}
+
+.maintenanceReport_ROW {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid #ddd;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.history-item_1 {
+  font-family: Sarabun-bold;
+  font-size: 1.075rem;
+}
+
+.history-item_2 {
+  font-size: 0.925rem;
+}
+
 .view_report_table_header {
   margin-top: 1rem;
   padding-left: 0.5rem;
@@ -478,8 +511,9 @@ table tbody tr:hover {
   }
 }
 /* ------------------- ROW 3 ----------------- */
-.maintenanceDashboard{
-  margin: 1rem;
+.maintenanceDashboard {
+  width: 100%;
+  margin: 1rem auto;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -494,6 +528,7 @@ table tbody tr:hover {
 .staff_notification_maintenance_header {
   width: 100%;
   font-size: 1.05rem;
+  padding-left: 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -503,24 +538,29 @@ table tbody tr:hover {
   width: 100%;
   height: 95% !important;
   margin-top: 0.75rem;
-  border: 1px solid #d0d7de;
   border-radius: 5px;
-  padding: 0.7rem;
-  overflow: hidden;
-  overflow-y: scroll;
-  /* Scrollbar styling */
-  --sb-size: 7px; /* Define the size variable */
-  --sb-track-color: #f1f1f1; /* Define track color variable */
-  --sb-thumb-color: #888; /* Define thumb color variable */
+  border: 1px solid #d0d7de;
+  overflow-y: auto;
 }
 
-/* Optional: Add scrollbar styling for Firefox */
-.staff_content_row3,
-.staff_notification_body {
-  scrollbar-width: thin;
-  scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+/* สำหรับเบราว์เซอร์ Webkit เช่น Chrome, Safari */
+.staff_content_row3::-webkit-scrollbar {
+  width: 8px; /* ความกว้างของ scrollbar */
 }
 
+.staff_content_row3::-webkit-scrollbar-track {
+  background: #f1f1f1; /* สีพื้นหลังของ track */
+  border-radius: 10px; /* ทำให้ track มีมุมโค้งมน */
+}
+
+.staff_content_row3::-webkit-scrollbar-thumb {
+  background: #888; /* สีของ scrollbar */
+  border-radius: 10px; /* ทำให้ scrollbar มีมุมโค้งมน */
+}
+
+.staff_content_row3::-webkit-scrollbar-thumb:hover {
+  background: #555; /* สีของ scrollbar เมื่อ hover */
+}
 .staff_item {
   width: 100%;
   height: 100%;
@@ -593,9 +633,8 @@ table tbody tr:hover {
   display: flex;
   flex-direction: column;
   gap: 0.345rem;
-  border: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
   border-left: 4px solid #c82333;
-  border-radius: 5px;
   padding: 0.6rem 0.75rem;
 
   .staff_notification_data_1 {
@@ -638,62 +677,4 @@ table tbody tr:hover {
 .approve_not_found_section i {
   font-size: 4rem;
   color: #bdbdbd;
-}
-
-.approve_container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 0.5rem;
-}
-
-.approve_row {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 7.5px;
-  padding: 0.75rem 1rem;
-  font-size: 0.95rem;
-}
-.defualt_row {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.serial_number,
-.approve_actions {
-  display: flex;
-  align-items: center;
-  word-break: normal;
-  width: 20%;
-}
-
-.reservation_date {
-  width: 25%;
-}
-.items {
-  width: 40%;
-
-  a {
-    color: black;
-  }
-}
-
-.serial_number .open_expand_row {
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.expand_row {
-  display: flex;
-  align-items: center;
-  margin-top: 0.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #ddd;
-  gap: 1rem;
-}
-
-.expand_row > div {
-  margin-bottom: 5px;
 }

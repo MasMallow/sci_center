@@ -12,11 +12,10 @@
   background-color: #f6f8fa;
   border: 1px solid #d0d7de;
   color: #1f2328;
-  padding: 0.3rem 0.8rem;
+  padding: 0.3rem 1.2rem;
   gap: 0.75rem;
-  font-size: 1.1rem;
 
-  & a {
+  .historyBACK {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -82,7 +81,7 @@
   font-size: 1.1rem;
 }
 .form_1 {
-  width: 100%;
+  width: 60%;
 }
 .view_report_column {
   display: flex;
@@ -118,9 +117,12 @@
   justify-content: center;
   align-items: center;
 
-  & .search {
+  .search {
     height: 40px;
-    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
     border-radius: 5px;
     outline: none;
     border: none;
@@ -181,60 +183,68 @@
     }
   }
 }
+
 .viewReport_table_data {
-  border-collapse: collapse;
-  width: 100%;
-}
-thead {
-  tr {
-    border: 1px solid #bdbdbd;
-
-    th {
-      font-size: 1.1rem;
-      text-align: start;
-      border-left: none;
-      border-right: none;
-      border-top: 1.5px solid #bdbdbd;
-      border-bottom: 1.5px solid #bdbdbd;
-      background-color: #e7e7e7;
-      padding: 0.6rem 0;
-
-      .name {
-        max-width: 25%;
-        width: 100%;
-      }
-      .list {
-        max-width: 30%;
-        width: 100%;
-      }
-      .start_date,
-      .end_date {
-        max-width: 15%;
-        width: 100%;
-      }
-    }
-    .name {
-      padding-left: 0.75rem;
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d0d7de;
+  border-radius: 5px;
 }
 
-tbody tr {
-  font-size: 0.95rem;
-  border: 1px solid #dbdbdb;
-  border-bottom: 1.5px solid #bdbdbd;
-  background-color: #ffffff;
-  & td {
-    padding: 0.75rem 0;
-  }
-  & .name {
-    padding-left: 0.75rem;
-  }
+.viewReport_table_content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid #ddd;
+}
 
-  & .date_not_found {
-    text-align: center;
-    font-size: 1rem;
-  }
+.viewReport_table_content:last-child {
+  border-bottom: none;
+}
+
+.history-item_1 {
+  font-family: Sarabun-bold;
+  font-size: 1.075rem;
+}
+
+.history-item_2 {
+  font-size: 0.925rem;
+}
+
+.reportStatus {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.usageStatus,
+.returnStatus {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.usageStatus i,
+.returnStatus i {
+  margin-right: 10px;
+  font-size: 1.2em;
+}
+
+.fa-hourglass-start {
+  color: orange;
+}
+
+.fa-check-circle {
+  color: green;
+}
+
+.fa-times-circle {
+  color: red;
+}
+
+.fa-calendar-check {
+  color: blue;
 }
 
 /* <------------------  TOP10 PAGE ------------------------> */

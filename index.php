@@ -1,5 +1,6 @@
 <?php
-require_once 'assets/database/config.php';
+require_once 'assets/config/config.php';
+require_once 'assets/config/Database.php';
 
 // รับ URI ของคำขอปัจจุบัน
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -16,96 +17,103 @@ switch ($request) {
     case '/equipment':
     case '/tools':
     case '/notification':
-        require 'Home.php'; // หน้าแรก
+        require 'views/home.php'; // หน้าแรก
         break;
     case '/sign_in':
-        require 'auth/sign_in.php'; // หน้าเข้าสู่ระบบ
+        require 'views/sign_in.php'; // หน้าเข้าสู่ระบบ
         break;
     case '/sign_up':
-        require 'auth/sign_up.php'; // หน้าลงทะเบียน
+        require 'views/sign_up.php'; // หน้าลงทะเบียน
         break;
     case '/changePassword':
         require 'auth/change_password.php'; // หน้าลงทะเบียน
         break;
-    case '/Cart':
-        require 'Cart.php'; // ระบบตะกร้าสินค้า
+    case '/cart':
+        require 'views/cart.php'; // ระบบตะกร้าสินค้า
         break;
     case '/UsedStart':
-        require 'UsedStart.php'; // ระบบคืนสินค้า
+        require 'views/UsedStart.php'; // ระบบคืนสินค้า
         break;
     case '/UsedEnd':
-        require 'UsedEnd.php'; // ระบบคืนสินค้า
+        require 'views/UsedEnd.php'; // ระบบคืนสินค้า
         break;
-    case '/CheckReserve':
-        require 'CheckReserve.php'; // บันทึกการจอง
+    case '/calendar':
+        require 'views/calendar.php'; // บันทึกการจอง
         break;
-    case '/TrackingReserve':
-        require 'TrackingReserve.php'; // รายการการจอง
+    case '/list-request':
+        require 'views/list_requestUse.php'; // รายการการจอง
+        break;
+    case (preg_match('/^\/reservation_details\/(\d{4}-\d{2}-\d{2})$/', $request, $matches) ? true : false):
+        $_GET['day_date'] = $matches[1];
+        require 'views/ReservationDetails.php'; // บันทึกการจอง
+        break;
+    case (preg_match('/^\/details\/(\d+)$/', $request, $matches) ? true : false):
+        $_GET['id'] = $matches[1];
+        require 'views/details.php'; // หน้ารายละเอียด
         break;
     case '/profile_user':
     case '/edit_user':
     case '/profile_user/edit_profile':
-        require 'profile_user.php'; // โปรไฟล์ผู้ใช้
+        require 'views/profile_user.php'; // โปรไฟล์ผู้ใช้
         break;
     case '/approve_request':
-    case '/approve_request/viewlog':
-    case '/approve_request/viewlog/details':
     case '/approve_request/calendar':
-        require 'staff-section/approve_request.php'; // อนุมัติคำขอ
+    case '/approve_request/viewlog/details':
+        require 'views/staff-section/approve_request.php'; // อนุมัติคำขอ
+        break;
+    case (preg_match('/^\/approve_request\/reservation_details\/(\d{4}-\d{2}-\d{2})$/', $request, $matches) ? true : false):
+        $_GET['day_date'] = $matches[1];
+        require 'views/ReservationDetails.php'; // รายละเอียดการจอง
         break;
     case '/manage_users':
     case '/management_user':
     case '/management_user/details':
     case '/undisapprove_user':
-        require 'staff-section/manage_users.php'; // จัดการผู้ใช้
+        require 'views/staff-section/manage_users.php'; // จัดการผู้ใช้
         break;
     case '/management':
     case '/management/material':
     case '/management/equipment':
     case '/management/tools':
-        require 'staff-section/management.php'; // จัดการวัสดุอุปกรณ์
+        require 'views/staff-section/management.php'; // จัดการวัสดุอุปกรณ์
         break;
     case '/management/addData':
     case '/management/viewlog':
     case '/management/viewlog/details':
-        require 'staff-section/addData.php'; // เพิ่มข้อมูล
+        require 'views/staff-section/addData.php'; // เพิ่มข้อมูล
         break;
-    case '/management/editData':
-        require 'staff-section/editData.php'; // แก้ไขข้อมูล
+    case '/management/edit':
+        require 'views/staff-section/editData.php'; // แก้ไขข้อมูล
         break;
     case '/detailsData':
     case '/management/detailsData':
-    case '/maintenance/detailsData':
-        require 'staff-section/detailsData.php'; // รายละเอียดข้อมูล
+        require 'views/staff-section/detailsData.php'; // รายละเอียดข้อมูล
         break;
-    case '/maintenance/dashboard':
-    case '/maintenance/maintenance':
-    case '/maintenance/end_maintenance':
-        require 'staff-section/maintenance.php'; // การบำรุงรักษา
+    case '/management/maintenance':
+    case '/maintenance/details':
+    case '/maintenance_start/details':
+    case '/maintenance_end/details':
+        require 'views/staff-section/detailsMaintenance.php'; // รายละเอียดข้อมูล
         break;
-    case '/maintenance/report_maintenance':
-        require 'staff-section/report_maintenance.php'; // การบำรุงรักษา
+    case '/maintenance_dashboard':
+    case '/maintenance_start':
+    case '/maintenance_end':
+        require 'views/staff-section/maintenance.php'; // การบำรุงรักษา
         break;
-    case '/view_report':
-    case '/view_report/userID/startDate/endDate':
-        require 'staff-section/view_report.php'; // ดูรายงาน
+    case '/maintenance/report':
+        require 'views/staff-section/maintenanceReport.php'; // การบำรุงรักษา
+        break;
+    case '/report':
+        require 'views/staff-section/view_report.php'; // ดูรายงาน
         break;
     case '/view_report/generate_pdf':
-        require 'staff-section/generate_pdf.php'; // สร้าง PDF
+        require 'views/staff-section/generate_pdf.php'; // สร้าง PDF
         break;
-    case '/view_top10':
-        require 'staff-section/view_top10.php'; // ดูบันทึก
+    case '/top10':
+        require 'views/staff-section/view_top10.php'; // ดูบันทึก
         break;
     default:
-        // จัดการกรณีที่ต้องใช้ regex นอก switch
-        if (preg_match('/\/reservation_details\/(\d+)/', $request_uri, $matches)) {
-            $day_date = $matches[1]; // ดึงข้อมูลวันที่จาก URL
-            require 'ReservationDetails.php'; // บันทึกการจอง
-        } elseif (preg_match('/\/details\/\d+/', $request_uri)) {
-            require 'details.php'; // หน้ารายละเอียด
-        } else {
-            require 'error_page.php'; // หน้าข้อผิดพลาด
-        }
+        require 'views/error_page.php'; // หน้าข้อผิดพลาด
         break;
 }
 ?>

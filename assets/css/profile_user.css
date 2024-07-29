@@ -1,11 +1,10 @@
 .profile_user {
   width: 100%;
-  max-width: 1300px;
-  display: flex;
-  flex-direction: column;
-  margin: 2rem auto;
+  max-width: 1100px;
+  margin: 2.5rem auto;
   gap: 1rem;
 }
+
 .profile_user_header {
   font-size: 1.05rem;
   padding: 0.3rem 0.8rem;
@@ -22,7 +21,7 @@
     align-items: center;
     gap: 1rem;
 
-    a {
+    .historyBACK {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -52,105 +51,130 @@
   }
 }
 
-.profile_user_00 {
+.profileUSER {
   width: 100%;
-  height: 40vh;
+  height: 100%;
+  margin-top: 1rem;
   display: flex;
   gap: 1rem;
 }
-.editProfile {
+
+.detailsUSER {
   width: 100%;
-  min-height: 40vh;
-}
-.profile_user_01 {
-  width: 100%;
-  height: 100%;
-}
-.profile_user_02 {
-  width: 40%;
-  height: 100%;
+  max-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.edit_profile_header {
-  font-size: 1.1rem;
-  padding: 0.5rem 1.2rem;
-  border-bottom: 1px solid #d0d7de;
-  display: flex;
-  align-items: center;
-  background-color: #f6f8fa;
-  color: #1f2328;
-}
-.profile_user_details,
-.profile_user_notification {
-  width: 100%;
+.UserHistoryLogin {
+  width: 60%;
   height: 100%;
-  border-radius: 5px;
-  overflow: hidden;
-  border: 1px solid #d0d7de;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile_userHeader {
+  padding: 0rem 1rem;
+  font-size: 1.025rem;
+  color: #1f2328;
 }
 
 .profile_user_content {
-  padding: 2rem 3rem;
-
-  .user_info_row {
-    display: flex;
-    margin-bottom: 0.7rem;
-  }
-
-  .user_info_row1 {
-    width: 35%;
-    padding-right: 1rem;
-  }
-
-  .user_info_row2 {
-    width: 75%;
-  }
-
-  .wait_approved {
-    color: orange;
-  }
-
-  .approved {
-    color: green;
-  }
-}
-.edit_profile_header {
-  width: 100%;
-  padding: 0.7rem 1.2rem;
-}
-
-.profile_user_notification {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0.5rem 1rem;
   border-radius: 5px;
   border: 1px solid #d0d7de;
 }
 
-.profile_user_notification_body {
-  padding: 0.5rem 1rem;
-}
-.profile_user_notification_stack {
+.user_info_row {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.profile_user_notification_body .profile_user_notification_data {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0.5rem 0.75rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
-.profile_edit_details {
-  height: 100%;
-  border-radius: 5px;
-  border: 1px solid #ddd;
+.user_info_label {
+  color: #333;
+  flex: 1;
 }
-.edit_profile_body {
-  padding: 2rem 0;
-  background-color: #fff;
+
+.user_info_value {
+  flex: 2;
+  text-align: right;
+  color: #555;
+}
+
+.status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.wait_approved {
+  font-family: Sarabun-bold;
+  color: #d9534f;
+}
+
+.approved {
+  font-family: Sarabun-bold;
+  color: #5cb85c;
+}
+
+.profile_user_notification_body {
+  border-radius: 5px;
+  border: 1px solid #d0d7de;
+  gap: 1rem;
+  width: 100%;
+  max-height: 40vh;
+  overflow: hidden;
+  overflow-y: auto;
+}
+/* สำหรับเบราว์เซอร์ Webkit เช่น Chrome, Safari */
+.profile_user_notification_body::-webkit-scrollbar {
+  width: 8px; /* ความกว้างของ scrollbar */
+}
+
+.profile_user_notification_body::-webkit-scrollbar-track {
+  background: #f1f1f1; /* สีพื้นหลังของ track */
+  border-radius: 10px; /* ทำให้ track มีมุมโค้งมน */
+}
+
+.profile_user_notification_body::-webkit-scrollbar-thumb {
+  background: #888; /* สีของ scrollbar */
+  border-radius: 10px; /* ทำให้ scrollbar มีมุมโค้งมน */
+}
+
+.profile_user_notification_body::-webkit-scrollbar-thumb:hover {
+  background: #555; /* สีของ scrollbar เมื่อ hover */
+}
+
+.profile_user_notification_stack {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.editProfile {
+  margin: 2rem auto;
   width: 100%;
   max-width: 700px;
-  margin: auto;
+}
+
+.edit_profile_header {
+  padding: 0 0.5rem;
+  font-size: 1.025rem;
+  color: #1f2328;
+}
+
+.edit_profile_body {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 1px solid #d0d7de;
 }
 
 .input_edit {
@@ -198,11 +222,14 @@ input:focus,
 select:focus {
   border: 1px solid rgb(0, 119, 255);
 }
+
 .edit_profile_footer {
+  padding: 0.5rem;
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
 }
+
 .edit_profile_footer .submit {
   display: flex;
   justify-content: start;
@@ -223,6 +250,7 @@ select:focus {
     background-color: rgb(0, 86, 199);
   }
 }
+
 .edit_profile_footer .cancel {
   display: flex;
   justify-content: end;
