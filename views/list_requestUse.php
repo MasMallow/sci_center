@@ -12,27 +12,31 @@ if (!isset($_SESSION['user_login'])) {
 $user_id = $_SESSION['user_login'];
 
 try {
-    // ดึงข้อมูลผู้ใช้และการจองในคำสั่งเดียวเพื่อลดจำนวนคำสั่ง SQL
-    $stmt = $conn->prepare("
-        SELECT u.*, b.* 
-        FROM users_db u 
-        LEFT JOIN approve_to_reserve b ON u.userID = b.userID 
-        WHERE u.userID = :user_id AND (b.date_return IS NULL OR b.date_return IS NULL)
-    ");
+    // Debugging: Log the user ID being used
+    error_log("User ID: " . $user_id);
+
+    // ดึงข้อมูลผู้ใช้
+    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$result) {
+    if (!$userData) {
         unset($_SESSION['user_login']);
         header('Location: /sign_in');
+        echo 'มีข้อผิดผลาด';
         exit();
     }
 
-    $userData = $result[0];
-    $bookings = array_filter($result, function ($row) {
-        return isset($row['reservation_date']);
-    });
+    // ดึงข้อมูลการจอง
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND date_return IS NULL");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Debugging: Log the result
+    error_log("User Data: " . print_r($userData, true));
+    error_log("Bookings: " . print_r($bookings, true));
 
     if ($userData['status'] == 'n_approved') {
         unset($_SESSION['user_login']);
@@ -40,13 +44,13 @@ try {
         exit();
     }
 } catch (PDOException $e) {
+    error_log("PDO Error: " . $e->getMessage());
     echo "Error: " . $e->getMessage();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>รายการการขอใช้</title>
@@ -57,7 +61,6 @@ try {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/list-requestUSE.css">
 </head>
-
 <body>
     <header>
         <?php include 'assets/includes/navigator.php'; ?>
@@ -123,5 +126,4 @@ try {
         <?php endif; ?>
     </div>
 </body>
-
 </html>

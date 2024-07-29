@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($message) : ?>
                 <p><?php echo $message; ?></p>
             <?php endif; ?>
-            <form class="resetPasswordMain" action="<?php echo $base_url; ?>/auth/change_password.php" method="POST">
+            <form class="resetPasswordMain" action="<?php echo $base_url; ?>change_password.php" method="POST">
                 <div class="resetPassword_header">
                     <span id="B">เปลี่ยนรหัสผ่าน</span>
                 </div>

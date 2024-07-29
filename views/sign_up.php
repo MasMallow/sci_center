@@ -35,7 +35,7 @@ require_once 'assets/config/Database.php';
     <?php endif ?>
 
     <!-- ----------------- FORM ------------------- -->
-    <form action="<?php echo $base_url; ?>/auth/backend/sign_upDB.php" method="post">
+    <form action="<?php echo $base_url; ?>/models/sign_upDB.php" method="post">
         <section class="register_layout">
             <div class="register_logo">
                 <img src="<?php echo $base_url; ?>/assets/logo/scicenter_logo.png">

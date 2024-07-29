@@ -280,11 +280,29 @@ try {
                 </div>
             </div>
         <?php endif ?>
-        
+
         <?php if ($request_uri == '/maintenance_start') : ?>
             <?php if (!empty($maintenance)) : ?>
+                <?php
+                // Pagination configuration
+                $itemsPerPage = 10;
+                $totalItems = count($maintenance);
+                $totalPages = ceil($totalItems / $itemsPerPage);
+
+                // Get current page from URL, default to 1 if not set
+                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                if ($currentPage < 1) $currentPage = 1;
+                if ($currentPage > $totalPages) $currentPage = $totalPages;
+
+                // Calculate start and end index for current page
+                $startIndex = ($currentPage - 1) * $itemsPerPage;
+                $endIndex = min($startIndex + $itemsPerPage, $totalItems);
+
+                // Slice the maintenance array to get the records for the current page
+                $currentPageItems = array_slice($maintenance, $startIndex, $itemsPerPage);
+                ?>
                 <div class="table_maintenance">
-                    <?php foreach ($maintenance as $row) : ?>
+                    <?php foreach ($currentPageItems as $row) : ?>
                         <div class="table_maintenanceContent">
                             <div class="table_maintenanceContent_00">
                                 <div class="table_maintenanceContent_1">
@@ -347,6 +365,22 @@ try {
                         </div>
                     <?php endforeach ?>
                 </div>
+                <!-- Pagination Links -->
+                <div class="pagination">
+                    <?php if ($currentPage > 1) : ?>
+                        <a href="?page=<?= $currentPage - 1 ?>" class="pagination-link">Previous</a>
+                    <?php endif ?>
+
+                    <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
+                        <a href="?page=<?= $page ?>" class="pagination-link <?= ($page == $currentPage) ? 'active' : '' ?>">
+                            <?= $page ?>
+                        </a>
+                    <?php endfor ?>
+
+                    <?php if ($currentPage < $totalPages) : ?>
+                        <a href="?page=<?= $currentPage + 1 ?>" class="pagination-link">Next</a>
+                    <?php endif ?>
+                </div>
             <?php else : ?>
                 <div class="maintenance_not_found">
                     <i class="fa-solid fa-database"></i>
@@ -356,9 +390,20 @@ try {
         <?php endif ?>
 
         <?php if ($request_uri == '/maintenance_end') : ?>
-            <?php if (!empty($maintenance_success)) : ?>
+            <?php
+            // Pagination for maintenance_success
+            $itemsPerPage = 10; // Adjust as needed
+            $totalItems = count($maintenance_success);
+            $totalPages = ceil($totalItems / $itemsPerPage);
+            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            if ($currentPage < 1) $currentPage = 1;
+            if ($currentPage > $totalPages) $currentPage = $totalPages;
+            $startIndex = ($currentPage - 1) * $itemsPerPage;
+            $currentPageItems = array_slice($maintenance_success, $startIndex, $itemsPerPage);
+            ?>
+            <?php if (!empty($currentPageItems)) : ?>
                 <div class="table_maintenance">
-                    <?php foreach ($maintenance_success as $row) : ?>
+                    <?php foreach ($currentPageItems as $row) : ?>
                         <div class="table_maintenanceContent">
                             <div class="table_maintenanceContent_00">
                                 <div class="table_maintenanceContent_1">
@@ -414,6 +459,22 @@ try {
                         </div>
                     <?php endforeach ?>
                 </div>
+                <!-- Pagination Links -->
+                <div class="pagination">
+                    <?php if ($currentPage > 1) : ?>
+                        <a href="?page=<?= $currentPage - 1 ?>" class="pagination-link">Previous</a>
+                    <?php endif ?>
+
+                    <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
+                        <a href="?page=<?= $page ?>" class="pagination-link <?= ($page == $currentPage) ? 'active' : '' ?>">
+                            <?= $page ?>
+                        </a>
+                    <?php endfor ?>
+
+                    <?php if ($currentPage < $totalPages) : ?>
+                        <a href="?page=<?= $currentPage + 1 ?>" class="pagination-link">Next</a>
+                    <?php endif ?>
+                </div>
             <?php else : ?>
                 <div class="maintenance_not_found">
                     <i class="fa-solid fa-database"></i>
@@ -421,6 +482,7 @@ try {
                 </div>
             <?php endif ?>
         <?php endif ?>
+
     </div>
     <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/noti_toast.js"></script>
