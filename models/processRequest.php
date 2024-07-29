@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // ตรวจสอบรายการในคำขอการจอง
         $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE ID = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -62,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // ถ้าไม่มีข้อผิดพลาดในการจอง, ทำการอัปเดตข้อมูลการจอง
             $update_query = $conn->prepare("
-                UPDATE approve_to_reserve 
-                SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 
-                WHERE ID = :id");
+                    UPDATE approve_to_reserve 
+                    SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 
+                    WHERE ID = :id");
             $update_query->bindParam(':id', $id, PDO::PARAM_INT);
             $update_query->bindParam(':approver', $approver_name, PDO::PARAM_STR);
             $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);

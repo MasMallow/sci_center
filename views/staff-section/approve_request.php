@@ -256,7 +256,7 @@ try {
                                                         <form method="POST" action="<?php echo $base_url; ?>/models/processRequest.php">
                                                             <input type="hidden" name="id" value="<?= htmlspecialchars($row['ID']) ?>">
                                                             <input type="hidden" name="userID" value="<?= htmlspecialchars($row['userID']) ?>">
-                                                            <button type="submit" class="confirm">ยืนยัน</button>
+                                                            <button type="submit" name="confirm" class="confirm">ยืนยัน</button>
                                                         </form>
                                                         <div class="cancelApprove">
                                                             <span id="B">ปิดหน้าต่าง</span>

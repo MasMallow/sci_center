@@ -49,7 +49,12 @@ try {
     }
 
     // ดึงข้อมูลการขอใช้งานที่ยังไม่ได้ใช้งานและตรงกับวันที่ปัจจุบัน
-    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE userID = :user_id AND Usage_item = 0 AND date_return is NUll AND situation = 1 AND DATE(reservation_date) <= CURDATE()");
+    $stmt = $conn->prepare("SELECT * FROM approve_to_reserve 
+    WHERE userID = :user_id 
+    AND Usage_item = 0 
+    AND date_return IS NULL 
+    AND situation = 1 
+    AND CURDATE() <= DATE(reservation_date)");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -247,7 +247,6 @@ try {
 
     <!-- JavaScript -->
     <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
-    <script src="<?= $base_url; ?>/assets/js/details.js"></script>
     <script src="<?= $base_url; ?>/assets/js/datetime.js"></script>
 </body>
 
