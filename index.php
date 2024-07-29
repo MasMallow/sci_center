@@ -26,7 +26,7 @@ switch ($request) {
         require 'views/sign_up.php'; // หน้าลงทะเบียน
         break;
     case '/changePassword':
-        require 'auth/change_password.php'; // หน้าลงทะเบียน
+        require 'views/change_password.php'; // หน้าลงทะเบียน
         break;
     case '/cart':
         require 'views/cart.php'; // ระบบตะกร้าสินค้า

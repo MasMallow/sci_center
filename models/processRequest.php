@@ -16,12 +16,11 @@ if (!isset($_SESSION['staff_login'])) {
 
 // ตรวจสอบว่าคำขอเป็น POST หรือไม่
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['confirm'])) {
+    // ตรวจสอบว่ามีข้อมูล id และ userID หรือไม่
+    if (isset($_POST['id']) && isset($_POST['userID'])) {
         $id = $_POST['id'];
         $userID = $_POST['userID'];
         $staff_id = $_SESSION['staff_login'];
-
-        echo ($id);
 
         // เลือกข้อมูลผู้อนุมัติจากฐานข้อมูล
         $staffSelect = $conn->prepare("SELECT * FROM users_db WHERE userID = :staff_id");
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // ตรวจสอบรายการในคำขอการจอง
         $stmt = $conn->prepare("SELECT * FROM approve_to_reserve WHERE ID = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -58,14 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach ($errorMessages as $message) {
                 echo $message . '<br>';
             }
-            echo '<a href="Home.php">กลับหน้าหลัก</a><br>';
+            echo '<a href="/approve_request">กลับหน้าหลัก</a><br>';
             exit;
         } else {
             // ถ้าไม่มีข้อผิดพลาดในการจอง, ทำการอัปเดตข้อมูลการจอง
             $update_query = $conn->prepare("
-                    UPDATE approve_to_reserve 
-                    SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 
-                    WHERE ID = :id");
+                UPDATE approve_to_reserve 
+                SET approver = :approver, approvaldatetime = :approvaldatetime, situation = 1 
+                WHERE ID = :id");
             $update_query->bindParam(':id', $id, PDO::PARAM_INT);
             $update_query->bindParam(':approver', $approver_name, PDO::PARAM_STR);
             $update_query->bindParam(':approvaldatetime', $approvaldatetime, PDO::PARAM_STR);

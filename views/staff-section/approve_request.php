@@ -25,43 +25,45 @@ if (isset($_SESSION['staff_login'])) {
 }
 
 // ตั้งค่าการแบ่งหน้า
-$limit = 1; // จำนวนรายการต่อหน้า
+$limit = 20; // จำนวนรายการต่อหน้า
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
 // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ
 $stmt = $conn->prepare("
-        SELECT * FROM approve_to_reserve 
-        WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL
-        ORDER BY created_at ASC 
-        LIMIT :limit OFFSET :offset
+    SELECT * FROM approve_to_reserve 
+    WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL
+    ORDER BY created_at ASC 
+    LIMIT :limit OFFSET :offset
 ");
 $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // ดึงจำนวนข้อมูลทั้งหมดที่ยังไม่ได้รับการอนุมัติ
 $totalStmt = $conn->prepare("
-        SELECT COUNT(*) FROM approve_to_reserve 
-        WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL
+    SELECT COUNT(*) FROM approve_to_reserve 
+    WHERE approvaldatetime IS NULL AND approver IS NULL AND situation IS NULL
 ");
 $totalStmt->execute();
 $totalData = $totalStmt->fetchColumn();
 $totalPages = ceil($totalData / $limit);
 
-$num = count($data); // นับจำนวนรายการ
-$previousSn = '';
-$previousFirstname = '';
+// ตรวจสอบการแสดงผล pagination
+$pagination_display = $totalData > $limit;
 
-// ตั้งค่าการแบ่งหน้าสำหรับการอนุมัติแล้ว
+// ตั้งค่าการแบ่งหน้า สำหรับการอนุมัติแล้ว
 $usedLimit = 10;
 $usedPage = isset($_GET['usedPage']) ? (int)$_GET['usedPage'] : 1;
 $usedOffset = ($usedPage - 1) * $usedLimit;
 
 // ดึงข้อมูลการอนุมัติการจอง
-$used = $conn->prepare("SELECT * FROM approve_to_reserve ORDER BY ID DESC LIMIT :limit OFFSET :offset");
+$used = $conn->prepare("
+    SELECT * FROM approve_to_reserve 
+    ORDER BY ID DESC 
+    LIMIT :limit OFFSET :offset
+");
 $used->bindParam(':limit', $usedLimit, PDO::PARAM_INT);
 $used->bindParam(':offset', $usedOffset, PDO::PARAM_INT);
 $used->execute();
@@ -72,9 +74,6 @@ $totalUsedStmt = $conn->prepare("SELECT COUNT(*) FROM approve_to_reserve");
 $totalUsedStmt->execute();
 $totalUsedData = $totalUsedStmt->fetchColumn();
 $totalUsedPages = ceil($totalUsedData / $usedLimit);
-
-$usedCount = count($dataUsed); // นับจำนวนรายการ
-
 
 // ตรวจสอบค่าของ month และ year จาก GET parameters
 $current_month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
@@ -133,9 +132,9 @@ try {
 
         // แปลงรูปแบบวันที่เพื่อใช้ในฐานข้อมูล (ถ้าจำเป็น)
         $stmt = $conn->prepare("
-    SELECT * FROM approve_to_reserve
-    WHERE DATE(reservation_date) = :reservation_date
-");
+            SELECT * FROM approve_to_reserve
+            WHERE DATE(reservation_date) = :reservation_date
+        ");
         $stmt->bindParam(":reservation_date", $reservation_date, PDO::PARAM_STR); // ใช้ PDO::PARAM_STR สำหรับวันที่
         $stmt->execute();
         $detailsdataUsed = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -144,8 +143,6 @@ try {
     echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     exit;
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -217,106 +214,76 @@ try {
                     <div class="approve_header">
                         <span>รายการที่ขอใช้ทั้งหมด <span id="B"><?php echo $totalData; ?></span> รายการ</span>
                     </div>
-                    <?php
-                    $previousSn = null;
-                    foreach ($data as $row) :
-                        if ($previousSn != $row['serial_number']) :
-                    ?>
-                            <div class="approveData">
-                                <div class="approveheader">
-                                    <i class="fa-solid fa-clock"></i>
-                                    <div class="s_number"><span id="B">หมายเลขรายการ </span><?php echo $row['serial_number']; ?></div>
-                                </div>
-                                <div class="approve_table_row">
-                                    <div class="name_use"><?php echo $row['name_user']; ?> ได้ทำการขอใช้<?php echo thai_date_time_2($row['created_at']); ?></div>
-                                    <div class="item_name">
-                                        <?php
-                                        $items = explode(',', $row['list_name']);
-                                        foreach ($items as $item) {
-                                            list($product_name, $quantity) = explode('(', $item);
-                                            $product_name = trim($product_name);
-                                            $quantity = str_replace(')', '', trim($quantity));
-                                            echo "- " . $product_name . ' <span id="B">(' . $quantity . ' รายการ)</span><br>';
-                                        }
-                                        ?>
+                    <div class="approve_table">
+                        <?php
+                        $previousSn = null;
+                        foreach ($data as $row) :
+                            if ($previousSn != $row['serial_number']) :
+                        ?>
+                                <div class="approveData">
+                                    <div class="approveheader">
+                                        <i class="fa-solid fa-clock"></i>
+                                        <div class="s_number"><span id="B">หมายเลขรายการ </span><?php echo $row['serial_number']; ?></div>
                                     </div>
-                                    <div class="return"><span id="B">ขอใช้</span id="B"><?php echo thai_date_time_2($row['reservation_date']); ?>
-                                        <span id="B">ถึง</span id="B"><?php echo thai_date_time_2($row['end_date']); ?>
-                                    </div>
-                                    <div class="approval">
-                                        <span class="confirm_approve" data-modal="<?= $row['ID'] ?>">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                            อนุมัติการขอใช้
-                                        </span>
-                                        <div class="confirmApprovePopup" id="<?php echo htmlspecialchars($row['ID']); ?>">
-                                            <div class="confirmApprove_content">
-                                                <div class="confirmApprovePopup_sec01">
-                                                    <i class="fa-solid fa-exclamation"></i>
-                                                    <span id="B">ยืนยันการอนุมัติการขอใช้</span>
-                                                </div>
-                                                <div class="confirmApprovePopup_sec02">
-                                                    <form method="POST" action="<?php echo $base_url; ?>/models/processRequest.php">
-                                                        <input type="text" name="id" value="<?php echo $row['ID']; ?>">
-                                                        <input type="hidden" name="userID" value="<?php echo $row['userID']; ?>">
-                                                        <button type="submit" class="confirm">ยืนยัน</button>
-                                                    </form>
-                                                    <div class="cancelApprove" id="closeDetails">
-                                                        <span id="B">ปิดหน้าต่าง</span>
+                                    <div class="approve_table_row">
+                                        <div class="name_use"><?php echo $row['name_user']; ?> ได้ทำการขอใช้<?php echo thai_date_time_2($row['created_at']); ?></div>
+                                        <div class="item_name">
+                                            <?php
+                                            $items = explode(',', $row['list_name']);
+                                            foreach ($items as $item) {
+                                                list($product_name, $quantity) = explode('(', $item);
+                                                $product_name = trim($product_name);
+                                                $quantity = str_replace(')', '', trim($quantity));
+                                                echo "- " . $product_name . ' <span id="B">(' . $quantity . ' รายการ)</span><br>';
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="return"><span id="B">ขอใช้</span id="B"><?php echo thai_date_time_2($row['reservation_date']); ?>
+                                            <span id="B">ถึง</span id="B"><?php echo thai_date_time_2($row['end_date']); ?>
+                                        </div>
+                                        <div class="approval">
+                                            <span class="confirm_approve" data-modal="<?= htmlspecialchars($row['ID']) ?>">
+                                                <i class="fa-solid fa-circle-check"></i>
+                                                อนุมัติการขอใช้
+                                            </span>
+                                            <div class="confirmApprovePopup" id="modal_<?= htmlspecialchars($row['ID']) ?>">
+                                                <div class="confirmApprove_content">
+                                                    <div class="confirmApprovePopup_sec01">
+                                                        <i class="fa-solid fa-exclamation"></i>
+                                                        <span id="B">ยืนยันการอนุมัติการขอใช้</span>
+                                                    </div>
+                                                    <div class="confirmApprovePopup_sec02">
+                                                        <form method="POST" action="<?php echo $base_url; ?>/models/processRequest.php">
+                                                            <input type="hidden" name="id" value="<?= htmlspecialchars($row['ID']) ?>">
+                                                            <input type="hidden" name="userID" value="<?= htmlspecialchars($row['userID']) ?>">
+                                                            <button type="submit" class="confirm">ยืนยัน</button>
+                                                        </form>
+                                                        <div class="cancelApprove">
+                                                            <span id="B">ปิดหน้าต่าง</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <script>
-                                        // ค้นหาปุ่มทั้งหมดที่ใช้เปิด modal
-                                        const modalOpenButtons1 = document.querySelectorAll(".confirm_approve");
-
-                                        // ค้นหาปุ่มปิด modal
-                                        const modalCloseButton = document.getElementById("closeDetails");
-
-                                        // ค้นหา modal
-                                        const modal = document.querySelector(".confirmApprovePopup");
-
-                                        // เพิ่มฟังก์ชันเพื่อเปิด modal
-                                        modalOpenButtons1.forEach(function(button) {
-                                            button.addEventListener("click", function() {
-                                                // แสดง modal โดยตั้งค่า style.display เป็น 'block'
-                                                modal.style.display = "flex";
-                                                p
-                                            });
-                                        });
-
-                                        // เพิ่มฟังก์ชันเพื่อปิด modal
-                                        modalCloseButton.addEventListener("click", function() {
-                                            // ซ่อน modal โดยตั้งค่า style.display เป็น 'none'
-                                            modal.style.display = "none";
-                                        });
-
-                                        // ปิด modal เมื่อคลิกที่พื้นหลังของ modal
-                                        modal.addEventListener("click", function(event) {
-                                            // ตรวจสอบว่าคลิกที่พื้นหลังของ modal หรือไม่
-                                            if (event.target === modal) {
-                                                // ซ่อน modal โดยตั้งค่า style.display เป็น 'none'
-                                                modal.style.display = "none";
-                                            }
-                                        });
-                                    </script>
                                 </div>
                         <?php
-                            $previousSn = $row['serial_number'];
-                        endif;
-                    endforeach;
+                                $previousSn = $row['serial_number'];
+                            endif;
+                        endforeach;
                         ?>
-                            </div>
-                            <div class="pagination">
-                                <?php if ($page > 1) : ?>
-                                    <a href="?page=<?php echo $page - 1; ?>" class="prev"><i class="fa-solid fa-arrow-left"></i> หน้าก่อน</a>
-                                <?php endif; ?>
-                                <?php if ($page < $totalPages) : ?>
-                                    <a href="?page=<?php echo $page + 1; ?>" class="next">หน้าถัดไป <i class="fa-solid fa-arrow-right"></i></a>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
+                    </div>
+                    <?php if ($pagination_display) : ?>
+                        <div class="pagination">
+                            <?php if ($page > 1) : ?>
+                                <a href="?page=<?php echo $page - 1; ?>" class="prev"><i class="fa-solid fa-arrow-left"></i> หน้าก่อน</a>
+                            <?php endif; ?>
+                            <?php if ($page < $totalPages) : ?>
+                                <a href="?page=<?php echo $page + 1; ?>" class="next">หน้าถัดไป <i class="fa-solid fa-arrow-right"></i></a>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
 
             <!-- /approve_request/calendar -->
@@ -448,6 +415,46 @@ try {
             <?php endif; ?>
     </div>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ค้นหาปุ่มทั้งหมดที่ใช้เปิด modal
+            const modalOpenButtons = document.querySelectorAll(".confirm_approve");
+
+            // ฟังก์ชันเพื่อเปิด modal
+            modalOpenButtons.forEach(function(button) {
+                button.addEventListener("click", function() {
+                    // รับ ID ของ modal ที่จะเปิด
+                    const modalId = button.getAttribute('data-modal');
+                    const modal = document.getElementById('modal_' + modalId);
+                    if (modal) {
+                        // แสดง modal โดยตั้งค่า style.display เป็น 'flex'
+                        modal.style.display = "flex";
+                    }
+                });
+            });
+
+            // ค้นหาทุกปุ่มปิด modal
+            const modalCloseButtons = document.querySelectorAll(".cancelApprove");
+
+            // ฟังก์ชันเพื่อปิด modal
+            modalCloseButtons.forEach(function(button) {
+                button.addEventListener("click", function() {
+                    // ปิด modal
+                    const modal = button.closest('.confirmApprovePopup');
+                    if (modal) {
+                        modal.style.display = "none";
+                    }
+                });
+            });
+
+            // ปิด modal เมื่อคลิกที่พื้นหลังของ modal
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('confirmApprovePopup')) {
+                    event.target.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

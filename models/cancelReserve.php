@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reserveID'])) {
     $stmt->execute();
 
     // หลังจากลบรายการเสร็จแล้ว ให้เปลี่ยนเส้นทางไปยังหน้า TrackingReserve
-    header('Location: /TrackingReserve');
+    header('Location: /list-request');
     exit();
 }
 ?>

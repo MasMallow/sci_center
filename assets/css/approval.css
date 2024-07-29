@@ -90,7 +90,11 @@
   padding: 10px;
   font-size: 0.925rem;
 }
-
+.approve_table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
 .approveData {
   display: flex;
   flex-direction: column;
@@ -108,7 +112,7 @@
   border-bottom: 1px solid #d0d7de;
   color: #1f2328;
 
-  i{
+  i {
     color: #0056b3;
   }
 }

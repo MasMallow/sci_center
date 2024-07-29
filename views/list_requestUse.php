@@ -79,7 +79,7 @@ try {
                 <span id="B">ไม่พบข้อมูลการขอใช้</span>
             </div>
         <?php else : ?>
-            <form method="POST" action="<?php echo $base_url; ?>/backend/cancelReserve.php">
+            <form method="POST" action="<?php echo $base_url; ?>/models/cancelReserve.php">
                 <div class="list_request">
                     <?php foreach ($bookings as $booking) : ?>
                         <div class="list_request_content">
@@ -109,13 +109,13 @@ try {
                                     ขอใช้งาน<?= thai_date_time_2($booking['created_at']); ?>
                                     ถึง<?= thai_date_time_2($booking['reservation_date']); ?>
                                 </div>
-                                <?php if ($booking['reservation_date'] > date("Y-m-d")) : ?>
-                                    <div class="list_request_footer">
-                                        <input type="hidden" name="reserveID" value="<?= htmlspecialchars($booking['ID']); ?>">
-                                        <button class="cancel_request" type="submit">ยกเลิกการขอใช้</button>
-                                    </div>
-                                <?php endif; ?>
                             </div>
+                            <?php if ($booking['reservation_date'] > date("Y-m-d")) : ?>
+                                <div class="list_request_footer">
+                                    <input type="hidden" name="reserveID" value="<?= htmlspecialchars($booking['ID']); ?>">
+                                    <button class="cancel_request" type="submit">ยกเลิกการขอใช้</button>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
