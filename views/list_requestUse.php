@@ -54,7 +54,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>รายการการขอใช้</title>
-    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">

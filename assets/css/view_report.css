@@ -169,6 +169,8 @@
   }
 
   & .reset_data {
+    font-size: 0.85rem;
+    color: #000;
     outline: none;
     border-radius: 5px;
     border: none;
@@ -235,7 +237,7 @@
   color: orange;
 }
 
-.fa-check-circle {
+.fa-check-circle{
   color: green;
 }
 
@@ -244,7 +246,7 @@
 }
 
 .fa-calendar-check {
-  color: blue;
+  color: rgb(30, 124, 248);
 }
 
 /* <------------------  TOP10 PAGE ------------------------> */

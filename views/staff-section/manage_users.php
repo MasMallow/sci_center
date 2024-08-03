@@ -367,16 +367,16 @@ try {
                                                     <i class="fa-solid fa-trash-can"></i>
                                                     <span>ลบบัญชี</span>
                                                 </span>
-                                                <div class="del_notification_alert" id="<?= htmlspecialchars($user['userID']); ?>">
-                                                    <div class="del_notification_content">
-                                                        <div class="del_notification_popup">
-                                                            <div class="del_notification_sec01">
+                                                <div class="deleteAccount" id="<?= htmlspecialchars($user['userID']); ?>">
+                                                    <div class="deleteAccount_section">
+                                                        <div class="deleteAccount_content">
+                                                            <div class="deleteAccount_sec1">
                                                                 <i class="fa-solid fa-triangle-exclamation"></i>
                                                                 <span id="B">แจ้งเตือนการลบข้อมูล</span>
                                                             </div>
-                                                            <div class="del_notification_sec02">
-                                                                <button class="delete_user" type="submit" name="delete_user">
-                                                                    <i class="fa-solid fa-trash-can"></i>
+                                                            <div class="deleteAccount_sec2">
+                                                            <button class="deleteUser" type="submit" name="delete_user">
+                                                                    <span id="B">ลบบัญชี</span>
                                                                 </button>
                                                                 <div class="cancel_del" id="closeDetails">
                                                                     <span id="B">ปิดหน้าต่าง</span>

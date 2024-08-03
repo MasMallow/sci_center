@@ -276,7 +276,7 @@ elseif (isset($_GET['delete'])) {
     $stmt->execute();
 
     $_SESSION['success'] = "ลบข้อมูลสำเร็จ";
-    header("location: " . $base_url . "/management/viewData");
+    header("location: /management/viewData");
     exit();
 }
 

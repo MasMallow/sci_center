@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once '../assets/config/config.php';
 require_once '../assets/config/Database.php';
 date_default_timezone_set('Asia/Bangkok');
 

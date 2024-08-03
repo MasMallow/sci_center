@@ -43,6 +43,10 @@ switch ($request) {
     case '/list-request':
         require 'views/list_requestUse.php'; // รายการการจอง
         break;
+    case '/qrcode':
+    case '/qrcode-staff':
+        require 'views/qrcode.php'; // รายการการจอง
+        break;
     case (preg_match('/^\/reservation_details\/(\d{4}-\d{2}-\d{2})$/', $request, $matches) ? true : false):
         $_GET['day_date'] = $matches[1];
         require 'views/ReservationDetails.php'; // บันทึกการจอง
@@ -60,6 +64,11 @@ switch ($request) {
     case '/approve_request/calendar':
     case '/approve_request/viewlog/details':
         require 'views/staff-section/approve_request.php'; // อนุมัติคำขอ
+        break;
+    case '/management-website':
+    case '/management-website/add':
+    case '/management-website/edit':
+        require 'views/staff-section/manageWebsite.php'; // อนุมัติคำขอ
         break;
     case (preg_match('/^\/approve_request\/reservation_details\/(\d{4}-\d{2}-\d{2})$/', $request, $matches) ? true : false):
         $_GET['day_date'] = $matches[1];
@@ -98,6 +107,7 @@ switch ($request) {
     case '/maintenance_dashboard':
     case '/maintenance_start':
     case '/maintenance_end':
+    case '/list-name':
         require 'views/staff-section/maintenance.php'; // การบำรุงรักษา
         break;
     case '/maintenance/report':
@@ -110,10 +120,12 @@ switch ($request) {
         require 'views/staff-section/generate_pdf.php'; // สร้าง PDF
         break;
     case '/top10':
+    case '/history/material':
+    case '/top10/equipment':
+    case '/top10/tools':
         require 'views/staff-section/view_top10.php'; // ดูบันทึก
         break;
     default:
         require 'views/error_page.php'; // หน้าข้อผิดพลาด
         break;
 }
-?>

@@ -34,7 +34,7 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เพิ่มวัสดุ อุปกรณ์ และเครื่องมือ</title>
-    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
@@ -229,17 +229,16 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
                                         <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
                                     </div>
                                     <div class="viewLog_User_content_3">
-                                        ได้ทำการ
                                         <?php
                                         switch ($Data['log_Status']) {
                                             case 'Add':
-                                                echo "เพิ่มข้อมูล";
+                                                echo "ได้ทำการเพิ่มข้อมูล";
                                                 break;
                                             case 'Edit':
-                                                echo "แก้ไขข้อมูล";
+                                                echo "ได้ทำการแก้ไขข้อมูล";
                                                 break;
                                             case 'Delete':
-                                                echo "ลบข้อมูล";
+                                                echo "ได้ทำการลบข้อมูล";
                                                 break;
                                         }
                                         ?>
@@ -274,10 +273,26 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
                 <div class="viewLog_Management_Details">
                     <div class="viewLog_Management_section">
                         <div class="viewLog_Management_section_1">
-                            <a href="javascript:history.back()">
+                            <a class="historyBACK" href="javascript:history.back()">
                                 <i class="fa-solid fa-arrow-left-long"></i>
                             </a>
-                            <span id="B">ดูประวัติการจัดการระบบ</span>
+                            <div class="breadcrumb">
+                                <a href="/">หน้าหลัก</a>
+                                <span>&gt;</span>
+                                <?php
+                                if (strpos($request_uri, '/management') !== false) {
+                                    echo '<a href="/management">การจัดการระบบ</a>';
+                                    echo '<span>&gt;</span>';
+                                }
+                                if (strpos($request_uri, '/management/viewlog') !== false) {
+                                    echo '<a href="/management/viewlog">ดูประวัติการจัดการระบบ</a>';
+                                    echo '<span>&gt;</span>';
+                                }
+                                if (strpos($request_uri, '/management/viewlog/details') !== false) {
+                                    echo '<a href="">รายละเอียด</a>';
+                                }
+                                ?>
+                            </div>
                         </div>
                         <div class="viewLog_Management_section_2">
                             <a href="<?php echo $base_url; ?>/management/addData">กลับหน้าเพิ่มข้อมูล</a>
@@ -291,20 +306,19 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
                             <?php foreach ($detailsManagement as $Data) : ?>
                                 <div class="viewLog_Management_content">
                                     <div class="viewLog_Management_content_1">
+                                        <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
                                         <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
                                         (<?= htmlspecialchars($Data['log_Role'], ENT_QUOTES, 'UTF-8') ?>)
-                                        <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
-                                        ได้ทำการ
                                         <?php
                                         switch ($Data['log_Status']) {
                                             case 'Add':
-                                                echo "เพิ่มข้อมูล";
+                                                echo "ได้ทำการเพิ่มข้อมูล";
                                                 break;
                                             case 'Edit':
-                                                echo "แก้ไขข้อมูล";
+                                                echo "ได้ทำการแก้ไขข้อมูล";
                                                 break;
                                             case 'Delete':
-                                                echo "ลบข้อมูล";
+                                                echo "ได้ทำการลบข้อมูล";
                                                 break;
                                         }
                                         ?>

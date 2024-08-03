@@ -22,39 +22,43 @@ try {
     exit();
 }
 
-$searchTitle = "";
-$searchValue = "";
-$params = [];
-$result = [];
+$searchValue = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
+$searchQuery = $searchValue ? "%" . $searchValue . "%" : '';
 
-if (isset($_GET['search'])) {
-    $searchValue = htmlspecialchars($_GET['search']);
-    $searchTitle = "ค้นหา \"$searchValue\" | ";
-}
+$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
+
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$results_per_page = 48;
+$offset = ($page - 1) * $results_per_page;
 
 // สร้างคำสั่ง SQL ตามตัวกรอง userID และช่วงเวลา
 $sql = "SELECT * FROM logs_maintenance WHERE 1=1";
+$params = [];
 
 // ตรวจสอบและกำหนดค่า start_date และ end_date
-if (!empty($_GET['start_date']) && !empty($_GET['end_date'])) {
+if (!empty($start_date) && !empty($end_date)) {
     $sql .= " AND start_maintenance BETWEEN :start_date AND :end_date";
-    $params[':start_date'] = $_GET['start_date'];
-    $params[':end_date'] = $_GET['end_date'];
+    $params[':start_date'] = $start_date;
+    $params[':end_date'] = $end_date;
 }
 
-// เพิ่มคำสั่ง ORDER BY
-$sql .= " ORDER BY start_maintenance DESC";
+// เพิ่มเงื่อนไขการค้นหา
+if ($searchValue) {
+    $sql .= " AND (sci_name LIKE :search OR serial_number LIKE :search)";
+    $params[':search'] = $searchQuery;
+}
 
+$sql .= " ORDER BY start_maintenance DESC LIMIT :offset, :results_per_page";
+
+// ดึงข้อมูลจากฐานข้อมูล
 try {
     $historyStmt = $conn->prepare($sql);
-
-    // กำหนดค่าให้กับ parameter
-    if (!empty($params)) {
-        foreach ($params as $key => $value) {
-            $historyStmt->bindValue($key, $value);
-        }
+    foreach ($params as $key => $value) {
+        $historyStmt->bindValue($key, $value);
     }
-
+    $historyStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $historyStmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
     $historyStmt->execute();
     $historyData = $historyStmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -62,7 +66,25 @@ try {
     exit();
 }
 
+// นับจำนวนรายการทั้งหมด
+$total_records_query = "SELECT COUNT(*) AS total FROM logs_maintenance WHERE 1=1";
+$params_count = $params;
+
+try {
+    $stmt_count = $conn->prepare($total_records_query);
+    foreach ($params_count as $key => $value) {
+        $stmt_count->bindValue($key, $value);
+    }
+    $stmt_count->execute();
+    $total_records = $stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit();
+}
+
+$total_pages = ceil($total_records / $results_per_page);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,7 +92,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ประวัติการบำรุงรักษา</title>
-    <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/breadcrumb.css">
@@ -101,12 +123,12 @@ try {
                 <div class="view_maintenance_column">
                     <div class="view_maintenance_input">
                         <label id="B" for="startDate">ช่วงเวลาเริ่มต้น</label>
-                        <input type="date" id="startDate" name="start_date" value="<?= htmlspecialchars($searchValue); ?>">
+                        <input type="date" id="startDate" name="start_date" value="<?= htmlspecialchars($start_date); ?>">
                     </div>
                     <div class="view_maintenance_input">
                         <label id="B" for="endDate">ช่วงเวลาสิ้นสุด</label>
                         <div class="view_Maintenance_btn">
-                            <input type="date" id="endDate" name="end_date" value="<?= htmlspecialchars($searchValue); ?>">
+                            <input type="date" id="endDate" name="end_date" value="<?= htmlspecialchars($end_date); ?>">
                             <button type="submit" class="searchReport"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </div>
@@ -118,12 +140,12 @@ try {
             <div class="view_report_table_header_pdf">
                 <span id="B">ประวัติการบำรุงรักษา</span>
                 <form id="pdfForm" action="<?php echo $base_url; ?>/staff-section/generate_report_maintenance.php" method="GET">
-                    <?php if (!empty($_GET["userID"])) : ?>
-                        <input type="hidden" name="userID" value="<?= htmlspecialchars($_GET["userID"]) ?>">
+                    <?php if (!empty($userID)) : ?>
+                        <input type="hidden" name="userID" value="<?= htmlspecialchars($userID) ?>">
                     <?php endif; ?>
-                    <?php if (!empty($_GET["start_date"]) && !empty($_GET["end_date"])) : ?>
-                        <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($_GET["start_date"]) ?>">
-                        <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($_GET["end_date"]) ?>">
+                    <?php if (!empty($start_date) && !empty($end_date)) : ?>
+                        <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($start_date) ?>">
+                        <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($end_date) ?>">
                     <?php endif; ?>
                     <button type="submit" class="create_pdf">สร้างรายงาน</button>
                 </form>
@@ -133,9 +155,9 @@ try {
                 <button type="submit" class="reset_data">แสดงข้อมูลทั้งหมด</button>
             </form>
         </div>
-        <div class="maintenanceReport">
-            <?php if (count($historyData) > 0) : ?>
-                <?php foreach ($historyData as $row) : ?>
+        <?php if (count($historyData) > 0) : ?>
+            <?php foreach ($historyData as $row) : ?>
+                <div class="maintenanceReport">
                     <div class="maintenanceReport_ROW">
                         <div class="history-item_1">
                             <?php echo htmlspecialchars($row["sci_name"]); ?>
@@ -162,17 +184,42 @@ try {
                             <?php endif; ?>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <div class="history-row no-data">
-                    ไม่พบประวัติการบำรุงรักษา
+                </div>
+            <?php endforeach; ?>
+            <!-- PAGINATION PAGE -->
+            <?php if ($total_pages > 1) : ?>
+                <div class="pagination">
+                    <?php if ($page > 1) : ?>
+                        <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
+                        <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                    <?php endif; ?>
+
+                    <?php
+                    for ($i = 1; $i <= $total_pages; $i++) {
+                        if ($i == $page) {
+                            echo "<a class='active'>$i</a>";
+                        } else {
+                            echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
+                        }
+                    }
+                    ?>
+
+                    <?php if ($page < $total_pages) : ?>
+                        <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
+                        <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
-        </div>
+        <?php else : ?>
+            <div class="history_rowNOTFOUND">
+                <i class="fa-solid fa-database"></i>
+                ไม่พบประวัติการบำรุงรักษา
+            </div>
+        <?php endif; ?>
+        <footer>
+            <?php include_once 'assets/includes/footer_2.php'; ?>
+        </footer>
     </div>
-    <footer>
-        <?php include_once 'assets/includes/footer_2.php'; ?>
-    </footer>
 </body>
 
 </html>

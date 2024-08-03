@@ -56,3 +56,15 @@ function closeModal() {
     var modal = document.querySelector('.cart_alert');
     modal.style.display = 'none';
 }
+
+function decreaseAmount(button) {
+    const input = button.nextElementSibling;
+    if (input.value > 1) {
+        input.value--;
+    }
+}
+
+function increaseAmount(button) {
+    const input = button.previousElementSibling;
+    input.value++;
+}

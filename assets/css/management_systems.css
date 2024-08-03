@@ -783,8 +783,8 @@
   align-items: center;
   justify-content: center;
 }
-/* <-------------------- Pagination  ----------------> */
 
+/* <-------------------- Pagination  ----------------> */
 .pagination {
   display: flex;
   justify-content: center;
@@ -883,7 +883,7 @@
     overflow: hidden;
 
     .viewLog_Management_header {
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       color: #1f2328;
       padding: 0.5rem 1rem;
       background-color: #f6f8fa;
@@ -921,6 +921,10 @@
           align-items: center;
           gap: 0.3rem;
         }
+
+        &:last-child {
+          border-bottom: none;
+        }
       }
     }
   }
@@ -939,7 +943,7 @@
     overflow: hidden;
 
     .viewLog_Management_header {
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       color: #1f2328;
       padding: 0.5rem 1rem;
       background-color: #f6f8fa;
@@ -956,7 +960,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
-        padding: 1.25rem 1rem;
+        padding: 0.7toprem 1rem;
 
         .viewLog_Management_content_1 {
           display: flex;

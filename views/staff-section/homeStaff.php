@@ -141,7 +141,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCICENTER Management || Staff</title>
-    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/staff.css">
 </head>
 
@@ -194,6 +194,13 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                         <a href="top10" class="group_li_02">
                             <i class="fa-solid fa-thumbs-up"></i>
                             <span>TOP 10</span>
+                        </a>
+                    </li>
+                    <li class="group_li">
+                        <span class="group_title">QR-CODE</span>
+                        <a class="group_li_01" href="<?= $base_url; ?>/qrcode-staff">
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span class="text">QR CODE</span>
                         </a>
                     </li>
                 </ul>
@@ -296,10 +303,12 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                                 <div class="date"><?php echo $i; ?></div>
                                 <?php if (isset($calendar[$i])) : ?>
                                     <div class="reservation">
-                                        <div class="notification">
+                                        <div class="notification_reservation">
                                             <?php foreach ($calendar[$i] as $reservation) : ?>
                                                 <?php if (!empty($reservation)) : ?>
-                                                    <a href="reservation_details/<?php echo $day_date; ?>"><i class="fa-solid fa-circle-exclamation"></i></a>
+                                                    <a class="icon_reservation" href="reservation_details/<?php echo $day_date; ?>">
+                                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                                    </a>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </div>

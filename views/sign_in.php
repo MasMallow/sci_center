@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>เข้าสู่ระบบ</title>
-        <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+        <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
         <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
         <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/login.css">
         <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
@@ -50,7 +50,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
             <?php endif ?>
             <section class="box_layout">
                 <div class="box_content_logo">
-                    <img src="<?php echo $base_url; ?>/assets/logo/scicenter_logo.png">
+                    <img src="<?php echo $base_url; ?>/assets/img/logo/sci_center.png">
                 </div>
                 <div class="box_content">
                     <form action="<?php echo $base_url; ?>/models/sign_inDB.php" id="sign-in-form" method="POST">

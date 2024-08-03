@@ -10,7 +10,7 @@ require_once 'assets/config/Database.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สมัครบัญชีผู้ใช้</title>
-    <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/sign_up.css">
@@ -33,16 +33,17 @@ require_once 'assets/config/Database.php';
         </div>
         <?php unset($_SESSION['errorSign_up']); ?>
     <?php endif ?>
-
     <!-- ----------------- FORM ------------------- -->
     <form action="<?php echo $base_url; ?>/models/sign_upDB.php" method="post">
         <section class="register_layout">
             <div class="register_logo">
-                <img src="<?php echo $base_url; ?>/assets/logo/scicenter_logo.png">
+                <img src="<?php echo $base_url; ?>/assets/img/logo/sci_center.png">
             </div>
             <div class="register_page">
                 <div class="register_page_head">
-                    <a href="<?php echo $base_url; ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
+                    <a class="historyBACK" href="javascript:history.back();">
+                        <i class="fa-solid fa-arrow-left-long"></i>
+                    </a>
                     <span id="B">สมัครบัญชีผู้ใช้</span>
                 </div>
                 <div class="register_page_body">

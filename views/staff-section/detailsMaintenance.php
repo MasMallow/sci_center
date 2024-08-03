@@ -16,20 +16,18 @@ if (isset($_SESSION['staff_login'])) {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-$detailsMaintenance = [];
-
 try {
     if (isset($_GET['id'])) {
         $id = (int)$_GET['id'];
         $stmt = $conn->prepare("
-            SELECT * FROM info_sciname 
-            LEFT JOIN logs_maintenance
-            ON info_sciname.serial_number = logs_maintenance.serial_number 
+            SELECT * FROM crud 
+            LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number
+            LEFT JOIN logs_maintenance ON info_sciname.serial_number = logs_maintenance.serial_number 
             WHERE info_sciname.ID = :id
         ");
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
-        $detailsMaintenance = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $detailsMaintenance = $stmt->fetch(PDO::FETCH_ASSOC); // ดึงข้อมูลมาเก็บในตัวแปร
     }
 } catch (PDOException $e) {
     echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
@@ -63,19 +61,20 @@ try {
                     <a href="/">หน้าหลัก</a>
                     <span>&gt;</span>
                     <?php
-                    if ($detailsMaintenance[0]['categories'] == 'วัสดุ') {
-                        echo '<a href="/material">วัสดุ</a><span>&gt;</span>';
-                    }
-                    if ($detailsMaintenance[0]['categories'] == 'อุปกรณ์') {
-                        echo '<a href="/equipment">อุปกรณ์</a><span>&gt;</span>';
-                    }
-                    if ($detailsMaintenance[0]['categories'] == 'เครื่องมือ') {
-                        echo '<a href="/tools">เครื่องมือ</a><span>&gt;</span>';
+                    if (!empty($detailsMaintenance)) {
+                        if ($detailsMaintenance[0]['categories'] == 'วัสดุ') {
+                            echo '<a href="/material">วัสดุ</a><span>&gt;</span>';
+                        }
+                        if ($detailsMaintenance[0]['categories'] == 'อุปกรณ์') {
+                            echo '<a href="/equipment">อุปกรณ์</a><span>&gt;</span>';
+                        }
+                        if ($detailsMaintenance[0]['categories'] == 'เครื่องมือ') {
+                            echo '<a href="/tools">เครื่องมือ</a><span>&gt;</span>';
+                        }
+                        echo '<a href="' . htmlspecialchars($detailsMaintenance[0]['ID'], ENT_QUOTES, 'UTF-8') . '">'
+                            . htmlspecialchars($detailsMaintenance[0]['sci_name'], ENT_QUOTES, 'UTF-8') . '</a>';
                     }
                     ?>
-                    <a href="<?= htmlspecialchars($detailsMaintenance[0]['ID'], ENT_QUOTES, 'UTF-8'); ?>">
-                        <?= htmlspecialchars($detailsMaintenance[0]['sci_name'], ENT_QUOTES, 'UTF-8'); ?>
-                    </a>
                 </div>
             </div>
         </div>
@@ -110,13 +109,13 @@ try {
                 <?php else : ?>
                     <div>
                         <i class="fa-solid fa-database"></i>
-                        <p>No maintenance history available.</p>
+                        <p>ไม่เคยบำรุงรักษา</p>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
         <div class="btn_footer">
-            <?php if ($request_uri == '/maintenance/detailsMaintenance' || $request_uri == '/management/maintenance') : ?>
+            <?php if ($request_uri == '/maintenance_start/details' || $request_uri == '/management/maintenance') : ?>
                 <span class="maintenance_button" id="B">บำรุงรักษา</span>
                 <form class="for_Maintenance" action="<?= $base_url ?>/staff-section/maintenanceProcess.php" method="post">
                     <div class="maintenance_popup">
@@ -154,7 +153,7 @@ try {
             <?php endif; ?>
         </div>
     </main>
-    <script src="<?= $base_url; ?>/assets/js/navigator.js"></script>
+    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?= $base_url; ?>/assets/js/management_systems.js"></script>
     <script src="<?= $base_url; ?>/assets/js/maintenance.js"></script>
 </body>

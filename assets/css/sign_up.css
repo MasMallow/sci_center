@@ -59,11 +59,11 @@
   .register_page_head {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    padding: 0.35rem 1rem;
+    gap: 0.5rem;
+    padding: 0.3rem 1.2rem;
     background-color: #f6f8fa;
     border-bottom: 1px solid #d0d7de;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     text-align: center;
 
     a {

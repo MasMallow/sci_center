@@ -3,16 +3,19 @@
         <div class="header_nav_banner">
             <a href="<?php echo $base_url; ?>/" class="header_navbanner_name">
                 <div class="header_navbanner_img">
-                    <img src="<?php echo $base_url; ?>/assets/logo/scicenter_logo.png">
+                    <img src="<?php echo $base_url; ?>/assets/img/logo/sci_center.png">
                 </div>
             </a>
             <div class="header_navbanner_name_00">
-                <span id="B" class="header_navbanner_name-1">ระบบการจัดการวัสดุอุปกรณ์และเครื่องมือ
-                    <?php if (isset($_SESSION['staff_login'])) {
-                        echo "|| STAFF";
-                    } ?>
+                <span id="B" class="header_navbanner_name-1">
+                    ระบบการจัดการวัสดุ อุปกรณ์ และเครื่องมือ
+                    <?php if (isset($_SESSION['staff_login'])) : ?>
+                        || STAFF
+                    <?php endif; ?>
                 </span>
-                <span class="header_navbanner_name-2">ศูนย์วิทยาศาสตร์ มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา</span>
+                <span class="header_navbanner_name-2">
+                    ศูนย์วิทยาศาสตร์ มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา
+                </span>
             </div>
         </div>
         <div class="header_nav_userinfo">

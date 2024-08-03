@@ -50,7 +50,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สถิติ 10 รายการ</title>
-    <link href="<?php echo $base_url ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/breadcrumb.css">
@@ -71,53 +71,55 @@ try {
                 <a href="/view_top10">รายงาน Top 10</a>
             </div>
         </nav>
-        <div class="top_10_list">
-            <div class="top_10_list_content">
-                <div class="top_10_list_header">
-                    <span id="B">Top 10 วัสดุ</span>
+        <?php if ($request_uri == '/top10') : ?>
+            <div class="top_10_list">
+                <div class="top_10_list_content">
+                    <div class="top_10_list_header">
+                        <span id="B">Top 10 วัสดุ</span>
+                    </div>
+                    <div class="top_10_list_body">
+                        <ul>
+                            <?php
+                            // แสดงผลวัสดุ 10 อันดับแรก
+                            foreach (array_slice($materialResult, 0, 10) as $row) {
+                                echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
-                <div class="top_10_list_body">
-                    <ul>
-                        <?php
-                        // แสดงผลวัสดุ 10 อันดับแรก
-                        foreach (array_slice($materialResult, 0, 10) as $row) {
-                            echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
-                        }
-                        ?>
-                    </ul>
+                <div class="top_10_list_content">
+                    <div class="top_10_list_header">
+                        <span id="B">Top 10 อุปกรณ์</span>
+                    </div>
+                    <div class="top_10_list_body">
+                        <ul>
+                            <?php
+                            // แสดงผลอุปกรณ์ 10 อันดับแรก
+                            foreach (array_slice($equipmentResult, 0, 10) as $row) {
+                                echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="top_10_list_content">
+                    <div class="top_10_list_header">
+                        <span id="B">Top 10 เครื่องมือ</span>
+                    </div>
+                    <div class="top_10_list_body">
+                        <ul>
+                            <?php
+                            // แสดงผลเครื่องมือ 10 อันดับแรก
+                            foreach (array_slice($toolResult, 0, 10) as $row) {
+                                echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="top_10_list_content">
-                <div class="top_10_list_header">
-                    <span id="B">Top 10 อุปกรณ์</span>
-                </div>
-                <div class="top_10_list_body">
-                    <ul>
-                        <?php
-                        // แสดงผลอุปกรณ์ 10 อันดับแรก
-                        foreach (array_slice($equipmentResult, 0, 10) as $row) {
-                            echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
-                        }
-                        ?>
-                    </ul>
-                </div>
-            </div>
-            <div class="top_10_list_content">
-                <div class="top_10_list_header">
-                    <span id="B">Top 10 เครื่องมือ</span>
-                </div>
-                <div class="top_10_list_body">
-                    <ul>
-                        <?php
-                        // แสดงผลเครื่องมือ 10 อันดับแรก
-                        foreach (array_slice($toolResult, 0, 10) as $row) {
-                            echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
-                        }
-                        ?>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <?php endif ?>
     </main>
     <footer>
         <?php include_once 'assets/includes/footer_2.php'; ?>

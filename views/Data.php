@@ -27,15 +27,25 @@
                             </div>
                         </div>
                         <div class="content_status_details">
-                            <?php if ($data['availability'] == 0) : ?>
+                            <?php if ($data['categories'] !== 'วัสดุ' && $data['availability'] == 0) : ?>
                                 <div class="ready-to-use">
                                     <i class="fa-solid fa-circle-check"></i>
                                     <span id="B">พร้อมใช้งาน</span>
                                 </div>
-                            <?php else : ?>
+                            <?php elseif ($data['categories'] !== 'วัสดุ' && $data['availability'] !== 0) : ?>
                                 <div class="moderately">
                                     <i class="fa-solid fa-ban"></i>
                                     <span id="B">บำรุงรักษา</span>
+                                </div>
+                            <?php elseif ($data['categories'] == 'วัสดุ' && $data['amount'] <= 15) : ?>
+                                <div class="not-available">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span id="B">วัสดุใกล้หมด</span>
+                                </div>
+                            <?php elseif ($data['categories'] == 'วัสดุ' && $data['amount'] > 15) : ?>
+                                <div class="ready-to-use">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span id="B">พร้อมใช้งาน</span>
                                 </div>
                             <?php endif ?>
                             <div class="content_details">

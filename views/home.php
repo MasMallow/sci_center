@@ -153,7 +153,7 @@ try {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCICENTER Management</title>
-    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
@@ -179,7 +179,6 @@ try {
                                 <span class="text">หน้าหลัก</span>
                             </a>
                         </li>
-
                         <li class="group_li">
                             <span class="group_title">ประเภท</span>
                             <a class="group_li_01 <?= ($request_uri == '/material') ? 'active' : ''; ?>" href="/material">
@@ -192,7 +191,6 @@ try {
                                 <span class="text">ประเภทเครื่องมือ</span>
                             </a>
                         </li>
-
                         <li class="group_li">
                             <span class="group_title">การขอใช้งาน</span>
                             <a class="group_li_01" href="<?= $base_url; ?>/UsedStart">
@@ -212,7 +210,6 @@ try {
                                 <span class="text">รายการการขอใช้</span>
                             </a>
                         </li>
-
                         <li class="group_li">
                             <span class="group_title">แจ้งเตือน</span>
                             <a class="group_li_01 <?= ($request_uri == '/notification') ? 'active' : ''; ?>" href="<?= $base_url; ?>/notification">
@@ -220,12 +217,18 @@ try {
                                 <span class="text">แจ้งเตือน</span>
                             </a>
                         </li>
-
                         <li class="group_li">
                             <span class="group_title">รายการที่ขอใช้</span>
                             <a class="group_li_01" href="<?= $base_url; ?>/cart">
                                 <i class="fa-solid fa-cart-shopping"></i>
                                 <span class="text">รายการที่ขอใช้</span>
+                            </a>
+                        </li>
+                        <li class="group_li">
+                            <span class="group_title">QR-CODE</span>
+                            <a class="group_li_01" href="<?= $base_url; ?>/qrcode">
+                                <i class="fa-solid fa-qrcode"></i>
+                                <span class="text">QR CODE</span>
                             </a>
                         </li>
                     </ul>

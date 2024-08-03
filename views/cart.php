@@ -71,7 +71,7 @@ if (isset($_GET['action'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายการที่เลือกทั้งหมด</title>
-    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
@@ -196,61 +196,55 @@ if (isset($_GET['action'])) {
                 <?php endif; ?>
                 <form method="post" action="<?php echo $base_url; ?>/models/requestUse.php">
                     <div class="main_cart_content">
-                        <div class="table_section">
-                            <div class="count_list">
-                                <div class="count_list_1">
-                                    <span>รายการที่เลือกทั้งหมด </span>
-                                    <span id="B">( <?php echo count($_SESSION['reserve_cart']); ?> )</span><span> รายการ</span>
-                                </div>
-                                <div class="count_list_2">
-                                    <a href="/booking_log">ตรวจสอบการขอใช้</a>
-                                </div>
+                        <div class="count_list">
+                            <div class="count_list_1">
+                                <span>รายการที่เลือกทั้งหมด </span>
+                                <span id="B"><?php echo count($_SESSION['reserve_cart']); ?></span><span> รายการ</span>
                             </div>
-                            <table class="cart_data">
-                                <tr>
-                                    <th class="th_img"></th>
-                                    <th class="th_name"><span id="B">ชื่อรายการ</span></th>
-                                    <th class="th_categories"><span id="B">ประเภท</span></th>
-                                    <th class="th_amount"><span id="B">จำนวน</span></th>
-                                </tr>
-                                <?php foreach ($_SESSION['reserve_cart'] as $item) : ?>
-                                    <?php
-                                    // Retrieve product details from the database based oapn the item
-                                    $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :itemToAdd");
-                                    $query->bindParam(':itemToAdd', $item, PDO::PARAM_STR);
-                                    $query->execute();
-                                    $product = $query->fetch(PDO::FETCH_ASSOC);
+                            <a class="count_list_2" href="/calendar">ตรวจสอบการขอใช้</a>
+                        </div>
+                        <div class="cart_data">
+                            <div class="cart_header">
+                                <div class="cart_col img"></div>
+                                <div class="cart_col name"><span id="B">ชื่อรายการ</span></div>
+                                <div class="cart_col categories"><span id="B">ประเภท</span></div>
+                                <div class="cart_col amount"><span id="B">จำนวน</span></div>
+                            </div>
+                            <?php foreach ($_SESSION['reserve_cart'] as $item) : ?>
+                                <?php
+                                $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :itemToAdd");
+                                $query->bindParam(':itemToAdd', $item, PDO::PARAM_STR);
+                                $query->execute();
+                                $product = $query->fetch(PDO::FETCH_ASSOC);
 
-                                    // Check if the product is found
-                                    if ($product) {
-                                        $categories = $product['categories'];
-                                        $productName = $product['sci_name'];
-                                        $imageURL = 'assets/uploads/' . $product['img_name'];
-                                    ?>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="flex-container">
-                                                        <div class="flex-item"><img src="<?php echo $imageURL; ?>" alt="<?php echo $productName; ?>"></div>
-                                                    </div>
-                                                </td>
-                                                <td><?php echo $productName; ?></td>
-                                                <td>
-                                                    <span><?php echo $categories ?></span>
-                                                </td>
-                                                <td>
-                                                    <div class="amount_delete">
-                                                        <input type="number" name="amount[<?php echo $item; ?>]" value="1" min="1">
-                                                        <a class="btn_delete" href="cart?action=remove&item=<?php echo $item; ?>">
-                                                            <i class="fa-solid fa-trash-can"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    <?php } ?>
-                                <?php endforeach; ?>
-                            </table>
+                                if ($product) {
+                                    $categories = $product['categories'];
+                                    $productName = $product['sci_name'];
+                                    $imageURL = 'assets/uploads/' . $product['img_name'];
+                                ?>
+                                    <div class="cart_row">
+                                        <div class="cart_col img">
+                                            <div class="flex-container">
+                                                <div class="flex-item">
+                                                    <img src="<?php echo $imageURL; ?>" alt="<?php echo $productName; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cart_col name"><?php echo $productName; ?></div>
+                                        <div class="cart_col categories">
+                                            <span><?php echo $categories ?></span>
+                                        </div>
+                                        <div class="cart_col amount">
+                                            <div class="amount_delete">
+                                                <input class="amount_input" type="number" name="amount[<?php echo $item; ?>]" value="1" min="1">
+                                            </div>
+                                            <a class="btn_delete" href="cart?action=remove&item=<?php echo $item; ?>">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            <?php endforeach; ?>
                         </div>
                         <div class="footer_section">
                             <div class="footer_section_btn_1">

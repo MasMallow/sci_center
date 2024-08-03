@@ -1,0 +1,16 @@
+
+.centered-image {
+  margin: 2.5rem 0;
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.centered-image img {
+  max-width: 100%;
+  height: auto;
+  max-height: 500px;
+  /* กำหนดความสูงสูงสุด */
+}

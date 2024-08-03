@@ -152,17 +152,19 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>อนุมัติการขอใช้</title>
-    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/approval.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/bookingTable.css">
 </head>
 
 <body>
-
-    <?php include('assets/includes/navigator.php') ?>
+    <header>
+        <?php include('assets/includes/navigator.php') ?>
+    </header>
     <div class="approve_section">
         <div class="header_approve_section">
             <a class="historyBACK" href="javascript:history.back();">
@@ -234,7 +236,7 @@ try {
                                                 list($product_name, $quantity) = explode('(', $item);
                                                 $product_name = trim($product_name);
                                                 $quantity = str_replace(')', '', trim($quantity));
-                                                echo "- " . $product_name . ' <span id="B">(' . $quantity . ' รายการ)</span><br>';
+                                                echo "- " . $product_name . ' <span>(' . $quantity . ' รายการ)</span><br>';
                                             }
                                             ?>
                                         </div>
@@ -366,8 +368,8 @@ try {
             </div>
 
         <?php elseif ($request_uri == '/approve_request/viewlog/details') : ?>
-            <?php foreach ($detailsdataUsed as $Data) : ?>
-                <div class="viewLog_request_Details">
+            <div class="viewLog_request_Details">
+                <?php foreach ($detailsdataUsed as $Data) : ?>
                     <div class="viewLog_request_MAIN">
                         <div class="viewLog_request_header">
                             <span id="B">รายละเอียด </span>หมายเลขรายการ <?= htmlspecialchars($Data['serial_number'], ENT_QUOTES, 'UTF-8'); ?>
@@ -381,8 +383,15 @@ try {
                                     <?= thai_date_time_2(htmlspecialchars($Data['created_at'], ENT_QUOTES, 'UTF-8')) ?>
                                 </div>
                                 <div class="viewLog_request_content_2">
-                                    <span id="B">ชื่อรายการ</span>
-                                    <?= htmlspecialchars($Data['list_name'], ENT_QUOTES, 'UTF-8'); ?>
+                                    <?php
+                                    $items = explode(',', $Data['list_name']);
+                                    foreach ($items as $item) {
+                                        list($product_name, $quantity) = explode('(', $item);
+                                        $product_name = trim($product_name);
+                                        $quantity = str_replace(')', '', trim($quantity));
+                                        echo "- " . $product_name . ' <span id="B">(' . $quantity . ' รายการ)</span><br>';
+                                    }
+                                    ?>
                                 </div>
                                 <div class="viewLog_request_content_3">
                                     <span id="B">ขอใช้</span>
@@ -402,17 +411,17 @@ try {
                                     <?= thai_date_time_2(htmlspecialchars($Data['approvaldatetime'], ENT_QUOTES, 'UTF-8')) ?>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
                         </div>
                     </div>
-                </div>
-            <?php else : ?>
-                <div class="viewNotfound">
-                    <i class="fa-solid fa-database"></i>
-                    <?php var_dump($reservation_date); ?>
-                    <span id="B">ไม่พบข้อมูล</span>
-                </div>
-            <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php else : ?>
+            <div class="viewNotfound">
+                <i class="fa-solid fa-database"></i>
+                <?php var_dump($reservation_date); ?>
+                <span id="B">ไม่พบข้อมูล</span>
+            </div>
+        <?php endif; ?>
     </div>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
     <script>
