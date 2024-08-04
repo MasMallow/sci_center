@@ -10,7 +10,6 @@ if (!isset($_SESSION['user_login'])) {
 }
 
 // ------------------ REQUEST FOR USE --------------------------------
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reserve'])) {
         $reservationdate = $_POST['reservation_date'];
@@ -30,13 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // ตรวจสอบวันที่
         $currentDate = date('Y-m-d');
         if ($reservationdate < $currentDate) {
-            $_SESSION['reserveError'] = 'วันที่จองต้องไม่เป็นอดีต!';
+            $_SESSION['reserveError'] = 'วันที่ขอใช้ต้องไม่เป็นอดีต!';
             header("Location: /cart");
             exit();
         }
 
         if ($enddate < $currentDate || $enddate < $reservationdate) {
-            $_SESSION['reserveError'] = 'วันที่สิ้นสุดต้องไม่เป็นอดีตและต้องไม่ก่อนวันที่จอง!';
+            $_SESSION['reserveError'] = 'วันที่สิ้นสุดต้องไม่เป็นอดีตและต้องไม่ก่อนวันที่ขอใช้!';
             header("Location: /cart");
             exit();
         }
@@ -54,13 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errorMessages = [];
 
         foreach ($_SESSION['reserve_cart'] as $item) {
-            $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :item");
+            $query = $conn->prepare("SELECT * FROM crud WHERE serial_number = :item");
             $query->bindParam(':item', $item, PDO::PARAM_STR);
             $query->execute();
             $product = $query->fetch(PDO::FETCH_ASSOC);
 
             if ($product) {
                 $productName = htmlspecialchars($product['sci_name']);
+                $serial_number = htmlspecialchars($product['serial_number']);
                 $quantity = isset($items[$item]) ? (int)$items[$item] : 0;
 
                 // ตรวจสอบการจองซ้ำถ้าประเภทไม่ใช่ "วัสดุ"
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($quantity <= $product['amount']) {
                     $itemList[] = "$productName ($quantity)";
                 } else {
-                    $errorMessages[] = "$productName มีจำนวนไม่เพียงพอ (มีเพียง " . $product['amount'] . " ชิ้นในสต็อก)";
+                    $errorMessages[] = "$productName มีจำนวนไม่เพียงพอ (มีเพียง " . $product['amount'] . " ในระบบ)";
                 }
             }
         }

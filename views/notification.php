@@ -36,8 +36,9 @@
                         ?>
                     </div>
                     <div class="notification_footer">
-                        <div class="subtext"><span id="B">ขอใช้งาน </span><?= thai_date_time_2($row['created_at']); ?>
-                            <span id="B">ถึง </span> <?= thai_date_time_2($row['reservation_date']); ?>
+                        <div class="subtext">
+                            <span id="B">ขอใช้งาน </span><?= thai_date_time_2($row['reservation_date']); ?>
+                            <span id="B">ถึง </span> <?= thai_date_time_2($row['end_date']); ?>
                         </div>
                     </div>
                 </div>

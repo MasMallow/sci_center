@@ -158,7 +158,10 @@ try {
                                         <input type="hidden" name="reserve_id" value="<?= htmlspecialchars($data['ID']); ?>">
                                         <input type="hidden" name="list_name" value="<?= htmlspecialchars($data['list_name']); ?>">
                                         <div class="list_item">
-                                            <button class="submitUSED" type="submit">เริ่มใช้งาน</button>
+                                            <button class="submitUSED" type="submit">
+                                                <i class="fa-solid fa-circle-play"></i>
+                                                เริ่มใช้งาน
+                                            </button>
                                         </div>
                                     </form>
                                 </div>

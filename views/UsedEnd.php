@@ -50,7 +50,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>คืนรายการที่ขอใช้งาน</title>
-    <link href="<?= $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon" />
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?= $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?= $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?= $base_url; ?>/assets/css/breadcrumb.css">
@@ -130,7 +130,9 @@ try {
                                         <input type="hidden" name="return_id" value="<?= htmlspecialchars($data['ID']); ?>">
                                         <input type="hidden" name="user_id" value="<?= htmlspecialchars($data['userID']); ?>">
                                         <div class="list_item">
-                                            <button class="submitUSED" type="submit">ยืนยันการคืน</button>
+                                            <button class="submitUSED" type="submit">
+                                                <i class="fa-solid fa-hourglass-end"></i>
+                                                ยืนยันการคืน</button>
                                         </div>
                                     </form>
                                 </div>

@@ -49,26 +49,20 @@ try {
     $dataUsed = $used->fetchAll(PDO::FETCH_ASSOC);
     $usedCount = count($dataUsed); // นับจำนวนรายการ
 
-    // ดึงข้อมูลการอนุมัติการจอง
-    $stmt = $conn->prepare("SELECT * FROM logs_management");
-    $stmt->execute();
-    $Management = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $ManagementCount = count($Management); // นับจำนวนรายการ
-
     // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ (วัสดุ)
-    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'วัสดุ' ORDER BY serial_number");
+    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'วัสดุ'");
     $stmt->execute();
     $material = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $materialCount = count($material); // นับจำนวนรายการ
 
     // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ (อุปกรณ์)
-    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'อุปกรณ์' ORDER BY serial_number");
+    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'อุปกรณ์'");
     $stmt->execute();
     $equipment = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $equipmentCount = count($equipment); // นับจำนวนรายการ
 
     // ดึงข้อมูลการจองที่ยังไม่ได้รับการอนุมัติ (เครื่องมือ)
-    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'เครื่องมือ' ORDER BY serial_number");
+    $stmt = $conn->prepare("SELECT ID FROM crud WHERE categories = 'เครื่องมือ'");
     $stmt->execute();
     $tools = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $toolsCount = count($tools); // นับจำนวนรายการ
@@ -252,7 +246,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                                     <span id="B">จำนวนวัสดุทั้งหมด</span>
                                 </div>
                                 <div class="Content_1_body">
-                                    <span id="B"><?php echo $userCount; ?></span>จำนวน
+                                    <span id="B"><?php echo $materialCount; ?></span>จำนวน
                                 </div>
                             </div>
                             <div class="Content_1">
@@ -260,7 +254,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                                     <span id="B">จำนวนอุปกรณ์ทั้งหมด</span>
                                 </div>
                                 <div class="Content_1_body">
-                                    <span id="B"><?php echo $usedCount; ?></span>จำนวน
+                                    <span id="B"><?php echo $equipmentCount; ?></span>จำนวน
                                 </div>
                             </div>
                             <div class="Content_1">
@@ -268,7 +262,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                                     <span id="B">จำนวนเครื่องมือทั้งหมด</span>
                                 </div>
                                 <div class="Content_1_body">
-                                    <span id="B"><?php echo $maintenanceCount; ?></span>จำนวน
+                                    <span id="B"><?php echo $toolsCount; ?></span>จำนวน
                                 </div>
                             </div>
                         </div>

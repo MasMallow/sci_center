@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main class="resetPassword">
         <section class="resetpasswordPAGE">
             <div class="box_content_logo">
-                <img src="<?php echo $base_url; ?>/assets/logo/scicenter_logo.png">
+                <img src="<?php echo $base_url; ?>/assets/img/logo/sci_center.png">
             </div>
             <?php if ($message) : ?>
                 <p><?php echo $message; ?></p>

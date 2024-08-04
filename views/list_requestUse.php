@@ -51,6 +51,7 @@ try {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>รายการการขอใช้</title>
@@ -61,6 +62,7 @@ try {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/list-requestUSE.css">
 </head>
+
 <body>
     <header>
         <?php include 'assets/includes/navigator.php'; ?>
@@ -116,7 +118,10 @@ try {
                             <?php if ($booking['reservation_date'] > date("Y-m-d")) : ?>
                                 <div class="list_request_footer">
                                     <input type="hidden" name="reserveID" value="<?= htmlspecialchars($booking['ID']); ?>">
-                                    <button class="cancel_request" type="submit">ยกเลิกการขอใช้</button>
+                                    <button class="cancel_request" type="submit">
+                                        <i class="fa fa-times"></i>
+                                        ยกเลิกการขอใช้
+                                    </button>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -126,4 +131,5 @@ try {
         <?php endif; ?>
     </div>
 </body>
+
 </html>

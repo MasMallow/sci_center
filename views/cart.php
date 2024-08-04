@@ -143,7 +143,7 @@ if (isset($_GET['action'])) {
                                                 <td>QR CODE <br> สำหรับติดตามการขอใช้</td>
                                                 <td>
                                                     <div class="content_img">
-                                                        <img src="<?= htmlspecialchars($base_url); ?>/assets/logo/QR.png" alt="Image">
+                                                        <img src="<?= htmlspecialchars($base_url); ?>/assets/img/qr_code_user/qrcode.png" alt="Image">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -212,7 +212,7 @@ if (isset($_GET['action'])) {
                             </div>
                             <?php foreach ($_SESSION['reserve_cart'] as $item) : ?>
                                 <?php
-                                $query = $conn->prepare("SELECT * FROM crud WHERE sci_name = :itemToAdd");
+                                $query = $conn->prepare("SELECT * FROM crud WHERE serial_number = :itemToAdd");
                                 $query->bindParam(':itemToAdd', $item, PDO::PARAM_STR);
                                 $query->execute();
                                 $product = $query->fetch(PDO::FETCH_ASSOC);
@@ -220,6 +220,7 @@ if (isset($_GET['action'])) {
                                 if ($product) {
                                     $categories = $product['categories'];
                                     $productName = $product['sci_name'];
+                                    $serial_number = $product['serial_number'];
                                     $imageURL = 'assets/uploads/' . $product['img_name'];
                                 ?>
                                     <div class="cart_row">
@@ -230,7 +231,7 @@ if (isset($_GET['action'])) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="cart_col name"><?php echo $productName; ?></div>
+                                        <div class="cart_col name"><?php echo $productName; ?>(<?php echo $serial_number; ?>)</div>
                                         <div class="cart_col categories">
                                             <span><?php echo $categories ?></span>
                                         </div>
@@ -248,7 +249,7 @@ if (isset($_GET['action'])) {
                         </div>
                         <div class="footer_section">
                             <div class="footer_section_btn_1">
-                                <a href="<?php echo $base_url; ?>/" class="back_to_main">กลับหน้าหลัก</a>
+                                <a href="javascript:history.back();" class="back_to_main">กลับหน้าหลัก</a>
                             </div>
                             <div class="footer_section_btn_2">
                                 <span class="submit cart_btn">ยืนยัน</span>
@@ -262,7 +263,7 @@ if (isset($_GET['action'])) {
                                         </div>
                                         <div class="cart_submit_body">
                                             <div class="cart_submit_01">
-                                                <label for="reservation_date">วันเวลาที่ขอจอง</label>
+                                                <label for="reservation_date">วันเวลาที่ขอใช้</label>
                                                 <input type="datetime-local" id="reservation_date" name="reservation_date" required>
                                             </div>
                                             <div class="cart_submit_02">

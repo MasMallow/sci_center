@@ -403,7 +403,6 @@
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
   gap: 1rem;
   margin-top: 1rem;
 
@@ -459,6 +458,10 @@
   border: 1px solid #d0d7de;
   padding: 0.7rem 0.8rem;
 }
+
+.form_right_2 {
+  display: none;
+}
 .headerNAME {
   font-size: 1.3rem;
   padding: 0.5rem;
@@ -483,6 +486,13 @@
 
 .DataDisplay:last-child {
   border-bottom: none;
+}
+
+.reseration,
+.endDate {
+  gap: 0.35rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .Data1 {

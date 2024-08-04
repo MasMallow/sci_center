@@ -70,10 +70,11 @@
                         <div class="grid_content_footer">
                             <div class="content_btn">
                                 <?php if ($data['amount'] >= 1 && $data['availability'] == 0) : ?>
-                                    <a href="cart?action=add&item=<?= htmlspecialchars($data['sci_name']) ?>" class="used_it">
+                                    <a href="cart?action=add&item=<?= htmlspecialchars($data['serial_number']) ?>" class="used_it">
                                         <i class="fa-solid fa-address-book"></i>
                                         <span>ขอใช้</span>
                                     </a>
+                                    <?php echo $data['serial_number']; ?>
                                 <?php else : ?>
                                     <div class="not_available">
                                         <i class="fa-solid fa-ban"></i>

@@ -305,9 +305,19 @@
   align-items: center;
 }
 
-.amount_delete input[type="number"] {
-  width: 60px;
+.amount_input {
   margin-right: 10px;
+  padding: 5px; /* ระยะห่างภายใน */
+  border: 1px solid #ccc; /* สีของขอบ */
+  border-radius: 5px; /* มุมโค้งของ input */
+  font-size: 16px; /* ขนาดตัวอักษร */
+  text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+  outline: none; /* เอาเส้นขอบออกเมื่อคลิก */
+  transition: border-color 0.3s; /* ทำให้การเปลี่ยนสีขอบนุ่มนวล */
+}
+
+.amount_input:focus {
+  border-color: #007bff; /* สีขอบเมื่อโฟกัส */
 }
 
 .btn_delete {
@@ -332,47 +342,6 @@
   color: #fff;
   padding: 10px 20px;
   border-radius: 5px;
-  cursor: pointer;
-}
-
-.cart_submit_popup {
-  display: none;
-}
-
-.cart_submit {
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  padding: 20px;
-}
-
-.cart_submit_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.cart_submit_body {
-  display: flex;
-  flex-direction: column;
-}
-
-.cart_submit_01,
-.cart_submit_02 {
-  margin-bottom: 10px;
-}
-
-.cart_submit_button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.modalClose {
   cursor: pointer;
 }
 
@@ -503,7 +472,7 @@ input[type="number"] {
   justify-content: space-between;
   padding: 0.7rem 1.1rem;
   border-bottom: 1.2px solid #d0d7de;
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   color: #000;
   font-family: Sarabun-bold;
 }
