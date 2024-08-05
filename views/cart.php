@@ -186,7 +186,7 @@ if (isset($_GET['action'])) {
                             </div>
                             <div class="cart_alert_footer">
                                 <a class="back_to_home" href="<?php echo $base_url; ?>/">กลับหน้าหลัก</a>
-                                <a class="go_to_notification" href="booking_log">ตรวจสอบการขอใช้</a>
+                                <!-- <a class="go_to_notification" href="booking_log">ตรวจสอบการขอใช้</a> -->
                             </div>
                         </div>
                     </div>
