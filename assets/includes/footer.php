@@ -16,5 +16,5 @@
     </ul>
 </div>
 <div class="copyright">
-    <p>Copyright ©2024 Puwadech and Phisitphong. All Rights Reserved</p>
+    <p>Copyright ©2024 Puwadet and Phisitphong. All Rights Reserved</p>
 </div>

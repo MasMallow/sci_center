@@ -66,19 +66,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // ตรวจสอบการจองซ้ำถ้าประเภทไม่ใช่ "วัสดุ"
                 if ($product['categories'] !== 'วัสดุ') {
                     $reservation_check_query = $conn->prepare(
-                        "SELECT * FROM approve_to_reserve WHERE list_name LIKE :productName AND (
+                        "SELECT * FROM approve_to_reserve WHERE sn_list LIKE :serial_number AND (
                             (reservation_date <= :reservationdate AND end_date >= :reservationdate) OR
                             (reservation_date <= :enddate AND end_date >= :enddate) OR
                             (reservation_date >= :reservationdate AND end_date <= :enddate)
                         ) AND situation != 2"
                     );
-                    $reservation_check_query->bindValue(':productName', "%$productName%", PDO::PARAM_STR);
+                    $reservation_check_query->bindValue(':serial_number', "%$serial_number%", PDO::PARAM_STR);
                     $reservation_check_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
                     $reservation_check_query->bindParam(':enddate', $enddate, PDO::PARAM_STR);
                     $reservation_check_query->execute();
 
                     if ($reservation_check_query->rowCount() > 0) {
-                        $errorMessages[] = "$productName <br> ได้มีคนทำการขอใช้ไว้แล้ว";
+                        $errorMessages[] = "$productName <br> ได้มีคนทำการขอใช้ไว้แล้วในวันที่เลือก";
                     }
                 }
 
@@ -104,10 +104,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // เตรียมข้อมูลสำหรับการจอง
             $itemBorrowed = implode(', ', $itemList);
+            // แปลง array เป็น comma-separated string
+            $sn_list = implode(', ', $_SESSION['reserve_cart']);
 
             $insert_query = $conn->prepare(
-                "INSERT INTO approve_to_reserve (serial_number, userID, name_user, list_name, reservation_date, end_date, created_at) 
-                VALUES (:random_string, :userID, :name_user, :list_name, :reservationdate, :enddate, NOW())"
+                "INSERT INTO approve_to_reserve (serial_number, userID, name_user, list_name, reservation_date, end_date, created_at, sn_list) 
+                VALUES (:random_string, :userID, :name_user, :list_name, :reservationdate, :enddate, NOW(), :sn_list)"
             );
             $insert_query->bindParam(':userID', $userID, PDO::PARAM_INT);
             $insert_query->bindParam(':name_user', $firstname, PDO::PARAM_STR);
@@ -115,11 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert_query->bindParam(':reservationdate', $reservationdate, PDO::PARAM_STR);
             $insert_query->bindParam(':enddate', $enddate, PDO::PARAM_STR);
             $insert_query->bindParam(':random_string', $random_string, PDO::PARAM_STR);
+            $insert_query->bindParam(':sn_list', $sn_list, PDO::PARAM_STR); // ใช้ตัวแปรที่แปลงแล้ว
             $insert_query->execute();
-
             // ล้างตะกร้าหลังจากการจองเสร็จสิ้น
             unset($_SESSION['reserve_cart']);
-
             // เก็บข้อมูลการจองใน session
             $_SESSION['reserve_1'] = $random_string;
             $_SESSION['reserve_2'] = $itemBorrowed;

@@ -30,6 +30,17 @@ try {
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         $detailsData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Fetch reservation history using LIKE
+        $serialNumber = $detailsData['serial_number'];
+        $historyStmt = $conn->prepare("
+            SELECT * 
+            FROM approve_to_reserve 
+            WHERE sn_list LIKE :serial_number
+        ");
+        $historyStmt->bindValue(':serial_number', '%' . $serialNumber . '%', PDO::PARAM_STR);
+        $historyStmt->execute();
+        $reservationHistory = $historyStmt->fetchAll(PDO::FETCH_ASSOC);
     }
 } catch (PDOException $e) {
     echo 'Error: ' . $e->getMessage();
@@ -144,26 +155,18 @@ try {
                             <span id="B"><?php echo $detailsData['sci_name'] ?></span>
                             <span class="serialNumber">(<?php echo $detailsData['serial_number'] ?>)</span>
                         </div>
-                        <div class="DataDisplay">
-                            <div class="reseration">
-                                <span id="B">ขอใช้งาน </span>
-                                <span>วันที่ 5 ส.ค. พ.ศ. 2567 เวลา 09:00 น.</span>
+                        <?php foreach ($reservationHistory as $reservation) : ?>
+                            <div class="DataDisplay">
+                                <div class="reseration">
+                                    <span id="B">ขอใช้งาน </span>
+                                    <span><?php echo thai_date_time_3($reservation['reservation_date']); ?></span>
+                                </div>
+                                <div class="endDate">
+                                    <span id="B">ถึง </span>
+                                    <span><?php echo thai_date_time_3($reservation['end_date']); ?></span>
+                                </div>
                             </div>
-                            <div class="endDate">
-                                <span id="B">ถึง </span>
-                                <span>วันที่ 5 ส.ค. พ.ศ. 2567 เวลา 12:00 น.</span>
-                            </div>
-                        </div>
-                        <div class="DataDisplay">
-                            <div class="reseration">
-                                <span id="B">ขอใช้งาน </span>
-                                <span>วันที่ 7 ส.ค. พ.ศ. 2567 เวลา 09:00 น.</span>
-                            </div>
-                            <div class="endDate">
-                                <span id="B">ถึง </span>
-                                <span>วันที่ 7 ส.ค. พ.ศ. 2567 เวลา 12:00 น.</span>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>

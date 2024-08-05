@@ -1,7 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('Asia/Bangkok');
-require_once '../../assets/database/config.php';
+require_once '../assets/database/config.php';
 
 if (isset($_POST['signup'])) {
     $userID = rand(10000, 99999);
