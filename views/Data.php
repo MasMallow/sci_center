@@ -74,7 +74,6 @@
                                         <i class="fa-solid fa-address-book"></i>
                                         <span>ขอใช้</span>
                                     </a>
-                                    <?php echo $data['serial_number']; ?>
                                 <?php else : ?>
                                     <div class="not_available">
                                         <i class="fa-solid fa-ban"></i>

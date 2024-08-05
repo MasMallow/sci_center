@@ -189,19 +189,21 @@ try {
             const formRight2 = document.querySelector('.form_right_2');
             const toggleButton = document.getElementById('toggleButton');
 
-            // รีเซ็ตค่า formState เป็น form1 เมื่อเริ่มต้นหน้าเว็บ
-            localStorage.setItem('formState', 'form1');
+            // รีเซ็ตค่า formState เป็น form1 เมื่อเริ่มต้นหน้าเว็บถ้า formState ยังไม่ได้ตั้งไว้
+            if (!localStorage.getItem('formState')) {
+                localStorage.setItem('formState', 'form1');
+            }
 
             function setFormVisibility() {
                 const formState = localStorage.getItem('formState');
                 if (formState === 'form1') {
                     formRight1.style.display = 'block';
                     formRight2.style.display = 'none';
-                    toggleButton.textContent = 'ตรวจสอบการขอใช้';
+                    toggleButton.innerHTML = '<i class="fa-solid fa-check-to-slot"></i> ตรวจสอบการขอใช้';
                 } else {
                     formRight1.style.display = 'none';
                     formRight2.style.display = 'block';
-                    toggleButton.textContent = 'รายละเอียด';
+                    toggleButton.innerHTML = '<i class="fa-solid fa-circle-info"></i> รายละเอียด';
                 }
             }
 
