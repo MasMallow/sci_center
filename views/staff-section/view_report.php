@@ -130,7 +130,7 @@ try {
                 <div class="view_report_table_header">
                     <div class="view_report_table_header_pdf">
                         <span id="B">ประวัติการขอใช้</span>
-                        <form id="pdfForm" action="<?php echo $base_url; ?>/view_report/generate_pdf" method="GET">
+                        <form id="pdfForm" action="<?php echo $base_url; ?>/models/generate_pdf.php" method="GET">
                             <?php if (!empty($_GET["userID"])) : ?>
                                 <input type="hidden" name="userID" value="<?= htmlspecialchars($_GET["userID"]) ?>">
                             <?php endif; ?>

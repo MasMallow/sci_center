@@ -60,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="email" id="email" name="email" required>
                     <label id="B" for="new_password">รหัสผ่านใหม่</label>
                     <input type="password" id="new_password" name="new_password" required>
+                    <label id="B" for="new_password">ยืนยันรหัสผ่าน</label>
+                    <input type="password" id="new_password" name="new_password" required>
                     <div class="resetPasswordBTN">
                         <button type="submit" class="btn">เปลี่ยนรหัสผ่าน</button>
                         <a href="/sign_in" class="link">เข้าสู่ระบบ</a>

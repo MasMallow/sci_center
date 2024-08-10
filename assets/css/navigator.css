@@ -201,24 +201,34 @@
 }
 
 /* ----------- NOT_LOGIN ---------- */
+
 .not-login {
   display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  outline: none;
-  border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 5px;
-  font-size: 14px;
-  color: black;
-  background-color: white;
-  transition: all 0.25s;
+  padding: 0.45rem 0.8rem;
+  background-color: #ffffff; /* สีเขียว */
+  color: rgb(0, 0, 0); /* สีข้อความ */
+  border: none; /* ไม่มีขอบ */
+  border-radius: 5px; /* มุมโค้ง */
+  text-decoration: none; /* ไม่มีเส้นใต้ */
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #f5f4f4;
+    background-color: #f8f8f8;
   }
 
   .ilogion {
-    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-family: Sarabun-bold;
   }
 }

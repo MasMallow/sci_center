@@ -56,6 +56,10 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
                         echo '<a href="/profile_user/edit_profile">แก้ไขบัญชี</a>
                     ';
                     }
+                    if ($request_uri == '/edit_user') {
+                        echo '<a href="/edit_user">แก้ไขบัญชี</a>
+                    ';
+                    }
                     ?>
                 </div>
             </div>

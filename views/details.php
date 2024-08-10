@@ -150,7 +150,7 @@ try {
                             <span class="Data2"><?php echo $detailsData['details'] ?></span>
                         </div>
                     </div>
-                    <div class="form_right_2">
+                    <!-- <div class="form_right_2">
                         <div class="headerNAME">
                             <span id="B"><?php echo $detailsData['sci_name'] ?></span>
                             <span class="serialNumber">(<?php echo $detailsData['serial_number'] ?>)</span>
@@ -167,13 +167,29 @@ try {
                                 </div>
                             </div>
                         <?php endforeach; ?>
+                    </div> -->
+                    <div class="form_right_2">
+                        <div class="headerNAME">
+                            <span id="B"><?php echo $detailsData['sci_name'] ?></span>
+                            <span class="serialNumber">(<?php echo $detailsData['serial_number'] ?>)</span>
+                        </div>
+                        <div class="DataDisplay">
+                            <div class="reseration">
+                                <span id="B">ขอใช้งาน </span>
+                                <span>วันที่ 5 ส.ค. พ.ศ. 2567 เวลา 09:00 น.</span>
+                            </div>
+                            <div class="endDate">
+                                <span id="B">ถึง </span>
+                                <span>วันที่ 5 ส.ค. พ.ศ. 2567 เวลา 12:00 น.</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="DetailsPAGE_footer">
             <?php if ($detailsData['amount'] >= 1  && ($detailsData['availability'] == 0)) : ?>
-                <a href="<?php echo $base_url; ?>/cart?action=add&item=<?= htmlspecialchars($detailsData['sci_name']) ?>" class="used_it">
+                <a href="<?php echo $base_url; ?>/cart?action=add&item=<?= htmlspecialchars($detailsData['serial_number']) ?>" class="used_it">
                     <i class="fa-solid fa-address-book"></i>
                     <span>ขอใช้</span>
                 </a>

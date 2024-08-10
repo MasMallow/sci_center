@@ -139,7 +139,7 @@ $total_pages = ceil($total_records / $results_per_page);
         <div class="view_report_table_header">
             <div class="view_report_table_header_pdf">
                 <span id="B">ประวัติการบำรุงรักษา</span>
-                <form id="pdfForm" action="<?php echo $base_url; ?>/staff-section/generate_report_maintenance.php" method="GET">
+                <form id="pdfForm" action="<?php echo $base_url; ?>/models/generate_report_maintenance.php" method="GET">
                     <?php if (!empty($userID)) : ?>
                         <input type="hidden" name="userID" value="<?= htmlspecialchars($userID) ?>">
                     <?php endif; ?>

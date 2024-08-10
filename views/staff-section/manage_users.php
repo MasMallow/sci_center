@@ -375,7 +375,7 @@ try {
                                                                 <span id="B">แจ้งเตือนการลบข้อมูล</span>
                                                             </div>
                                                             <div class="deleteAccount_sec2">
-                                                            <button class="deleteUser" type="submit" name="delete_user">
+                                                                <button class="deleteUser" type="submit" name="delete_user">
                                                                     <span id="B">ลบบัญชี</span>
                                                                 </button>
                                                                 <div class="cancel_del" id="closeDetails">
@@ -438,44 +438,72 @@ try {
                         <div class="viewLogUsers_body">
                             <?php foreach ($detailsdataUsed as $Data) : ?>
                                 <div class="viewLogUsers_content">
-                                    <div class="list_name">
-                                        <?= $Data['userID'] ?>
-                                        <?= htmlspecialchars($Data['pre'], ENT_QUOTES, 'UTF-8') . htmlspecialchars($Data['firstname'], ENT_QUOTES, 'UTF-8') . ' ' . htmlspecialchars($Data['lastname'], ENT_QUOTES, 'UTF-8'); ?>
+                                    <div class="user_info_row">
+                                        <div class="user_info_label">
+                                            <span id="B">ชื่อ - นามสกุล</span>
+                                        </div>
+                                        <div class="user_info_value">
+                                            <?= $Data['userID'] . ' ' . htmlspecialchars($Data['pre'], ENT_QUOTES, 'UTF-8') . htmlspecialchars($Data['firstname'], ENT_QUOTES, 'UTF-8') . ' ' . htmlspecialchars($Data['lastname'], ENT_QUOTES, 'UTF-8'); ?>
+                                        </div>
                                     </div>
-                                    <div class="reservation_date">
-                                        <span id="B">สร้างบัญชี</span>
-                                        <?= thai_date_time_2(htmlspecialchars($Data['created_at'], ENT_QUOTES, 'UTF-8')) ?>
+                                    <div class="user_info_row">
+                                        <div class="user_info_label">
+                                            <span id="B">อีเมล</span>
+                                        </div>
+                                        <div class="user_info_value">
+                                            <?= htmlspecialchars($Data['email'], ENT_QUOTES, 'UTF-8') ?>
+                                        </div>
                                     </div>
-                                    <div class="approver">
-                                        <span id="B">อีเมล</span>
-                                        <?= htmlspecialchars($Data['email'], ENT_QUOTES, 'UTF-8') ?>
+                                    <div class="user_info_row">
+                                        <div class="user_info_label">
+                                            <span id="B">เบอร์โทรศัพท์</span>
+                                        </div>
+                                        <div class="user_info_value">
+                                            <?= format_phone_number(htmlspecialchars($Data['phone_number'], ENT_QUOTES, 'UTF-8')) ?>
+                                        </div>
                                     </div>
-                                    <div class="reservation_date">
-                                        <span id="B">เบอร์โทรศัพท์</span>
-                                        <?= format_phone_number(htmlspecialchars($Data['phone_number'], ENT_QUOTES, 'UTF-8')) ?>
+                                    <div class="user_info_row">
+                                        <div class="user_info_label">
+                                            <span id="B">ตำแหน่ง</span>
+                                        </div>
+                                        <div class="user_info_value">
+                                            <?= htmlspecialchars($Data['role'], ENT_QUOTES, 'UTF-8') ?>
+                                        </div>
                                     </div>
-                                    <div class="reservation_date">
-                                        <span id="B">ตำแหน่ง</span>
-                                        <?= htmlspecialchars($Data['role'], ENT_QUOTES, 'UTF-8') ?>
+                                    <div class="user_info_row">
+                                        <div class="user_info_label">
+                                            <span id="B">หน่วยงาน</span>
+                                        </div>
+                                        <div class="user_info_value">
+                                            <?= htmlspecialchars($Data['agency'], ENT_QUOTES, 'UTF-8') ?>
+                                        </div>
                                     </div>
-                                    <div class="reservation_date">
-                                        <span id="B">หน่วยงาน</span>
-                                        <?= htmlspecialchars($Data['agency'], ENT_QUOTES, 'UTF-8') ?>
+                                    <div class="user_info_row">
+                                        <div class="user_info_label"><span id="B">สถานะ</span></div>
+                                        <div class="user_info_value">
+                                            <?php if ($userData['status'] === 'w_approved') : ?>
+                                                <span class="wait_approved">รอการอนุมัติบัญชี</span>
+                                            <?php elseif ($userData['status'] === 'approved') : ?>
+                                                <span class="approved">บัญชีผ่านการอนุมัติ</span>
+                                            <?php elseif ($userData['status'] === 'n_approved') : ?>
+                                                <span class="n_approved">บัญชีถูกระงับ</span>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
-                                    <div class="reservation_date">
-                                        <span id="B">สถานะ</span>
-                                        <?php if ($userData['status'] === 'w_approved') : ?>
-                                            <span class="wait_approved">รอการอนุมัติบัญชี</span>
-                                        <?php elseif ($userData['status'] === 'approved') : ?>
-                                            <span class="approved">บัญชีผ่านการอนุมัติ</span>
-                                        <?php elseif ($userData['status'] === 'n_approved') : ?>
-                                            <span class="n_approved">บัญชีถูกระงับ</span>
-                                        <?php endif; ?>
+                                    <div class="user_info_row">
+                                        <div class="user_info_label">
+                                            <span id="B">สร้างบัญชี</span>
+                                        </div>
+                                        <div class="user_info_value">
+                                            <?= thai_date_time_2(htmlspecialchars($Data['created_at'], ENT_QUOTES, 'UTF-8')) ?>
+                                        </div>
                                     </div>
-                                    <div class="reservation_date">
-                                        <span id="B">ผู้อนุมัติ</span>
-                                        <?= htmlspecialchars($Data['approved_by'], ENT_QUOTES, 'UTF-8') ?>
-                                        <?= thai_date_time_2(htmlspecialchars($Data['approved_date'], ENT_QUOTES, 'UTF-8')) ?>
+                                    <div class="user_info_row">
+                                        <div class="user_info_label"><span id="B">ผู้อนุมัติ</span></div>
+                                        <div class="user_info_value">
+                                            <?= htmlspecialchars($Data['approved_by'], ENT_QUOTES, 'UTF-8') ?>
+                                            <?= thai_date_time_2(htmlspecialchars($Data['approved_date'], ENT_QUOTES, 'UTF-8')) ?>
+                                        </div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -496,7 +524,7 @@ try {
                         <div class="viewLogUsers_header" id="B">
                             การเข้าสู่ระบบ
                         </div>
-                        <div class="viewLogUsers_body">
+                        <div class="viewLogUsers_body_1">
                             <?php foreach ($logsUSER as $Data) : ?>
                                 <div class="viewLogUsers_content_LOG">
                                     <div class="list_name">
@@ -506,10 +534,6 @@ try {
                                     <div class="reservation_date">
                                         <span class="label">เข้าสู่ระบบ</span>
                                         <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
-                                    </div>
-                                    <div class="approver">
-                                        <span class="label">IP</span>
-                                        <?= htmlspecialchars($Data['log_IP'], ENT_QUOTES, 'UTF-8') ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

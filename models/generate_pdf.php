@@ -1,8 +1,8 @@
 <?php
-require_once 'assets/config/config.php';
-require_once 'assets/config/Database.php';
-require_once 'assets/TCPDF-main/tcpdf.php'; // รวมไฟล์ TCPDF
-include 'assets/includes/thai_date_time.php';
+require_once '../assets/config/config.php';
+require_once '../assets/config/Database.php';
+require_once '../assets/TCPDF-main/tcpdf.php'; // รวมไฟล์ TCPDF
+include '../assets/includes/thai_date_time.php';
 
 // รับค่า user_id และวันเวลาจากพารามิเตอร์ GET และตรวจสอบว่ามีการส่งมาหรือไม่
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
@@ -43,8 +43,8 @@ $pdf->SetSubject('รายงานการยืมอุปกรณ์');
 $pdf->AddPage();
 
 // เพิ่มฟอนต์ใหม่ลงใน TCPDF
-$font_path = 'assets/fonts/Sarabun-Regular.ttf';
-$font_bold_path = 'assets/fonts/Sarabun-Bold.ttf';
+$font_path = '../assets/fonts/Sarabun-Regular.ttf';
+$font_bold_path = '../assets/fonts/Sarabun-Bold.ttf';
 
 // ตรวจสอบว่าไฟล์ฟอนต์มีอยู่จริง
 if (!file_exists($font_path)) {
@@ -106,49 +106,34 @@ ob_start();
     </div>
 <?php endif; ?>
 <div>
-    <table>
-        <thead>
-            <tr>
-                <th>ชื่อ</th>
-                <th>ชื่อรายการ</th>
-                <th>วันที่ทำการขอใช้</th>
-                <th>วันที่คืน</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (count($data) > 0) : ?>
-                <?php foreach ($data as $row) : ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row["name_user"]); ?></td>
-                        <td>
-                            <?php
-                            $items = explode(',', $row['list_name']);
-                            foreach ($items as $item) {
-                                $item_parts = explode('(', $item);
-                                $product_name = trim($item_parts[0]);
-                                $quantity = isset($item_parts[1]) ? str_replace(')', '', $item_parts[1]) : '0';
-                                echo $product_name . ' ' . $quantity . ' รายการ<br>';
-                            }
-                            ?>
-                        </td>
-                        <td><?php echo thai_date_time($row["reservation_date"]); ?></td>
-                        <td><?php
-                        if ($row["date_return"] == NULL) {
-                            echo '***อุปกรณ์ยังไม่ได้คืน***';
-                        }
-                        else {
-                            echo thai_date_time($row["date_return"]); 
-                        }
-                        ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <tr>
-                    <td colspan="3" style="text-align: center">ไม่พบข้อมูลในฐานข้อมูล</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+    <?php if (count($data) > 0) : ?>
+        <?php foreach ($data as $row) : ?>
+            <?php echo htmlspecialchars($row["name_user"]); ?>
+            ทำรายการ <?php echo thai_date_time_2($row["created_at"]); ?><br>
+            <?php
+            $items = explode(',', $row['list_name']);
+            foreach ($items as $item) {
+                $item_parts = explode('(', $item);
+                $product_name = trim($item_parts[0]);
+                $quantity = isset($item_parts[1]) ? str_replace(')', '', $item_parts[1]) : '0';
+                echo '- ' . $product_name . ' ' . $quantity . ' รายการ<br>';
+            }
+            ?>
+            ทำการขอใช้ <?php echo thai_date_time_2($row["reservation_date"]); ?> ถึง <?php echo thai_date_time_2($row["end_date"]); ?><br>
+            <?php
+            if ($row["date_return"] == NULL) {
+                echo 'ยังไม่นำอุปกรณ์ เครื่องมือมาคืน';
+            } else {
+                echo 'นำอุปกรณ์ และเครื่องมือ ' . thai_date_time_2($row["date_return"]);
+            }
+            ?>
+            <br><br>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <tr>
+            <td colspan="3" style="text-align: center">ไม่พบข้อมูลในฐานข้อมูล</td>
+        </tr>
+    <?php endif; ?>
 </div>
 
 <?php

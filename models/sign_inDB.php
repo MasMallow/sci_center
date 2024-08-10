@@ -3,19 +3,6 @@ session_start();
 date_default_timezone_set('Asia/Bangkok');
 require_once '../assets/config/Database.php';
 
-function getIP()
-{
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        return $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        // In case there are multiple IPs, take the first one
-        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        return trim($ips[0]);
-    } else {
-        return $_SERVER['REMOTE_ADDR'];
-    }
-}
-
 if (isset($_POST['sign_in'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -39,13 +26,11 @@ if (isset($_POST['sign_in'])) {
                 $authID = $row['userID'];
                 $log_Name = $row['pre'] . $row['firstname'] . ' ' . $row['lastname'];
                 $log_Date = date('Y-m-d H:i:s');
-                $log_IP = getIP();
 
-                $log_query = $conn->prepare("INSERT INTO logs_user (authID, log_Name, log_Date, log_IP) VALUES (:authID, :log_Name, :log_Date, :log_IP)");
+                $log_query = $conn->prepare("INSERT INTO logs_user (authID, log_Name, log_Date) VALUES (:authID, :log_Name, :log_Date)");
                 $log_query->bindParam(':authID', $authID);
                 $log_query->bindParam(':log_Name', $log_Name);
                 $log_query->bindParam(':log_Date', $log_Date);
-                $log_query->bindParam(':log_IP', $log_IP);
                 $log_query->execute();
 
                 // Set session and redirect based on user role

@@ -409,7 +409,63 @@ button.search {
         font-size: 0.9rem;
       }
     }
+
+    .viewLogUsers_body_1 {
+      display: flex;
+      flex-direction: column;
+      border-radius: 5px;
+      overflow: hidden;
+
+      .viewLogUsers_content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .viewLogUsers_content_LOG {
+        padding: 0.7rem 1rem;
+        border-bottom: 1px solid #e1e4e8;
+      }
+
+      .list_name {
+        font-family: Sarabun-bold;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .reservation_date,
+      .approver {
+        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+      }
+
+      .label {
+        font-weight: 500;
+        color: #1f2328;
+        margin-right: 0.5rem;
+        font-size: 0.9rem;
+      }
+    }
   }
+}
+
+.user_info_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.user_info_label {
+  color: #333;
+  flex: 1;
+}
+
+.user_info_value {
+  flex: 2;
+  text-align: left;
+  color: #555;
 }
 
 .viewNotfound {

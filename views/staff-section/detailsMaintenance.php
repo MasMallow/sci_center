@@ -27,7 +27,7 @@ try {
         ");
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
-        $detailsMaintenance = $stmt->fetch(PDO::FETCH_ASSOC); // ดึงข้อมูลมาเก็บในตัวแปร
+        $detailsMaintenance = $stmt->fetchAll(PDO::FETCH_ASSOC); // ดึงข้อมูลมาเก็บในตัวแปร
     }
 } catch (PDOException $e) {
     echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');

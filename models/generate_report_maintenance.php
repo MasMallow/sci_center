@@ -67,23 +67,23 @@ ob_start();
     .details_PDF {
         text-align: center;
         font-size: 16px;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
+        /* Reduce margin */
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
+    .log-entry {
+        margin-bottom: 5px;
+        /* Reduce margin */
+        padding: 5px;
+        /* Reduce padding */
+        border: 1px solid #000;
+        line-height: 1.2;
+        /* Reduce line height */
     }
 
-    th,
-    td {
-        border: .5px solid #000;
-        padding: 8px;
-        text-align: center;
-    }
-
-    th {
-        background-color: #f2f2f2;
+    .log-entry div {
+        margin-bottom: 2px;
+        /* Reduce margin between divs */
     }
 </style>
 
@@ -96,34 +96,19 @@ ob_start();
     </div>
 <?php endif; ?>
 <div>
-    <table>
-        <thead>
-            <tr>
-                <th>วันที่เริ่มต้น</th>
-                <th>วันที่สิ้นสุด</th>
-                <th>ชื่อวิทยาศาสตร์</th>
-                <th>หมายเหตุ</th>
-                <th>รายละเอียด</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (count($data) > 0) : ?>
-                <?php foreach ($data as $row) : ?>
-                    <tr>
-                        <td><?php echo thai_date_time_3($row["start_maintenance"]); ?></td>
-                        <td><?php echo thai_date_time_3($row["end_maintenance"]); ?></td>
-                        <td><?php echo htmlspecialchars($row["sci_name"]); ?></td>
-                        <td><?php echo htmlspecialchars($row["note"]); ?></td>
-                        <td><?php echo htmlspecialchars($row["details_maintenance"]); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <tr>
-                    <td colspan="5" style="text-align: center">ไม่พบข้อมูลการบำรุงรักษา</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+    <?php if (count($data) > 0) : ?>
+        <?php foreach ($data as $row) : ?>
+            <?php echo htmlspecialchars($row["sci_name"]); ?><br>
+            เริ่มการบำรุงรักษา <?php echo thai_date_time_3($row["start_maintenance"]); ?>
+            ถึง <?php echo thai_date_time_3($row["end_maintenance"]); ?>
+            <br>
+            หมายเหตุ: <?php echo htmlspecialchars($row["note"]); ?><br>
+            รายละเอียด: <?php echo htmlspecialchars($row["details_maintenance"]); ?>
+            <br><br>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <div style="text-align: center">ไม่พบข้อมูลการบำรุงรักษา</div>
+    <?php endif; ?>
 </div>
 
 <?php

@@ -257,7 +257,7 @@ try {
         <?php if ($request_uri == '/maintenance_start') : ?>
             <?php if (!empty($maintenance)) : ?>
                 <?php
-                $itemsPerPage = 2;
+                $itemsPerPage = 30;
                 $totalItems = count($maintenance);
                 $totalPages = ceil($totalItems / $itemsPerPage);
                 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -373,7 +373,7 @@ try {
                         <div class="table_maintenanceContent">
                             <div class="table_maintenanceContent_00">
                                 <div class="table_maintenanceContent_1">
-                                    <a href="<?php echo $base_url; ?>/maintenance_start/details?id=<?= $row['ID'] ?>">
+                                    <a href="<?php echo $base_url; ?>/maintenance_end/maintenanceDetails?id=<?= $row['ID'] ?>">
                                         <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                         (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
                                         <i class="fa-solid fa-square-arrow-up-right"></i>
@@ -395,22 +395,21 @@ try {
                                         <div class="maintenance_popup_content">
                                             <div class="maintenance_section_header">
                                                 <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
-                                                <div class="section_header_form">
-                                                    <span id="R">*</span>
-                                                    <input type="text" name="maintenance_topic" required>
-                                                    <span id="G">*บังคับ</span>
+                                                <div class="modalClose" id="closeMaintenance">
+                                                    <i class="fa-solid fa-xmark"></i>
                                                 </div>
                                             </div>
-                                            <div class="maintenance_section_detail">
-                                                <span id="B">รายละเอียดการบำรุงรักษา</span>
-                                                <textarea name="maintenance_detail" cols="30" rows="5" required></textarea>
-                                                <span id="G">*บังคับ</span>
-                                            </div>
-                                            <input type="hidden" name="crud_id" value="<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <input type="hidden" name="sci_name" value="<?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <input type="hidden" name="serial_number" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <div class="submitSection">
-                                                <button class="submitBtn" type="submit" name="maintenance_submit">บันทึก</button>
+                                            <div class="maintenace_popup">
+                                                <div class="inputMaintenance">
+                                                    <label for="end_maintenance">วันสิ้นสุดการบำรุงรักษา</label>
+                                                    <input type="date" id="end_maintenance" name="end_maintenance" required>
+                                                </div>
+                                                <div class="inputMaintenance">
+                                                    <label for="note">ราละเอียดการบำรุงรักษา</label>
+                                                    <input type="text" id="note" name="note" placeholder="หมายเหตุ">
+                                                </div>
+                                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($row['ID']); ?>">
+                                                <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                             </div>
                                         </div>
                                     </div>

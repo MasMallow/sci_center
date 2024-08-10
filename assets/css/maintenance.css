@@ -443,6 +443,7 @@
   flex-direction: column;
   border: 1px solid #d0d7de;
   border-radius: 5px;
+  margin-bottom: 0.5rem;
 }
 
 .history_rowNOTFOUND {
@@ -702,7 +703,7 @@
   align-items: center;
   font-size: 1.5rem;
 
-  span{
+  span {
     font-family: Sarabun-bold;
   }
 }
