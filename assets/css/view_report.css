@@ -237,7 +237,7 @@
   color: orange;
 }
 
-.fa-check-circle{
+.fa-check-circle {
   color: green;
 }
 
@@ -257,10 +257,19 @@
   gap: 1rem;
 }
 
-.top_10_list .top_10_list_content {
+.top_10_list_content {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
   width: 30%;
   flex: 1;
 }
+
+.top_10_list_content.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .top_10_list_header {
   font-size: 1.25rem;
   padding-left: 0.7rem;

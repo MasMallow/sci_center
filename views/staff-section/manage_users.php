@@ -201,7 +201,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>การจัดการบัญชีผู้ใช้</title>
-    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon">
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
@@ -286,7 +286,11 @@ try {
         <?php endif; ?>
         <?php if ($request_uri == '/manage_users' || $request_uri == '/management_user') : ?>
             <?php if (!empty($fetchAllUser)) : ?>
-                <div class="manage_user_table_section">
+                <div id="loading">
+                    <div class="spinner"></div>
+                    <p>กำลังโหลดข้อมูล...</p>
+                </div>
+                <div class="manage_user_table_section" id="content" style="display: none;">
                     <div class="user_manage_data">
                         <div class="user_manage_data_header">
                             <span>จำนวนบัญชีทั้งหมด <span id="B"><?= count($fetchAllUser); ?></span> บัญชี</span>
@@ -384,34 +388,34 @@ try {
                             </div>
                         <?php endforeach; ?>
                     </div>
-                </div>
-                <!-- PAGINATION PAGE -->
-                <?php if ($request_uri == '/management_user') : ?>
-                    <?php if ($pagination_display) : ?>
-                        <div class="pagination">
-                            <?php if ($page > 1) : ?>
-                                <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
-                                <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
-                            <?php endif; ?>
+                    <!-- PAGINATION PAGE -->
+                    <?php if ($request_uri == '/management_user') : ?>
+                        <?php if ($pagination_display) : ?>
+                            <div class="pagination">
+                                <?php if ($page > 1) : ?>
+                                    <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
+                                    <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                                <?php endif; ?>
 
-                            <?php
-                            $total_pages = ceil($total_records / $results_per_page);
-                            for ($i = 1; $i <= $total_pages; $i++) {
-                                if ($i == $page) {
-                                    echo "<a class='active'>$i</a>";
-                                } else {
-                                    echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
+                                <?php
+                                $total_pages = ceil($total_records / $results_per_page);
+                                for ($i = 1; $i <= $total_pages; $i++) {
+                                    if ($i == $page) {
+                                        echo "<a class='active'>$i</a>";
+                                    } else {
+                                        echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
 
-                            <?php if ($page < $total_pages) : ?>
-                                <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
-                                <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
-                            <?php endif; ?>
-                        </div>
+                                <?php if ($page < $total_pages) : ?>
+                                    <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
+                                    <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
                     <?php endif; ?>
-                <?php endif; ?>
+                </div>
             <?php else : ?>
                 <div class="user_manage_not_found">
                     <i class="fa-solid fa-user-xmark"></i>
@@ -543,6 +547,26 @@ try {
     <!-- JavaScript -->
     <script src="assets/js/ajax.js"></script>
     <script src="assets/js/add.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                // ซ่อนการโหลดข้อมูล
+                document.getElementById('loading').style.display = 'none';
+                // แสดงเนื้อหาหลัก
+                document.getElementById('content').style.display = 'block';
+
+                // ทำให้ grid items แสดงผลทีละรายการด้วยแอนิเมชัน
+                const gridItems = document.querySelectorAll('.user_manage_content');
+
+                gridItems.forEach((item, index) => {
+                    const delay = index * 150;
+                    setTimeout(() => {
+                        item.classList.add('show');
+                    }, delay);
+                });
+            }, 1500);
+        });
+    </script>
 </body>
 
 </html>

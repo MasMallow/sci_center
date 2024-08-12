@@ -65,29 +65,4 @@ document.addEventListener('DOMContentLoaded', () => {
         // เริ่มแสดงการแจ้งเตือน
         UsedPage_row();
     }
-
-    // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
-    setTimeout(function () {
-        notificationSection.style.opacity = '1'; // ทำให้เนื้อหาแสดงผล
-        notificationSection.style.overflowY = 'auto'; // แสดง scrollbar แนวตั้ง
-        UsedPage_row(); // เรียกใช้ฟังก์ชันเพื่อแสดงการแจ้งเตือน
-    }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
-
-    handleLoading();
-
-    // ฟังก์ชันเพื่อแสดง UsedPage_row ทีละรายการ
-    function showUsedPageRows() {
-        const rows = document.querySelectorAll('.UsedPage_row');
-        let index = 0;
-
-        function showNextRow() {
-            if (index < rows.length) {
-                rows[index].classList.add('visible');
-                index++;
-                setTimeout(showNextRow, 200); // หน่วงเวลาในการแสดงแต่ละ row
-            }
-        }
-
-        showNextRow();
-    }
 });

@@ -228,52 +228,60 @@ unset($_SESSION['search_value']);
                 <span id="B">ไม่พบรายการวัสดุ อุปกรณ์ และเครื่องมือในระบบ</span>
             </div>
         <?php else : ?>
-            <div class="management_grid" id="content">
-                <?php foreach ($result as $results) : ?>
-                    <div class="management_grid_row">
-                        <div class="content_img">
-                            <div class="contentBLOCK">
-                                <img src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
+            <div id="loading">
+                <div class="spinner"></div>
+                <p>กำลังโหลดข้อมูล...</p>
+            </div>
+            <div class="management_grid" id="content" style="display: none;">
+                <?php if (!empty($result)) : ?>
+                    <?php foreach ($result as $results) : ?>
+                        <div class="management_grid_row">
+                            <div class="content_img">
+                                <div class="contentBLOCK">
+                                    <img src="<?php echo $base_url; ?>/assets/uploads/<?php echo htmlspecialchars($results['img_name']); ?>" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="content_info">
+                                <div class="content_name">
+                                    <?php echo htmlspecialchars($results['sci_name']); ?>
+                                </div>
+                                <div class="subcontent_name">
+                                    <div class="categories">
+                                        <span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?>
+                                    </div>
+                                    <div class="amount">
+                                        <span id="B">จำนวน </span><?php echo htmlspecialchars($results['amount']); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="management_grid_content_footer">
+                                <?php if ($results['availability'] == 0) : ?>
+                                    <div class="ready-to-use">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <span>พร้อมใช้งาน</span>
+                                    </div>
+                                <?php else : ?>
+                                    <div class="moderately">
+                                        <i class="fa-solid fa-ban"></i>
+                                        <span>บำรุงรักษา</span>
+                                    </div>
+                                <?php endif ?>
+                                <div class="content_actions">
+                                    <a href="<?php echo $base_url; ?>/management/detailsData?id=<?= $results['ID'] ?>" class="detailsCRUD action_btn">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                        <div class="tooltip"><span>รายละเอียด</span></div>
+                                    </a>
+                                    <a href="<?php echo $base_url; ?>/management/edit?id=<?= $results['ID'] ?>" class="edit_crud_btn action_btn">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        <div class="tooltip"><span>แก้ไข</span></div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="content_info">
-                            <div class="content_name">
-                                <?php echo htmlspecialchars($results['sci_name']); ?>
-                            </div>
-                            <div class="subcontent_name">
-                                <div class="categories">
-                                    <span id="B">ประเภท </span><?php echo htmlspecialchars($results['categories']); ?>
-                                </div>
-                                <div class="amount">
-                                    <span id="B">จำนวน </span><?php echo htmlspecialchars($results['amount']); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="management_grid_content_footer">
-                            <?php if ($results['availability'] == 0) : ?>
-                                <div class="ready-to-use">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    <span>พร้อมใช้งาน</span>
-                                </div>
-                            <?php else : ?>
-                                <div class="moderately">
-                                    <i class="fa-solid fa-ban"></i>
-                                    <span>บำรุงรักษา</span>
-                                </div>
-                            <?php endif ?>
-                            <div class="content_actions">
-                                <a href="<?php echo $base_url; ?>/management/detailsData?id=<?= $results['ID'] ?>" class="detailsCRUD action_btn">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                    <div class="tooltip"><span>รายละเอียด</span></div>
-                                </a>
-                                <a href="<?php echo $base_url; ?>/management/edit?id=<?= $results['ID'] ?>" class="edit_crud_btn action_btn">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                    <div class="tooltip"><span>แก้ไข</span></div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p>ไม่มีข้อมูลให้แสดงผล</p>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
 
@@ -305,6 +313,30 @@ unset($_SESSION['search_value']);
     <!-- JavaScript -->
     <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?= $base_url; ?>/assets/js/loading.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                // ซ่อนการโหลดข้อมูล
+                document.getElementById('loading').style.display = 'none';
+                // แสดงเนื้อหาหลัก
+                document.getElementById('content').style.display = 'grid';
+
+                const gridItems = document.querySelectorAll('.management_grid_row');
+                const gridContainer = document.querySelector('.management_grid');
+
+                if (gridContainer) {
+                    gridContainer.style.opacity = 1;
+                }
+
+                gridItems.forEach((item, index) => {
+                    const delay = index * 150;
+                    setTimeout(() => {
+                        item.classList.add('show');
+                    }, delay);
+                });
+            }, 1500);
+        });
+    </script>
 </body>
 
 </html>

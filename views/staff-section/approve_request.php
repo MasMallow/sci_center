@@ -155,6 +155,7 @@ try {
     <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/approval.css">
@@ -210,10 +211,14 @@ try {
                         <span id="B">ไม่พบข้อมูลการขอใช้</span>
                     </div>
                 <?php else : ?>
-                    <div class="approve_header">
-                        <span>รายการที่ขอใช้ทั้งหมด <span id="B"><?php echo $totalData; ?></span> รายการ</span>
+                    <div id="loading">
+                        <div class="spinner"></div>
+                        <p>กำลังโหลดข้อมูล...</p>
                     </div>
-                    <div class="approve_table">
+                    <div class="approve_table" id="content" style="display: none;">
+                        <div class="approve_header">
+                            <span>รายการที่ขอใช้ทั้งหมด <span id="B"><?php echo $totalData; ?></span> รายการ</span>
+                        </div>
                         <?php
                         $previousSn = null;
                         foreach ($data as $row) :
@@ -272,6 +277,7 @@ try {
                         endforeach;
                         ?>
                     </div>
+                    <!-- pagination -->
                     <?php if ($pagination_display) : ?>
                         <div class="pagination">
                             <?php if ($page > 1) : ?>
@@ -284,7 +290,6 @@ try {
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
-
             <!-- /approve_request/calendar -->
         <?php elseif ($request_uri == '/approve_request/calendar') : ?>
             <div class="bookingTable_content">
@@ -459,6 +464,33 @@ try {
                     event.target.style.display = 'none';
                 }
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('content');
+
+            // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
+            setTimeout(function() {
+                loading.style.display = 'none'; // ซ่อนการโหลด
+                content.style.display = 'block'; // แสดงเนื้อหาหลัก
+                content.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
+
+                // แสดงการแจ้งเตือนทีละรายการ
+                const approveData = document.querySelectorAll('.approveData');
+                let index = 0;
+
+                function showNextNotification() {
+                    if (index < approveData.length) {
+                        approveData[index].classList.add('visible');
+                        index++;
+                        setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                    }
+                }
+
+                showNextNotification();
+            }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
         });
     </script>
 </body>

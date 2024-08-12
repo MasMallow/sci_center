@@ -131,6 +131,14 @@ button.search {
   padding: 0.7rem 1rem;
   border-bottom: 1px solid #eee;
   gap: 0.4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.user_manage_content.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .user_manage_content_1 {

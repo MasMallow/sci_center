@@ -53,6 +53,7 @@ try {
     <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/navigator.css">
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/breadcrumb.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/view_report.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/footer.css">
@@ -72,50 +73,53 @@ try {
             </div>
         </nav>
         <?php if ($request_uri == '/top10') : ?>
-            <div class="top_10_list">
-                <div class="top_10_list_content">
-                    <div class="top_10_list_header">
-                        <span id="B">Top 10 วัสดุ</span>
+            <div id="loading">
+                <div class="spinner"></div>
+                <p>กำลังโหลดข้อมูล...</p>
+            </div>
+            <div id="content" style="display: none;">
+                <div class="top_10_list">
+                    <div class="top_10_list_content">
+                        <div class="top_10_list_header">
+                            <span id="B">Top 10 วัสดุ</span>
+                        </div>
+                        <div class="top_10_list_body">
+                            <ul>
+                                <?php
+                                foreach (array_slice($materialResult, 0, 10) as $row) {
+                                    echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
+                                }
+                                ?>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="top_10_list_body">
-                        <ul>
-                            <?php
-                            // แสดงผลวัสดุ 10 อันดับแรก
-                            foreach (array_slice($materialResult, 0, 10) as $row) {
-                                echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
-                            }
-                            ?>
-                        </ul>
+                    <div class="top_10_list_content">
+                        <div class="top_10_list_header">
+                            <span id="B">Top 10 อุปกรณ์</span>
+                        </div>
+                        <div class="top_10_list_body">
+                            <ul>
+                                <?php
+                                foreach (array_slice($equipmentResult, 0, 10) as $row) {
+                                    echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
+                                }
+                                ?>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="top_10_list_content">
-                    <div class="top_10_list_header">
-                        <span id="B">Top 10 อุปกรณ์</span>
-                    </div>
-                    <div class="top_10_list_body">
-                        <ul>
-                            <?php
-                            // แสดงผลอุปกรณ์ 10 อันดับแรก
-                            foreach (array_slice($equipmentResult, 0, 10) as $row) {
-                                echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
-                            }
-                            ?>
-                        </ul>
-                    </div>
-                </div>
-                <div class="top_10_list_content">
-                    <div class="top_10_list_header">
-                        <span id="B">Top 10 เครื่องมือ</span>
-                    </div>
-                    <div class="top_10_list_body">
-                        <ul>
-                            <?php
-                            // แสดงผลเครื่องมือ 10 อันดับแรก
-                            foreach (array_slice($toolResult, 0, 10) as $row) {
-                                echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
-                            }
-                            ?>
-                        </ul>
+                    <div class="top_10_list_content">
+                        <div class="top_10_list_header">
+                            <span id="B">Top 10 เครื่องมือ</span>
+                        </div>
+                        <div class="top_10_list_body">
+                            <ul>
+                                <?php
+                                foreach (array_slice($toolResult, 0, 10) as $row) {
+                                    echo "<li><div class='content'><span class='sciName'>{$row['sci_name']}</span> - <span class='topten' id=\"B\">ใช้งาน {$row['usage_count']} ครั้ง</span></div></li>";
+                                }
+                                ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,6 +128,26 @@ try {
     <footer>
         <?php include_once 'assets/includes/footer_2.php'; ?>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                // ซ่อนการโหลดข้อมูล
+                document.getElementById('loading').style.display = 'none';
+                // แสดงเนื้อหาหลัก
+                document.getElementById('content').style.display = 'block';
+
+                // ทำให้ grid items แสดงผลทีละรายการด้วยแอนิเมชัน
+                const gridItems = document.querySelectorAll('.top_10_list_content');
+
+                gridItems.forEach((item, index) => {
+                    const delay = index * 150;
+                    setTimeout(() => {
+                        item.classList.add('show');
+                    }, delay);
+                });
+            }, 1500);
+        });
+    </script>
 </body>
 
 </html>
