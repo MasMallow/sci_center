@@ -66,15 +66,12 @@ try {
         <!-- แสดงข้อความแจ้งเตือนการเริ่มต้นใช้งานสำเร็จ -->
         <?php if (isset($_SESSION['USEDEND_success'])) : ?>
             <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-check check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?= $_SESSION['USEDEND_success']; ?></span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-check check"></i>
+                    <div class="toast_content_message">
+                        <span class="text text_2"><?= $_SESSION['USEDEND_success']; ?></span>
                     </div>
+                    <i class="fa-solid fa-xmark close"></i>
                 </div>
             </div>
             <?php unset($_SESSION['USEDEND_success']); ?>
@@ -126,7 +123,7 @@ try {
                                             เมื่อ<?= thai_date_time_2(htmlspecialchars($data['approvaldatetime'])); ?>
                                         </div>
                                     </div>
-                                    <form method="POST" action="<?= $base_url; ?>/models/returnedUsed.php">
+                                    <form method="POST" action="<?= $base_url; ?>/models/used_process.php">
                                         <input type="hidden" name="return_id" value="<?= htmlspecialchars($data['ID']); ?>">
                                         <input type="hidden" name="user_id" value="<?= htmlspecialchars($data['userID']); ?>">
                                         <div class="list_item">
@@ -144,7 +141,9 @@ try {
         <?php endif; ?>
     </div>
     <!-- JavaScript -->
-    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/loading.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/noti_toast.js"></script>
 </body>
 
 </html>

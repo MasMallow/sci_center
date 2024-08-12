@@ -1,3 +1,31 @@
+#loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 75vh;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .UsedPage {
   width: 100%;
   max-width: 1000px;
@@ -36,6 +64,7 @@
 }
 
 .UsedPage_not_found {
+  background-color: #1f2328;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -61,14 +90,22 @@
 .UsedPage_tableHeader {
   font-size: 0.95rem;
   padding-left: 0.4rem;
-  margin-bottom: 10px;
 }
 
 .UsedPage_Table .UsedPage_row {
   overflow: hidden;
   border: 1px solid #d0d7de;
   border-radius: 5px;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out;
+  margin-bottom: 1rem;
 }
+
+/* แสดง row เมื่อมีการเพิ่ม class 'visible' */
+.UsedPage_row.visible {
+  opacity: 1;
+}
+
 .UsedPage_serial_number {
   display: flex;
   align-items: center;

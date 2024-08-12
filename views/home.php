@@ -174,14 +174,18 @@ try {
                 <sidebar class="menu_navigator">
                     <ul class="sb_ul">
                         <?php
-                        // ตรวจสอบค่าของ $request_uri และพารามิเตอร์ GET
+                        // ตรวจสอบ URL ของหน้าเว็บปัจจุบัน
+                        $request_uri = $_SERVER['REQUEST_URI'];
                         $base_uri = '/';
+
+                        // ตรวจสอบค่าของ $request_uri และพารามิเตอร์ GET
                         $is_material = strpos($request_uri, '/material') !== false;
                         $is_equipment = strpos($request_uri, '/equipment') !== false;
                         $is_tools = strpos($request_uri, '/tools') !== false;
+                        $is_notification = $request_uri === '/notification';
 
                         // ตรวจสอบเงื่อนไขที่ต้องการ
-                        $active_home = ($request_uri === $base_uri || !$is_material && !$is_equipment && !$is_tools);
+                        $active_home = ($request_uri === $base_uri || !$is_material && !$is_equipment && !$is_tools && !$is_notification);
                         $active_material = $is_material;
                         $active_equipment = $is_equipment;
                         $active_tools = $is_tools;
@@ -226,7 +230,7 @@ try {
                         </li>
                         <li class="group_li">
                             <span class="group_title">แจ้งเตือน</span>
-                            <a class="group_li_01 <?= ($request_uri == '/notification') ? 'active' : ''; ?>" href="<?= $base_url; ?>/notification">
+                            <a class="group_li_01 <?= $is_notification ? 'active' : ''; ?>" href="<?= $base_url; ?>/notification">
                                 <i class="fa-solid fa-envelope"></i>
                                 <span class="text">แจ้งเตือน</span>
                             </a>
@@ -249,17 +253,18 @@ try {
                 </sidebar>
                 <!-- ------------------ MAIN CONTENT ------------------ -->
                 <?php
-                if (
+                // ตรวจสอบว่า URL เป็นหน้า notification หรือไม่
+                if (strpos($request_uri, '/notification') !== false) {
+                    include('notification.php');
+                } elseif (
                     strpos($request_uri, '/') !== false ||
                     strpos($request_uri, '/material') !== false ||
                     strpos($request_uri, '/equipment') !== false ||
                     strpos($request_uri, '/tools') !== false
-                ) :
+                ) {
+                    include('Data.php');
+                }
                 ?>
-                    <?php include('Data.php'); ?>
-                <?php elseif ($request_uri == '/notification') : ?>
-                    <?php include('notification.php'); ?>
-                <?php endif; ?>
             </div>
         </main>
         <!-- ---------------- FOOTER ------------------ -->
@@ -271,18 +276,8 @@ try {
 
     <!-- JavaScript -->
     <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?= $base_url; ?>/assets/js/loading.js"></script>
     <script src="<?= $base_url; ?>/assets/js/datetime.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // จำลองการโหลดข้อมูล
-            setTimeout(function() {
-                // ซ่อนส่วนที่แสดงข้อความการโหลด
-                document.getElementById('loading').style.display = 'none';
-                // แสดงข้อมูลที่ต้องการแสดงผล
-                document.getElementById('content').style.display = 'block';
-            }, 2000); // ตั้งค่าเวลาที่ต้องการ (2 วินาทีในตัวอย่างนี้)
-        });
-    </script>
 </body>
 
 

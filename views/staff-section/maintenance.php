@@ -128,18 +128,27 @@ try {
     <div class="maintenance">
         <?php if (isset($_SESSION['maintenanceSuccess'])) : ?>
             <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?php echo $_SESSION['maintenanceSuccess']; ?></span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-xmark check"></i>
+                    <div class="toast_content_message">
+                        <span class="text text_2"><?php echo $_SESSION['maintenanceSuccess']; ?></span>
                     </div>
+                    <i class="fa-solid fa-xmark close"></i>
                 </div>
             </div>
             <?php unset($_SESSION['maintenanceSuccess']); ?>
+        <?php endif ?>
+        <?php if (isset($_SESSION['end_maintenanceSuccess'])) : ?>
+            <div class="toast">
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-xmark check"></i>
+                    <div class="toast_content_message">
+                        <span class="text text_2"><?php echo $_SESSION['end_maintenanceSuccess']; ?></span>
+                    </div>
+                    <i class="fa-solid fa-xmark close"></i>
+                </div>
+            </div>
+            <?php unset($_SESSION['end_maintenanceSuccess']); ?>
         <?php endif ?>
         <div class="header_maintenance_section">
             <a class="historyBACK" href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
@@ -390,7 +399,7 @@ try {
                                 <span class="maintenance_button">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                 </span>
-                                <form action="<?php echo $base_url ?>/models/maintenanceProcess.php" method="post" class="maintenance_form">
+                                <form action="<?php echo $base_url ?>/models/maintenanceEndprocess.php" method="post" class="maintenance_form">
                                     <div class="maintenance_popup">
                                         <div class="maintenance_popup_content">
                                             <div class="maintenance_section_header">

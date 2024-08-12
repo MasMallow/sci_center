@@ -89,6 +89,9 @@ try {
             </div>
         <?php endif; ?>
     </div>
+
+    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/loading.js"></script>
 </body>
 
 </html>

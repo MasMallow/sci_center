@@ -36,10 +36,10 @@ if (isset($_POST['sign_in'])) {
                 // Set session and redirect based on user role
                 if ($row['urole'] == 'staff') {
                     $_SESSION['staff_login'] = $row['userID'];
-                    header("Location: $base_url");
+                    header("Location: /");
                 } else {
                     $_SESSION['user_login'] = $row['userID'];
-                    header("Location: $base_url");
+                    header("Location: /");
                 }
                 exit(); // Exit after redirection
             } else {

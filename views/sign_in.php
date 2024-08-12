@@ -20,30 +20,24 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
         <main class="sign_in_box">
             <?php if (isset($_SESSION['successSign_up'])) : ?>
                 <div class="toast">
-                    <div class="toast_section">
-                        <div class="toast_content">
-                            <i class="fas fa-solid fa-xmark check"></i>
-                            <div class="toast_content_message">
-                                <span class="text text_2"><?php echo $_SESSION['successSign_up']; ?></span>
-                            </div>
-                            <i class="fa-solid fa-xmark close"></i>
-                            <div class="progress"></div>
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check"></i>
+                        <div class="toast_content_message">
+                            <span class="text"><?php echo $_SESSION['successSign_up']; ?></span>
                         </div>
+                        <i class="fa-solid fa-xmark close"></i>
                     </div>
                 </div>
                 <?php unset($_SESSION['successSign_up']); ?>
             <?php endif ?>
             <?php if (isset($_SESSION['errorLogin'])) : ?>
                 <div class="toast">
-                    <div class="toast_section error">
-                        <div class="toast_content">
-                            <i class="fas fa-solid fa-xmark check error"></i>
-                            <div class="toast_content_message">
-                                <span class="text text_2"><?php echo $_SESSION['errorLogin']; ?></span>
-                            </div>
-                            <i class="fa-solid fa-xmark close"></i>
-                            <div class="progress error"></div>
+                    <div class="toast_content error">
+                        <i class="fas fa-solid fa-xmark check error"></i>
+                        <div class="toast_content_message">
+                            <span class="text error"><?php echo $_SESSION['errorLogin']; ?></span>
                         </div>
+                        <i class="fa-solid fa-xmark close"></i>
                     </div>
                 </div>
                 <?php unset($_SESSION['errorLogin']); ?>
@@ -104,10 +98,9 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
     </body>
     <script src="<?php echo $base_url; ?>/assets/js/show_password.js"></script>
     <script src="<?php echo $base_url; ?>/assets/js/noti_toast.js"></script>
-
     </html>
 <?php
 } else {
-    header('location: $base_url');
+    header('location: /');
 }
 ?>

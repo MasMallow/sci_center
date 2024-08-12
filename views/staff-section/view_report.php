@@ -75,7 +75,6 @@ try {
     $_SESSION['error'] = 'เกิดข้อผิดพลาด: ' . $e->getMessage();
     header('Location: /error_page');
     exit;
-
 }
 ?>
 <!DOCTYPE html>
@@ -130,7 +129,7 @@ try {
                 <div class="view_report_table_header">
                     <div class="view_report_table_header_pdf">
                         <span id="B">ประวัติการขอใช้</span>
-                        <form id="pdfForm" action="<?php echo $base_url; ?>/models/generate_pdf.php" method="GET">
+                        <form id="pdfForm" action="<?php echo $base_url; ?>/models/generate_pdf.phpz" method="GET">
                             <?php if (!empty($_GET["userID"])) : ?>
                                 <input type="hidden" name="userID" value="<?= htmlspecialchars($_GET["userID"]) ?>">
                             <?php endif; ?>

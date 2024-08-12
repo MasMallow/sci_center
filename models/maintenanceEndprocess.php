@@ -23,12 +23,11 @@ if (isset($_SESSION['staff_login'])) {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     // รับค่าจากฟอร์ม
     $id = $_POST['selected_ids'];
-    $serial_number = $_POST['serial_ids'];
     $end_maintenance = $_POST['end_maintenance'];
-    $details_maintenance = $_POST['details_maintenance'] ?? '--';
+    $details_maintenance = $_POST['note'] ?? '--';
 
     // ดึงข้อมูลผู้ใช้สำหรับ log
     $staff_id = $_SESSION['staff_login'];
@@ -56,26 +55,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
         $update_query_02->bindParam(':id', $id, PDO::PARAM_INT);
         $update_query_02->execute();
 
-        // อัพเดทรายละเอียดการบำรุงรักษาในตาราง logs_maintenance โดยเลือก serial_number อันใหม่ล่าสุด
-        $update_query_03 = $conn->prepare("
-            UPDATE logs_maintenance 
-            SET end_maintenance = :end_maintenance, 
-                details_maintenance = :details_maintenance 
-            WHERE serial_number = :serial_number 
+        // ดึง serial_number ใหม่ล่าสุด
+        $serial_query = $conn->prepare("
+            SELECT serial_number 
+            FROM logs_maintenance 
+            WHERE ID = :id 
             ORDER BY created_at DESC 
             LIMIT 1
         ");
-        $update_query_03->bindParam(':end_maintenance', $end_maintenance, PDO::PARAM_STR);
-        $update_query_03->bindParam(':details_maintenance', $details_maintenance, PDO::PARAM_STR);
-        $update_query_03->bindParam(':serial_number', $serial_number, PDO::PARAM_INT);
-        $update_query_03->execute();
+        $serial_query->bindParam(':id', $id, PDO::PARAM_INT);
+        $serial_query->execute();
+        $serial_number_data = $serial_query->fetch(PDO::FETCH_ASSOC);
+        $serial_number = $serial_number_data['serial_number'] ?? null;
 
-        // ตรวจสอบการอัพเดททั้งสาม query
-        if ($update_query_01 && $update_query_02 && $update_query_03) {
-            $_SESSION['end_maintenanceSuccess'] = "สิ้นสุดกระบวนการการบำรุงรักษา";
+        if ($serial_number) {
+            // อัพเดทรายละเอียดการบำรุงรักษาในตาราง logs_maintenance โดยเลือก serial_number อันใหม่ล่าสุด
+            $update_query_03 = $conn->prepare("
+                UPDATE logs_maintenance 
+                SET end_maintenance = :end_maintenance, 
+                    details_maintenance = :details_maintenance 
+                WHERE serial_number = :serial_number
+            ");
+            $update_query_03->bindParam(':end_maintenance', $end_maintenance, PDO::PARAM_STR);
+            $update_query_03->bindParam(':details_maintenance', $details_maintenance, PDO::PARAM_STR);
+            $update_query_03->bindParam(':serial_number', $serial_number, PDO::PARAM_INT);
+            $update_query_03->execute();
+
+            if ($update_query_01->rowCount() > 0 && $update_query_02->rowCount() > 0 && $update_query_03->rowCount() > 0) {
+                $_SESSION['end_maintenanceSuccess'] = "สิ้นสุดกระบวนการการบำรุงรักษา";
+            } else {
+                $_SESSION['end_maintenanceError'] = "เกิดข้อผิดพลาด";
+            }
         } else {
-            $_SESSION['end_maintenanceError'] = "เกิดข้อผิดพลาด";
+            $_SESSION['end_maintenanceError'] = "ไม่พบข้อมูลการบำรุงรักษา";
         }
+
         // เปลี่ยนเส้นทางไปยังหน้าสิ้นสุดการบำรุงรักษา
         header("Location: /maintenance_end");
         exit;
@@ -86,3 +100,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_maintenance'
         exit;
     }
 }
+?>

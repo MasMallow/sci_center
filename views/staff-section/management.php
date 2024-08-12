@@ -127,7 +127,6 @@ unset($search_results);
 // ลบค่าใน session ที่ชื่อ search_value
 unset($_SESSION['search_value']);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -137,6 +136,7 @@ unset($_SESSION['search_value']);
     <title><?= $searchTitle; ?>จัดการวัสดุ อุปกรณ์ และเครื่องมือ</title>
     <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/management_systems.css">
@@ -146,33 +146,19 @@ unset($_SESSION['search_value']);
     <header>
         <?php include_once('assets/includes/navigator.php'); ?>
     </header>
+    <?php if (isset($_SESSION['maintenanceSuccess'])) : ?>
+        <div class="toast">
+            <div class="toast_content">
+                <i class="fas fa-solid fa-check check"></i>
+                <div class="toast_content_message">
+                    <span class="text text_2"><?php echo $_SESSION['delete_success']; ?></span>
+                </div>
+                <i class="fa-solid fa-xmark close"></i>
+            </div>
+        </div>
+        <?php unset($_SESSION['maintenanceSuccess']); ?>
+    <?php endif ?>
     <div class="Dashboard_Management">
-        <?php if (isset($_SESSION['delete_success'])) : ?>
-            <div class="toast">
-                <div class="toast_content">
-                    <i class="fas fa-solid fa-check check"></i>
-                    <div class="toast_content_message">
-                        <span class="text text_2"><?php echo $_SESSION['delete_success']; ?></span>
-                    </div>
-                    <i class="fa-solid fa-xmark close"></i>
-                </div>
-            </div>
-            <?php unset($_SESSION['delete_success']); ?>
-        <?php endif ?>
-        <?php if (isset($_SESSION['delete_error'])) : ?>
-            <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-check check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?php echo $_SESSION['delete_error']; ?></span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                    </div>
-                </div>
-            </div>
-            <?php unset($_SESSION['delete_error']); ?>
-        <?php endif ?>
         <div class="header_management_section">
             <div class="header_name_section">
                 <a class="historyBACK" href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
@@ -242,7 +228,7 @@ unset($_SESSION['search_value']);
                 <span id="B">ไม่พบรายการวัสดุ อุปกรณ์ และเครื่องมือในระบบ</span>
             </div>
         <?php else : ?>
-            <div class="management_grid">
+            <div class="management_grid" id="content">
                 <?php foreach ($result as $results) : ?>
                     <div class="management_grid_row">
                         <div class="content_img">
@@ -315,6 +301,10 @@ unset($_SESSION['search_value']);
             </div>
         <?php endif; ?>
     </div>
+
+    <!-- JavaScript -->
+    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?= $base_url; ?>/assets/js/loading.js"></script>
 </body>
 
 </html>

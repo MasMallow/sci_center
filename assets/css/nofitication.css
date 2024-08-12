@@ -11,16 +11,18 @@
   padding: 0.3rem 0.8rem;
   font-size: 1.15rem;
 }
+
 .notification_section {
   padding: 0 0.7rem;
   gap: 1rem;
   width: 100%;
   max-width: 750px;
   max-height: 70vh;
-  overflow: hidden;
+  overflow-x: hidden;
   overflow-y: auto;
   margin: 1rem auto;
 }
+
 /* สำหรับเบราว์เซอร์ Webkit เช่น Chrome, Safari */
 .notification_section::-webkit-scrollbar {
   width: 8px; /* ความกว้างของ scrollbar */
@@ -44,6 +46,15 @@
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 0.75rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  margin-bottom: 1rem;
+}
+
+.notification.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .notification_HEADER_ICON {
@@ -126,7 +137,7 @@
     font-size: 1.5rem;
     margin-top: 1rem;
   }
-  
+
   .not_login {
     width: 40%;
     text-align: center;

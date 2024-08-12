@@ -1,4 +1,8 @@
-<main class="notification_page">
+<div id="loading">
+    <div class="spinner"></div>
+    <p>กำลังโหลดข้อมูล...</p>
+</div>
+<main class="notification_page" id="content" style="display: none;">
     <div class="notification_header">
         <span id="B">แจ้งเตือนการขอใช้</span>
     </div>
@@ -68,7 +72,6 @@
                     </a>
                 <?php endif; ?>
             </div>
-
         <?php endif; ?>
     </div>
 </main>
