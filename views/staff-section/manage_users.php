@@ -4,11 +4,6 @@ require_once 'assets/config/config.php';
 require_once 'assets/config/Database.php';
 include_once 'assets/includes/thai_date_time.php';
 
-// ตรวจสอบการเชื่อมต่อฐานข้อมูล
-if (!isset($conn)) {
-    die("Database connection failed");
-}
-
 // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่ และดึงข้อมูลผู้ใช้
 if (isset($_SESSION['staff_login'])) {
     $userID = $_SESSION['staff_login'];
@@ -227,20 +222,17 @@ try {
     foreach ($successMessages as $message) :
         if (isset($_SESSION[$message])) : ?>
             <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-check check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2">
-                                <?php
-                                echo $_SESSION[$message];
-                                unset($_SESSION[$message]);
-                                ?>
-                            </span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-check check"></i>
+                    <div class="toast_content_message">
+                        <span class="text">
+                            <?php
+                            echo $_SESSION[$message];
+                            unset($_SESSION[$message]);
+                            ?>
+                        </span>
                     </div>
+                    <i class="fa-solid fa-xmark close"></i>
                 </div>
             </div>
         <?php endif; ?>

@@ -871,112 +871,68 @@
   }
 }
 
-/* ------------------ MANAGEMENT LOGs PAGE -------------- */
-.viewLog_Management_PAGE {
-  width: 100%;
-  height: 100%;
-
-  .viewLog_Management_MAIN {
-    border-radius: 5px;
-    border: 1px solid #d0d7de;
-    margin-top: 1rem;
-    overflow: hidden;
-
-    .viewLog_Management_header {
-      font-size: 1.05rem;
-      color: #1f2328;
-      padding: 0.5rem 1rem;
-      background-color: #f6f8fa;
-      border-bottom: 1px solid #d0d7de;
-    }
-
-    .viewLog_Management_body {
-      border-radius: 5px;
-      overflow: hidden;
-
-      .viewLog_Management_content {
-        font-size: 0.95rem;
-        border-bottom: 1px solid #d0d7de;
-        display: flex;
-        padding: 1rem 1rem;
-
-        .viewLog_User_content_1 {
-          width: 30%;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          a {
-            color: #000000;
-          }
-        }
-        .viewLog_User_content_2 {
-          width: 30%;
-          display: flex;
-          align-items: center;
-          gap: 0.3rem;
-        }
-        .viewLog_User_content_3 {
-          width: 20%;
-          display: flex;
-          align-items: center;
-          gap: 0.3rem;
-        }
-
-        &:last-child {
-          border-bottom: none;
-        }
-      }
-    }
-  }
-}
 /* ------------------ MANAGEMENT DETAILS -------------- */
 .viewLog_Management_Details {
   width: 100%;
   max-width: 1300px;
-  margin: 2.5rem auto;
-  height: 100%;
+  margin: 1rem auto;
+  border-radius: 5px;
+  border: 1px solid #d0d7de;
+  overflow: hidden;
 
-  .viewLog_Management_MAIN {
-    margin-top: 1rem;
+  .viewLog_Management_header {
+    font-size: 1.05rem;
+    color: #1f2328;
+    padding: 0.5rem 1rem;
+    background-color: #f6f8fa;
+    border-bottom: 1px solid #d0d7de;
+  }
+
+  .viewLog_Management_body {
+    display: flex;
+    flex-direction: column;
     border-radius: 5px;
-    border: 1px solid #d0d7de;
     overflow: hidden;
 
-    .viewLog_Management_header {
-      font-size: 1.05rem;
-      color: #1f2328;
-      padding: 0.5rem 1rem;
-      background-color: #f6f8fa;
+    .viewLog_Management_content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
       border-bottom: 1px solid #d0d7de;
     }
 
-    .viewLog_Management_body {
-      display: flex;
-      flex-direction: column;
-      border-radius: 5px;
-      overflow: hidden;
-
-      .viewLog_Management_content {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        padding: 0.7toprem 1rem;
-
-        .viewLog_Management_content_1 {
-          display: flex;
-          align-items: center;
-        }
-        .viewLog_Management_content_2 {
-          .log-item {
-            margin-bottom: 10px;
-          }
-          .label {
-            color: #1f2328;
-            margin-right: 10px;
-          }
-        }
-      }
+    .viewLog_Management_content:last-child {
+      border-bottom: none;
     }
+  }
+}
+
+.statusLog_1 {
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  color: green;
+
+  i {
+    margin-right: 0.3rem;
+  }
+}
+.statusLog_2 {
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  color: orange;
+
+  i {
+    margin-right: 0.3rem;
+  }
+}
+.statusLog_3 {
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  color: red;
+
+  i {
+    margin-right: 0.3rem;
   }
 }
 

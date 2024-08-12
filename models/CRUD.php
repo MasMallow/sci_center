@@ -31,8 +31,10 @@ if (isset($_POST['submit'])) {
     $log_Status = 'Add';
 
     // ตรวจสอบว่า $sci_name ไม่มี [] หรือ ()
-    if (strpos($sci_name, '[') !== false || strpos($sci_name, ']') !== false || strpos($sci_name, '(') !== false || strpos($sci_name, ')') !== false
-    || strpos($sci_name, ',') !== false) {
+    if (
+        strpos($sci_name, '[') !== false || strpos($sci_name, ']') !== false || strpos($sci_name, '(') !== false || strpos($sci_name, ')') !== false
+        || strpos($sci_name, ',') !== false
+    ) {
         $_SESSION['errorUpload'] = "ห้ามใส่ [] () และ , ในชื่อวิทยาศาสตร์";
         header('location: ' . $base_url . '/management/addData');
         exit();
@@ -140,7 +142,7 @@ if (isset($_POST['submit'])) {
         header('location: ' . $base_url . '/management/addData');
         exit();
     }
-} 
+}
 
 // <-------------- EDIT ---------------->
 elseif (isset($_POST['update'])) {
@@ -183,7 +185,7 @@ elseif (isset($_POST['update'])) {
             }
             move_uploaded_file($img['tmp_name'], $filePath);
         } else {
-            $_SESSION['error'] = "ประเภทไฟล์หรือขนาดไฟล์ไม่ถูกต้อง";
+            $_SESSION['updateData_error'] = "ประเภทไฟล์หรือขนาดไฟล์ไม่ถูกต้อง";
             header("location: " . $base_url . "/management/editData?id=" . $id);
             exit();
         }
@@ -225,28 +227,39 @@ elseif (isset($_POST['update'])) {
     $sql->bindParam(":log_Content", $log_Content);
     $sql->execute();
 
-    $_SESSION['success'] = "อัปเดตข้อมูลสำเร็จ";
+    $_SESSION['updateData_success'] = "อัปเดตข้อมูลสำเร็จ";
     header("location: /management/edit?id=" . $id);
     exit();
 }
 
 // <-------------- DELETE ---------------->
-elseif (isset($_GET['delete'])) {
+elseif (isset($_POST['ID_deleteData'])) {
     // รับ ID ของรายการที่จะลบ
-    $id = $_GET['delete'];
+    $id = $_POST['ID_deleteData'];
 
     // ตรวจสอบข้อมูลในฐานข้อมูล
     $stmt = $conn->prepare("SELECT * FROM crud WHERE id = :id");
     $stmt->bindParam(":id", $id);
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$row) {
+        $_SESSION['delete_error'] = "ไม่พบข้อมูลที่จะลบ";
+        header("location: /management");
+        exit();
+    }
+
     $sci_name = $row['sci_name'];
     $serial_number = $row['serial_number'];
 
     // ลบไฟล์รูปภาพออกจากโฟลเดอร์
     $path = '../assets/uploads/' . $row['img_name'];
     if (file_exists($path)) {
-        unlink($path);
+        if (!unlink($path)) {
+            $_SESSION['delete_error'] = "ไม่สามารถลบไฟล์รูปภาพได้";
+            header("location: /management");
+            exit();
+        }
     }
 
     // ลบข้อมูลจากตาราง crud
@@ -275,9 +288,7 @@ elseif (isset($_GET['delete'])) {
     $stmt->bindParam(":log_Content", $log_Content);
     $stmt->execute();
 
-    $_SESSION['success'] = "ลบข้อมูลสำเร็จ";
-    header("location: /management/viewData");
+    $_SESSION['delete_success'] = "ลบข้อมูลสำเร็จ";
+    header("location: /management");
     exit();
 }
-
-?>

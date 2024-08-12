@@ -225,19 +225,19 @@ try {
             <!-- Delete Section -->
             <div>
                 <span class="del_notification" data-modal="<?= htmlspecialchars($detailsData['ID']); ?>">ลบข้อมูล</span>
-                <div class="del_notification_alert" id="<?= htmlspecialchars($detailsData['ID']); ?>">
+                <div class="del_notification_alert" data-id="<?= htmlspecialchars($detailsData['ID']); ?>">
                     <div class="del_notification_content">
                         <div class="del_notification_popup">
                             <div class="del_notification_sec01">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
-                                <span>แจ้งเตือนการลบข้อมูล</span>
+                                <span id="B">แจ้งเตือนการลบข้อมูล</span>
                             </div>
                             <div class="del_notification_sec02">
-                                <form action="<?= $base_url ?>/models/deleteData.php" method="post">
+                                <form action="<?= $base_url ?>/models/CRUD.php" method="post">
                                     <input type="hidden" name="ID_deleteData" value="<?= htmlspecialchars($detailsData['ID']); ?>">
-                                    <button type="submit" class="confirm_del">ยืนยัน</button>
+                                    <button type="submit" name="deleteDATA" class="confirm_del">ยืนยัน</button>
                                 </form>
-                                <div class="cancel_del" id="closeDetails">
+                                <div class="cancel_del closeDetails" data-modal="<?= htmlspecialchars($detailsData['ID']); ?>">
                                     <span>ปิดหน้าต่าง</span>
                                 </div>
                             </div>
@@ -249,7 +249,7 @@ try {
     </main>
     <!-- JavaScript -->
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-    <script src="<?php echo $base_url; ?>/assets/js/add.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/previewImg_popup.js"></script>
     <script src="<?php echo $base_url; ?>/assets/js/maintenance.js"></script>
 </body>
 

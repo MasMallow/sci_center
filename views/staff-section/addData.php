@@ -51,30 +51,24 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
         <main class="add_MET_PAGE">
             <?php if (isset($_SESSION['Uploadsuccess'])) : ?>
                 <div class="toast">
-                    <div class="toast_section">
-                        <div class="toast_content">
-                            <i class="fas fa-solid fa-check check"></i>
-                            <div class="toast_content_message">
-                                <span class="text text_2"><?php echo $_SESSION['Uploadsuccess']; ?></span>
-                            </div>
-                            <i class="fa-solid fa-xmark close"></i>
-                            <div class="progress"></div>
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-check check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2"><?php echo $_SESSION['Uploadsuccess']; ?></span>
                         </div>
+                        <i class="fa-solid fa-xmark close"></i>
                     </div>
                 </div>
                 <?php unset($_SESSION['Uploadsuccess']); ?>
             <?php endif ?>
             <?php if (isset($_SESSION['errorUpload'])) : ?>
                 <div class="toast error">
-                    <div class="toast_section">
-                        <div class="toast_content">
-                            <i class="fas fa-solid fa-xmark check error"></i>
-                            <div class="toast_content_message">
-                                <span class="text text_2"><?php echo $_SESSION['errorUpload']; ?></span>
-                            </div>
-                            <i class="fa-solid fa-xmark close"></i>
-                            <div class="progress error"></div>
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-xmark check error"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2"><?php echo $_SESSION['errorUpload']; ?></span>
                         </div>
+                        <i class="fa-solid fa-xmark close"></i>
                     </div>
                 </div>
                 <?php unset($_SESSION['errorUpload']); ?>
@@ -210,134 +204,95 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
                     <a href="<?php echo $base_url; ?>/management/addData">กลับหน้าเพิ่มข้อมูล</a>
                 </div>
             </div>
-            <?php if (!empty($Management)) : ?>
-                <div class="viewLog_Management_PAGE">
-                    <div class="viewLog_Management_MAIN">
-                        <div class="viewLog_Management_header">
-                            <span id="B">การจัดการระบบคลัง</span>
-                        </div>
-                        <div class="viewLog_Management_body">
-                            <?php foreach ($Management as $Data) : ?>
-                                <div class="viewLog_Management_content">
-                                    <div class="viewLog_User_content_1">
-                                        <i class="open_expand_row fa-solid fa-circle-arrow-right"></i>
-                                        <a href="<?= $base_url . '/management/viewlog/details?id=' . htmlspecialchars($Data['ID'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
-                                            (<?= htmlspecialchars($Data['log_Role'], ENT_QUOTES, 'UTF-8') ?>) </a>
-                                    </div>
-                                    <div class="viewLog_User_content_2">
-                                        <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
-                                    </div>
-                                    <div class="viewLog_User_content_3">
-                                        <?php
-                                        switch ($Data['log_Status']) {
-                                            case 'Add':
-                                                echo "ได้ทำการเพิ่มข้อมูล";
-                                                break;
-                                            case 'Edit':
-                                                echo "ได้ทำการแก้ไขข้อมูล";
-                                                break;
-                                            case 'Delete':
-                                                echo "ได้ทำการลบข้อมูล";
-                                                break;
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php else : ?>
-                <div class="viewNotfound">
-                    <i class="fa-solid fa-database"></i>
-                    <span id="B">ไม่พบข้อมูล</span>
-                </div>
-            <?php endif; ?>
 
-        <?php elseif ($request_uri == '/management/viewlog/details') : ?>
-            <?php
-            try {
-                if (isset($_GET['id'])) {
-                    $id = (int)$_GET['id'];
-                    $stmt = $conn->prepare("SELECT * FROM logs_management WHERE ID = :id");
-                    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $detailsManagement = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                }
-            } catch (PDOException $e) {
-                echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
-                exit;
-            } ?>
-            <?php if (!empty($detailsManagement)) : ?>
+            <?php if (!empty($Management)) : ?>
+                <?php
+                $itemsPerPage = 2;
+                $totalItems = count($Management);
+                $totalPages = ceil($totalItems / $itemsPerPage);
+                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                if ($currentPage < 1) $currentPage = 1;
+                if ($currentPage > $totalPages) $currentPage = $totalPages;
+                $startIndex = ($currentPage - 1) * $itemsPerPage;
+                $currentPageItems = array_slice($Management, $startIndex, $itemsPerPage);
+                ?>
+
                 <div class="viewLog_Management_Details">
-                    <div class="viewLog_Management_section">
-                        <div class="viewLog_Management_section_1">
-                            <a class="historyBACK" href="javascript:history.back()">
-                                <i class="fa-solid fa-arrow-left-long"></i>
-                            </a>
-                            <div class="breadcrumb">
-                                <a href="/">หน้าหลัก</a>
-                                <span>&gt;</span>
-                                <?php
-                                if (strpos($request_uri, '/management') !== false) {
-                                    echo '<a href="/management">การจัดการระบบ</a>';
-                                    echo '<span>&gt;</span>';
-                                }
-                                if (strpos($request_uri, '/management/viewlog') !== false) {
-                                    echo '<a href="/management/viewlog">ดูประวัติการจัดการระบบ</a>';
-                                    echo '<span>&gt;</span>';
-                                }
-                                if (strpos($request_uri, '/management/viewlog/details') !== false) {
-                                    echo '<a href="">รายละเอียด</a>';
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="viewLog_Management_section_2">
-                            <a href="<?php echo $base_url; ?>/management/addData">กลับหน้าเพิ่มข้อมูล</a>
-                        </div>
+                    <div class="viewLog_Management_header" id="B">
+                        ประวัติการจัดการคลังข้อมูล
                     </div>
-                    <div class="viewLog_Management_MAIN">
-                        <div class="viewLog_Management_header" id="B">
-                            รายละเอียด
-                        </div>
-                        <div class="viewLog_Management_body">
-                            <?php foreach ($detailsManagement as $Data) : ?>
-                                <div class="viewLog_Management_content">
-                                    <div class="viewLog_Management_content_1">
-                                        <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
-                                        <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
-                                        (<?= htmlspecialchars($Data['log_Role'], ENT_QUOTES, 'UTF-8') ?>)
-                                        <?php
-                                        switch ($Data['log_Status']) {
-                                            case 'Add':
-                                                echo "ได้ทำการเพิ่มข้อมูล";
-                                                break;
-                                            case 'Edit':
-                                                echo "ได้ทำการแก้ไขข้อมูล";
-                                                break;
-                                            case 'Delete':
-                                                echo "ได้ทำการลบข้อมูล";
-                                                break;
-                                        }
-                                        ?>
-                                    </div>
-                                    <div class="viewLog_Management_content_2">
-                                        <?php
-                                        $logContent = json_decode($Data['log_Content'], true);
-                                        if ($logContent) : ?>
-                                            <div class="log-item"><span id="B">ชื่อวิทยาศาสตร์</span> <?= htmlspecialchars($logContent['sci_name'], ENT_QUOTES, 'UTF-8') ?></div>
-                                            <div class="log-item"><span id="B">หมายเลขซีเรียล</span> <?= htmlspecialchars($logContent['serial_number'], ENT_QUOTES, 'UTF-8') ?></div>
-                                        <?php else : ?>
-                                            ไม่สามารถแสดงข้อมูลได้
-                                        <?php endif; ?>
-                                    </div>
+                    <div class="viewLog_Management_body">
+                        <?php foreach ($currentPageItems as $Data) : ?>
+                            <div class="viewLog_Management_content">
+                                <div class="viewLog_Management_content_1">
+                                    <?= thai_date_time_2(htmlspecialchars($Data['log_Date'], ENT_QUOTES, 'UTF-8')) ?>
+                                    <?= htmlspecialchars($Data['log_Name'], ENT_QUOTES, 'UTF-8') ?>
+                                    <?php
+                                    switch ($Data['log_Status']) {
+                                        case 'Add':
+                                            echo '<span class="statusLog_1"><i class="fa fa-plus-circle"></i> ได้ทำการเพิ่มข้อมูล</span>';
+                                            break;
+                                        case 'Edit':
+                                            echo '<span class="statusLog_2"><i class="fa fa-edit"></i> ได้ทำการแก้ไขข้อมูล</span>';
+                                            break;
+                                        case 'Delete':
+                                            echo '<span class="statusLog_3"><i class="fa fa-trash"></i> ได้ทำการลบข้อมูล</span>';
+                                            break;
+                                    }
+                                    ?>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
+                                <div class="viewLog_Management_content_2">
+                                    <?php
+                                    $logContent = json_decode($Data['log_Content'], true);
+                                    if ($logContent) : ?>
+                                        <div class="log-item"><span id="B">ชื่อวิทยาศาสตร์</span> <?= htmlspecialchars($logContent['sci_name'], ENT_QUOTES, 'UTF-8') ?></div>
+                                        <div class="log-item"><span id="B">หมายเลขซีเรียล</span> <?= htmlspecialchars($logContent['serial_number'], ENT_QUOTES, 'UTF-8') ?></div>
+                                    <?php else : ?>
+                                        ไม่สามารถแสดงข้อมูลได้
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
+                <!-- PAGINATION -->
+                <?php if ($totalPages > 1) : ?>
+                    <div class="pagination">
+                        <?php if ($currentPage > 1) : ?>
+                            <a href="?page=1">&laquo;</a>
+                            <a href="?page=<?php echo $currentPage - 1; ?>">&lsaquo;</a>
+                        <?php endif; ?>
+
+                        <?php
+                        $range = 2; // จำนวนหน้าที่จะแสดงก่อนและหลังหน้าปัจจุบัน
+                        $startPage = max(1, $currentPage - $range);
+                        $endPage = min($totalPages, $currentPage + $range);
+
+                        if ($startPage > 1) {
+                            echo '<a href="?page=1">1</a>';
+                            if ($startPage > 2) {
+                                echo '<span>...</span>'; // Ellipsis to indicate hidden pages
+                            }
+                        }
+
+                        for ($i = $startPage; $i <= $endPage; $i++) {
+                            echo '<a href="?page=' . $i . '" class="' . ($i == $currentPage ? 'active' : '') . '">' . $i . '</a>';
+                        }
+
+                        if ($endPage < $totalPages) {
+                            if ($endPage < $totalPages - 1) {
+                                echo '<span>...</span>'; // Ellipsis to indicate hidden pages
+                            }
+                            echo '<a href="?page=' . $totalPages . '">' . $totalPages . '</a>';
+                        }
+                        ?>
+
+                        <?php if ($currentPage < $totalPages) : ?>
+                            <a href="?page=<?php echo $currentPage + 1; ?>">&rsaquo;</a>
+                            <a href="?page=<?php echo $totalPages; ?>">&raquo;</a>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
             <?php else : ?>
                 <div class="viewNotfound">
                     <i class="fa-solid fa-database"></i>

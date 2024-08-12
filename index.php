@@ -8,8 +8,11 @@ $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 // ตรวจสอบว่า $request_uri เริ่มต้นด้วย $base_url หรือไม่
 $request = (strpos($request_uri, $base_url) === 0) ? substr($request_uri, strlen($base_url)) : $request_uri;
 
-$request = rtrim($request, '/');
+$request = rtrim($request, '/');?>
 
+
+
+<?php
 // กำหนดเส้นทางคำขอตาม URI
 switch ($request) {
     case '':
@@ -128,4 +131,22 @@ switch ($request) {
     default:
         require 'views/error_page.php'; // หน้าข้อผิดพลาด
         break;
+}?>
+
+<script>
+// ตรวจสอบว่าผู้ใช้เข้ามาครั้งแรกใน session นี้หรือไม่
+if (sessionStorage.getItem('hasVisited') === null) {
+    // ถ้าเข้ามาครั้งแรกใน session นี้
+    sessionStorage.setItem('hasVisited', 'true');
+
+    // แสดงหน้าจอโหลดสักครู่แล้วแสดงเนื้อหาเว็บไซต์
+    setTimeout(function() {
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    }, 3000); // ปรับเวลาในการโหลดได้ที่นี่ (3 วินาที)
+} else {
+    // ถ้าไม่ใช่ครั้งแรกใน session นี้ ให้แสดงเนื้อหาทันที
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
 }
+</script>

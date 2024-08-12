@@ -236,7 +236,7 @@ try {
         });
     </script>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-    <script src="<?php echo $base_url; ?>/assets/js/add.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/previewImg_popup.js"></script>
     <script src="<?php echo $base_url; ?>/assets/js/maintenance.js"></script>
     <?php include('assets/includes/footer.php') ?>
 </body>

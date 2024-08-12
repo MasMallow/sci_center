@@ -122,11 +122,6 @@ try {
                                 echo $product_name . " " . $quantity . " รายการ <br>";
                             }
                             ?>
-                            <?php if (isset($_SESSION['staff_login'])) :  ?>
-                                <a href="<?php echo $base_url; ?>/approve_request/viewlog/details?id=<?= $reservation_date; ?>">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </a>
-                            <?php endif; ?>
                         </div>
                         <div class="reservetionDetails_Date">
                             <span id="B">ตั้งแต่</span>

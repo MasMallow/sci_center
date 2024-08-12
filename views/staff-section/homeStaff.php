@@ -94,9 +94,8 @@ try {
     // กำหนดช่วงวันที่ของเดือนที่เลือก
     $start_date = "$current_year-$current_month-01";
     $end_date = date("Y-m-t", strtotime($start_date));
-
     // ดึงข้อมูลการจองที่อยู่ในช่วงวันที่ที่กำหนด
-    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date BETWEEN :start_date AND :end_date AND situation = 1 AND date_return IS NULL";
+    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date BETWEEN :start_date AND :end_date";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':start_date', $start_date);
     $stmt->bindParam(':end_date', $end_date);
@@ -298,13 +297,19 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                                 <?php if (isset($calendar[$i])) : ?>
                                     <div class="reservation">
                                         <div class="notification_reservation">
-                                            <?php foreach ($calendar[$i] as $reservation) : ?>
-                                                <?php if (!empty($reservation)) : ?>
-                                                    <a class="icon_reservation" href="reservation_details/<?php echo $day_date; ?>">
-                                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                            <?php
+                                            $showLink = false; // สถานะการแสดงแท็ก <a>
+                                            foreach ($calendar[$i] as $reservation) :
+                                                if (!empty($reservation) && !$showLink) :
+                                                    $showLink = true; // ตั้งค่าสถานะเป็นจริงเมื่อแสดงแท็ก <a>
+                                            ?>
+                                                    <a class="icon_reservation" href="<?php echo $base_url; ?>/approve_request/viewlog/details?id=<?= $day_date; ?>">
+                                                        <i class="fa-solid fa-circle-info"></i>
                                                     </a>
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
+                                            <?php
+                                                endif;
+                                            endforeach;
+                                            ?>
                                         </div>
                                     </div>
                                 <?php endif; ?>

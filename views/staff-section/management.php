@@ -138,8 +138,8 @@ unset($_SESSION['search_value']);
     <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/management_systems.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/management_systems.css">
 </head>
 
 <body>
@@ -147,50 +147,31 @@ unset($_SESSION['search_value']);
         <?php include_once('assets/includes/navigator.php'); ?>
     </header>
     <div class="Dashboard_Management">
-        <?php if (isset($_SESSION['updateData_success'])) : ?>
-            <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-check check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?php echo $_SESSION['updateData_success']; ?></span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
-                    </div>
-                </div>
-            </div>
-            <?php unset($_SESSION['updateData_success']); ?>
-        <?php endif ?>
-        <?php if (isset($_SESSION['updateData_error'])) : ?>
-            <div class="toast error">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check error"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?php echo $_SESSION['updateData_error']; ?></span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress error"></div>
-                    </div>
-                </div>
-            </div>
-            <?php unset($_SESSION['updateData_error']); ?>
-        <?php endif ?>
         <?php if (isset($_SESSION['delete_success'])) : ?>
             <div class="toast">
-                <div class="toast_section">
-                    <div class="toast_content">
-                        <i class="fas fa-solid fa-check check"></i>
-                        <div class="toast_content_message">
-                            <span class="text text_2"><?php echo $_SESSION['delete_success']; ?></span>
-                        </div>
-                        <i class="fa-solid fa-xmark close"></i>
-                        <div class="progress"></div>
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-check check"></i>
+                    <div class="toast_content_message">
+                        <span class="text text_2"><?php echo $_SESSION['delete_success']; ?></span>
                     </div>
+                    <i class="fa-solid fa-xmark close"></i>
                 </div>
             </div>
             <?php unset($_SESSION['delete_success']); ?>
+        <?php endif ?>
+        <?php if (isset($_SESSION['delete_error'])) : ?>
+            <div class="toast">
+                <div class="toast_section">
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-check check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2"><?php echo $_SESSION['delete_error']; ?></span>
+                        </div>
+                        <i class="fa-solid fa-xmark close"></i>
+                    </div>
+                </div>
+            </div>
+            <?php unset($_SESSION['delete_error']); ?>
         <?php endif ?>
         <div class="header_management_section">
             <div class="header_name_section">
@@ -336,4 +317,4 @@ unset($_SESSION['search_value']);
     </div>
 </body>
 
-</html>t
+</html>

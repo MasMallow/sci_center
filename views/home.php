@@ -173,21 +173,35 @@ try {
                 <!-- ------------------ SIDEBAR ------------------ -->
                 <sidebar class="menu_navigator">
                     <ul class="sb_ul">
+                        <?php
+                        // ตรวจสอบค่าของ $request_uri และพารามิเตอร์ GET
+                        $base_uri = '/';
+                        $is_material = strpos($request_uri, '/material') !== false;
+                        $is_equipment = strpos($request_uri, '/equipment') !== false;
+                        $is_tools = strpos($request_uri, '/tools') !== false;
+
+                        // ตรวจสอบเงื่อนไขที่ต้องการ
+                        $active_home = ($request_uri === $base_uri || !$is_material && !$is_equipment && !$is_tools);
+                        $active_material = $is_material;
+                        $active_equipment = $is_equipment;
+                        $active_tools = $is_tools;
+                        ?>
+
                         <li class="group_li">
-                            <a class="link <?= ($request_uri == '/') ? 'active' : ''; ?>" href="<?= $base_url; ?>">
+                            <a class="link <?= $active_home ? 'active' : ''; ?>" href="<?= $base_url; ?>">
                                 <i class="icon fa-solid fa-house"></i>
                                 <span class="text">หน้าหลัก</span>
                             </a>
                         </li>
                         <li class="group_li">
                             <span class="group_title">ประเภท</span>
-                            <a class="group_li_01 <?= ($request_uri == '/material') ? 'active' : ''; ?>" href="/material">
+                            <a class="group_li_01 <?= $active_material ? 'active' : ''; ?>" href="/material<?= !empty($_GET) ? '?' . http_build_query($_GET) : ''; ?>">
                                 <span class="text">ประเภทวัสดุ</span>
                             </a>
-                            <a class="group_li_02 <?= ($request_uri == '/equipment') ? 'active' : ''; ?>" href="/equipment">
+                            <a class="group_li_02 <?= $active_equipment ? 'active' : ''; ?>" href="/equipment<?= !empty($_GET) ? '?' . http_build_query($_GET) : ''; ?>">
                                 <span class="text">ประเภทอุปกรณ์</span>
                             </a>
-                            <a class="group_li_03 <?= ($request_uri == '/tools') ? 'active' : ''; ?>" href="/tools">
+                            <a class="group_li_03 <?= $active_tools ? 'active' : ''; ?>" href="/tools<?= !empty($_GET) ? '?' . http_build_query($_GET) : ''; ?>">
                                 <span class="text">ประเภทเครื่องมือ</span>
                             </a>
                         </li>
@@ -234,7 +248,14 @@ try {
                     </ul>
                 </sidebar>
                 <!-- ------------------ MAIN CONTENT ------------------ -->
-                <?php if ($request_uri == '/' || $request_uri == '/material' || $request_uri == '/equipment' || $request_uri == '/tools') : ?>
+                <?php
+                if (
+                    strpos($request_uri, '/') !== false ||
+                    strpos($request_uri, '/material') !== false ||
+                    strpos($request_uri, '/equipment') !== false ||
+                    strpos($request_uri, '/tools') !== false
+                ) :
+                ?>
                     <?php include('Data.php'); ?>
                 <?php elseif ($request_uri == '/notification') : ?>
                     <?php include('notification.php'); ?>
@@ -251,6 +272,17 @@ try {
     <!-- JavaScript -->
     <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?= $base_url; ?>/assets/js/datetime.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // จำลองการโหลดข้อมูล
+            setTimeout(function() {
+                // ซ่อนส่วนที่แสดงข้อความการโหลด
+                document.getElementById('loading').style.display = 'none';
+                // แสดงข้อมูลที่ต้องการแสดงผล
+                document.getElementById('content').style.display = 'block';
+            }, 2000); // ตั้งค่าเวลาที่ต้องการ (2 วินาทีในตัวอย่างนี้)
+        });
+    </script>
 </body>
 
 

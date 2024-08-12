@@ -165,6 +165,18 @@ try {
     <header>
         <?php include('assets/includes/navigator.php') ?>
     </header>
+    <?php if (isset($_SESSION['approve_success'])) : ?>
+        <div class="toast">
+            <div class="toast_content">
+                <i class="fas fa-solid fa-check check"></i>
+                <div class="toast_content_message">
+                    <span class="text"><?php echo $_SESSION['approve_success']; ?></span>
+                </div>
+                <i class="fa-solid fa-xmark close"></i>
+            </div>
+        </div>
+        <?php unset($_SESSION['approve_success']); ?>
+    <?php endif ?>
     <div class="approve_section">
         <div class="header_approve_section">
             <a class="historyBACK" href="javascript:history.back();">
@@ -191,21 +203,6 @@ try {
             <a href="/approve_request/calendar" class="<?= ($request_uri == '/approve_request/calendar' || $request_uri == '/approve_request/viewlog/details') ? 'active' : ''; ?> btn_approve_02">ปฎิทินการขอใช้</a>
         </div>
         <?php if ($request_uri == '/approve_request') : ?>
-            <?php if (isset($_SESSION['approve_success'])) : ?>
-                <div class="toast">
-                    <div class="toast_section">
-                        <div class="toast_content">
-                            <i class="fas fa-solid fa-check check"></i>
-                            <div class="toast_content_message">
-                                <span class="text text_2"><?php echo $_SESSION['approve_success']; ?></span>
-                            </div>
-                            <i class="fa-solid fa-xmark close"></i>
-                            <div class="progress"></div>
-                        </div>
-                    </div>
-                </div>
-                <?php unset($_SESSION['approve_success']); ?>
-            <?php endif ?>
             <div class="approve_table_section">
                 <?php if (empty($data)) : ?>
                     <div class="approve_not_found_section">
@@ -352,8 +349,8 @@ try {
                                             if (!empty($reservation) && !$showLink) :
                                                 $showLink = true; // ตั้งค่าสถานะเป็นจริงเมื่อแสดงแท็ก <a>
                                         ?>
-                                                <a href="<?php echo $base_url; ?>/approve_request/reservation_details/<?php echo $day_date; ?>">
-                                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                                <a href="<?php echo $base_url; ?>/approve_request/viewlog/details?id=<?= $day_date; ?>">
+                                                    <i class="fa-solid fa-circle-info"></i>
                                                 </a>
                                         <?php
                                             endif;

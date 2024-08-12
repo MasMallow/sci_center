@@ -77,7 +77,7 @@ input.search {
   border: 1px solid #ccc;
   border-radius: 10px 0 0 10px;
 
-  &v:focus {
+  &:focus {
     border-color: #007bff;
   }
 }

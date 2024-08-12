@@ -1,4 +1,8 @@
-<div class="content_area">
+<div id="loading">
+    <div class="spinner"></div>
+    <p>กำลังโหลดข้อมูล...</p>
+</div>
+<div class="content_area" id="content" style="display: none;">
     <!-- ----------------- SEARCH SECTION ----------------- -->
     <div class="content_area_header">
         <form class="contentSearch" method="get">

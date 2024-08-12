@@ -41,29 +41,59 @@ try {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/management_edit.css">
 </head>
 
 <body>
     <?php include('assets/includes/navigator.php') ?>
-    <main class="add_MET_PAGE">
-        <div class="add_MET_section_header">
-            <div class="add_MET_section_header_1">
-                <a class="historyBACK" href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
-                <div class="breadcrumb">
-                    <a href="/">หน้าหลัก</a>
-                    <span>&gt;</span>
-                    <?php
-                    if ($request_uri == '/management') {
-                        echo '<a href="/management">การจัดการระบบ</a>
-                        <span>&gt;</span>';
-                    }
-                    ?>
-                    <a href="<?php echo $editData['ID']; ?>"><?php echo $editData['sci_name']; ?></a>
+    <?php if (isset($_SESSION['updateData_success'])) : ?>
+        <div class="toast">
+            <div class="toast_section">
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-check check"></i>
+                    <div class="toast_content_message">
+                        <span class="text text_2"><?php echo $_SESSION['updateData_success']; ?></span>
+                    </div>
+                    <i class="fa-solid fa-xmark close"></i>
                 </div>
             </div>
         </div>
+        <?php unset($_SESSION['updateData_success']); ?>
+    <?php endif ?>
+    <?php if (isset($_SESSION['updateData_error'])) : ?>
+        <div class="toast error">
+            <div class="toast_section">
+                <div class="toast_content">
+                    <i class="fas fa-solid fa-xmark check error"></i>
+                    <div class="toast_content_message">
+                        <span class="text text_2"><?php echo $_SESSION['updateData_error']; ?></span>
+                    </div>
+                    <i class="fa-solid fa-xmark close"></i>
+                    <div class="progress error"></div>
+                </div>
+            </div>
+        </div>
+        <?php unset($_SESSION['updateData_error']); ?>
+    <?php endif ?>
+    <main class="add_MET_PAGE">
         <form action="<?php echo $base_url; ?>/models/CRUD.php" method="POST" enctype="multipart/form-data">
+            <div class="add_MET_section_header">
+                <div class="add_MET_section_header_1">
+                    <a class="historyBACK" href="javascript:history.back()"><i class="fa-solid fa-arrow-left-long"></i></a>
+                    <div class="breadcrumb">
+                        <a href="/">หน้าหลัก</a>
+                        <span>&gt;</span>
+                        <?php
+                        if ($request_uri == '/management') {
+                            echo '<a href="/management">การจัดการระบบ</a>
+                            <span>&gt;</span>';
+                        }
+                        ?>
+                        <a href="<?php echo $editData['ID']; ?>"><?php echo $editData['sci_name']; ?></a>
+                    </div>
+                </div>
+            </div>
             <div class="add_MET_section_form">
                 <div class="img">
                     <div class="imgInput">
@@ -77,7 +107,7 @@ try {
                     </div>
                     <div class="input">
                         <input type="text" hidden value="<?php echo $editData['ID']; ?>" required name="id">
-                        <input type="text" id="imgNameInput" value="<?php echo $editData['img_name']; ?>" required name="sci_name">
+                        <input type="text" id="imgNameInput" value="<?php echo $editData['img_name']; ?>" required disabled name="sci_name">
                         <input type="hidden" value="<?php echo $editData['img_name']; ?>" required name="img2">
                     </div>
                 </div>
@@ -151,7 +181,6 @@ try {
         </form>
     </main>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
-    <script src="<?php echo $base_url; ?>/assets/js/pop_upEdit.js"></script>
 </body>
 
 </html>

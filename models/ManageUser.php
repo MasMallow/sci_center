@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         // ตั้งค่า session และรีเฟรชหน้าเว็บ
-        $_SESSION['approveSuccess'] = 'อนุมัติบัญชีผู้ใช้เรียบร้อย';
+        $_SESSION['approveSuccess'] = 'อนุมัติบัญชีผู้ใช้สำเร็จ';
         header('Location: /manage_users');
         exit;
     }
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         // ตั้งค่า session และรีเฟรชหน้าเว็บ
-        $_SESSION['bannedSuccess'] = 'ระงับบัญชีผู้ใช้เรียบร้อย';
+        $_SESSION['bannedSuccess'] = 'ระงับบัญชีผู้ใช้สำเร็จ';
         header('Location: /management_user');
         exit;
     }
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         // ตั้งค่า session และรีเฟรชหน้าเว็บ
-        $_SESSION['delUserSuccess'] = 'ลบบัญชีผู้ใช้เรียบร้อย';
+        $_SESSION['delUserSuccess'] = 'ลบบัญชีผู้ใช้สำเร็จ';
         header('Location: /management_user');
         exit;
     }
