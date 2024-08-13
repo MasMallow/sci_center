@@ -90,6 +90,7 @@ try {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/view_report.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/pagination.css">
 </head>
 
 <body>

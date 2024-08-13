@@ -3,7 +3,7 @@ session_start();
 require_once 'assets/config/config.php';
 require_once 'assets/config/Database.php';
 include_once 'assets/includes/thai_date_time.php';
-include_once '../models/UserCheck.php';
+include_once 'models/UserCheck.php';
 
 try {
     // ดึงวันที่จาก URL
@@ -74,37 +74,39 @@ try {
                 <a href="<?php echo ($reservation_date); ?>">ขอใช้<?php echo thai_date_time_3($reservation_date); ?></a>
             </div>
         </div>
-        <div class="bookingDetails_content">
-            <div class="reservation-details">
-                <?php if (!empty($reservations)) : ?>
-                    <?php foreach ($reservations as $reservation) : ?>
-                        <div class="reservationIcon">
-                            <i class="fa-solid fa-address-book"></i>
-                            <?php echo ($reservation['serial_number']); ?>
+        <div class="bookingTable_content">
+            <?php if (!empty($reservations)) : ?>
+                <?php foreach ($reservations as $reservation) : ?>
+                    <div class="bookingDetails_content">
+                        <div class="reservation-details">
+                            <div class="reservationIcon">
+                                <i class="fa-solid fa-address-book"></i>
+                                <?php echo ($reservation['serial_number']); ?>
+                            </div>
+                            <div class="reservetionDetails">
+                                <?php
+                                $items = explode(',', $reservation['list_name']);
+                                foreach ($items as $item) {
+                                    $item_parts = explode('(', $item);
+                                    $product_name = trim($item_parts[0]);
+                                    $quantity = str_replace(')', '', $item_parts[1]);
+                                    echo $product_name . " " . $quantity . " รายการ <br>";
+                                }
+                                ?>
+                            </div>
+                            <div class="reservetionDetails_Date">
+                                <span id="B">ตั้งแต่</span>
+                                <?php echo thai_date_time_2($reservation['reservation_date']); ?>
+                                <span id="B">ถึง</span>
+                                <?php echo thai_date_time_2($reservation['end_date']); ?>
+                            </div>
                         </div>
-                        <div class="reservetionDetails">
-                            <?php
-                            $items = explode(',', $reservation['list_name']);
-                            foreach ($items as $item) {
-                                $item_parts = explode('(', $item);
-                                $product_name = trim($item_parts[0]);
-                                $quantity = str_replace(')', '', $item_parts[1]);
-                                echo $product_name . " " . $quantity . " รายการ <br>";
-                            }
-                            ?>
-                        </div>
-                        <div class="reservetionDetails_Date">
-                            <span id="B">ตั้งแต่</span>
-                            <?php echo thai_date_time_2($reservation['reservation_date']); ?>
-                            <span id="B">ถึง</span>
-                            <?php echo thai_date_time_2($reservation['end_date']); ?>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <p>ไม่มีการขอใช้ในวันที่เลือก</p>
-                <?php endif; ?>
-            </div>
+                    </div>
+                <?php endforeach; ?>
         </div>
+    <?php else : ?>
+        <p>ไม่มีการขอใช้ในวันที่เลือก</p>
+    <?php endif; ?>
     </main>
 
     <!-- -------------- FOOTER -------------- -->

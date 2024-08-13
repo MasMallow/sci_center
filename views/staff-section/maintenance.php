@@ -485,11 +485,9 @@ try {
                                     if (detailsElement) {
                                         detailsElement.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
                                         detailsElement.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
-
                                         // แสดงการแจ้งเตือนทีละรายการ
                                         const requestDetails = document.querySelectorAll('.table_maintenanceContent');
                                         let index = 0;
-
                                         function showNextNotification() {
                                             if (index < requestDetails.length) {
                                                 requestDetails[index].classList.add('visible');
@@ -497,7 +495,6 @@ try {
                                                 setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
                                             }
                                         }
-
                                         showNextNotification();
                                     }
                                 }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล

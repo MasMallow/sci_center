@@ -46,32 +46,29 @@ try {
 </head>
 
 <body>
-    <?php include('assets/includes/navigator.php') ?>
+    <header>
+        <?php include('assets/includes/navigator.php') ?>
+    </header>
     <?php if (isset($_SESSION['updateData_success'])) : ?>
         <div class="toast">
-            <div class="toast_section">
-                <div class="toast_content">
-                    <i class="fas fa-solid fa-check check"></i>
-                    <div class="toast_content_message">
-                        <span class="text text_2"><?php echo $_SESSION['updateData_success']; ?></span>
-                    </div>
-                    <i class="fa-solid fa-xmark close"></i>
+            <div class="toast_content">
+                <i class="fas fa-solid fa-check check"></i>
+                <div class="toast_content_message">
+                    <span class="text text_2"><?php echo $_SESSION['updateData_success']; ?></span>
                 </div>
+                <i class="fa-solid fa-xmark close"></i>
             </div>
         </div>
         <?php unset($_SESSION['updateData_success']); ?>
     <?php endif ?>
     <?php if (isset($_SESSION['updateData_error'])) : ?>
         <div class="toast error">
-            <div class="toast_section">
-                <div class="toast_content">
-                    <i class="fas fa-solid fa-xmark check error"></i>
-                    <div class="toast_content_message">
-                        <span class="text text_2"><?php echo $_SESSION['updateData_error']; ?></span>
-                    </div>
-                    <i class="fa-solid fa-xmark close"></i>
-                    <div class="progress error"></div>
+            <div class="toast_content error">
+                <i class="fas fa-solid fa-xmark check error"></i>
+                <div class="toast_content_message">
+                    <span class="text text_2"><?php echo $_SESSION['updateData_error']; ?></span>
                 </div>
+                <i class="fa-solid fa-xmark close"></i>
             </div>
         </div>
         <?php unset($_SESSION['updateData_error']); ?>

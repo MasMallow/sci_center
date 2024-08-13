@@ -63,7 +63,7 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
             <?php endif ?>
             <?php if (isset($_SESSION['errorUpload'])) : ?>
                 <div class="toast error">
-                    <div class="toast_content">
+                    <div class="toast_content error">
                         <i class="fas fa-solid fa-xmark check error"></i>
                         <div class="toast_content_message">
                             <span class="text text_2"><?php echo $_SESSION['errorUpload']; ?></span>
@@ -303,6 +303,7 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
     <?php endif; ?>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url; ?>/assets/js/pop_upEdit.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/noti_toast.js"></script>
 </body>
 
 </html>

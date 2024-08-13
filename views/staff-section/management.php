@@ -166,20 +166,20 @@ unset($_SESSION['search_value']);
                     <a href="/">หน้าหลัก</a>
                     <span>&gt;</span>
                     <?php
-                    if ($request_uri == '/management') {
+                    if (strpos($request_uri, '/management') !== false) {
                         echo '<a href="/management">การจัดการระบบ</a>';
                     }
-                    if ($request_uri == '/management/material') {
+                    if (strpos($request_uri, '/management/material') !== false) {
                         echo '<a href="/management">การจัดการระบบ</a>';
                         echo '<span>&gt;</span>';
                         echo '<a href="/management/material">วัสดุ</a>';
                     }
-                    if ($request_uri == '/management/equipment') {
+                    if (strpos($request_uri, '/management/equipment') !== false) {
                         echo '<a href="/management">การจัดการระบบ</a>';
                         echo '<span>&gt;</span>';
                         echo '<a href="/management/equipment">อุปกรณ์</a>';
                     }
-                    if ($request_uri == '/management/tools') {
+                    if (strpos($request_uri, '/management/tools') !== false) {
                         echo '<a href="/management">การจัดการระบบ</a>';
                         echo '<span>&gt;</span>';
                         echo '<a href="/management/tools">เครื่องมือ</a>';
@@ -194,12 +194,24 @@ unset($_SESSION['search_value']);
         <!-- ----------------- BTN SECTION ------------------- -->
         <div class="management_section_btn">
             <div class="management_section_left">
+                <?php
+                // ตรวจสอบ URL ของหน้าเว็บปัจจุบัน
+                $request_uri = $_SERVER['REQUEST_URI'];
+
+                // ตรวจสอบค่าของ $request_uri
+                $is_all = strpos($request_uri, '/management') !== false && !strpos($request_uri, '/material') && !strpos($request_uri, '/equipment') && !strpos($request_uri, '/tools');
+                $is_material = strpos($request_uri, '/management/material') !== false;
+                $is_equipment = strpos($request_uri, '/management/equipment') !== false;
+                $is_tools = strpos($request_uri, '/management/tools') !== false;
+                ?>
+
                 <form class="btn_management_all">
-                    <a href="/management" class="<?= ($request_uri == '/management') ? 'active' : ''; ?> btn_approve_01">ทั้งหมด</a>
-                    <a href="/management/material" class="<?= ($request_uri == '/management/material') ? 'active' : ''; ?> btn_approve_02">วัสดุ</a>
-                    <a href="/management/equipment" class="<?= ($request_uri == '/management/equipment') ? 'active' : ''; ?> btn_approve_02">อุปกรณ์</a>
-                    <a href="/management/tools" class="<?= ($request_uri == '/management/tools') ? 'active' : ''; ?> btn_approve_02">เครื่องมือ</a>
+                    <a href="/management<?= !empty($_GET) ? '?' . http_build_query($_GET) : ''; ?>" class="<?= $is_all ? 'active' : ''; ?> btn_approve_01">ทั้งหมด</a>
+                    <a href="/management/material<?= !empty($_GET) ? '?' . http_build_query($_GET) : ''; ?>" class="<?= $is_material ? 'active' : ''; ?> btn_approve_02">วัสดุ</a>
+                    <a href="/management/equipment<?= !empty($_GET) ? '?' . http_build_query($_GET) : ''; ?>" class="<?= $is_equipment ? 'active' : ''; ?> btn_approve_02">อุปกรณ์</a>
+                    <a href="/management/tools<?= !empty($_GET) ? '?' . http_build_query($_GET) : ''; ?>" class="<?= $is_tools ? 'active' : ''; ?> btn_approve_02">เครื่องมือ</a>
                 </form>
+
                 <form class="management_search_header" method="get">
                     <input class="search_input" type="search" name="search" value="<?= htmlspecialchars($searchValue); ?>" placeholder="ค้นหา">
                     <button class="search_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>

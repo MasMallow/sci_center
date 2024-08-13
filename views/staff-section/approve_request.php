@@ -206,16 +206,34 @@ try {
         <?php if ($request_uri == '/approve_request') : ?>
             <div class="approve_table_section">
                 <?php if (empty($data)) : ?>
+                    <div id="loading">
+                        <div class="spinner"></div>
+                        <p>กำลังโหลดข้อมูล...</p>
+                    </div>
                     <div class="approve_not_found_section">
                         <i class="fa-solid fa-xmark"></i>
                         <span id="B">ไม่พบข้อมูลการขอใช้</span>
                     </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const loadingElement = document.getElementById('loading');
+                            const notFoundElement = document.querySelector('.approve_not_found_section');
+
+                            setTimeout(function() {
+                                loadingElement.style.display = 'none';
+
+                                if (notFoundElement) {
+                                    notFoundElement.classList.add('visible');
+                                }
+                            }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+                        });
+                    </script>
                 <?php else : ?>
                     <div id="loading">
                         <div class="spinner"></div>
                         <p>กำลังโหลดข้อมูล...</p>
                     </div>
-                    <div class="approve_table" id="content" style="display: none;">
+                    <div class="approve_table">
                         <div class="approve_header">
                             <span>รายการที่ขอใช้ทั้งหมด <span id="B"><?php echo $totalData; ?></span> รายการ</span>
                         </div>
@@ -502,32 +520,32 @@ try {
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const loading = document.getElementById('loading');
-            const content = document.getElementById('content');
+            // ดึงองค์ประกอบการโหลดและเนื้อหาหลัก
+            const loadingElement = document.getElementById('loading');
+            const detailsElement = document.querySelector('.approve_table');
 
             // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
             setTimeout(function() {
-                loading.style.display = 'none'; // ซ่อนการโหลด
-                content.style.display = 'block'; // แสดงเนื้อหาหลัก
-                content.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
+                loadingElement.style.display = 'none'; // ซ่อนการโหลด
+                if (detailsElement) {
+                    detailsElement.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
+                    detailsElement.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
+                    // แสดงการแจ้งเตือนทีละรายการ
+                    const requestDetails = document.querySelectorAll('.approveData');
+                    let index = 0;
 
-                // แสดงการแจ้งเตือนทีละรายการ
-                const approveData = document.querySelectorAll('.approveData');
-                let index = 0;
-
-                function showNextNotification() {
-                    if (index < approveData.length) {
-                        approveData[index].classList.add('visible');
-                        index++;
-                        setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                    function showNextNotification() {
+                        if (index < requestDetails.length) {
+                            requestDetails[index].classList.add('visible');
+                            index++;
+                            setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                        }
                     }
+                    showNextNotification();
                 }
-
-                showNextNotification();
             }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
         });
     </script>
-
 </body>
 
 </html>

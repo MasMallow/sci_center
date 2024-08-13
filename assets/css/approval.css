@@ -93,8 +93,16 @@
 .approve_table {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
+
+.approve_table.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .approveData {
   display: flex;
   flex-direction: column;
@@ -339,7 +347,15 @@
   justify-content: center;
   align-items: center;
   margin-top: 10rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out;
 }
+
+.approve_not_found_section.visible {
+  opacity: 1;
+}
+
 .approve_not_found_section i {
   font-size: 4rem;
   color: #000000;

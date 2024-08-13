@@ -89,11 +89,33 @@ try {
             </div>
         </div>
         <?php if (empty($dataList)) : ?>
+            <div id="loading">
+                <div class="spinner"></div>
+                <p>กำลังโหลดข้อมูล...</p>
+            </div>
             <div class="UsedPage_not_found">
                 <i class="fa-solid fa-database"></i>
                 <span id="B">ไม่พบข้อมูล</span>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const loadingElement = document.getElementById('loading');
+                    const notFoundElement = document.querySelector('.UsedPage_not_found');
+
+                    setTimeout(function() {
+                        loadingElement.style.display = 'none';
+
+                        if (notFoundElement) {
+                            notFoundElement.classList.add('visible');
+                        }
+                    }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+                });
+            </script>
         <?php else : ?>
+            <div id="loading">
+                <div class="spinner"></div>
+                <p>กำลังโหลดข้อมูล...</p>
+            </div>
             <div class="UsedPage_content">
                 <div class="UsedPage_tableHeader">
                     <span>รายการที่ขอใช้งานทั้งหมด <span id="B">(<?= $num; ?>)</span> รายการ</span>
@@ -138,6 +160,34 @@ try {
                     <?php endforeach; ?>
                 </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const loadingElement = document.getElementById('loading');
+                    const contentElement = document.querySelector('.UsedPage_content');
+
+                    // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
+                    setTimeout(function() {
+                        loadingElement.style.display = 'none';
+
+                        if (contentElement) {
+                            contentElement.classList.add('visible'); // แสดงเนื้อหาหลัก
+
+                            const requestDetails = document.querySelectorAll('.UsedPage_row');
+                            let index = 0;
+
+                            function showNextRow() {
+                                if (index < requestDetails.length) {
+                                    requestDetails[index].classList.add('visible');
+                                    index++;
+                                    setTimeout(showNextRow, 200); // หน่วงเวลาในการแสดงแต่ละรายการ
+                                }
+                            }
+
+                            showNextRow();
+                        }
+                    }, 1500); // หน่วงเวลา 1.5 วินาทีก่อนแสดงเนื้อหา
+                });
+            </script>
         <?php endif; ?>
     </div>
     <!-- JavaScript -->

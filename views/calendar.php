@@ -174,12 +174,20 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                         <div class="date"><?php echo $i; ?></div>
                         <?php if (isset($calendar[$i])) : ?>
                             <div class="reservation">
-                                <div class="notification">
-                                    <?php foreach ($calendar[$i] as $reservation) : ?>
-                                        <?php if (!empty($reservation)) : ?>
-                                            <a href="reservation_details/<?php echo $day_date; ?>"><i class="fa-solid fa-circle-exclamation"></i></a>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
+                                <div class="notification_reservation">
+                                    <?php
+                                    $showLink = false; // สถานะการแสดงแท็ก <a>
+                                    foreach ($calendar[$i] as $reservation) :
+                                        if (!empty($reservation) && !$showLink) :
+                                            $showLink = true; // ตั้งค่าสถานะเป็นจริงเมื่อแสดงแท็ก <a>
+                                    ?>
+                                            <a href="reservation_details/<?php echo $day_date; ?>">
+                                                <i class="fa-solid fa-circle-exclamation"></i>
+                                            </a>
+                                    <?php
+                                        endif;
+                                    endforeach;
+                                    ?>
                                 </div>
                             </div>
                         <?php endif; ?>

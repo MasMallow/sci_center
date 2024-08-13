@@ -82,16 +82,34 @@ try {
         </div>
         <!-- แสดงข้อความเมื่อไม่พบข้อมูล -->
         <?php if (empty($dataList)) : ?>
+            <div id="loading">
+                <div class="spinner"></div>
+                <p>กำลังโหลดข้อมูล...</p>
+            </div>
             <div class="UsedPage_not_found">
                 <i class="fa-solid fa-database"></i>
                 <span id="B">ไม่พบข้อมูล</span>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const loadingElement = document.getElementById('loading');
+                    const notFoundElement = document.querySelector('.UsedPage_not_found');
+
+                    setTimeout(function() {
+                        loadingElement.style.display = 'none';
+
+                        if (notFoundElement) {
+                            notFoundElement.classList.add('visible');
+                        }
+                    }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+                });
+            </script>
         <?php else : ?>
             <div id="loading">
                 <div class="spinner"></div>
                 <p>กำลังโหลดข้อมูล...</p>
             </div>
-            <div class="UsedPage_content" id="content" style="display: none;">
+            <div class="UsedPage_content">
                 <div class="UsedPage_tableHeader">
                     <span>รายการที่ขอใช้ทั้งหมด <span id="B">(<?php echo count($dataList); ?>)</span> รายการ</span>
                 </div>
@@ -113,7 +131,7 @@ try {
                                 }
                                 ?>
                                 <div class="UsedPage_return_list">
-                                    <div class=ps"notification">
+                                    <div class="notification">
                                         <span id="B">ขอใช้ </span><?php echo thai_date_time_2($data['reservation_date']); ?>
                                         <span id="B">ถึง </span>
                                         <?php echo thai_date_time_2($data['end_date']); ?>
@@ -140,6 +158,34 @@ try {
                     <?php endforeach; ?>
                 </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const loadingElement = document.getElementById('loading');
+                    const contentElement = document.querySelector('.UsedPage_content');
+
+                    // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
+                    setTimeout(function() {
+                        loadingElement.style.display = 'none';
+
+                        if (contentElement) {
+                            contentElement.classList.add('visible'); // แสดงเนื้อหาหลัก
+
+                            const requestDetails = document.querySelectorAll('.UsedPage_row');
+                            let index = 0;
+
+                            function showNextRow() {
+                                if (index < requestDetails.length) {
+                                    requestDetails[index].classList.add('visible');
+                                    index++;
+                                    setTimeout(showNextRow, 200); // หน่วงเวลาในการแสดงแต่ละรายการ
+                                }
+                            }
+
+                            showNextRow();
+                        }
+                    }, 1500); // หน่วงเวลา 1.5 วินาทีก่อนแสดงเนื้อหา
+                });
+            </script>
         <?php endif; ?>
     </div>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>

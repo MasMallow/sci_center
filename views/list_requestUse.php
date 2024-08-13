@@ -130,6 +130,8 @@ try {
             </form>
         <?php endif; ?>
     </div>
+    <!-- JavaScript -->
+    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
 </body>
 
 </html>

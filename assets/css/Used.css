@@ -64,12 +64,14 @@
 }
 
 .UsedPage_not_found {
-  background-color: #1f2328;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 10rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out;
 
   i {
     font-size: 4rem;
@@ -82,11 +84,38 @@
   }
 }
 
+.UsedPage_not_found.visible {
+  opacity: 1;
+}
+
 .UsedPage_content {
   width: 100%;
   margin-top: 1rem;
 }
 
+/* อนิเมชันสำหรับการแสดง UsedPage_content */
+.UsedPage_content {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.UsedPage_content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* อนิเมชันสำหรับการแสดงแต่ละรายการ */
+.UsedPage_row {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.UsedPage_row.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
 .UsedPage_tableHeader {
   font-size: 0.95rem;
   padding-left: 0.4rem;
