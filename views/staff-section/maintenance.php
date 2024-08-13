@@ -137,7 +137,7 @@ try {
         <?php if (isset($_SESSION['maintenanceSuccess'])) : ?>
             <div class="toast">
                 <div class="toast_content">
-                    <i class="fas fa-solid fa-xmark check"></i>
+                    <i class="fas fa-solid fa-check check"></i>
                     <div class="toast_content_message">
                         <span class="text text_2"><?php echo $_SESSION['maintenanceSuccess']; ?></span>
                     </div>
@@ -303,11 +303,11 @@ try {
                                 </div>
                             </div>
                             <div class="MaintenanceButton">
-                                <span class="maintenance_button">
+                                <span class="maintenance_button" data-modal="<?php echo $row['serial_number']; ?>">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                 </span>
                                 <form action="<?php echo $base_url ?>/models/maintenanceProcess.php" method="post" class="maintenance_form">
-                                    <div class="maintenance_popup">
+                                    <div class="maintenance_popup" id="<?php echo $row['serial_number']; ?>">
                                         <div class="maintenance_popup_content">
                                             <div class="maintenance_section_header">
                                                 <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
@@ -332,7 +332,7 @@ try {
                                                     <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
                                                     <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
                                                 </div>
-                                                <input type="hidden" name="serialNumber" value="<?= htmlspecialchars($row['serial_number']); ?>">
+                                                <input type="text" name="serialNumber" value="<?= htmlspecialchars($row['serial_number']); ?>">
                                                 <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                             </div>
                                         </div>
@@ -406,12 +406,12 @@ try {
                                 </div>
                             </div>
                             <div class="MaintenanceButton">
-                                <span class="maintenance_button">
+                                <span class="maintenance_button" data-modal="<?php echo $row['serial_number']; ?>">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
-                                    <input name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <!-- <input name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>"> -->
                                 </span>
                                 <form action="<?php echo $base_url ?>/models/maintenanceEndprocess.php" method="post" class="maintenance_form">
-                                    <div class="maintenance_popup">
+                                    <div class="maintenance_popup" id="<?php echo $row['serial_number']; ?>">
                                         <div class="maintenance_popup_content">
                                             <div class="maintenance_section_header">
                                                 <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
@@ -428,7 +428,7 @@ try {
                                                     <label for="note">รายละเอียดการบำรุงรักษา</label>
                                                     <input type="text" id="note" name="note" placeholder="หมายเหตุ">
                                                 </div>
-                                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                <input type="text" name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
                                                 <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                             </div>
                                         </div>
@@ -467,8 +467,12 @@ try {
             <?php endif; ?>
         <?php endif; ?>
     </div>
+    <script>
+
+    </script>
     <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/maintenance.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/noti_toast.js"></script>
 </body>
 
 </html>

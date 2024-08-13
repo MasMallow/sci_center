@@ -3,7 +3,7 @@ session_start();
 require_once 'assets/config/config.php';
 require_once 'assets/config/Database.php';
 include_once 'assets/includes/thai_date_time.php';
-include_once '../models/UserCheck.php';
+include_once 'models/UserCheck.php';
 //----------------------------------------------------------
 try {
     $searchTitle = "";
