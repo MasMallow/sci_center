@@ -7,13 +7,6 @@ date_default_timezone_set('Asia/Bangkok');
 // กำหนดวันที่และเวลาปัจจุบัน
 $approvaldatetime = date('Y-m-d H:i:s');
 
-// ตรวจสอบว่าพนักงานเข้าสู่ระบบหรือไม่
-if (!isset($_SESSION['staff_login'])) {
-    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: /sign_in');
-    exit;
-}
-
 // ตรวจสอบว่าคำขอเป็น POST หรือไม่
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ตรวจสอบว่ามีข้อมูล id และ userID หรือไม่

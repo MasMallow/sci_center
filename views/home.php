@@ -3,31 +3,7 @@ session_start();
 require_once 'assets/config/config.php';
 require_once 'assets/config/Database.php';
 include_once 'assets/includes/thai_date_time.php';
-
-if (isset($_SESSION['user_login'])) {
-    $userID = $_SESSION['user_login'];
-    $stmt = $conn->prepare("
-        SELECT * 
-        FROM users_db
-        WHERE userID = :userID
-    ");
-    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-if (isset($_SESSION['staff_login'])) {
-    $userID = $_SESSION['staff_login'];
-    $stmt = $conn->prepare("
-        SELECT * 
-        FROM users_db
-        WHERE userID = :userID
-    ");
-    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
+include_once '../models/UserCheck.php';
 //----------------------------------------------------------
 try {
     $searchTitle = "";
@@ -162,10 +138,10 @@ try {
 </head>
 
 <body>
+    <!-- -------------- HEADER -------------- -->
     <header>
         <?php include_once('assets/includes/navigator.php'); ?>
     </header>
-
     <!-- ตรวจสอบสิทธิ์ของผู้ใช้งาน -->
     <?php if (isset($userData['urole']) && ($userData['urole'] == 'user') || empty($userData)) : ?>
         <main class="content">
@@ -267,12 +243,13 @@ try {
                 ?>
             </div>
         </main>
-        <!-- ---------------- FOOTER ------------------ -->
-        <footer><?php include "assets/includes/footer.php"; ?></footer>
-
-    <?php elseif (isset($userData['urole']) && $userData['urole'] == 'staff') : ?>
+    <?php endif; ?>
+    <?php if (isset($userData['urole']) && $userData['urole'] == 'staff') : ?>
         <?php include('staff-section/homeStaff.php'); ?>
     <?php endif; ?>
+
+    <!-- ---------------- FOOTER ------------------ -->
+    <footer><?php include "assets/includes/footer.php"; ?></footer>
 
     <!-- JavaScript -->
     <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>

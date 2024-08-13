@@ -84,7 +84,7 @@ try {
                 <span id="B">ไม่พบข้อมูลการขอใช้</span>
             </div>
         <?php else : ?>
-            <form method="POST" action="<?php echo $base_url; ?>/models/cancelReserve.php">
+            <form method="POST" action="<?php echo $base_url; ?>/models/request_cancel.php">
                 <div class="list_request">
                     <?php foreach ($bookings as $booking) : ?>
                         <div class="list_request_content">

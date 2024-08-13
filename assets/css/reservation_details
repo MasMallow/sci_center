@@ -1,11 +1,11 @@
-.bookingTable {
+.reservation_details {
   width: 100%;
   max-width: 1000px;
   min-height: 100vh;
   margin: 2.5rem auto;
 }
 
-.bookingTable_header {
+.reservation_details_header {
   width: 100%;
   display: flex;
   align-items: center;

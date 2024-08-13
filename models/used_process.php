@@ -4,25 +4,7 @@ require_once '../assets/config/config.php';
 require_once '../assets/config/Database.php';
 date_default_timezone_set('Asia/Bangkok');
 
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->prepare("SELECT * FROM users_db WHERE userID = :user_id");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($userData) {
-        if ($userData['status'] != 'approved') {
-            header("Location: /");
-            exit();
-        }
-    }
-} else {
-    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('Location: /sign_in');
-    exit;
-}
-
+// -------------- Start USED ---------------------
 if (($_SERVER['REQUEST_METHOD'] == 'POST') && isset($_POST['reserve_id'])) {
     $reserve_id = $_POST['reserve_id'];
     $sn_list = $_POST['sn_list'];
@@ -71,6 +53,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && isset($_POST['reserve_id'])) {
     header("Location: /UsedStart");
 }
 
+
+// -------------- END USED ---------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['return_id'])) {
     $return_id = $_POST['return_id'];
     $user_id = $_POST['user_id'];
