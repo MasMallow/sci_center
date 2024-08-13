@@ -32,27 +32,24 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $results_per_page = 48;
 $offset = ($page - 1) * $results_per_page;
 
-// สร้างคำสั่ง SQL ตามตัวกรอง userID และช่วงเวลา
 $sql = "SELECT * FROM logs_maintenance WHERE 1=1";
 $params = [];
 
-// ตรวจสอบและกำหนดค่า start_date และ end_date
 if (!empty($start_date) && !empty($end_date)) {
     $sql .= " AND start_maintenance BETWEEN :start_date AND :end_date";
     $params[':start_date'] = $start_date;
     $params[':end_date'] = $end_date;
 }
 
-// เพิ่มเงื่อนไขการค้นหา
 if ($searchValue) {
     $sql .= " AND (sci_name LIKE :search OR serial_number LIKE :search)";
     $params[':search'] = $searchQuery;
 }
 
-// Add LIMIT and OFFSET directly in the query string
+// Remove LIMIT and OFFSET from SQL here
 $sql .= " ORDER BY start_maintenance DESC LIMIT $offset, $results_per_page";
 
-// ดึงข้อมูลจากฐานข้อมูล
+// Fetch data from database
 try {
     $historyStmt = $conn->prepare($sql);
     foreach ($params as $key => $value) {
@@ -65,9 +62,20 @@ try {
     exit();
 }
 
-// นับจำนวนรายการทั้งหมด
+// Count total records
 $total_records_query = "SELECT COUNT(*) AS total FROM logs_maintenance WHERE 1=1";
-$params_count = $params;
+$params_count = [];
+
+if (!empty($start_date) && !empty($end_date)) {
+    $total_records_query .= " AND start_maintenance BETWEEN :start_date AND :end_date";
+    $params_count[':start_date'] = $start_date;
+    $params_count[':end_date'] = $end_date;
+}
+
+if ($searchValue) {
+    $total_records_query .= " AND (sci_name LIKE :search OR serial_number LIKE :search)";
+    $params_count[':search'] = $searchQuery;
+}
 
 try {
     $stmt_count = $conn->prepare($total_records_query);
@@ -86,7 +94,6 @@ $total_pages = ceil($total_records / $results_per_page);
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -99,7 +106,6 @@ $total_pages = ceil($total_records / $results_per_page);
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/maintenance.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/footer.css">
 </head>
-
 <body>
     <header>
         <?php include_once 'assets/includes/navigator.php'; ?>
@@ -169,19 +175,11 @@ $total_pages = ceil($total_records / $results_per_page);
                             </div>
                             <div class="history-item_2">
                                 หมายเหตุ :
-                                <?php if (($row["note"]) == NULL) : ?>
-                                    --
-                                <?php else : ?>
-                                    <?php echo htmlspecialchars($row["note"]); ?>
-                                <?php endif; ?>
+                                <?php echo ($row["note"]) ? htmlspecialchars($row["note"]) : '--'; ?>
                             </div>
                             <div class="history-item_2">
                                 รายละเอียดการบำรุงรักษา :
-                                <?php if (($row["details_maintenance"]) == NULL) : ?>
-                                    --
-                                <?php else : ?>
-                                    <?php echo htmlspecialchars($row["details_maintenance"]); ?>
-                                <?php endif; ?>
+                                <?php echo ($row["details_maintenance"]) ? htmlspecialchars($row["details_maintenance"]) : '--'; ?>
                             </div>
                         </div>
                     </div>
@@ -227,5 +225,4 @@ $total_pages = ceil($total_records / $results_per_page);
         </footer>
     </div>
 </body>
-
 </html>
