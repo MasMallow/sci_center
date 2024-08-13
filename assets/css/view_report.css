@@ -191,6 +191,12 @@
   flex-direction: column;
   border: 1px solid #d0d7de;
   border-radius: 5px;
+  opacity: 0; /* ค่าเริ่มต้นเป็น 0 */
+  transition: opacity 0.3s ease; /* เพิ่มการเปลี่ยนแปลงอย่างราบรื่น */
+}
+
+.viewReport_table_data.visible {
+  opacity: 1; /* ค่าเปลี่ยนแปลงเป็น 1 */
 }
 
 .viewReport_table_content {
@@ -199,6 +205,14 @@
   gap: 0.75rem;
   padding: 1rem 1.1rem;
   border-bottom: 1px solid #ddd;
+  opacity: 0; /* ค่าเริ่มต้นเป็น 0 */
+  transform: translateY(20px); /* เริ่มต้นด้วยการเลื่อนลง */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* เพิ่มการเปลี่ยนแปลงอย่างราบรื่น */
+}
+
+.viewReport_table_content.visible {
+  opacity: 1; /* ค่าเปลี่ยนแปลงเป็น 1 */
+  transform: translateY(0); /* ทำให้เลื่อนขึ้นไปยังตำแหน่งเดิม */
 }
 
 .viewReport_table_content:last-child {

@@ -283,6 +283,9 @@
   .viewLog_request_MAIN {
     border-radius: 5px;
     border: 1px solid #d0d7de;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 
     .viewLog_request_header {
       font-size: 1.05 rem;
@@ -306,6 +309,28 @@
       }
     }
   }
+}
+
+.viewLog_request_Details {
+  display: flex; /* หรือ block, ขึ้นอยู่กับความต้องการ */
+  flex-direction: column;
+  opacity: 0; /* เริ่มต้นด้วย opacity 0 */
+  transition: opacity 0.3s ease; /* การเปลี่ยนแปลง opacity อย่างราบรื่น */
+}
+
+.viewLog_request_Details.visible {
+  opacity: 1; /* แสดงผลเมื่อมีคลาส visible */
+}
+
+.viewLog_request_MAIN {
+  opacity: 0; /* เริ่มต้นด้วย opacity 0 */
+  transform: translateY(20px); /* เริ่มต้นด้วยการเลื่อนลง */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* การเปลี่ยนแปลงอย่างราบรื่น */
+}
+
+.viewLog_request_MAIN.visible {
+  opacity: 1; /* แสดงผลเมื่อมีคลาส visible */
+  transform: translateY(0); /* ทำให้เลื่อนขึ้นไปยังตำแหน่งเดิม */
 }
 
 .approve_not_found_section {

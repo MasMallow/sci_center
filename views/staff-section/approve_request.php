@@ -159,7 +159,7 @@ try {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/approval.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/bookingTable.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/reservation_details.css">
 </head>
 
 <body>
@@ -370,6 +370,10 @@ try {
             </div>
 
         <?php elseif ($request_uri == '/approve_request/viewlog/details') : ?>
+            <div id="loading">
+                <div class="spinner"></div>
+                <p>กำลังโหลดข้อมูล...</p>
+            </div>
             <div class="viewLog_request_Details">
                 <?php foreach ($detailsdataUsed as $Data) : ?>
                     <div class="viewLog_request_MAIN">
@@ -417,6 +421,36 @@ try {
                     </div>
                 <?php endforeach; ?>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // ดึงองค์ประกอบการโหลดและเนื้อหาหลัก
+                    const loadingElement = document.getElementById('loading');
+                    const detailsElement = document.querySelector('.viewLog_request_Details');
+
+                    // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
+                    setTimeout(function() {
+                        loadingElement.style.display = 'none'; // ซ่อนการโหลด
+                        if (detailsElement) {
+                            detailsElement.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
+                            detailsElement.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
+
+                            // แสดงการแจ้งเตือนทีละรายการ
+                            const requestDetails = document.querySelectorAll('.viewLog_request_MAIN');
+                            let index = 0;
+
+                            function showNextNotification() {
+                                if (index < requestDetails.length) {
+                                    requestDetails[index].classList.add('visible');
+                                    index++;
+                                    setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                                }
+                            }
+
+                            showNextNotification();
+                        }
+                    }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+                });
+            </script>
         <?php else : ?>
             <div class="viewNotfound">
                 <i class="fa-solid fa-database"></i>
@@ -493,6 +527,7 @@ try {
             }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
         });
     </script>
+
 </body>
 
 </html>

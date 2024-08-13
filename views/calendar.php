@@ -95,7 +95,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/bookingTable.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/reservation_details.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
 </head>
 
@@ -103,8 +103,8 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
     <header>
         <?php include_once 'assets/includes/navigator.php'; ?>
     </header>
-    <main class="bookingTable">
-        <div class="bookingTable_header">
+    <main class="reservation_details">
+        <div class="reservation_details_header">
             <a class="historyBACK" href="javascript:history.back();">
                 <i class="fa-solid fa-arrow-left-long"></i>
             </a>

@@ -129,7 +129,7 @@ try {
                 <div class="view_report_table_header">
                     <div class="view_report_table_header_pdf">
                         <span id="B">ประวัติการขอใช้</span>
-                        <form id="pdfForm" action="<?php echo $base_url; ?>/models/generate_pdf.phpz" method="GET">
+                        <form id="pdfForm" action="<?php echo $base_url; ?>/models/PDF_report.php" method="GET">
                             <?php if (!empty($_GET["userID"])) : ?>
                                 <input type="hidden" name="userID" value="<?= htmlspecialchars($_GET["userID"]) ?>">
                             <?php endif; ?>
@@ -141,6 +141,10 @@ try {
                         </form>
                     </div>
                     <a href="<?php echo $base_url; ?>/report" class="reset_data">แสดงข้อมูลทั้งหมด</a>
+                </div>
+                <div id="loading">
+                    <div class="spinner"></div>
+                    <p>กำลังโหลดข้อมูล...</p>
                 </div>
                 <div class="viewReport_table_data">
                     <?php if (count($viewReport) > 0) : ?>
@@ -219,6 +223,35 @@ try {
     <footer>
         <?php include 'assets/includes/footer_2.php'; ?>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loading = document.getElementById('loading');
+            const content = document.querySelector('.viewReport_table_data');
+
+            // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
+            setTimeout(function() {
+                loading.style.display = 'none'; // ซ่อนการโหลด
+                if (content) {
+                    content.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
+                    content.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
+                }
+
+                // แสดงการแจ้งเตือนทีละรายการ
+                const viewReportTableContent = document.querySelectorAll('.viewReport_table_content');
+                let index = 0;
+
+                function showNextNotification() {
+                    if (index < viewReportTableContent.length) {
+                        viewReportTableContent[index].classList.add('visible');
+                        index++;
+                        setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                    }
+                }
+
+                showNextNotification();
+            }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+        });
+    </script>
 </body>
 
 </html>

@@ -24,7 +24,7 @@ try {
         // เตรียมการดึงข้อมูลเพื่อทำการแก้ไข
         $stmt = $conn->prepare("
                 SELECT * FROM crud 
-                INNER JOIN info_sciname 
+                LEFT JOIN info_sciname 
                 ON crud.serial_number = info_sciname.serial_number 
                 WHERE crud.ID = :id");
 
@@ -180,41 +180,45 @@ try {
         </div>
         <!-- <------------ FOOTER FORM ----------------->
         <div class="btn_footer">
-            <div>
-                <span class="maintenance_button" id="B">บำรุงรักษา</span>
-                <form class="for_Maintenance" action="<?= $base_url ?>/staff-section/maintenanceProcess.php" method="post">
-                    <div class="maintenance_popup">
-                        <div class="maintenance_popup_content">
-                            <div class="maintenance_section_header">
-                                <span>กรอกข้อมูลการบำรุงรักษา</span>
-                                <div class="modalClose" id="closeMaintenance">
-                                    <i class="fa-solid fa-xmark"></i>
+            <?php if ($detailsData['availability'] == 0) : ?>
+                <div class="MaintenanceButton">
+                    <span class="maintenance_button" data-modal="<?php echo $detailsData['serial_number']; ?>">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </span>
+                    <form action="<?php echo $base_url ?>/models/maintenanceProcess.php" method="post" class="maintenance_form">
+                        <div class="maintenance_popup" id="<?php echo $detailsData['serial_number']; ?>">
+                            <div class="maintenance_popup_content">
+                                <div class="maintenance_section_header">
+                                    <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
+                                    <div class="modalClose" id="closeMaintenance">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="maintenace_popup">
-                                <div class="inputMaintenance">
-                                    <label for="start_maintenance">วันเริ่มต้นการบำรุงรักษา</label>
-                                    <input type="date" id="start_maintenance" name="start_maintenance" required>
+                                <div class="maintenace_popup">
+                                    <div class="inputMaintenance">
+                                        <label for="start_maintenance">วันเริ่มต้นการบำรุงรักษา</label>
+                                        <input type="date" id="start_maintenance" name="start_maintenance" required>
+                                    </div>
+                                    <div class="inputMaintenance">
+                                        <label for="end_maintenance">วันสิ้นสุดการบำรุงรักษา</label>
+                                        <input type="date" id="end_maintenance" name="end_maintenance" required>
+                                    </div>
+                                    <div class="inputMaintenance">
+                                        <label for="note">หมายเหตุ</label>
+                                        <input type="text" id="note" name="note" placeholder="หมายเหตุ">
+                                    </div>
+                                    <div class="inputMaintenance">
+                                        <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
+                                        <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
+                                    </div>
+                                    <input type="text" name="serialNumber" value="<?= htmlspecialchars($detailsData['serial_number']); ?>">
+                                    <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                 </div>
-                                <div class="inputMaintenance">
-                                    <label for="end_maintenance">วันสิ้นสุดการบำรุงรักษา</label>
-                                    <input type="date" id="end_maintenance" name="end_maintenance" required>
-                                </div>
-                                <div class="inputMaintenance">
-                                    <label for="note">หมายเหตุ</label>
-                                    <input type="text" id="note" name="note" placeholder="หมายเหตุ">
-                                </div>
-                                <div class="inputMaintenance">
-                                    <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
-                                    <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
-                                </div>
-                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($detailsData['ID']); ?>">
-                                <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                </div>
+            <?php endif; ?>
 
             <!-- Edit Section -->
             <div>
