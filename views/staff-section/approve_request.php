@@ -275,7 +275,7 @@ try {
                                                         <span id="B">ยืนยันการอนุมัติการขอใช้</span>
                                                     </div>
                                                     <div class="confirmApprovePopup_sec02">
-                                                        <form method="POST" action="<?php echo $base_url; ?>/models/processRequest.php">
+                                                        <form method="POST" action="<?php echo $base_url; ?>/models/approve_request.php">
                                                             <input type="hidden" name="id" value="<?= htmlspecialchars($row['ID']) ?>">
                                                             <input type="hidden" name="userID" value="<?= htmlspecialchars($row['userID']) ?>">
                                                             <button type="submit" name="confirm" class="confirm">ยืนยัน</button>

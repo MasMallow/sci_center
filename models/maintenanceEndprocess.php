@@ -111,6 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     }
 
     // Comment this out during debugging, uncomment when ready
-    // header("Location: /maintenance_end");
+    header("Location: /maintenance_end");
     exit;
 }

@@ -26,9 +26,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && isset($_POST['reserve_id'])) {
     $conn->beginTransaction();
 
     // Update the approve_to_reserve table to set Usage_item
-    $updateUsageStmt = $conn->prepare("UPDATE approve_to_reserve SET Usage_item = 1 WHERE ID = :reserve_id AND userID = :user_id");
-    $updateUsageStmt->bindParam(':reserve_id', $reserve_id, PDO::PARAM_INT);
-    $updateUsageStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $updateUsageStmt = $conn->prepare("UPDATE approve_to_reserve SET Usage_item = 1 WHERE sn_list = :sn_list");
+    $updateUsageStmt->bindParam(':sn_list', $sn_list, PDO::PARAM_INT);
     $updateUsageStmt->execute();
 
     // Reduce the quantity in the crud table for each item
