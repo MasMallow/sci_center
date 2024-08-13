@@ -72,15 +72,20 @@ try {
     }
 
     if ($request_uri == '/maintenance_end') {
-        $query = "SELECT crud.*, info_sciname.*, logs_maintenance.* FROM crud
+        $query = "SELECT 
+                      crud.*, 
+                      info_sciname.*, 
+                      logs_maintenance.*
+                  FROM crud
                   LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number
                   LEFT JOIN (
-                      SELECT * FROM logs_maintenance AS lm1
-                      WHERE lm1.created_at = (
-                          SELECT MAX(lm2.created_at) 
-                          FROM logs_maintenance AS lm2 
-                          WHERE lm2.serial_number = lm1.serial_number
-                      )
+                      SELECT lm1.*
+                      FROM logs_maintenance lm1
+                      INNER JOIN (
+                          SELECT serial_number, MAX(created_at) AS latest_date
+                          FROM logs_maintenance
+                          GROUP BY serial_number
+                      ) lm2 ON lm1.serial_number = lm2.serial_number AND lm1.created_at = lm2.latest_date
                   ) AS logs_maintenance ON crud.serial_number = logs_maintenance.serial_number
                   WHERE crud.availability != 0";
 
@@ -88,7 +93,10 @@ try {
             $query .= " AND (crud.sci_name LIKE :search OR crud.serial_number LIKE :search)";
         }
 
-        $query .= " ORDER BY logs_maintenance.created_at DESC";
+        $query .= " GROUP BY crud.sci_name 
+                    HAVING SUM(crud.availability = 1) > 0 
+                    ORDER BY logs_maintenance.created_at DESC";
+
         $stmt = $conn->prepare($query);
 
         if ($searchQuery) {
@@ -324,7 +332,7 @@ try {
                                                     <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
                                                     <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
                                                 </div>
-                                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($row['ID']); ?>">
+                                                <input type="hidden" name="serialNumber" value="<?= htmlspecialchars($row['serial_number']); ?>">
                                                 <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                             </div>
                                         </div>
@@ -371,10 +379,12 @@ try {
                 $totalItems = count($maintenance_success);
                 $totalPages = ceil($totalItems / $itemsPerPage);
                 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+                // Ensure current page is within valid range
                 if ($currentPage < 1) $currentPage = 1;
                 if ($currentPage > $totalPages) $currentPage = $totalPages;
+
                 $startIndex = ($currentPage - 1) * $itemsPerPage;
-                $endIndex = min($startIndex + $itemsPerPage, $totalItems);
                 $currentPageItems = array_slice($maintenance_success, $startIndex, $itemsPerPage);
                 ?>
                 <div class="table_maintenance">
@@ -382,7 +392,7 @@ try {
                         <div class="table_maintenanceContent">
                             <div class="table_maintenanceContent_00">
                                 <div class="table_maintenanceContent_1">
-                                    <a href="<?php echo $base_url; ?>/maintenance_end/maintenanceDetails?id=<?= $row['ID'] ?>">
+                                    <a href="<?php echo $base_url; ?>/maintenance_end/maintenanceDetails?id=<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
                                         <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                         (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
                                         <i class="fa-solid fa-square-arrow-up-right"></i>
@@ -398,6 +408,7 @@ try {
                             <div class="MaintenanceButton">
                                 <span class="maintenance_button">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
+                                    <input name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
                                 </span>
                                 <form action="<?php echo $base_url ?>/models/maintenanceEndprocess.php" method="post" class="maintenance_form">
                                     <div class="maintenance_popup">
@@ -414,10 +425,10 @@ try {
                                                     <input type="date" id="end_maintenance" name="end_maintenance" required>
                                                 </div>
                                                 <div class="inputMaintenance">
-                                                    <label for="note">ราละเอียดการบำรุงรักษา</label>
+                                                    <label for="note">รายละเอียดการบำรุงรักษา</label>
                                                     <input type="text" id="note" name="note" placeholder="หมายเหตุ">
                                                 </div>
-                                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($row['ID']); ?>">
+                                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
                                                 <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                             </div>
                                         </div>
@@ -425,28 +436,27 @@ try {
                                 </form>
                             </div>
                         </div>
-                    <?php endforeach ?>
+                    <?php endforeach; ?>
                 </div>
                 <!-- PAGINATION PAGE -->
                 <?php if ($totalPages > 1) : ?>
                     <div class="pagination">
                         <?php if ($currentPage > 1) : ?>
-                            <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
-                            <a href="?page=<?php echo $currentPage - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                            <a href="?page=1<?= $searchValue ? '&search=' . urlencode($searchValue) : ''; ?>">&laquo;</a>
+                            <a href="?page=<?= $currentPage - 1; ?><?= $searchValue ? '&search=' . urlencode($searchValue) : ''; ?>">&lsaquo;</a>
                         <?php endif; ?>
                         <?php
-                        $totalPages = ceil($totalItems / $itemsPerPage);
                         for ($i = 1; $i <= $totalPages; $i++) {
                             if ($i == $currentPage) {
                                 echo "<a class='active'>$i</a>";
                             } else {
-                                echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
+                                echo "<a href='?page=$i" . ($searchValue ? '&search=' . urlencode($searchValue) : '') . "'>$i</a>";
                             }
                         }
                         ?>
                         <?php if ($currentPage < $totalPages) : ?>
-                            <a href="?page=<?php echo $currentPage + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
-                            <a href="?page=<?php echo $totalPages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
+                            <a href="?page=<?= $currentPage + 1; ?><?= $searchValue ? '&search=' . urlencode($searchValue) : ''; ?>">&rsaquo;</a>
+                            <a href="?page=<?= $totalPages; ?><?= $searchValue ? '&search=' . urlencode($searchValue) : ''; ?>">&raquo;</a>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
@@ -454,8 +464,8 @@ try {
                 <div class="no_maintenance">
                     <span>ไม่พบข้อมูลการบำรุงรักษา</span>
                 </div>
-            <?php endif ?>
-        <?php endif ?>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
     <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/maintenance.js"></script>

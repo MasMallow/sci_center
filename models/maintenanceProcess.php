@@ -6,7 +6,7 @@ date_default_timezone_set('Asia/Bangkok');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     // รับค่าจากฟอร์ม
-    $selectedIds = $_POST['selected_ids'];
+    $serialNumber = $_POST['serialNumber'];
     $start_maintenance = $_POST['start_maintenance'];
     $end_maintenance = $_POST['end_maintenance'];
     $name_staff = $_POST['name_staff'];
@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     $sMessage = "แจ้งเตือนการบำรุงรักษา\n";
 
     // อัพเดทสถานะของอุปกรณ์
-    $update_query = $conn->prepare("UPDATE crud SET availability = 1 WHERE id IN ($selectedIds)");
+    $update_query = $conn->prepare("UPDATE crud SET availability = 1 WHERE serial_number = :serialNumber");
+    $update_query->bindParam(':serialNumber', $serialNumber, PDO::PARAM_STR);
     $update_query->execute();
 
     // ดึงข้อมูลผู้ใช้
@@ -39,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     $log_Status = 'เริ่มต้นการบำรุงรักษา';
 
     // ดึงข้อมูลอุปกรณ์
-    $stmt = $conn->prepare("SELECT serial_number, sci_name, categories FROM crud WHERE id IN ($selectedIds)");
+    $stmt = $conn->prepare("SELECT serial_number, sci_name, categories FROM crud WHERE serial_number = :serialNumber");
+    $stmt->bindParam(':serialNumber', $serialNumber, PDO::PARAM_STR);
     $stmt->execute();
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
