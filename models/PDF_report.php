@@ -5,24 +5,19 @@ require_once '../assets/TCPDF-main/tcpdf.php'; // รวมไฟล์ TCPDF
 include '../assets/includes/thai_date_time.php';
 
 // รับค่า user_id และวันเวลาจากพารามิเตอร์ GET และตรวจสอบว่ามีการส่งมาหรือไม่
-$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
 $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
-// สร้าง SQL query เพื่อดึงข้อมูลจากตาราง approve_to_use โดยใช้เงื่อนไขของ user_id และช่วงเวลาถ้ามีการระบุ
-$sql = "SELECT * FROM approve_to_reserve WHERE 1 AND situation = 1";
-if (!empty($user_id) && $user_id !== 'all') {
-    $sql .= " AND userID = :userID";
-}
+// สร้าง SQL query เพื่อดึงข้อมูลจากตาราง approve_to_reserve โดยใช้เงื่อนไขของ user_id และช่วงเวลาถ้ามีการระบุ
+$sql = "SELECT * FROM approve_to_reserve WHERE situation = 1";
+
 if (!empty($start_date) && !empty($end_date)) {
     $sql .= " AND (reservation_date BETWEEN :start_date AND :end_date)";
 }
 
 // เตรียมและดำเนินการ SQL query
 $stmt = $conn->prepare($sql);
-if (!empty($user_id) && $user_id !== 'all') {
-    $stmt->bindParam(':userID', $user_id, PDO::PARAM_INT);
-}
+
 if (!empty($start_date) && !empty($end_date)) {
     $stmt->bindParam(':start_date', $start_date, PDO::PARAM_STR);
     $stmt->bindParam(':end_date', $end_date, PDO::PARAM_STR);
@@ -108,7 +103,7 @@ ob_start();
 <div>
     <?php if (count($data) > 0) : ?>
         <?php foreach ($data as $row) : ?>
-            <?php echo htmlspecialchars($row["name_user"]); ?>
+            <strong><?php echo htmlspecialchars($row["name_user"]); ?></strong><br>
             ทำรายการ <?php echo thai_date_time_2($row["created_at"]); ?><br>
             <?php
             $items = explode(',', $row['list_name']);
@@ -116,7 +111,7 @@ ob_start();
                 $item_parts = explode('(', $item);
                 $product_name = trim($item_parts[0]);
                 $quantity = isset($item_parts[1]) ? str_replace(')', '', $item_parts[1]) : '0';
-                echo '- ' . $product_name . ' ' . $quantity . ' รายการ<br>';
+                echo '- ' . htmlspecialchars($product_name) . ' ' . htmlspecialchars($quantity) . ' รายการ<br>';
             }
             ?>
             ทำการขอใช้ <?php echo thai_date_time_2($row["reservation_date"]); ?> ถึง <?php echo thai_date_time_2($row["end_date"]); ?><br>
@@ -130,9 +125,7 @@ ob_start();
             <br><br>
         <?php endforeach; ?>
     <?php else : ?>
-        <tr>
-            <td colspan="3" style="text-align: center">ไม่พบข้อมูลในฐานข้อมูล</td>
-        </tr>
+        <div style="text-align: center">ไม่พบข้อมูลในวันที่เลือก</div>
     <?php endif; ?>
 </div>
 

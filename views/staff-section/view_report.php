@@ -109,10 +109,6 @@ try {
             <form class="form_1" action="<?php echo $base_url; ?>/report" method="GET">
                 <div class="view_report_column">
                     <div class="view_report_input">
-                        <label id="B" for="name_user">ชื่อผู้ใช้</label>
-                        <input type="text" id="name_user" name="name_user" placeholder="ชื่อผู้ใช้" value="<?= htmlspecialchars($_GET['name_user'] ?? ''); ?>">
-                    </div>
-                    <div class="view_report_input">
                         <label id="B" for="startDate">ช่วงเวลาเริ่มต้น</label>
                         <input type="date" id="startDate" name="start_date" value="<?= htmlspecialchars($start_date); ?>">
                     </div>

@@ -81,7 +81,7 @@ if ($request_uri === '/management_user') {
     }
 
     // กำหนดค่าเริ่มต้นสำหรับการแบ่งหน้า
-    $results_per_page = 2; // เปลี่ยนค่าตามความต้องการ
+    $results_per_page = 5; // เปลี่ยนค่าตามความต้องการ
     $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
     $offset = ($page - 1) * $results_per_page;
 
@@ -546,7 +546,8 @@ try {
     </div>
     <!-- JavaScript -->
     <script src="assets/js/ajax.js"></script>
-    <script src="assets/js/add.js"></script>
+    <script src="assets/js/previewImg_popup.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/noti_toast.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {

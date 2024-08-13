@@ -181,6 +181,8 @@ try {
         </form>
     </main>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/pop_upEdit.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/noti_toast.js"></script>
 </body>
 
 </html>

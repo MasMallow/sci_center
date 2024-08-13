@@ -336,7 +336,7 @@ try {
                                                     <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
                                                     <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
                                                 </div>
-                                                <input type="text" name="serialNumber" value="<?= htmlspecialchars($row['serial_number']); ?>">
+                                                <input hidden type="text" name="serialNumber" value="<?= htmlspecialchars($row['serial_number']); ?>">
                                                 <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                             </div>
                                         </div>
@@ -446,7 +446,6 @@ try {
                             <div class="MaintenanceButton">
                                 <span class="maintenance_button" data-modal="<?php echo $row['serial_number']; ?>">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
-                                    <!-- <input name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>"> -->
                                 </span>
                                 <form action="<?php echo $base_url ?>/models/maintenanceEndprocess.php" method="post" class="maintenance_form">
                                     <div class="maintenance_popup" id="<?php echo $row['serial_number']; ?>">
@@ -466,7 +465,7 @@ try {
                                                     <label for="note">รายละเอียดการบำรุงรักษา</label>
                                                     <input type="text" id="note" name="note" placeholder="หมายเหตุ">
                                                 </div>
-                                                <input type="text" name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                <input hidden name="selected_ids" value="<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
                                                 <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                                             </div>
                                         </div>

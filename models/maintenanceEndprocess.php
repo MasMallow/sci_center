@@ -75,18 +75,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
             echo 'Serial Number: '.$serial_number.'<br>';
 
             if ($serial_number) {
-                // อัพเดทรายละเอียดการบำรุงรักษาในตาราง logs_maintenance โดยเลือก serial_number อันใหม่ล่าสุด
+                // อัพเดทรายละเอียดการบำรุงรักษาในตาราง logs_maintenance โดยเลือก id ที่ใหม่ล่าสุด
                 $update_query_03 = $conn->prepare("
                     UPDATE logs_maintenance 
                     SET end_maintenance = :end_maintenance, 
                         details_maintenance = :details_maintenance 
-                    WHERE serial_number = :serial_number
+                    WHERE id = (
+                        SELECT MAX(id) 
+                        FROM logs_maintenance 
+                        WHERE serial_number = :serial_number
+                    )
                 ");
                 $update_query_03->bindParam(':end_maintenance', $end_maintenance, PDO::PARAM_STR);
                 $update_query_03->bindParam(':details_maintenance', $details_maintenance, PDO::PARAM_STR);
                 $update_query_03->bindParam(':serial_number', $serial_number, PDO::PARAM_STR);
                 $update_query_03->execute();
-                echo 'Update 03 Row Count: '.$update_query_03->rowCount().'<br>';
+                echo 'Update 03 Row Count: ' . $update_query_03->rowCount() . '<br>';
             }
 
             // ตรวจสอบการอัพเดท
@@ -107,6 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     }
 
     // Comment this out during debugging, uncomment when ready
-    header("Location: /maintenance_end");
+    // header("Location: /maintenance_end");
     exit;
 }
