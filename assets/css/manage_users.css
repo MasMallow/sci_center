@@ -132,13 +132,11 @@ button.search {
   border-bottom: 1px solid #eee;
   gap: 0.4rem;
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.5s ease;
 }
 
 .user_manage_content.show {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .user_manage_content_1 {
@@ -352,7 +350,14 @@ button.search {
   justify-content: center;
   align-items: center;
   margin-top: 10rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
+
+.user_manage_not_found.visible {
+  opacity: 1;
+}
+
 .user_manage_not_found i {
   font-size: 4rem;
   color: #000000;

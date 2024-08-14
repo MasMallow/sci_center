@@ -80,15 +80,12 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['staff_login'])) {
         if ($request_uri == '/profile_user/edit_profile' || $request_uri == '/edit_user') : ?>
             <?php if (isset($_SESSION['edit_profile_success'])) : ?>
                 <div class="toast">
-                    <div class="toast_section">
-                        <div class="toast_content">
-                            <i class="fas fa-solid fa-check check"></i>
-                            <div class="toast_content_message">
-                                <span class="text text_2"><?php echo $_SESSION['edit_profile_success']; ?></span>
-                            </div>
-                            <i class="fa-solid fa-xmark close"></i>
-                            <div class="progress"></div>
+                    <div class="toast_content">
+                        <i class="fas fa-solid fa-check check"></i>
+                        <div class="toast_content_message">
+                            <span class="text text_2"><?php echo $_SESSION['edit_profile_success']; ?></span>
                         </div>
+                        <i class="fa-solid fa-xmark close"></i>
                     </div>
                 </div>
                 <?php unset($_SESSION['edit_profile_success']); ?>

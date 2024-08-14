@@ -310,39 +310,39 @@ try {
                                 <span class="maintenance_button" data-modal="<?php echo $row['serial_number']; ?>">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                 </span>
-                                <form action="<?php echo $base_url ?>/models/maintenanceProcess.php" method="post" class="maintenance_form">
-                                    <div class="maintenance_popup" id="<?php echo $row['serial_number']; ?>">
-                                        <div class="maintenance_popup_content">
-                                            <div class="maintenance_section_header">
-                                                <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
-                                                <div class="modalClose" id="closeMaintenance">
-                                                    <i class="fa-solid fa-xmark"></i>
-                                                </div>
-                                            </div>
-                                            <div class="maintenace_popup">
-                                                <div class="inputMaintenance">
-                                                    <label for="start_maintenance">วันเริ่มต้นการบำรุงรักษา</label>
-                                                    <input type="date" id="start_maintenance" name="start_maintenance" required>
-                                                </div>
-                                                <div class="inputMaintenance">
-                                                    <label for="end_maintenance">วันสิ้นสุดการบำรุงรักษา</label>
-                                                    <input type="date" id="end_maintenance" name="end_maintenance" required>
-                                                </div>
-                                                <div class="inputMaintenance">
-                                                    <label for="note">หมายเหตุ</label>
-                                                    <input type="text" id="note" name="note" placeholder="หมายเหตุ">
-                                                </div>
-                                                <div class="inputMaintenance">
-                                                    <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
-                                                    <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
-                                                </div>
-                                                <input hidden type="text" name="serialNumber" value="<?= htmlspecialchars($row['serial_number']); ?>">
-                                                <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
+                            </div>
+                            <form action="<?php echo $base_url ?>/models/maintenanceProcess.php" method="post" class="maintenance_form">
+                                <div class="maintenance_popup" id="<?php echo $row['serial_number']; ?>">
+                                    <div class="maintenance_popup_content">
+                                        <div class="maintenance_section_header">
+                                            <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
+                                            <div class="modalClose" id="closeMaintenance">
+                                                <i class="fa-solid fa-xmark"></i>
                                             </div>
                                         </div>
+                                        <div class="maintenace_popup">
+                                            <div class="inputMaintenance">
+                                                <label for="start_maintenance">วันเริ่มต้นการบำรุงรักษา</label>
+                                                <input type="date" id="start_maintenance" name="start_maintenance" required>
+                                            </div>
+                                            <div class="inputMaintenance">
+                                                <label for="end_maintenance">วันสิ้นสุดการบำรุงรักษา</label>
+                                                <input type="date" id="end_maintenance" name="end_maintenance" required>
+                                            </div>
+                                            <div class="inputMaintenance">
+                                                <label for="note">หมายเหตุ</label>
+                                                <input type="text" id="note" name="note" placeholder="หมายเหตุ">
+                                            </div>
+                                            <div class="inputMaintenance">
+                                                <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
+                                                <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
+                                            </div>
+                                            <input hidden type="text" name="serialNumber" value="<?= htmlspecialchars($row['serial_number']); ?>">
+                                            <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
+                                        </div>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     <?php endforeach ?>
                 </div>
@@ -356,7 +356,7 @@ try {
                         setTimeout(function() {
                             loadingElement.style.display = 'none'; // ซ่อนการโหลด
                             if (detailsElement) {
-                                detailsElement.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
+                                detailsElement.style.display = 'block'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
                                 detailsElement.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
 
                                 // แสดงการแจ้งเตือนทีละรายการ
@@ -473,34 +473,35 @@ try {
                                 </form>
                             </div>
                         </div>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                // ดึงองค์ประกอบการโหลดและเนื้อหาหลัก
-                                const loadingElement = document.getElementById('loading');
-                                const detailsElement = document.querySelector('.table_maintenance');
-
-                                // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
-                                setTimeout(function() {
-                                    loadingElement.style.display = 'none'; // ซ่อนการโหลด
-                                    if (detailsElement) {
-                                        detailsElement.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
-                                        detailsElement.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
-                                        // แสดงการแจ้งเตือนทีละรายการ
-                                        const requestDetails = document.querySelectorAll('.table_maintenanceContent');
-                                        let index = 0;
-                                        function showNextNotification() {
-                                            if (index < requestDetails.length) {
-                                                requestDetails[index].classList.add('visible');
-                                                index++;
-                                                setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
-                                            }
-                                        }
-                                        showNextNotification();
-                                    }
-                                }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
-                            });
-                        </script>
                     <?php endforeach; ?>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // ดึงองค์ประกอบการโหลดและเนื้อหาหลัก
+                            const loadingElement = document.getElementById('loading');
+                            const detailsElement = document.querySelector('.table_maintenance');
+
+                            // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
+                            setTimeout(function() {
+                                loadingElement.style.display = 'none'; // ซ่อนการโหลด
+                                if (detailsElement) {
+                                    detailsElement.style.display = 'block'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
+                                    detailsElement.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
+                                    // แสดงการแจ้งเตือนทีละรายการ
+                                    const requestDetails = document.querySelectorAll('.table_maintenanceContent');
+                                    let index = 0;
+
+                                    function showNextNotification() {
+                                        if (index < requestDetails.length) {
+                                            requestDetails[index].classList.add('visible');
+                                            index++;
+                                            setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                                        }
+                                    }
+                                    showNextNotification();
+                                }
+                            }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+                        });
+                    </script>
                 </div>
                 <!-- PAGINATION PAGE -->
                 <?php if ($totalPages > 1) : ?>

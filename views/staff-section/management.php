@@ -146,7 +146,7 @@ unset($_SESSION['search_value']);
     <header>
         <?php include_once('assets/includes/navigator.php'); ?>
     </header>
-    <?php if (isset($_SESSION['maintenanceSuccess'])) : ?>
+    <?php if (isset($_SESSION['delete_success'])) : ?>
         <div class="toast">
             <div class="toast_content">
                 <i class="fas fa-solid fa-check check"></i>
@@ -156,7 +156,7 @@ unset($_SESSION['search_value']);
                 <i class="fa-solid fa-xmark close"></i>
             </div>
         </div>
-        <?php unset($_SESSION['maintenanceSuccess']); ?>
+        <?php unset($_SESSION['delete_success']); ?>
     <?php endif ?>
     <div class="Dashboard_Management">
         <div class="header_management_section">
@@ -325,6 +325,7 @@ unset($_SESSION['search_value']);
     <!-- JavaScript -->
     <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?= $base_url; ?>/assets/js/loading.js"></script>
+    <script src="<?= $base_url; ?>/assets/js/noti_toast.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {

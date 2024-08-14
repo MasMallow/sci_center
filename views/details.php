@@ -150,39 +150,27 @@ try {
                             <span class="Data2"><?php echo $detailsData['details'] ?></span>
                         </div>
                     </div>
-                    <!-- <div class="form_right_2">
-                        <div class="headerNAME">
-                            <span id="B"><?php echo $detailsData['sci_name'] ?></span>
-                            <span class="serialNumber">(<?php echo $detailsData['serial_number'] ?>)</span>
-                        </div>
-                        <?php foreach ($reservationHistory as $reservation) : ?>
-                            <div class="DataDisplay">
-                                <div class="reseration">
-                                    <span id="B">ขอใช้งาน </span>
-                                    <span><?php echo thai_date_time_3($reservation['reservation_date']); ?></span>
-                                </div>
-                                <div class="endDate">
-                                    <span id="B">ถึง </span>
-                                    <span><?php echo thai_date_time_3($reservation['end_date']); ?></span>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div> -->
                     <div class="form_right_2">
                         <div class="headerNAME">
                             <span id="B"><?php echo $detailsData['sci_name'] ?></span>
                             <span class="serialNumber">(<?php echo $detailsData['serial_number'] ?>)</span>
                         </div>
-                        <div class="DataDisplay">
-                            <div class="reseration">
-                                <span id="B">ขอใช้งาน </span>
-                                <span>วันที่ 5 ส.ค. พ.ศ. 2567 เวลา 09:00 น.</span>
-                            </div>
-                            <div class="endDate">
-                                <span id="B">ถึง </span>
-                                <span>วันที่ 5 ส.ค. พ.ศ. 2567 เวลา 12:00 น.</span>
-                            </div>
-                        </div>
+                        <?php if (!empty($reservationHistory)) : ?>
+                            <?php foreach ($reservationHistory as $reservation) : ?>
+                                <div class="DataDisplay">
+                                    <div class="reseration">
+                                        <span id="B">ขอใช้งาน </span>
+                                        <span><?php echo thai_date_time_3($reservation['reservation_date']); ?></span>
+                                    </div>
+                                    <div class="endDate">
+                                        <span id="B">ถึง </span>
+                                        <span><?php echo thai_date_time_3($reservation['end_date']); ?></span>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <div class="DataDisplay_notfound">ไม่พบการขอใช้</div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -202,16 +190,20 @@ try {
             <a href="javascript:history.back();" class="go_back"><i class="fa-solid fa-arrow-left-long"></i><span>กลับ</span></a>
         </div>
     </main>
+
+    <!-- ----------- FOOTER ----------- -->
+    <footer>
+        <?php include('assets/includes/footer.php') ?>
+    </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const formRight1 = document.querySelector('.form_right_1');
             const formRight2 = document.querySelector('.form_right_2');
             const toggleButton = document.getElementById('toggleButton');
 
-            // รีเซ็ตค่า formState เป็น form1 เมื่อเริ่มต้นหน้าเว็บถ้า formState ยังไม่ได้ตั้งไว้
-            if (!localStorage.getItem('formState')) {
-                localStorage.setItem('formState', 'form1');
-            }
+            // รีเซ็ตค่า formState เป็น form1 ทุกครั้งที่เริ่มต้นหน้าเว็บ
+            localStorage.setItem('formState', 'form1');
 
             function setFormVisibility() {
                 const formState = localStorage.getItem('formState');
@@ -238,7 +230,6 @@ try {
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url; ?>/assets/js/previewImg_popup.js"></script>
     <script src="<?php echo $base_url; ?>/assets/js/maintenance.js"></script>
-    <?php include('assets/includes/footer.php') ?>
 </body>
 
 </html>

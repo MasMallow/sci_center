@@ -417,10 +417,28 @@ try {
                     <?php endif; ?>
                 </div>
             <?php else : ?>
+                <div id="loading">
+                    <div class="spinner"></div>
+                    <p>กำลังโหลดข้อมูล...</p>
+                </div>
                 <div class="user_manage_not_found">
                     <i class="fa-solid fa-user-xmark"></i>
                     <span id="B">ไม่มีพบบัญชีผู้ใช้ในระบบ</span>
                 </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const loadingElement = document.getElementById('loading');
+                        const notFoundElement = document.querySelector('.user_manage_not_found');
+
+                        setTimeout(function() {
+                            loadingElement.style.display = 'none';
+
+                            if (notFoundElement) {
+                                notFoundElement.classList.add('visible');
+                            }
+                        }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+                    });
+                </script>
             <?php endif; ?>
 
             <!-- --------------- USER DEATILS PAGE ----------------- -->
@@ -567,6 +585,38 @@ try {
                 });
             }, 1500);
         });
+    </script>
+    <script>
+        // ฟังก์ชันสำหรับ modal
+        const handleModal = () => {
+            const modalOpenButtons = document.querySelectorAll(".delete_user");
+
+            modalOpenButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const userID = button.getAttribute("data-modal");
+                    const modal = document.getElementById(userID);
+
+                    if (modal) {
+                        modal.style.display = "flex";
+
+                        const modalCloseButton = modal.querySelector("#closeDetails");
+
+                        modalCloseButton.addEventListener("click", () => {
+                            modal.style.display = "none";
+                        });
+
+                        modal.addEventListener("click", (event) => {
+                            if (event.target === modal) {
+                                modal.style.display = "none";
+                            }
+                        });
+                    }
+                });
+            });
+        };
+
+        // เรียกใช้ฟังก์ชัน handleModal เมื่อโหลดหน้าเว็บเสร็จสมบูรณ์
+        document.addEventListener("DOMContentLoaded", handleModal);
     </script>
 </body>
 

@@ -162,30 +162,18 @@
   }
 }
 
-.serial_number .open_expand_row {
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.expand_row {
-  display: flex;
-  align-items: center;
-  margin-top: 0.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #ddd;
-  gap: 1rem;
-}
-
-.expand_row > div {
-  margin-bottom: 5px;
-}
-
 .table_maintenance {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
   border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.table_maintenance.visible {
+  opacity: 1;
 }
 
 .table_maintenanceContent {
@@ -193,32 +181,16 @@
   display: flex;
   padding: 1rem 1.2rem;
   border-bottom: 1px solid #ddd;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 
   &:last-child {
     border-bottom: none;
   }
 }
 
-.table_maintenance {
-  display: flex; /* หรือ block, ขึ้นอยู่กับความต้องการ */
-  flex-direction: column;
-  opacity: 0; /* เริ่มต้นด้วย opacity 0 */
-  transition: opacity 0.3s ease; /* การเปลี่ยนแปลง opacity อย่างราบรื่น */
-}
-
-.table_maintenance.visible {
-  opacity: 1; /* แสดงผลเมื่อมีคลาส visible */
-}
-
-.table_maintenanceContent {
-  opacity: 0; /* เริ่มต้นด้วย opacity 0 */
-  transform: translateY(20px); /* เริ่มต้นด้วยการเลื่อนลง */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* การเปลี่ยนแปลงอย่างราบรื่น */
-}
-
 .table_maintenanceContent.visible {
-  opacity: 1; /* แสดงผลเมื่อมีคลาส visible */
-  transform: translateY(0); /* ทำให้เลื่อนขึ้นไปยังตำแหน่งเดิม */
+  opacity: 1;
 }
 
 .table_maintenanceContent_00 {
@@ -261,8 +233,9 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
 .maintenance_popup {
-  position: fixed;
+  position: fixed; /* ใช้ fixed แทน absolute */
   top: 0;
   left: 0;
   width: 100%;
@@ -272,20 +245,22 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  display: none; /* เพื่อใช้ flexbox จัดกึ่งกลาง */
 }
+
 .maintenance_popup_content {
   width: 25rem;
   min-height: 10rem;
-  display: block;
-  justify-content: center;
-  align-items: center;
   background-color: #fff;
   border-radius: 12px;
   z-index: 10000;
   animation: movingY 0.3s;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาเพื่อให้โดดเด่นขึ้น */
+  transform: translateY(-10px);
+  transition: transform 0.3s ease-out;
 }
+
 .maintenance_section_header {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -295,6 +270,7 @@
   color: #000;
   font-family: Sarabun-bold;
 }
+
 .maintenance_section_header .modalClose {
   display: flex;
   align-items: center;
@@ -305,15 +281,17 @@
   background-color: #e6e6e6;
   cursor: pointer;
   transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #d1d1d1;
-  }
-  & i {
-    font-size: 12px;
-    color: #525151;
-  }
 }
+
+.maintenance_section_header .modalClose:hover {
+  background-color: #d1d1d1;
+}
+
+.maintenance_section_header .modalClose i {
+  font-size: 12px;
+  color: #525151;
+}
+
 .maintenace_popup {
   width: 100%;
   padding: 1rem 1rem;
@@ -466,6 +444,12 @@
   border: 1px solid #d0d7de;
   border-radius: 5px;
   margin-bottom: 0.5rem;
+  opacity: 0; /* ค่าเริ่มต้นเป็น 0 */
+  transition: opacity 0.3s ease; /* เพิ่มการเปลี่ยนแปลงอย่างราบรื่น */
+}
+
+.maintenanceReport.visible {
+  opacity: 1; /* ค่าเปลี่ยนแปลงเป็น 1 */
 }
 
 .history_rowNOTFOUND {
@@ -489,10 +473,18 @@
   gap: 0.75rem;
   padding: 1rem 1.1rem;
   border-bottom: 1px solid #ddd;
+  opacity: 0; /* ค่าเริ่มต้นเป็น 0 */
+  transform: translateY(20px); /* เริ่มต้นด้วยการเลื่อนลง */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* เพิ่มการเปลี่ยนแปลงอย่างราบรื่น */
 
   &:last-child {
     border-bottom: none;
   }
+}
+
+.maintenanceReport_ROW.visible {
+  opacity: 1; /* ค่าเปลี่ยนแปลงเป็น 1 */
+  transform: translateY(0); /* ทำให้เลื่อนขึ้นไปยังตำแหน่งเดิม */
 }
 
 .history-item_1 {

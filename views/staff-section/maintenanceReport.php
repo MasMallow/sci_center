@@ -94,6 +94,7 @@ $total_pages = ceil($total_records / $results_per_page);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,6 +107,7 @@ $total_pages = ceil($total_records / $results_per_page);
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/maintenance.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/footer.css">
 </head>
+
 <body>
     <header>
         <?php include_once 'assets/includes/navigator.php'; ?>
@@ -160,10 +162,14 @@ $total_pages = ceil($total_records / $results_per_page);
                 <button type="submit" class="reset_data">แสดงข้อมูลทั้งหมด</button>
             </form>
         </div>
-        <?php if ($total_records > 0) : ?>
-            <?php if (count($historyData) > 0) : ?>
-                <?php foreach ($historyData as $row) : ?>
-                    <div class="maintenanceReport">
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>กำลังโหลดข้อมูล...</p>
+        </div>
+        <div class="maintenanceReport">
+            <?php if ($total_records > 0) : ?>
+                <?php if (count($historyData) > 0) : ?>
+                    <?php foreach ($historyData as $row) : ?>
                         <div class="maintenanceReport_ROW">
                             <div class="history-item_1">
                                 <?php echo htmlspecialchars($row["sci_name"]); ?>
@@ -182,17 +188,17 @@ $total_pages = ceil($total_records / $results_per_page);
                                 <?php echo ($row["details_maintenance"]) ? htmlspecialchars($row["details_maintenance"]) : '--'; ?>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-                <!-- PAGINATION PAGE -->
-                <?php if ($total_pages > 1) : ?>
-                    <div class="pagination">
-                        <?php if ($page > 1) : ?>
-                            <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
-                            <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
-                        <?php endif; ?>
+                    <?php endforeach; ?>
+        </div>
+        <!-- PAGINATION PAGE -->
+        <?php if ($total_pages > 1) : ?>
+            <div class="pagination">
+                <?php if ($page > 1) : ?>
+                    <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
+                    <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                <?php endif; ?>
 
-                        <?php
+                <?php
                         for ($i = 1; $i <= $total_pages; $i++) {
                             if ($i == $page) {
                                 echo "<a class='active'>$i</a>";
@@ -200,29 +206,62 @@ $total_pages = ceil($total_records / $results_per_page);
                                 echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
                             }
                         }
-                        ?>
+                ?>
 
-                        <?php if ($page < $total_pages) : ?>
-                            <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
-                            <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
-                        <?php endif; ?>
-                    </div>
+                <?php if ($page < $total_pages) : ?>
+                    <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
+                    <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
                 <?php endif; ?>
-            <?php else : ?>
-                <div class="history_rowNOTFOUND">
-                    <i class="fa-solid fa-database"></i>
-                    ไม่พบประวัติการบำรุงรักษา
-                </div>
-            <?php endif; ?>
-        <?php else : ?>
-            <div class="history_rowNOTFOUND">
-                <i class="fa-solid fa-database"></i>
-                ไม่พบข้อมูลในช่วงเวลาที่กำหนด
             </div>
         <?php endif; ?>
-        <footer>
-            <?php include_once 'assets/includes/footer_2.php'; ?>
-        </footer>
+    <?php else : ?>
+        <div class="history_rowNOTFOUND">
+            <i class="fa-solid fa-database"></i>
+            ไม่พบประวัติการบำรุงรักษา
+        </div>
+    <?php endif; ?>
+<?php else : ?>
+    <div class="history_rowNOTFOUND">
+        <i class="fa-solid fa-database"></i>
+        ไม่พบข้อมูลในช่วงเวลาที่กำหนด
     </div>
+<?php endif; ?>
+<footer>
+    <?php include_once 'assets/includes/footer_2.php'; ?>
+</footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loading = document.getElementById('loading');
+            const content = document.querySelector('.maintenanceReport');
+
+            // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
+            setTimeout(function() {
+                loading.style.display = 'none'; // ซ่อนการโหลด
+                if (content) {
+                    content.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
+                    content.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
+                }
+
+                // แสดงการแจ้งเตือนทีละรายการ
+                const viewReportTableContent = document.querySelectorAll('.maintenanceReport_ROW');
+                let index = 0;
+
+                function showNextNotification() {
+                    if (index < viewReportTableContent.length) {
+                        viewReportTableContent[index].classList.add('visible');
+                        index++;
+                        setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                    }
+                }
+
+                showNextNotification();
+            }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+        });
+    </script>
 </body>
+
 </html>

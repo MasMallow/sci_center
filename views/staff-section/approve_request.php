@@ -268,24 +268,6 @@ try {
                                                 <i class="fa-solid fa-circle-check"></i>
                                                 อนุมัติการขอใช้
                                             </span>
-                                            <div class="confirmApprovePopup" id="modal_<?= htmlspecialchars($row['ID']) ?>">
-                                                <div class="confirmApprove_content">
-                                                    <div class="confirmApprovePopup_sec01">
-                                                        <i class="fa-solid fa-exclamation"></i>
-                                                        <span id="B">ยืนยันการอนุมัติการขอใช้</span>
-                                                    </div>
-                                                    <div class="confirmApprovePopup_sec02">
-                                                        <form method="POST" action="<?php echo $base_url; ?>/models/approve_request.php">
-                                                            <input type="hidden" name="id" value="<?= htmlspecialchars($row['ID']) ?>">
-                                                            <input type="hidden" name="userID" value="<?= htmlspecialchars($row['userID']) ?>">
-                                                            <button type="submit" name="confirm" class="confirm">ยืนยัน</button>
-                                                        </form>
-                                                        <div class="cancelApprove">
-                                                            <span id="B">ปิดหน้าต่าง</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -294,6 +276,24 @@ try {
                             endif;
                         endforeach;
                         ?>
+                    </div>
+                    <div class="confirmApprovePopup" id="modal_<?= htmlspecialchars($row['ID']) ?>">
+                        <div class="confirmApprove_content">
+                            <div class="confirmApprovePopup_sec01">
+                                <i class="fa-solid fa-exclamation"></i>
+                                <span id="B">ยืนยันการอนุมัติการขอใช้</span>
+                            </div>
+                            <div class="confirmApprovePopup_sec02">
+                                <form method="POST" action="<?php echo $base_url; ?>/models/approve_request.php">
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($row['ID']) ?>">
+                                    <input type="hidden" name="userID" value="<?= htmlspecialchars($row['userID']) ?>">
+                                    <button type="submit" name="confirm" class="confirm">ยืนยัน</button>
+                                </form>
+                                <div class="cancelApprove">
+                                    <span id="B">ปิดหน้าต่าง</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- pagination -->
                     <?php if ($pagination_display) : ?>
@@ -478,6 +478,7 @@ try {
         <?php endif; ?>
     </div>
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url; ?>/assets/js/noti_toast.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // ค้นหาปุ่มทั้งหมดที่ใช้เปิด modal
@@ -528,7 +529,7 @@ try {
             setTimeout(function() {
                 loadingElement.style.display = 'none'; // ซ่อนการโหลด
                 if (detailsElement) {
-                    detailsElement.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
+                    detailsElement.style.display = 'block'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
                     detailsElement.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
                     // แสดงการแจ้งเตือนทีละรายการ
                     const requestDetails = document.querySelectorAll('.approveData');

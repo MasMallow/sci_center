@@ -547,6 +547,15 @@
   border-bottom: none;
 }
 
+.DataDisplay_notfound{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-family: Sarabun-bold;
+}
+
 .reseration,
 .endDate {
   gap: 0.35rem;
