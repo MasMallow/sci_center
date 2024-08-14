@@ -218,7 +218,7 @@ try {
                                                 <?php echo htmlspecialchars($row['serial_number']); ?>
                                             </div>
                                             <div class="items">
-                                                <a href="<?php echo $base_url; ?>/maintenance/details?id=<?= $row['ID'] ?>">
+                                                <a href="<?php echo $base_url; ?>/maintenance/details?id=<?= $row['serial_number'] ?>">
                                                     <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                                 </a>
                                             </div>
@@ -293,7 +293,7 @@ try {
                         <div class="table_maintenanceContent">
                             <div class="table_maintenanceContent_00">
                                 <div class="table_maintenanceContent_1">
-                                    <a href="<?php echo $base_url; ?>/maintenance_start/details?id=<?= $row['ID'] ?>">
+                                    <a href="<?php echo $base_url; ?>/maintenance_start/details?id=<?= $row['serial_number'] ?>">
                                         <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                         (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
                                         <i class="fa-solid fa-square-arrow-up-right"></i>
@@ -430,7 +430,7 @@ try {
                         <div class="table_maintenanceContent">
                             <div class="table_maintenanceContent_00">
                                 <div class="table_maintenanceContent_1">
-                                    <a href="<?php echo $base_url; ?>/maintenance_end/maintenanceDetails?id=<?= htmlspecialchars($row['ID'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <a href="<?php echo $base_url; ?>/maintenance_end/maintenanceDetails?id=<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>">
                                         <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                         (<?= htmlspecialchars($row['serial_number'], ENT_QUOTES, 'UTF-8') ?>)
                                         <i class="fa-solid fa-square-arrow-up-right"></i>

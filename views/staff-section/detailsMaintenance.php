@@ -18,16 +18,18 @@ if (isset($_SESSION['staff_login'])) {
 
 try {
     if (isset($_GET['id'])) {
-        $id = (int)$_GET['id'];
-        $stmt = $conn->prepare("
-            SELECT * FROM crud 
-            LEFT JOIN info_sciname ON crud.serial_number = info_sciname.serial_number
-            LEFT JOIN logs_maintenance ON info_sciname.serial_number = logs_maintenance.serial_number 
-            WHERE info_sciname.ID = :id
-        ");
+        $id = $_GET['id'];
+        $stmt = $conn->prepare(" SELECT * FROM logs_maintenance WHERE serial_number = :id ");
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         $detailsMaintenance = $stmt->fetchAll(PDO::FETCH_ASSOC); // ดึงข้อมูลมาเก็บในตัวแปร
+    }
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $stmt2 = $conn->prepare(" SELECT * FROM crud WHERE serial_number = :id ");
+        $stmt2->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt2->execute();
+        $detailsMaintenance2 = $stmt2->fetchAll(PDO::FETCH_ASSOC); // ดึงข้อมูลมาเก็บในตัวแปร
     }
 } catch (PDOException $e) {
     echo 'Error: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
@@ -71,8 +73,21 @@ try {
                         if ($detailsMaintenance[0]['categories'] == 'เครื่องมือ') {
                             echo '<a href="/tools">เครื่องมือ</a><span>&gt;</span>';
                         }
-                        echo '<a href="' . htmlspecialchars($detailsMaintenance[0]['ID'], ENT_QUOTES, 'UTF-8') . '">'
+                        echo '<a href="' . htmlspecialchars($detailsMaintenance[0]['serial_number'], ENT_QUOTES, 'UTF-8') . '">'
                             . htmlspecialchars($detailsMaintenance[0]['sci_name'], ENT_QUOTES, 'UTF-8') . '</a>';
+                    }
+                    if (!empty($detailsMaintenance2) && empty($detailsMaintenance)) {
+                        if ($detailsMaintenance2[0]['categories'] == 'วัสดุ') {
+                            echo '<a href="/material">วัสดุ</a><span>&gt;</span>';
+                        }
+                        if ($detailsMaintenance2[0]['categories'] == 'อุปกรณ์') {
+                            echo '<a href="/equipment">อุปกรณ์</a><span>&gt;</span>';
+                        }
+                        if ($detailsMaintenance2[0]['categories'] == 'เครื่องมือ') {
+                            echo '<a href="/tools">เครื่องมือ</a><span>&gt;</span>';
+                        }
+                        echo '<a href="' . htmlspecialchars($detailsMaintenance2[0]['serial_number'], ENT_QUOTES, 'UTF-8') . '">'
+                            . htmlspecialchars($detailsMaintenance2[0]['sci_name'], ENT_QUOTES, 'UTF-8') . '</a>';
                     }
                     ?>
                 </div>
@@ -106,8 +121,8 @@ try {
                             </div>
                         </div>
                     <?php endforeach; ?>
-                <?php else : ?>
-                    <div>
+                <?php elseif (empty($detailsMaintenance)) : ?>
+                    <div class="maintenancenContent">
                         <i class="fa-solid fa-database"></i>
                         <p>ไม่เคยบำรุงรักษา</p>
                     </div>
@@ -143,7 +158,7 @@ try {
                                     <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
                                     <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
                                 </div>
-                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($detailsMaintenance[0]['ID'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($detailsMaintenance[0]['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
                             </div>
                         </div>

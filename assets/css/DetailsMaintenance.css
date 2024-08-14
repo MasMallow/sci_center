@@ -76,6 +76,19 @@
   border: 1px solid #d0d7de;
 }
 
+.maintenancenContent{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 2rem;
+  gap: 1rem;
+
+  i{
+    font-size: 2rem;
+  }
+}
+
 .maintenance_entry {
   display: flex;
   flex-direction: column;
