@@ -128,6 +128,9 @@ try {
     <footer>
         <?php include_once 'assets/includes/footer_2.php'; ?>
     </footer>
+
+    <!-- JavaScript -->
+    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {

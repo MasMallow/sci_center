@@ -207,7 +207,7 @@ $ManagementCount = count($Management); // นับจำนวนรายก�
 
             <?php if (!empty($Management)) : ?>
                 <?php
-                $itemsPerPage = 2;
+                $itemsPerPage = 20;
                 $totalItems = count($Management);
                 $totalPages = ceil($totalItems / $itemsPerPage);
                 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;

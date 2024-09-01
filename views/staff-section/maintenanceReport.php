@@ -147,9 +147,6 @@ $total_pages = ceil($total_records / $results_per_page);
             <div class="view_report_table_header_pdf">
                 <span id="B">ประวัติการบำรุงรักษา</span>
                 <form id="pdfForm" action="<?php echo $base_url; ?>/models/PDF_maintenance_report.php" method="GET">
-                    <?php if (!empty($userID)) : ?>
-                        <input type="hidden" name="userID" value="<?= htmlspecialchars($userID) ?>">
-                    <?php endif; ?>
                     <?php if (!empty($start_date) && !empty($end_date)) : ?>
                         <input type="hidden" name="start_date" id="start_date" value="<?= htmlspecialchars($start_date) ?>">
                         <input type="hidden" name="end_date" id="end_date" value="<?= htmlspecialchars($end_date) ?>">
@@ -180,88 +177,86 @@ $total_pages = ceil($total_records / $results_per_page);
                                 ถึง <?php echo thai_date_time_4($row["end_maintenance"]); ?>
                             </div>
                             <div class="history-item_2">
-                                หมายเหตุ :
-                                <?php echo ($row["note"]) ? htmlspecialchars($row["note"]) : '--'; ?>
+                                หมายเหตุ:
+                                <?php echo htmlspecialchars($row["note"] ?: '--'); ?>
                             </div>
                             <div class="history-item_2">
-                                รายละเอียดการบำรุงรักษา :
-                                <?php echo ($row["details_maintenance"]) ? htmlspecialchars($row["details_maintenance"]) : '--'; ?>
+                                รายละเอียดการบำรุงรักษา:
+                                <?php echo htmlspecialchars($row["details_maintenance"] ?: '--'); ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
-        </div>
-        <!-- PAGINATION PAGE -->
-        <?php if ($total_pages > 1) : ?>
-            <div class="pagination">
-                <?php if ($page > 1) : ?>
-                    <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
-                    <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                <?php else : ?>
+                    <div class="history_rowNOTFOUND">
+                        <i class="fa-solid fa-database"></i>
+                        ไม่พบประวัติการบำรุงรักษา
+                    </div>
                 <?php endif; ?>
 
-                <?php
-                        for ($i = 1; $i <= $total_pages; $i++) {
-                            if ($i == $page) {
-                                echo "<a class='active'>$i</a>";
-                            } else {
-                                echo "<a href='?page=$i" . ($searchValue ? '&search=' . $searchValue : '') . "'>$i</a>";
-                            }
-                        }
-                ?>
+                <!-- PAGINATION PAGE -->
+                <?php if ($total_pages > 1) : ?>
+                    <div class="pagination">
+                        <?php if ($page > 1) : ?>
+                            <a href="?page=1<?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&laquo;</a>
+                            <a href="?page=<?php echo $page - 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&lsaquo;</a>
+                        <?php endif; ?>
 
-                <?php if ($page < $total_pages) : ?>
-                    <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
-                    <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
+                        <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                            <?php if ($i == $page) : ?>
+                                <a class='active'><?php echo $i; ?></a>
+                            <?php else : ?>
+                                <a href="?page=<?php echo $i . ($searchValue ? '&search=' . $searchValue : ''); ?>"><?php echo $i; ?></a>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+
+                        <?php if ($page < $total_pages) : ?>
+                            <a href="?page=<?php echo $page + 1; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&rsaquo;</a>
+                            <a href="?page=<?php echo $total_pages; ?><?php echo $searchValue ? '&search=' . $searchValue : ''; ?>">&raquo;</a>
+                        <?php endif; ?>
+                    </div>
                 <?php endif; ?>
-            </div>
-        <?php endif; ?>
-    <?php else : ?>
-        <div class="history_rowNOTFOUND">
-            <i class="fa-solid fa-database"></i>
-            ไม่พบประวัติการบำรุงรักษา
+            <?php else : ?>
+                <div class="history_rowNOTFOUND">
+                    <i class="fa-solid fa-database"></i>
+                    ไม่พบข้อมูลในช่วงเวลาที่กำหนด
+                </div>
+            <?php endif; ?>
         </div>
-    <?php endif; ?>
-<?php else : ?>
-    <div class="history_rowNOTFOUND">
-        <i class="fa-solid fa-database"></i>
-        ไม่พบข้อมูลในช่วงเวลาที่กำหนด
-    </div>
-<?php endif; ?>
-<footer>
-    <?php include_once 'assets/includes/footer_2.php'; ?>
-</footer>
-    </div>
+        <footer>
+            <?php include_once 'assets/includes/footer_2.php'; ?>
+        </footer>
 
-    <!-- JavaScript -->
-    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const loading = document.getElementById('loading');
-            const content = document.querySelector('.maintenanceReport');
+        <!-- JavaScript -->
+        <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const loading = document.getElementById('loading');
+                const content = document.querySelector('.maintenanceReport');
 
-            // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
-            setTimeout(function() {
-                loading.style.display = 'none'; // ซ่อนการโหลด
-                if (content) {
-                    content.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
-                    content.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
-                }
-
-                // แสดงการแจ้งเตือนทีละรายการ
-                const viewReportTableContent = document.querySelectorAll('.maintenanceReport_ROW');
-                let index = 0;
-
-                function showNextNotification() {
-                    if (index < viewReportTableContent.length) {
-                        viewReportTableContent[index].classList.add('visible');
-                        index++;
-                        setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                // หน่วงเวลาในการซ่อนการโหลดและแสดงเนื้อหาหลัก
+                setTimeout(function() {
+                    loading.style.display = 'none'; // ซ่อนการโหลด
+                    if (content) {
+                        content.style.display = 'flex'; // แสดงเนื้อหาหลัก (หรือเปลี่ยนเป็น 'block' ตามต้องการ)
+                        content.classList.add('visible'); // เพิ่มคลาส visible เพื่อแสดงอนิเมชัน
                     }
-                }
 
-                showNextNotification();
-            }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
-        });
-    </script>
+                    // แสดงการแจ้งเตือนทีละรายการ
+                    const viewReportTableContent = document.querySelectorAll('.maintenanceReport_ROW');
+                    let index = 0;
+
+                    function showNextNotification() {
+                        if (index < viewReportTableContent.length) {
+                            viewReportTableContent[index].classList.add('visible');
+                            index++;
+                            setTimeout(showNextNotification, 200); // หน่วงเวลาในการแสดงการแจ้งเตือนแต่ละรายการ
+                        }
+                    }
+
+                    showNextNotification();
+                }, 1500); // เวลาที่หน่วงหลังจากเริ่มการโหลดข้อมูล
+            });
+        </script>
 </body>
 
 </html>

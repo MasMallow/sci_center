@@ -56,7 +56,7 @@ require_once 'assets/config/Database.php';
                             <label>รหัสผ่าน</label>
                             <div class="show_password">
                                 <input type="password" id="password" name="password" required placeholder="กรุณากรอกรหัสผ่าน (Password)">
-                                <i class="icon_password fas fa-eye-slash" onclick="togglePassword()"></i>
+                                <i class="icon_password fas fa-eye-slash" onclick="togglePasswordVisibility('password', this)"></i>
                             </div>
                             <div class="description">
                                 <b>Note : </b>รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร<br>
@@ -67,7 +67,7 @@ require_once 'assets/config/Database.php';
                             <label>ยืนยันรหัสผ่านอีกครั้ง</label>
                             <div class="show_password">
                                 <input type="password" id="confirm_password" name="confirm_password" required placeholder="กรุณากรอกรหัสผ่านอีกครั้ง (confirmPassword)">
-                                <i class="icon_password fas fa-eye-slash" onclick="togglecPassword()"></i>
+                                <i class="icon_password fas fa-eye-slash" onclick="togglePasswordVisibility('confirm_password', this)"></i>
                             </div>
                         </div>
                         <div class="col">

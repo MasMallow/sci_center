@@ -317,7 +317,9 @@
       background-color: #f2f2f2;
     }
   }
-} /* <-------------------- MAINTENANCE POPUP ----------------> */
+} 
+
+/* <-------------------- MAINTENANCE POPUP ----------------> */
 .maintenance_popup {
   position: fixed;
   top: 0;

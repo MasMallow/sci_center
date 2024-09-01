@@ -91,14 +91,18 @@ $today = date('Y-m-d');
 
 try {
     // กำหนดช่วงวันที่ของเดือนที่เลือก
-    $start_date = "$current_year-$current_month-01";
-    $end_date = date("Y-m-t", strtotime($start_date));
+    $start_date = "$current_year-" . str_pad($current_month, 2, '0', STR_PAD_LEFT) . "-01";
+    $end_date = date("Y-m-t 23:59:59", strtotime($start_date)); // แก้ไขเพื่อให้รวมเวลาสุดท้ายของวันสุดท้าย
 
     // ดึงข้อมูลการจองที่อยู่ในช่วงวันที่ที่กำหนด
-    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date BETWEEN :start_date AND :end_date";
+    $sql = "SELECT * FROM approve_to_reserve 
+            WHERE reservation_date >= :start_date 
+            AND reservation_date < :next_start_date
+            AND situation = 1";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':start_date', $start_date);
-    $stmt->bindParam(':end_date', $end_date);
+    $next_start_date = date('Y-m-d', strtotime($end_date . ' +1 day')); // วันถัดไปหลังจาก end_date
+    $stmt->bindParam(':next_start_date', $next_start_date);
     $stmt->execute();
     $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -127,8 +131,8 @@ $first_day_of_month = date('w', strtotime("$current_year-$current_month-01"));
 $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
 
 try {
-    if (isset($_GET['id'])) {
-        $reservation_date = $_GET['id']; // รับค่า id ที่เป็นรูปแบบวันที่ YYYY-MM-DD
+    if (isset($_GET['date'])) {
+        $reservation_date = $_GET['date']; // รับค่า date ที่เป็นรูปแบบวันที่ YYYY-MM-DD
 
         // แปลงรูปแบบวันที่เพื่อใช้ในฐานข้อมูล (ถ้าจำเป็น)
         $stmt = $conn->prepare("
@@ -178,6 +182,20 @@ try {
         </div>
         <?php unset($_SESSION['approve_success']); ?>
     <?php endif ?>
+    <?php if (isset($_SESSION['approve_error'])) : ?>
+        <div class="toast error">
+            <div class="toast_content error">
+                <i class="fas fa-solid fa-xmark check error"></i>
+                <div class="toast_content_message">
+                    <?php foreach ($_SESSION['approve_error'] as $error): ?>
+                        <span class="text"><?php echo $error; ?></span><br>
+                    <?php endforeach; ?>
+                </div>
+                <i class="fa-solid fa-xmark close"></i>
+            </div>
+        </div>
+        <?php unset($_SESSION['approve_error']); ?>
+    <?php endif ?>
     <div class="approve_section">
         <div class="header_approve_section">
             <a class="historyBACK" href="javascript:history.back();">
@@ -191,7 +209,7 @@ try {
                     echo '<a href="/approve_request">อนุมัติการขอใช้</a>';
                 } elseif ($request_uri == '/approve_request/calendar') {
                     echo '<a href="/approve_request/calendar">ปฎิทินการขอใช้</a>';
-                } elseif ($request_uri == '/approve_request/viewlog/details') {
+                } elseif ($request_uri == '/approve_request/calendar/details') {
                     echo '<a href="/approve_request/calendar">ปฎิทินการขอใช้</a>
         <span>&gt;</span>
         <a href="' . $reservation_date . '">รายละเอียด ' . thai_date_time_3($reservation_date) . '</a>';
@@ -201,7 +219,7 @@ try {
         </div>
         <div class="approve_btn">
             <a href="/approve_request" class="<?= ($request_uri == '/approve_request') ? 'active' : ''; ?> btn_approve_01">อนุมัติการขอใช้</a>
-            <a href="/approve_request/calendar" class="<?= ($request_uri == '/approve_request/calendar' || $request_uri == '/approve_request/viewlog/details') ? 'active' : ''; ?> btn_approve_02">ปฎิทินการขอใช้</a>
+            <a href="/approve_request/calendar" class="<?= ($request_uri == '/approve_request/calendar' || $request_uri == '/approve_request/calendar/details') ? 'active' : ''; ?> btn_approve_02">ปฎิทินการขอใช้</a>
         </div>
         <?php if ($request_uri == '/approve_request') : ?>
             <div class="approve_table_section">
@@ -270,30 +288,30 @@ try {
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="confirmApprovePopup" id="modal_<?= htmlspecialchars($row['ID']) ?>">
+                                        <div class="confirmApprove_content">
+                                            <div class="confirmApprovePopup_sec01">
+                                                <i class="fa-solid fa-exclamation"></i>
+                                                <span id="B">ยืนยันการอนุมัติการขอใช้</span>
+                                            </div>
+                                            <div class="confirmApprovePopup_sec02">
+                                                <form method="POST" action="<?php echo $base_url; ?>/models/approve_request.php">
+                                                    <input type="hidden" name="id" value="<?= htmlspecialchars($row['ID']) ?>">
+                                                    <input type="hidden" name="userID" value="<?= htmlspecialchars($row['userID']) ?>">
+                                                    <button type="submit" name="confirm" class="confirm">ยืนยัน</button>
+                                                </form>
+                                                <div class="cancelApprove">
+                                                    <span id="B">ปิดหน้าต่าง</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                         <?php
                                 $previousSn = $row['serial_number'];
                             endif;
                         endforeach;
                         ?>
-                    </div>
-                    <div class="confirmApprovePopup" id="modal_<?= htmlspecialchars($row['ID']) ?>">
-                        <div class="confirmApprove_content">
-                            <div class="confirmApprovePopup_sec01">
-                                <i class="fa-solid fa-exclamation"></i>
-                                <span id="B">ยืนยันการอนุมัติการขอใช้</span>
-                            </div>
-                            <div class="confirmApprovePopup_sec02">
-                                <form method="POST" action="<?php echo $base_url; ?>/models/approve_request.php">
-                                    <input type="hidden" name="id" value="<?= htmlspecialchars($row['ID']) ?>">
-                                    <input type="hidden" name="userID" value="<?= htmlspecialchars($row['userID']) ?>">
-                                    <button type="submit" name="confirm" class="confirm">ยืนยัน</button>
-                                </form>
-                                <div class="cancelApprove">
-                                    <span id="B">ปิดหน้าต่าง</span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!-- pagination -->
                     <?php if ($pagination_display) : ?>
@@ -372,7 +390,7 @@ try {
                                             if (!empty($reservation) && !$showLink) :
                                                 $showLink = true; // ตั้งค่าสถานะเป็นจริงเมื่อแสดงแท็ก <a>
                                         ?>
-                                                <a href="<?php echo $base_url; ?>/approve_request/viewlog/details?id=<?= $day_date; ?>">
+                                                <a href="<?php echo $base_url; ?>/approve_request/calendar/details?date=<?= $day_date; ?>">
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </a>
                                         <?php
@@ -387,7 +405,7 @@ try {
                 </div>
             </div>
 
-        <?php elseif ($request_uri == '/approve_request/viewlog/details') : ?>
+        <?php elseif ($request_uri == '/approve_request/calendar/details') : ?>
             <div id="loading">
                 <div class="spinner"></div>
                 <p>กำลังโหลดข้อมูล...</p>

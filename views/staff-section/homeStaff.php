@@ -76,6 +76,7 @@ try {
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
+
 // ตรวจสอบค่าของ month และ year จาก GET parameters
 $current_month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
 $current_year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
@@ -92,13 +93,18 @@ $today = date('Y-m-d');
 
 try {
     // กำหนดช่วงวันที่ของเดือนที่เลือก
-    $start_date = "$current_year-$current_month-01";
-    $end_date = date("Y-m-t", strtotime($start_date));
+    $start_date = "$current_year-" . str_pad($current_month, 2, '0', STR_PAD_LEFT) . "-01";
+    $end_date = date("Y-m-t 23:59:59", strtotime($start_date)); // แก้ไขเพื่อให้รวมเวลาสุดท้ายของวันสุดท้าย
+
     // ดึงข้อมูลการจองที่อยู่ในช่วงวันที่ที่กำหนด
-    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date BETWEEN :start_date AND :end_date";
+    $sql = "SELECT * FROM approve_to_reserve 
+            WHERE reservation_date >= :start_date 
+            AND reservation_date < :next_start_date
+            AND situation = 1";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':start_date', $start_date);
-    $stmt->bindParam(':end_date', $end_date);
+    $next_start_date = date('Y-m-d', strtotime($end_date . ' +1 day')); // วันถัดไปหลังจาก end_date
+    $stmt->bindParam(':next_start_date', $next_start_date);
     $stmt->execute();
     $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -125,7 +131,6 @@ $calendar = generate_calendar($reservations, $current_month, $current_year);
 // กำหนดวันที่เริ่มต้นของเดือน
 $first_day_of_month = date('w', strtotime("$current_year-$current_month-01"));
 $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -303,7 +308,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                                                 if (!empty($reservation) && !$showLink) :
                                                     $showLink = true; // ตั้งค่าสถานะเป็นจริงเมื่อแสดงแท็ก <a>
                                             ?>
-                                                    <a class="icon_reservation" href="<?php echo $base_url; ?>/approve_request/viewlog/details?id=<?= $day_date; ?>">
+                                                    <a class="icon_reservation" href="<?php echo $base_url; ?>/approve_request/calendar/details?date=<?= $day_date; ?>">
                                                         <i class="fa-solid fa-circle-info"></i>
                                                     </a>
                                             <?php
@@ -320,9 +325,6 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
             </div>
         </div>
     </div>
-    <footer>
-        <?php include_once 'assets/includes/footer_2.php'; ?>
-    </footer>
     <!-- JavaScript -->
     <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
 

@@ -105,7 +105,7 @@ try {
                 <?php endforeach; ?>
         </div>
     <?php else : ?>
-        <p>ไม่มีการขอใช้ในวันที่เลือก</p>
+        <div class="nFound">ไม่มีการขอใช้ในวันที่เลือก</div>
     <?php endif; ?>
     </main>
 

@@ -336,6 +336,7 @@ button.search {
     color: #000000;
     cursor: pointer;
     background-color: #ffffff;
+    border: 1px solid #d0d7de;
     transition: all 0.3s;
 
     &:hover {

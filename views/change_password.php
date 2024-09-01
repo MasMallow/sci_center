@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>เปลี่ยนรหัสผ่าน</title>
     <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/login.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/forgotPW.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/notification_popup.css">
 </head>
 
 <body>
@@ -65,14 +65,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="resetPassword_content">
                     <label id="B" for="email">อีเมล</label>
                     <input type="text" id="email" name="email" required>
-                    <label id="B" for="new_password">รหัสผ่านใหม่</label>
-                    <input type="password" id="new_password" name="new_password" required>
-                    <label id="B" for="newc_password">ยืนยันรหัสผ่าน</label>
-                    <input type="password" id="newc_password" name="newc_password" required>
-                    <div class="resetPasswordBTN">
-                        <button type="submit" class="btn">เปลี่ยนรหัสผ่าน</button>
-                        <a href="/sign_in" class="link">เข้าสู่ระบบ</a>
+                    <label id="B">รหัสผ่านใหม่</label>
+                    <div class="show_password">
+                        <input type="password" id="password" name="new_password" placeholder="กรุณากรอกรหัสผ่าน (Password)">
+                        <i class="iconPASSWORD fas fa-eye-slash" onclick="togglePasswordVisibility('password', this)"></i>
                     </div>
+                    <label id="B">ยืนยันรหัสผ่าน</label>
+                    <div class="show_password">
+                        <input type="password" id="confirm_password" name="newc_password" placeholder="กรุณายืนยันรหัสผ่าน (confirmPassword)">
+                        <i class="iconPASSWORD fas fa-eye-slash" onclick="togglePasswordVisibility('confirm_password', this)"></i>
+                    </div>
+                </div>
+                <div class="resetPasswordBTN">
+                    <button type="submit" class="btn">เปลี่ยนรหัสผ่าน</button>
+                    <a href="/sign_in" class="link">เข้าสู่ระบบ</a>
                 </div>
                 <div class="footer">
                     <p>
@@ -82,7 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </section>
     </main>
-    <script src="<?php echo $base_url; ?>/assets/js/ajax.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/noti_toast.js"></script>
+    <script src="<?php echo $base_url ?>/assets/js/show_password.js"></script>
 
 </html>
 </body>

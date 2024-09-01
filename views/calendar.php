@@ -48,14 +48,19 @@ $today = date('Y-m-d');
 
 try {
     // กำหนดช่วงวันที่ของเดือนที่เลือก
-    $start_date = "$current_year-$current_month-01";
-    $end_date = date("Y-m-t", strtotime($start_date));
+    $start_date = "$current_year-" . str_pad($current_month, 2, '0', STR_PAD_LEFT) . "-01";
+    $end_date = date("Y-m-t 23:59:59", strtotime($start_date)); // แก้ไขเพื่อให้รวมเวลาสุดท้ายของวันสุดท้าย
 
     // ดึงข้อมูลการจองที่อยู่ในช่วงวันที่ที่กำหนด
-    $sql = "SELECT * FROM approve_to_reserve WHERE reservation_date BETWEEN :start_date AND :end_date AND situation = 1 AND date_return IS NULL";
+    $sql = "SELECT * FROM approve_to_reserve 
+            WHERE reservation_date >= :start_date 
+            AND reservation_date < :next_start_date
+            AND situation = 1 
+            AND date_return IS NULL";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':start_date', $start_date);
-    $stmt->bindParam(':end_date', $end_date);
+    $next_start_date = date('Y-m-d', strtotime($end_date . ' +1 day')); // วันถัดไปหลังจาก end_date
+    $stmt->bindParam(':next_start_date', $next_start_date);
     $stmt->execute();
     $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -113,8 +118,7 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                 <span>&gt;</span>
                 <?php
                 if ($request_uri == '/calendar') {
-                    echo '<a href="/calendar">ตารางการขอใช้ศูนย์วิทยาศาสตร์</a>
-                    ';
+                    echo '<a href="/calendar">ตารางการขอใช้ศูนย์วิทยาศาสตร์</a>';
                 }
                 ?>
             </div>
@@ -166,13 +170,12 @@ $days_of_week = ['อาทิตย์', 'จันทร์', 'อังคา
                 <?php
                 $days_in_month = date('t', strtotime("$current_year-$current_month-01"));
                 for ($i = 1; $i <= $days_in_month; $i++) :
-                    // Set class for the current day
                     $day_date = date('Y-m-d', strtotime("$current_year-$current_month-$i"));
                     $day_class = ($day_date == $today) ? 'day today' : 'day';
                 ?>
                     <div class="<?php echo $day_class; ?>">
                         <div class="date"><?php echo $i; ?></div>
-                        <?php if (isset($calendar[$i])) : ?>
+                        <?php if (isset($calendar[$i]) && !empty($calendar[$i])) : ?>
                             <div class="reservation">
                                 <div class="notification_reservation">
                                     <?php

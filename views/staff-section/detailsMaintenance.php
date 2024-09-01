@@ -97,10 +97,12 @@ try {
             <div class="maintenance_history_header">
                 ประวัติการบำรุงรักษา
             </div>
-            <div class="maintenance_history_subheader">
-                <span id="B"><?= htmlspecialchars($detailsMaintenance[0]['sci_name'] ?? '--', ENT_QUOTES, 'UTF-8'); ?></span>
-                บำรุงรักษาทั้งหมด <?php echo count($detailsMaintenance); ?> ครั้ง
-            </div>
+            <?php if (!empty($detailsMaintenance)): ?>
+                <div class="maintenance_history_subheader">
+                    <span id="B"><?= htmlspecialchars($detailsMaintenance[0]['sci_name'] ?? '--', ENT_QUOTES, 'UTF-8'); ?></span>
+                    บำรุงรักษาทั้งหมด <?php echo count($detailsMaintenance); ?> ครั้ง
+                </div>
+            <?php endif; ?>
             <div class="maintenanceContent">
                 <?php if (is_array($detailsMaintenance) && count($detailsMaintenance) > 0) : ?>
                     <?php foreach ($detailsMaintenance as $dataList) : ?>
@@ -128,44 +130,6 @@ try {
                     </div>
                 <?php endif; ?>
             </div>
-        </div>
-        <div class="btn_footer">
-            <?php if ($request_uri == '/maintenance_start/details' || $request_uri == '/management/maintenance') : ?>
-                <span class="maintenance_button" id="B">บำรุงรักษา</span>
-                <form class="for_Maintenance" action="<?= $base_url ?>/staff-section/maintenanceProcess.php" method="post">
-                    <div class="maintenance_popup">
-                        <div class="maintenance_popup_content">
-                            <div class="maintenance_section_header">
-                                <span id="B">กรอกข้อมูลการบำรุงรักษา</span>
-                                <div class="modalClose" id="closeMaintenance">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </div>
-                            </div>
-                            <div class="maintenace_popup">
-                                <div class="inputMaintenance">
-                                    <label for="start_maintenance">วันเริ่มต้นการบำรุงรักษา</label>
-                                    <input type="date" id="start_maintenance" name="start_maintenance" required>
-                                </div>
-                                <div class="inputMaintenance">
-                                    <label for="end_maintenance">วันสิ้นสุดการบำรุงรักษา</label>
-                                    <input type="date" id="end_maintenance" name="end_maintenance" required>
-                                </div>
-                                <div class="inputMaintenance">
-                                    <label for="note">หมายเหตุ</label>
-                                    <input type="text" id="note" name="note" placeholder="หมายเหตุ">
-                                </div>
-                                <div class="inputMaintenance">
-                                    <label for="name_staff">ชื่อ - นามสกุล ผู้ดูแล</label>
-                                    <input type="text" id="name_staff" name="name_staff" placeholder="ชื่อ - นามสกุล ผู้ดูแล">
-                                </div>
-                                <input type="hidden" name="selected_ids" value="<?= htmlspecialchars($detailsMaintenance[0]['serial_number'], ENT_QUOTES, 'UTF-8'); ?>">
-                                <button type="submit" class="confirm_maintenance" name="confirm"><span>ยืนยัน</span></button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <a href="javascript:history.back();" class="del_notification">กลับ</a>
-            <?php endif; ?>
         </div>
     </main>
     <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>

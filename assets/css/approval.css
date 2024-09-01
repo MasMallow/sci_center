@@ -94,13 +94,11 @@
   display: flex;
   flex-direction: column;
   opacity: 0;
-  transform: translateY(20px);
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .approve_table.visible {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .approveData {
@@ -110,13 +108,11 @@
   border: 1px solid #d0d7de;
   margin-bottom: 0.5rem;
   overflow: hidden;
-  transform: translateY(20px);
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .approveData.visible {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .approveheader {

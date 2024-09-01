@@ -199,6 +199,20 @@
   opacity: 1; /* ค่าเปลี่ยนแปลงเป็น 1 */
 }
 
+.date_not_found{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem;
+
+  i{
+    font-size: 3rem;
+    color: #000000;
+    margin-bottom: 1rem;
+  }
+}
+
 .viewReport_table_content {
   display: flex;
   flex-direction: column;
@@ -273,7 +287,6 @@
 
 .top_10_list_content {
   opacity: 0;
-  transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
   width: 30%;
   flex: 1;
@@ -281,7 +294,6 @@
 
 .top_10_list_content.show {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .top_10_list_header {
@@ -289,6 +301,7 @@
   padding-left: 0.7rem;
   color: #1f2328;
 }
+
 .top_10_list_body {
   min-height: 40vh;
   overflow: hidden;
@@ -297,6 +310,7 @@
   border-radius: 5px;
   border: 1px solid #d0d7de;
 }
+
 .content {
   width: 100%;
   display: flex;
@@ -305,6 +319,7 @@
   margin-bottom: 1rem;
   border-bottom: 1px solid #d0d7de;
 }
+
 .sciName {
   width: 75%;
   padding: 0.7rem 0;
@@ -314,6 +329,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .topten {
   width: 25%;
   display: flex;

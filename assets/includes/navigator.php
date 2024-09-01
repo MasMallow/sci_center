@@ -20,7 +20,8 @@
         </div>
         <div class="header_nav_userinfo">
             <?php if (isset($_SESSION['user_login'])) : ?>
-                <div class="header_userinfo_btn">
+                <!-- ปุ่มที่เปิด modal -->
+                <div class="header_userinfo_btn" id="userInfoBtn">
                     <div class="select">
                         <i class="fa-solid fa-user"></i>
                         <span>
@@ -28,13 +29,29 @@
                         </span>
                         <i class="arrow_rotate fa-solid fa-chevron-up"></i>
                     </div>
-                    <ul class="menu">
-                        <li class="menu_li"><a href="<?php echo $base_url; ?>/profile_user">รายละเอียดผู้ใช้งาน</a></li>
-                        <li class="menu_li"><a href="<?php echo $base_url; ?>/models/sign_out.php">ออกจากระบบ</a></li>
-                    </ul>
+                </div>
+
+                <!-- โครงสร้าง modal -->
+                <div class="logoutMODAL">
+                    <div class="logoutMODAL_content">
+                        <div class="logoutMODAL_popup">
+                            <div class="logoutMODAL_sec01">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span id="B">แจ้งเตือนออกจากระบบ</span>
+                            </div>
+                            <div class="logoutMODAL_sec02">
+                                <a class="profileUser" href="<?php echo $base_url; ?>/profile_user"><i class="fa-solid fa-user-pen"></i></a>
+                                <a class="confirmLogout" href="<?php echo $base_url; ?>/models/sign_out.php">ออกจากระบบ</a>
+                                <div class="cancel_del closeDetails">
+                                    <span>ปิดหน้าต่าง</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             <?php elseif (isset($_SESSION['staff_login'])) : ?>
-                <div class="header_userinfo_btn">
+                <!-- ปุ่มที่เปิด modal -->
+                <div class="header_userinfo_btn" id="userInfoBtn">
                     <div class="select">
                         <i class="fa-solid fa-user"></i>
                         <span>
@@ -42,9 +59,24 @@
                         </span>
                         <i class="arrow_rotate fa-solid fa-chevron-up"></i>
                     </div>
-                    <ul class="menu">
-                        <li class="menu_li"><a href="<?php echo $base_url; ?>/models/sign_out.php">ออกจากระบบ</a></li>
-                    </ul>
+                </div>
+
+                <!-- โครงสร้าง modal -->
+                <div class="logoutMODAL">
+                    <div class="logoutMODAL_content">
+                        <div class="logoutMODAL_popup">
+                            <div class="logoutMODAL_sec01">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span id="B">แจ้งเตือนออกจากระบบ</span>
+                            </div>
+                            <div class="logoutMODAL_sec02">
+                                <a class="confirmLogout" href="<?php echo $base_url; ?>/models/sign_out.php">ออกจากระบบ</a>
+                                <div class="cancel_del closeDetails">
+                                    <span>ปิดหน้าต่าง</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             <?php else : ?>
                 <a href="<?php echo $base_url; ?>/sign_in" class="not-login">

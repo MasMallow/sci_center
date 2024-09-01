@@ -59,13 +59,15 @@ switch ($request) {
         require 'views/details.php'; // หน้ารายละเอียด
         break;
     case '/profile_user':
-    case '/edit_user':
     case '/profile_user/edit_profile':
         require 'views/profile_user.php'; // โปรไฟล์ผู้ใช้
         break;
+    case '/edit_user':
+        require 'views/staff-section/editUser.php'; // โปรไฟล์ผู้ใช้
+        break;
     case '/approve_request':
     case '/approve_request/calendar':
-    case '/approve_request/viewlog/details':
+    case '/approve_request/calendar/details':
         require 'views/staff-section/approve_request.php'; // อนุมัติคำขอ
         break;
     case '/management-website':

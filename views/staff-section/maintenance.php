@@ -34,11 +34,10 @@ $stmt->execute();
 $maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmt = $conn->prepare("
-    SELECT * 
-    FROM crud 
+    SELECT * FROM crud 
     LEFT JOIN logs_maintenance ON crud.serial_number = logs_maintenance.serial_number
     WHERE availability = 1 
-    AND end_maintenance > DATE_ADD(CURDATE(), INTERVAL 2 DAY) 
+    AND end_maintenance <= DATE_ADD(CURDATE(), INTERVAL 5 DAY) 
     ORDER BY crud.serial_number ASC");
 $stmt->execute();
 $end_maintenance_notify = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -127,6 +126,7 @@ try {
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/notification_popup.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/maintenance.css">
     <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/pagination.css">
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/footer.css">
 </head>
 
 <body>
@@ -149,7 +149,7 @@ try {
         <?php if (isset($_SESSION['end_maintenanceSuccess'])) : ?>
             <div class="toast">
                 <div class="toast_content">
-                    <i class="fas fa-solid fa-xmark check"></i>
+                    <i class="fas fa-solid fa-check check"></i>
                     <div class="toast_content_message">
                         <span class="text text_2"><?php echo $_SESSION['end_maintenanceSuccess']; ?></span>
                     </div>
@@ -214,23 +214,26 @@ try {
                                     <div class="approve_row">
                                         <div class="defualt_row">
                                             <div class="serial_number">
-                                                <i class="open_expand_row fa-solid fa-circle-arrow-right" onclick="toggleExpandRow(this)"></i>
                                                 <?php echo htmlspecialchars($row['serial_number']); ?>
                                             </div>
                                             <div class="items">
-                                                <a href="<?php echo $base_url; ?>/maintenance/details?id=<?= $row['serial_number'] ?>">
-                                                    <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
-                                                </a>
+                                                <?= htmlspecialchars($row['sci_name'], ENT_QUOTES, 'UTF-8') ?>
                                             </div>
                                             <div class="reservation_date">
                                                 <?php
                                                 $daysSinceMaintenance = calculateDaysSinceLastMaintenance($row['last_maintenance_date']);
-                                                if ($daysSinceMaintenance === "ไม่เคยได้รับการบำรุงรักษา") {
-                                                    echo $daysSinceMaintenance;
-                                                } else {
-                                                    echo "ไม่ได้รับการบำรุงรักษามามากกว่า " . $daysSinceMaintenance . " วัน";
-                                                }
                                                 ?>
+                                                <?php if ($daysSinceMaintenance === "ไม่เคยได้รับการบำรุงรักษา"): ?>
+                                                    <div class="maintenance-status red">
+                                                        <i class="fa-solid fa-screwdriver-wrench icon"></i>
+                                                        <span class="text "><?php echo $daysSinceMaintenance; ?></span>
+                                                    </div>
+                                                <?php else: ?>
+                                                    <div class="maintenance-status red">
+                                                        <i class="fa-solid fa-screwdriver-wrench icon"></i>
+                                                        <span class="text">ไม่ได้รับการบำรุงรักษามามากกว่า <?php echo $daysSinceMaintenance; ?> วัน</span>
+                                                    </div>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -250,12 +253,15 @@ try {
                             <div class="staff_notification_stack">
                                 <?php foreach ($end_maintenance_notify as $datas) : ?>
                                     <div class="staff_notification_data">
-                                        <span class="staff_notification_data_1">
-                                            <?php echo htmlspecialchars($datas['sci_name']); ?>
-                                        </span>
-                                        <span class="staff_notification_data_2">ใกล้ถึงวันสิ้นสุดการบำรุงรักษา
-                                            <?php echo htmlspecialchars(thai_date_time_3($datas['end_maintenance'])); ?>
-                                        </span>
+                                        <i class="fa-solid fa-screwdriver-wrench green"></i>
+                                        <div class="detailsNoti">
+                                            <span class="staff_notification_data_1">
+                                                <?php echo htmlspecialchars($datas['sci_name']); ?>
+                                            </span>
+                                            <span class="staff_notification_data_2">ใกล้ถึงวันสิ้นสุดการบำรุงรักษา
+                                                <?php echo htmlspecialchars(thai_date_time_3($datas['end_maintenance'])); ?>
+                                            </span>
+                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -532,6 +538,12 @@ try {
             <?php endif; ?>
         <?php endif; ?>
     </div>
+
+    <!-- ---------------- FOOTER ------------------ -->
+    <footer><?php include "assets/includes/footer_2.php"; ?></footer>
+
+    <!-- JavaScript -->
+    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/ajax.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/maintenance.js"></script>
     <script src="<?php echo $base_url ?>/assets/js/noti_toast.js"></script>

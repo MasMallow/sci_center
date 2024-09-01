@@ -84,8 +84,8 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายงาน และ TOP 10</title>
-    <link href="<?php echo $base_url; ?>/assets/logo/LOGO.jpg" rel="shortcut icon" type="image/x-icon">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/font-awesome/css/all.css">
+    <link href="<?php echo $base_url; ?>/assets/img/logo/sci_center.png" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/font-awesome/css/all.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/navigator.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/breadcrumb.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/footer.css">
@@ -209,8 +209,9 @@ try {
                             </div>
                         <?php endif; ?>
                     <?php else : ?>
-                        <div class="row">
-                            <div colspan='5' class="date_not_found"><span id="B">ไม่พบข้อมูล</span></div>
+                        <div class="date_not_found">
+                            <i class="fa-solid fa-database"></i>
+                            <span id="B">ไม่พบข้อมูล</span>
                         </div>
                     <?php endif; ?>
                 </div>

@@ -147,6 +147,12 @@
 }
 
 /* --------------- DETAILS -------------- */
+.nFound{
+  font-size: 1.25rem;
+  font-family: Sarabun-bold;
+  text-align: center;
+  margin-top: 2rem;
+}
 .bookingTable_content {
   margin-top: 1rem;
   display: flex;

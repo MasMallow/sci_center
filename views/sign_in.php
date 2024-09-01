@@ -21,7 +21,7 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login']) && !isse
             <?php if (isset($_SESSION['successSign_up'])) : ?>
                 <div class="toast">
                     <div class="toast_content">
-                        <i class="fas fa-solid fa-xmark check"></i>
+                        <i class="fas fa-solid fa-check check"></i>
                         <div class="toast_content_message">
                             <span class="text"><?php echo $_SESSION['successSign_up']; ?></span>
                         </div>

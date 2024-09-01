@@ -42,16 +42,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // ตรวจสอบจำนวนอุปกรณ์
             if ($quantity > $result['amount']) {
-                $errorMessages[] = 'จำนวนอุปกรณ์ ' . $product_name . ' ไม่พอ (มีเพียง ' . $result['amount'] . ' ชิ้นในสต็อก)';
+                $errorMessages[] = 'จำนวนอุปกรณ์ ' . $product_name . ' ไม่พอ (มีเพียง ' . $result['amount'] . ' ชิ้นในระบบ)';
             }
         }
 
         if (!empty($errorMessages)) {
+            $_SESSION['approve_error'] = $errorMessages; // ใช้เพียงตัวแปรเดียว ไม่ต้องใส่ $$
+
             foreach ($errorMessages as $message) {
                 echo $message . '<br>';
             }
-            echo '<a href="/approve_request">กลับหน้าหลัก</a><br>';
-            exit;
+
+            // ควรย้ายการตั้งค่า session ก่อนการ redirect
+            header("Location: /approve_request");
+            exit();
         } else {
             // ถ้าไม่มีข้อผิดพลาดในการจอง, ทำการอัปเดตข้อมูลการจอง
             $update_query = $conn->prepare("
