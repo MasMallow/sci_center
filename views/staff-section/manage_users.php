@@ -326,15 +326,15 @@ try {
                                             <?php if ($user['status'] == 'approved') : ?>
                                                 <a href="<?= htmlspecialchars($base_url); ?>/edit_user?id=<?= htmlspecialchars($user['userID']); ?>" class="edit_user" title="แก้ไขผู้ใช้">
                                                     <i class="fa-solid fa-pencil"></i>
-                                                    <span>แก้ไขบัญชี</span>
+                                                    <!-- <span>แก้ไขบัญชี</span> -->
                                                 </a>
                                                 <button class="ban_user" type="submit" name="ban_user" title="ระงับบัญชี">
                                                     <i class="fa-solid fa-user-slash"></i>
-                                                    <span>ระงับบัญชี</span>
+                                                    <!-- <span>ระงับบัญชี</span> -->
                                                 </button>
                                                 <span class="delete_user" data-modal="<?= htmlspecialchars($user['userID']); ?>" title="ลบบัญชี">
                                                     <i class="fa-solid fa-trash-can"></i>
-                                                    <span>ลบบัญชี</span>
+                                                    <!-- <span>ลบบัญชี</span> -->
                                                 </span>
                                                 <div class="deleteAccount" id="<?= htmlspecialchars($user['userID']); ?>">
                                                     <div class="deleteAccount_section">

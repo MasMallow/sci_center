@@ -1,0 +1,15 @@
+RewriteEngine On
+RewriteBase /
+
+# ถ้าเป็นไฟล์หรือโฟลเดอร์ที่มีอยู่ ให้โหลดตามปกติ
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# ป้องกันการเข้าถึงไฟล์ PHP โดยตรง (ยกเว้น index.php)
+RewriteCond %{THE_REQUEST} "^GET .*\.php" [NC]
+RewriteCond %{REQUEST_URI} !/index.php$ [NC]
+RewriteRule .* - [R=404,L]
+
+# ถ้าไม่ใช่ไฟล์หรือโฟลเดอร์ ให้ส่งไปที่ index.php
+RewriteRule ^ index.php [QSA,L]

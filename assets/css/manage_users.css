@@ -186,6 +186,9 @@ button.search {
   justify-content: center;
   gap: 0.24rem;
   position: relative;
+  border: 1px solid #007bff;
+  width: 2rem;
+  height: 2rem;
 
   span {
     font-size: 0.9rem;

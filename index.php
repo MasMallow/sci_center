@@ -2,20 +2,21 @@
 require_once 'assets/config/config.php';
 require_once 'assets/config/Database.php';
 
-// รับ URI ของคำขอปัจจุบัน
+// กำหนด base_path ให้ตรงกับโปรเจกต์ของคุณ (เช่น sci_center)
+$base_path = "/"; // ถ้าโปรเจกต์อยู่ที่รากของโดเมน ใช้ "/"
+
+// รับ REQUEST_URI และตัด Query String ออก
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// ตรวจสอบว่า $request_uri เริ่มต้นด้วย $base_url หรือไม่
-$request = (strpos($request_uri, $base_url) === 0) ? substr($request_uri, strlen($base_url)) : $request_uri;
+// ตัด $base_path ออกจาก $request_uri
+if ($base_path !== "/" && strpos($request_uri, $base_path) === 0) {
+    $request = substr($request_uri, strlen($base_path));
+} else {
+    $request = $request_uri;
+}
 
-$request = rtrim($request, '/');?>
-
-
-
-<?php
-// กำหนดเส้นทางคำขอตาม URI
 switch ($request) {
-    case '':
+    case '/':
     case '/material':
     case '/equipment':
     case '/tools':
@@ -131,24 +132,8 @@ switch ($request) {
         require 'views/staff-section/view_top10.php'; // ดูบันทึก
         break;
     default:
+        http_response_code(404);
         require 'views/error_page.php'; // หน้าข้อผิดพลาด
         break;
-}?>
-
-<script>
-// ตรวจสอบว่าผู้ใช้เข้ามาครั้งแรกใน session นี้หรือไม่
-if (sessionStorage.getItem('hasVisited') === null) {
-    // ถ้าเข้ามาครั้งแรกใน session นี้
-    sessionStorage.setItem('hasVisited', 'true');
-
-    // แสดงหน้าจอโหลดสักครู่แล้วแสดงเนื้อหาเว็บไซต์
-    setTimeout(function() {
-        document.getElementById('loadingScreen').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-    }, 3000); // ปรับเวลาในการโหลดได้ที่นี่ (3 วินาที)
-} else {
-    // ถ้าไม่ใช่ครั้งแรกใน session นี้ ให้แสดงเนื้อหาทันที
-    document.getElementById('loadingScreen').style.display = 'none';
-    document.getElementById('content').style.display = 'block';
 }
-</script>
+?>

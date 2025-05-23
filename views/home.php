@@ -120,6 +120,7 @@ try {
 } catch (Exception $e) {
     echo 'เกิดข้อผิดพลาด: ' . $e->getMessage();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -252,7 +253,6 @@ try {
     <footer><?php include "assets/includes/footer.php"; ?></footer>
 
     <!-- JavaScript -->
-    <script src="<?= $base_url; ?>/assets/js/ajax.js"></script>
     <script src="<?= $base_url; ?>/assets/js/loading.js"></script>
     <script src="<?= $base_url; ?>/assets/js/datetime.js"></script>
 </body>

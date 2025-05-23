@@ -1,2 +1,3 @@
 <?php
-$base_url = 'http://localhost:8080';
+$base_url = 'http://sci_center.me';
+// $base_url = 'localhost:8080';
